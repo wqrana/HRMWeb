@@ -1,0 +1,76 @@
+﻿@model TimeAide.Web.Models.RoleTypeFormPrivilege
+
+@{
+    ViewBag.Title = "Edit - Role Type Form Privilege";
+}
+
+<h2>Edit - Role Type Form Privilege</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.RoleTypeFormPrivilegeId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RoleTypeID, "RoleType", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RoleTypeID", null, htmlAttributes: new { @class = "form-control" })
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("CountryId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.RoleTypeID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PrivilegeId, "Privilege", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("PrivilegeId", null, htmlAttributes: new { @class = "form-control" })
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("CountryId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.PrivilegeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FormId, "Form", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("FormId", null, htmlAttributes: new { @class = "form-control" })
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("CountryId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.FormId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompanyId, "Company", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Company>("CompanyId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClientId, "Client", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Client>("ClientId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

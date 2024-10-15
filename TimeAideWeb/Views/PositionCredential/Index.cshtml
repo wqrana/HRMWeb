@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PositionCredential>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0">
+        <tr>
+            <th>
+                Credential Name
+            </th>
+            <th>
+                Required
+            </th>
+
+        </tr>
+        @if (Model!= null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Credential.CredentialName</td>
+                    <td>
+                        @{var isRequired = item.IsRequired ?? false; }
+                        @Html.DisplayFor(m => isRequired)<a class="fa fa-pencil pl-2" href="javascript:EditIsRequiredCredential(@item.Id)"></a>
+                    </td>
+                    
+                </tr>
+            }
+        }
+    </table>
+</div>

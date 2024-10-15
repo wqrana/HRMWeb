@@ -1,0 +1,969 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C52F1E6-7580-40C8-A76A-D00DA06DEEDD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>TimeAide.AdminPanel</RootNamespace>
+    <AssemblyName>TimeAide.AdminPanel</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Compression.Base, Version=25.2462.4.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Compression.Base.25.2.4\lib\net462\Syncfusion.Compression.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=25.2462.4.0, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.25.2.4\lib\net462\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.XlsIO.Base, Version=25.2462.4.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.XlsIO.Wpf.25.2.4\lib\net462\Syncfusion.XlsIO.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="ApplicationStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DataExportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="DataImprtWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DataMigrationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="DocumentMigrationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="InputDialogSample .xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="AdminConsoleHelper.cs" />
+    <Compile Include="AdminPanelImportHelper.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DAL\spPay_Compute_UserBatch_Result.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\spPay_Create_CompanyBatch_Result.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TAWIndowImportData.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TAWIndowImportData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TAWIndowImportData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TAWIndowImportData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TAWIndowImportData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TA_ImportData_Context_.cs" />
+    <Compile Include="DAL\tblBatch.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblCompanyBatchWithholding.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblCompanyBatchWithholdings_ManualEntry.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblCompanySchedulesProcessed.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblCompensationItem.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblPayrollImportFileTemplate.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblPayrollImportFileTemplateDetail.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblUserBatch.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblUserBatchCompensation.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblUserBatchCompensations_ManualEntry.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblUserBatchWithholding.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblUserBatchWithholdings_ManualEntry.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\tblWithholdingsItem.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\viewPay_UserRecord.cs">
+      <DependentUpon>TAWIndowImportData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataExportWindow.xaml.cs">
+      <DependentUpon>DataExportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataImprtWindow.xaml.cs">
+      <DependentUpon>DataImprtWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataMigrationWindow.xaml.cs">
+      <DependentUpon>DataMigrationWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DocumentMigrationWindow.xaml.cs">
+      <DependentUpon>DocumentMigrationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\CompanyWizeDataChangeSPs.cs" />
+    <Compile Include="Helpers\ApplicationInformationSPs.cs" />
+    <Compile Include="Helpers\ConfigurationHelper.cs" />
+    <Compile Include="Helpers\DefaultValuesForEmptySource.cs" />
+    <Compile Include="Helpers\DefaultValueSPs.cs" />
+    <Compile Include="Helpers\EmployeeInformationSPs.cs" />
+    <Compile Include="Helpers\EmployeeTabsSPs.cs" />
+    <Compile Include="Helpers\ErrorLogHelper.cs" />
+    <Compile Include="Helpers\ExcelHelper.cs" />
+    <Compile Include="Helpers\ExecutionType.cs" />
+    <Compile Include="Helpers\LogDetailEvents.cs" />
+    <Compile Include="Helpers\LogEvents.cs" />
+    <Compile Include="Helpers\LogHelper.cs" />
+    <Compile Include="Helpers\MasterDataSPs.cs" />
+    <Compile Include="Helpers\ScriptsHelper.cs" />
+    <Compile Include="InputDialogSample .xaml.cs">
+      <DependentUpon>InputDialogSample .xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainMenuWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="MappingPopupWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainMenuWindow.xaml.cs">
+      <DependentUpon>MainMenuWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MappingPopupWindow.xaml.cs">
+      <DependentUpon>MappingPopupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Microsoft\Win32\OpenFolderDialog.cs" />
+    <Compile Include="Models\PayrollImportFieldMapping.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EntityDeploy Include="DAL\TAWIndowImportData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TAWIndowImportData.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DAL\TAWIndowImportData.edmx.diagram">
+      <DependentUpon>TAWIndowImportData.edmx</DependentUpon>
+    </None>
+    <None Include="Documents\Master Data.xlsx" />
+    <None Include="Documents\Table Mapping.xlsb" />
+    <None Include="Documents\~%24Table Mapping.xlsb" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DAL\TAWIndowImportData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TAWIndowImportData.edmx</DependentUpon>
+      <LastGenOutput>TAWIndowImportData.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DAL\TAWIndowImportData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TAWIndowImportData.edmx</DependentUpon>
+      <LastGenOutput>TAWIndowImportData.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\0-ASPNet Schema\ASPNETSchema.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\0-ASPNet Schema\fn_CLREnDecriptSSNRegistration.sql" />
+    <Content Include="Scripts\1-DefaultValuesGlobal\ApplicationConfiguration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\ChangeRequestStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\ClosingNotificationType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\EmailType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\EmployeeGroupType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\EmployeeNotificationType.sql" />
+    <Content Include="Scripts\1-DefaultValuesGlobal\IncidentType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\NotificationType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\OSHACaseClassification.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\OSHAInjuryClassification.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\WorkflowActionType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\WorkflowLevelType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\DocumentRequiredBy.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValuesGlobal\WorkflowTriggerType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\AppraisalTemplate.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\CFSECode.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\City.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\CobraPaymentStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\Country.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\Department.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\DependentStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\EmployeeGroup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\EmployeeGroupType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\SenderEmailConfiguration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\WorkflowActionType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\WorkflowTriggerType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\Disability.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\EmployeeType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\EmploymentStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\WorkflowLevelType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\Ethnicity.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\Gender.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\ClosingNotificationType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\JobCode.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\RatingLevel.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\State.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\EmailType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\SubDepartment.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\VeteranStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\2-Functions\fn_calculateSeviceInYear.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\2-Functions\fn_NotificationItemsCalendar.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\2-Functions\fn_NotificationItemsSchedule.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\2-Functions\fn_splitIntIds.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\2-Functions\fn_SupervisedEmployees.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_UpdateSignalROnlineChatUsers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_ApplicantInformation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_ApplicantInformationById.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_CreateDefaultExpirationNotificationLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_CreateNotificationLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeActionReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeBenefitReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeCredentialReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_GetUserInformationByWorkflowLevelGroupId.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeCurrHiringReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeCustomFieldReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeDentalInsuranceReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeDependentReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeEducationReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeEmploymentReports.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeGeneralBirthdateReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeGeneralBirthdayReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeGeneralReports.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeHealthInsuranceReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeOSHA301Report.sql" />
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeOSHAReports.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeePayInfoReports.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeePerformanceReviewReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_rpt_EmployeeTrainingReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_SetupUserAsSuperAdmin.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_TimeOffRequestAutoCancellation.sql" />
+    <Content Include="Scripts\3-StoredProcedures\sp_UserDashboardNotificationForecast.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_UserDashboardNotificationForecastDetail.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_userDashboardNotificationLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_GetEmployeeSupervisors.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_UserInformation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\3-StoredProcedures\sp_UserInformationById.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\Form.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\Module.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\Privilege.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\EmployeeGroup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\Role.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\EmployeeGroupType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\RoleType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\4-UserLogin\sp_ExecuteSetupUserAsSuperAdmin.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\1-vw_UserInformation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\2-vw_rpt_EmployeeHiringHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\3-vw_rpt_EmployeePayInfoHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\4-vw_rpt_EmployeeContactInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\DateCalendar.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vNotificationScheduleDetail.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_EmploymentHistoryCurrent.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeActionInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeBenefitInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeCredentialInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeCustomFieldInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeDentalInsuranceInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeDependentInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeEducationInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeEmergencyContact.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeEmploymentHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeGeneralRptMain.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeHealthInsuranceInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeIncidentOSHA.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeePerformanceReviewInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\5-Views\vw_rpt_EmployeeTrainingInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\ActionTaken.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\ActionType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\AppraisalGoal.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\AppraisalRatingScale.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\AppraisalRatingScaleDetail.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\AppraisalSkill.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\AppraisalTemplateGoal.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\AppraisalTemplateSkill.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Benefit.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\CredentialType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\City.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\CobraStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Company.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Credential.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\CustomField.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Degree.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Department.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Document.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\EEOCategory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\EmployeeType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\EmploymentStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\EmploymentType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Ethnicity.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\IncidentArea.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\IncidentBodyPart.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\IncidentInjuryDescription.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\IncidentInjurySource.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\IncidentTreatmentFacility.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\1-DefaultValues\IncidentType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\InsuranceCoverage.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\InsuranceStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\InsuranceType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Location.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\MaritalStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PayFrequency.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PayScale.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PayScaleLevel.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PayType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PerformanceDescription.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PerformanceResult.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Position.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PositionCredential.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\PositionTraining.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\RateFrequency.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\SubDepartment.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\TerminationEligibility.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\TerminationReason.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\TerminationType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\Training.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\VeteranStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\1-Master Data\WCClassCode.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\2-EmployeeInformation\UserInformation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\2-EmployeeInformation\UserInformationContact.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\2-EmployeeInformation\UserInformationEmergencyContact.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\DentalInsuranceCobraHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAction.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisal.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisalDocument.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisalGoal.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisalSkill.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeBenefitEnlisted.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeBenefitHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeCredential.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeCustomField.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeDentalInsurance.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeDependent.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeDocument.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeEducation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeHealthInsurance.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeIncident_.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeePerformance.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeTraining.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeVeteranStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\SupervisorInformation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\Employment.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\EmploymentHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\HealthInsuranceCobraHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\3-EmployeeTabs\PayInformationHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\4-Workflow\NotificationMessage.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\4-Workflow\Workflow.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\4-Workflow\WorkflowTrigger.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\4-Workflow\WorkflowLevel.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\6-Migration Scripts\Extra\SQLQuery1.sql" />
+    <Content Include="Scripts\6-Migration Scripts\Extra\SQLQuery2.sql" />
+    <Content Include="Scripts\6-Migration Scripts\Extra\SQLQuery3.sql" />
+    <Content Include="Scripts\6-Migration Scripts\Extra\SQLQuery4.sql" />
+    <Content Include="Scripts\6-Migration Scripts\Extra\Table Columns.sql" />
+    <Content Include="Scripts\6-Migration Scripts\Extra\UsercONTACT-UPDATE.SQL" />
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\CobraStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\Disability.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\Ethnicity.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\Gender.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\InsuranceStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\InsuranceType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\MaritalStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\OSHACaseClassification.sql" />
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\OSHAInjuryClassification.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\TerminationEligibility.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\7-DefaultValuesForEmptySource\VeteranStatus.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\8-CompanyWizeDataChange\Update Department With Company Id.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\8-CompanyWizeDataChange\Update EmployeeType With Company Id.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\8-CompanyWizeDataChange\Update EmploymentType With Company Id.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\8-CompanyWizeDataChange\Update Location With Company Id.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\8-CompanyWizeDataChange\Update Position With Company Id.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\8-CompanyWizeDataChange\Update SubDepartment With Company Id.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeAide.Common\TimeAide.Common.csproj">
+      <Project>{06ffcf32-d708-4f53-b904-cfceda4a0476}</Project>
+      <Name>TimeAide.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAide.Data\TimeAide.Data.csproj">
+      <Project>{1b4fc183-a874-4966-aeb2-1a5293f97030}</Project>
+      <Name>TimeAide.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAide.Models\TimeAide.Models.csproj">
+      <Project>{1034bebb-392c-43b7-9202-26cd020f6371}</Project>
+      <Name>TimeAide.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAide.Services\TimeAide.Services.csproj">
+      <Project>{e7888b9c-ae51-4fda-a99f-b6895667954a}</Project>
+      <Name>TimeAide.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAideWebAdminConsole\TimeAide.AdminConsole.csproj">
+      <Project>{d1f1cb27-1f14-4bb8-973f-68a96441385e}</Project>
+      <Name>TimeAide.AdminConsole</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>

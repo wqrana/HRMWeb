@@ -1,0 +1,37 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PayFrequency>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PayFrequencyName)
+        </th>
+        <th>
+            Frequency Description
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HourlyMultiplier)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayFrequencyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayFrequencyDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HourlyMultiplier)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

@@ -1,0 +1,196 @@
+﻿ </table>
+    </div>
+</div>
+<hr />
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+<script src="~/Scripts/jquery.table2excel.js"></script>
+<script type="text/javascript">
+    $('*[id*=anchorDetail]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Details',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+        });
+    });
+
+    $('*[id*=anchorEdit]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Edit',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+    $('*[id*=anchorDelete]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Delete',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+     $('*[id*=anchorChangeHistory]').click(function () {
+    debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/ChangeHistory',
+        contentType: "application/json; charset=utf-8",
+        data: { "refrenceId": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            //$('#myModal').css({ 'width': '70%' });
+            //$('#myModal').css({ 'max-width': '70%' });
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+    $('*[id*=anchorChangeHistoryDownload]').click(function () {
+    debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/DownloadChangeHistoryExcel',
+        contentType: "application/json; charset=utf-8",
+        data: { "refrenceId": id },
+        datatype: "json",
+        success: function (data) {
+            debugger;
+            //$('#myModalContent').html(data);
+            //$('#myModal').modal(options);
+            ////$('#myModal').css({ 'width': '70%' });
+            ////$('#myModal').css({ 'max-width': '70%' });
+            //$('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+
+    $(".anchorAdd").click(function () {
+    debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Create',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert("Dynamic content load failed.");
+        }
+    });
+    });
+
+    function DownloadMasterGridAsExcel() {
+        debugger
+        var table = $('#tblIndexList');
+        if (table && table.length) {
+            var preserveColors = (table.hasClass('table2excel_with_colors') ? true : false);
+            $(table).table2excel({
+                exclude: ".noExl",
+                name: "Excel Document Name",
+                filename: "MasterData_"+ "@ViewBag.Label" + new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xls",
+                fileext: ".xls",
+                exclude_img: true,
+                exclude_links: true,
+                exclude_inputs: true,
+                preserveColors: preserveColors
+            });
+        }
+    }
+</script>
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+

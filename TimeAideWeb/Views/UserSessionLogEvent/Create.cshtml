@@ -1,0 +1,139 @@
+﻿@model TimeAide.Web.Models.UserSessionLogEvent
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ClientId, "Client", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @*@Html.EditorFor(model => model.ClientId, new { htmlAttributes = new { @class = "form-control" } })*@
+            @(Html.CustomDropDownList<TimeAide.Web.Models.Client>("ClientId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CompanyId, "Company", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @*@Html.EditorFor(model => model.CompanyId, new { htmlAttributes = new { @class = "form-control" } })*@
+            @(Html.CustomDropDownList<TimeAide.Web.Models.Company>("CompanyId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogListing, "Log Listing", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogListing, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogListing, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogView, "Log View", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogView, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogView, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogAddOpen, "Log Add Open", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogAddOpen, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogAddOpen, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogView, "Log Add Save", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogAddSave, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogAddSave, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogEditOpen, "Log Edit Open", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogEditOpen, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogEditOpen, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogEditSave, "Log Edit Save", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogEditSave, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogEditSave, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogDeleteOpen, "Log Delete Open", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogDeleteOpen, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogDeleteOpen, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LogDeleteSave, "Log Delete Save", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.LogDeleteSave, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LogDeleteSave, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+</div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ClientId').change(function (e) {
+            debugger;
+            var clientId = $(this).val();
+            LoadCompanyDropdown(clientId, '#CompanyId', null);
+        })
+    });
+    function LoadCompanyDropdown(clientId, targetElement, selectedValue) {
+        $.ajax({
+            url: '/UserSessionLogEvent/AjaxGetClientCompany',
+            data: { 'clientId': clientId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+</script>

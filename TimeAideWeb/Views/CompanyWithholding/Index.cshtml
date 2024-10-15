@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TimeAide.Web.Models.CompanyWithholding>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Withholding Type
+        </th>
+        <th>
+           Withholding Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Witholding Pre/Post Type
+        </th>
+        <th>
+            WH GL Expense
+        </th>
+        
+        <th>
+            Is Loan
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WitholdingComputationType.WitholdingComputationTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WithHoldingName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WitholdingPrePostType.WitholdingPrePostTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GLAccount.GLAccountName)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.IsLoan)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+        
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

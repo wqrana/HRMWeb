@@ -1,0 +1,110 @@
+﻿
+@model TimeAide.Web.ViewModel.CompanyPortalViewModel
+
+
+<div id="Edit_CmpPortalStatement_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-2 mt-0">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit - Company Statement</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0 pl-0">Portal Statement:<span class="text-danger">*</span></label>
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(m => m.PortalWelcomeStatement, new {
+                                rows = "5", style = "resize:none;width:500px;", @class = "form-control richtext-editor"
+                                })
+                            </div>
+
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-form-label col-md-2 pr-0">Default Statmt: <span class="text-danger"></span></label>
+
+                            <div class="col-md-2 pt-2">
+                                <input class="" type="checkbox" id="IsDefaultCompanyPortalStatementEdit">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                @*<button id="btnFirstName" class="click-me">[FirstName]</button>
+                <span class="click-me">Click ME </span>*@
+
+            </div>
+
+            <div class="submit-section pb-2 mt-0">
+
+                <button id="btnSaveCompanyPortalStatement" class="btn btn-primary submit-btn">Save</button>
+                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        //$("#btnFirstName").click(function () {
+        //    $('.richtext-editor').summernote('editor.insertText', '[FirstName]');
+        //});
+        //$(".click-me").on('mouseup', function () {
+        //    var sel, range;
+        //    var el = $(this)[0];
+        //    if (window.getSelection && document.createRange) { //Browser compatibility
+        //        sel = window.getSelection();
+        //        if (sel.toString() == '') { //no text selection
+        //            window.setTimeout(function () {
+        //                range = document.createRange(); //range object
+        //                range.selectNodeContents(el); //sets Range
+        //                sel.removeAllRanges(); //remove all ranges from selection
+        //                sel.addRange(range);//add Range to a Selection.
+        //            }, 1);
+        //        }
+        //    } else if (document.selection) { //older ie
+        //        sel = document.selection.createRange();
+        //        if (sel.text == '') { //no text selection
+        //            range = document.body.createTextRange();//Creates TextRange object
+        //            range.moveToElementText(el);//sets Range
+        //            range.select(); //make selection.
+        //        }
+        //    }
+        //});
+
+        $('.richtext-editor').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['']],
+                ['insert', ['link', 'picture']],
+                ['view', []],
+            ],
+
+            height: 600, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            //  disableDragAndDrop: true
+
+        });
+    });
+
+   
+</script>

@@ -1,0 +1,261 @@
+﻿
+@using TimeAide.Web.Models
+@model TimeAide.Web.Models.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <title>Login</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/Themes/assets/img/favicon.png">
+
+    @*<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="~/Content/Themes/assets/css/bootstrap.min.css">
+
+        <!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="~/Content/Themes/assets/css/font-awesome.min.css">
+
+        <!-- Main CSS -->
+        <link rel="stylesheet" href="~/Content/Themes/assets/css/style.css">*@
+    @Styles.Render("~/content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-theme")
+    @Scripts.Render("~/bundles/3rdParty")
+    <script src="~/signalr/hubs"></script>
+
+</head>
+<body class="account-page">
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <div class="account-content">
+            <div class="container">
+                <!-- Account Logo -->
+                <div class="account-logo">
+                    <a href="/"><img src="@ViewBag.LogoPath" alt="Time Aide"></a>
+                </div>
+                <!-- /Account Logo -->
+                <div class="account-box">
+                    <div class="account-wrapper">
+                        <h3 class="account-title">Login</h3>
+                        <p class="account-subtitle">Access to TimeAide</p>
+                        <!-- Account Form -->
+
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @*<label>Email Address</label>
+                                    <input class="form-control" type="text">*@
+                                @Html.LabelFor(m => m.Email)
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password)
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                            </div>
+
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary account-btn" type="submit" id="btnLogin">Login</button>
+                            </div>
+
+                        }
+                        <!-- /Account Form -->
+                        <!--External Login Provider    -->
+                        @*<div class="account-footer">
+                                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                            </div>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Main Wrapper -->
+    @*<!-- jQuery -->
+        <script src="~/Content/Themes/assets/js/jquery-3.2.1.min.js"></script>
+
+        <!-- Bootstrap Core JS -->
+        <script src="~/Content/Themes/assets/js/popper.min.js"></script>
+        <script src="~/Content/Themes/assets/js/bootstrap.min.js"></script>
+
+        <!-- Custom JS -->
+        <script src="~/Content/Themes/assets/js/app.js"></script>*@
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var chat = $.connection.authHub;
+        debugger
+        chat.client.Signout = function () {
+           window.location.href = '@Url.Action("Login", "Account")';
+        };
+        chat.client.Redirect = function () {
+           window.location.href = '@Url.Action("Login1", "Account")';
+        };
+        $.connection.hub.start().done(function () {
+            chat.server.forceLogOut('@TimeAide.Common.Helpers.SessionHelper.PreviousLoginEmail', '@TimeAide.Common.Helpers.SessionHelper.CurrentBowser','LoginPage');
+        });
+        $("#btn1Login").on("click", function () {
+            var username = $("#Email").val();
+            var username = $("#Password").val();
+
+            debugger
+            var model = {
+                Email: $('#Email').val(),
+                Password: $('#Password').val(),
+                RememberMe: $('#RememberMe').is(":checked"),
+                ReturnUrl : '@ViewBag.ReturnUrl'
+            }
+            debugger
+            $.ajax({
+                type: 'post',
+                url: '/Account/Login',
+                data: JSON.stringify(model),
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                success: function (html) {
+                    debugger
+
+                    window.location.href = '@Url.Action("action", "contoller")';
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    var responseText = jQuery.parseJSON(xhr.responseText)
+                    var errorObject = jQuery.parseJSON(responseText.errors)
+                    $.each(errorObject, function (idx, errorMessage) {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    });
+                }
+            });
+        });
+    });
+    function timerIncrement() {
+        //debugger
+        // alert('auto!');
+        idleTime = idleTime + 1;
+        @* chat.server.send_PrivateMessage($("#spnName").text(), $('#ChatMessageText').val(), $("#OtherParticipantId").val(), '@Model.Id');*@
+        chat.server.updateUserActivity(isActive,'@TimeAide.Common.Helpers.SessionHelper.CurrentBowser');
+        isActive = false;
+        @*if (idleTime > 15) { // 15 minutes
+            //window.location.reload();
+            window.location.href = '@Url.Action("Login", "Account")';
+        }*@
+        }
+    </script>
+</body>
+</html>
+
+
+
+<!--
+<div class="row">
+    <div class="Absolute-Center is-Responsive">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                        @*@Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })*@
+                                                                    <div class="form-group input-group">
+                                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="form-group input-group">
+                                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="checkbox">
+                                                                        <label>
+                                                                            @Html.CheckBoxFor(m => m.RememberMe)
+                                                                            @Html.LabelFor(m => m.RememberMe)
+                                                                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input type = "submit" value="Log in" class="btn btn-def btn-block" />
+                                                                </div>
+                        @*<p>
+        @Html.ActionLink("Register as a new user", "Register")
+    </p>*@
+                        @* Enable this once you have account confirmation enabled for password reset functionality
+    <p>
+        @Html.ActionLink("Forgot your password?", "ForgotPassword")
+    </p>*@
+                <p>
+                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                </p>
+                                                            }
+                            </section>
+                            <section id="socialLoginForm">
+                                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                            </section>
+                        </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-theme")
+
+    <style>
+        div.well {
+            height: 250px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .Absolute-Center {
+            margin: auto;
+            /*position: absolute;*/
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+            .Absolute-Center.is-Responsive {
+                width: 50%;
+                height: 50%;
+                min-width: 200px;
+                max-width: 400px;
+                padding: 40px;
+            }
+
+        #logo-container {
+            margin: auto;
+            margin-bottom: 10px;
+            width: 200px;
+            height: 30px;
+            background-image: url('http://placehold.it/200x30/000000/ffffff/&text=BRAND+LOGO');
+        }
+    </style>
+}
+    -->

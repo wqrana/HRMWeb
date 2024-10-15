@@ -1,0 +1,327 @@
+﻿@model TimeAide.Web.Models.UserInformation
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .profile-info-right table tr {
+        height: 30px;
+    }
+
+    .title {
+        color: #4f4f4f;
+    }
+</style>
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Delete</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">User</li>
+                <li class="breadcrumb-item active">Delete</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <strong>Alert!</strong> Are you sure you want to delete this?
+</div>
+
+    <div class="card mb-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="profile-view">
+                        <div class="profile-img-wrap">
+                            <div class="profile-img">
+                                <!--<a href="#"><img alt="" src="/Content/Themes/assets/img/profiles/avatar-02.jpg"></a>-->
+                                <a href="#"><img alt="" src="~/Images/user-profile-pic.jpg"></a>
+                            </div>
+                        </div>
+                        <div class="profile-basic">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="profile-info-left">
+                                        <h3 class="user-name m-t-0 mb-0"> @Html.DisplayFor(model => model.ShortFullName)</h3>
+
+                                        <div class="staff-id">Employee ID:<span class="text-muted ml-1">@Html.DisplayFor(model => model.Id)</span></div>
+                                        <div class="staff-id">System ID:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.SystemId) </span> </div>
+                                        <!--<div class="staff-id">Job Code:<span class="text-muted ml-1">  @Html.DisplayFor(model => model.DefaultJobCode.JobCodeName)</span></div>-->
+                                        <div class="staff-id">Employee Type:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.EmployeeType.EmployeeTypeName)</span></div>
+                                        <!--<div class="staff-id">Supervisory Level:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.SupervisoryLevel.SupervisoryLevelName)</span></div>-->
+                                            <div class="staff-id">Employment Status:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.EmploymentStatu.EmploymentStatusName)</span></div>
+                                            <div class="staff-id">Client:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.Client.ClientName)</span></div>
+                                            <div class="staff-id">Company:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.Company.CompanyName)</span></div>
+                                            <div class="staff-id">Department:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.Department.DepartmentName)</span></div>
+                                            <div class="staff-id">Sub-Department:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.SubDepartment.SubDepartmentName)</span></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="profile-info-right">
+                                            <table>
+                                                @*
+                                                <tr>
+                                                    <td class="title">Login Email:</td>
+                                                   <td class="text-muted ml-4">@Html.DisplayFor(model => model.AspNetUsers.Email)</td>
+                                                </tr>*@
+                                                <tr>
+                                                    <td class="title">First Name:</td>
+                                                    <td class="text-muted ml-4">@Html.DisplayFor(model => model.FirstName)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="title">Middle:</td>
+                                                    <td class="text-muted ml-4">@Html.DisplayFor(model => model.MiddleInitial)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="title">1st Last Name:</td>
+                                                    <td class="text-muted">@Html.DisplayFor(model => model.FirstLastName)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="title">2nd Last Name:</td>
+                                                    <td class="text-muted">@Html.DisplayFor(model => model.SecondLastName)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="title">DOB:</td>
+                                                    <td class="text-muted">@Html.DisplayFor(model => model.BirthDate)</td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td class="title">SSN End:</td>
+                                                    <td class="text-muted">@Html.DisplayFor(model => model.SSNEnd)</td>
+
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="submit-section">
+                        <button class="btn btn-danger submit-btn m-r-10">Delete</button>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="mt-4">
+
+            <a href="/UserInformation/Index"><i class="fa fa-arrow-left"></i> Back to List</a>
+
+        </div>
+
+        @*
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col-sm-12">
+                        <h3 class="page-title">Delete</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">Client</li>
+                            <li class="breadcrumb-item active">Delete</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Alert!</strong> Are you sure you want to delete this?
+
+
+            <h2>Delete</h2>
+
+            <h3>Are you sure you want to delete this?</h3>
+            <div>
+                <h4>UserInformation</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Company.CompanyName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Company.CompanyName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Department.DepartmentName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Department.DepartmentName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmploymentStatu.EmploymentStatusName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.EmploymentStatu.EmploymentStatusName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.DefaultJobCode.JobCodeName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.DefaultJobCode.JobCodeName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Client.ClientName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Client.ClientName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SubDepartment.SubDepartmentName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SubDepartment.SubDepartmentName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IdNumber)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IdNumber)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SystemId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SystemId)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.MiddleInitial)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.MiddleInitial)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FirstLastName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.FirstLastName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SecondLastName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SecondLastName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ShortFullName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ShortFullName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmployeeTypeID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.EmployeeTypeID)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SupervisoryLevelId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SupervisoryLevelId)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmployeeNote)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.EmployeeNote)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.BirthDate)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.BirthDate)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SSNEnd)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SSNEnd)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SSNEncrypted)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SSNEncrypted)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.imgPhoto)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.imgPhoto)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PasswordHash)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PasswordHash)
+                    </dd>
+
+                </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+        *@

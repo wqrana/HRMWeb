@@ -1,0 +1,238 @@
+﻿@model TimeAide.Web.Models.EmployeeCredential
+<style>
+    .files input {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        padding: 15px 10px 70px 5%;
+        text-align: center !important;
+        margin: 0;
+        width: 100% !important;
+    }
+
+        .files input:focus {
+            outline: 2px dashed #92b0b3;
+            outline-offset: -10px;
+            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            border: 1px solid #92b0b3;
+        }
+
+    .files {
+        position: relative
+    }
+
+        .files:after {
+            pointer-events: none;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 50px;
+            right: 0;
+            height: 56px;
+            content: "";
+            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+            display: block;
+            margin: 0 auto;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .color input {
+        background-color: #f1f1f1;
+    }
+
+    .files:before {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        right: 0;
+        height: 57px;
+        content: " or drag it here. ";
+        display: block;
+        margin: 0 auto;
+        color: #2ea591;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+    }
+</style>
+<div>
+    <div>
+        <input type="hidden" id="hdnEmployeeCredentialId" name="custId" value="@Model.Id">
+        <input type="hidden" id="hdnEmployeeCredential_UserInformationId" value="@Model.UserInformationId" />
+        <div class="form-group row">
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.Credential.CredentialName, "Credential", htmlAttributes: new { @class = "control-label" })
+                <span class="text-danger">*</span>
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                <div class="input-group">
+                    @Html.DropDownList("CredentialId", null, "Click Icon for Select", new { @class = "form-control" })
+                    <div class="input-group-append">
+                        <button id="btnOpenCredentialPopUp" class="btn btn-secondary" type="button"><i class="fa fa-pencil"></i></button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.CredentialId, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.CredentialTypeId, "Title", htmlAttributes: new { @class = "control-label" })
+                <span class="text-danger">*</span>
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.CredentialType>("CredentialTypeId", null, Model.CredentialTypeId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.CredentialTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.IssueDate, htmlAttributes: new { @class = "control-label" })
+                <span class="text-danger">*</span>
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @if (Model.IssueDate.HasValue)
+                {
+                    @Html.EditorFor(model => model.IssueDate, new { htmlAttributes = new { @Value = Model.IssueDate.Value.ToString("MM/dd/yyyy"), @class = "form-control" } })
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.IssueDate, new { htmlAttributes = new { @class = "form-control" } })
+                }
+
+                @Html.ValidationMessageFor(model => model.IssueDate, "", new { @class = "text-danger" })
+            </div> <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.ExpirationDate, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @if (Model.ExpirationDate.HasValue)
+                {
+                    @Html.EditorFor(model => model.ExpirationDate, new { htmlAttributes = new { @Value = Model.ExpirationDate.Value.ToString("MM/dd/yyyy"), @class = "form-control" } })
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.ExpirationDate, new { htmlAttributes = new { @class = "form-control" } })
+                }
+                @Html.ValidationMessageFor(model => model.ExpirationDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.EmployeeCredentialName, "Credential Id", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @Html.EditorFor(model => model.EmployeeCredentialName, new { htmlAttributes = new { @class = "form-control", style = "width:100%" } })
+                @Html.ValidationMessageFor(model => model.EmployeeCredentialName, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.EmployeeCredentialDescription, "Description", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @Html.EditorFor(model => model.EmployeeCredentialDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmployeeCredentialDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(model => model.IsRequired, "Is Required", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @Html.EditorFor(model => model.IsRequired)
+                @Html.ValidationMessageFor(model => model.IsRequired, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2" style="margin-left:10px">
+                @Html.LabelFor(m => m.DocumentName, "Document__", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-4 text-muted mt-2" style="max-width: 32%;">
+                @*<input class="form-control" type="file" id="uploadEmployeeCredentialFile" accept=".doc,.docx,.pdf,.jpg,.png" style="width:100%%;">*@
+                <div class="form-group files mb-0">
+                    <input type="file" class="form-control" id="uploadEmployeeCredentialFile" accept=".doc,.docx,.pdf,.jpg,.png">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="submit-section mt-3">
+        <input type="hidden" id="popupTargetDdl" />
+        <button type="button" onclick="fnAddEmployeeCredential('@ViewBag.FormName');" class="btn btn-primary submit-btn">Save</button>
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#CredentialId").attr("disabled", true);
+
+        var autoCompleteSrc = "/EmployeeCredential/AjaxGetAutoCompleteData";
+
+        //$("#CredentialDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        //$("#ExpiryDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+
+        $("#btnSaveEmployeeCredential").click(function () {
+            saveUserCredentialData();
+        });
+
+        $("#btnOpenCredentialPopUp").click(function () {
+            debugger;
+            openCredentialSelectionPopUp();
+        });
+
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });
+
+        $("#Type").autocomplete({
+            source: function (request, response) {
+                var field = "Type";
+                autoCompleteAjaxSetting(request, response, autoCompleteSrc, field)
+            },
+            minLength: 2
+
+        });
+
+    });
+
+    function openCredentialSelectionPopUp() {
+        var id = $('#userID').val();
+        $.ajax({
+            type: "get",
+            url: '/EmployeeCredential/CredentialSelectionPopUp',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                var options = { "backdrop": "static", keyboard: true };
+                $('#divDdlPopupContent').html(data);
+                $('#divDdlPopup').modal(options);
+                $('#divDdlPopup').modal('show');
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+</script>
+

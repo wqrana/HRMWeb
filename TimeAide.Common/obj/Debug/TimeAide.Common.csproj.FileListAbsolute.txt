@@ -1,0 +1,6 @@
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.Common\bin\Debug\TimeAide.Common.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.Common\bin\Debug\TimeAide.Common.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.Common\obj\Debug\TimeAide.Common.csproj.AssemblyReference.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.Common\obj\Debug\TimeAide.Common.csproj.CoreCompileInputs.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.Common\obj\Debug\TimeAide.Common.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.Common\obj\Debug\TimeAide.Common.pdb

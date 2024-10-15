@@ -1,0 +1,92 @@
+﻿@model TimeAide.Web.Models.EmployeeBenefitHistory
+@{
+    ViewBag.Label = "Employee Benefit History";
+}
+<div id="employeeBenefitDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+           
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeBenefitDeleteAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                @Html.Hidden("EmployeeBenefitHistoryDeleteId", Model == null ? 0 : Model.Id)
+                @Html.HiddenFor(model => model.UserInformationId)
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Benefit And Other Information</div>
+                            <div class="panel-body">
+
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">Benefit:</label>
+                                    <div class="col-md-4 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.Benefit.BenefitName)
+                                    </div>
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">Start Date:</label>
+                                    <div class="col-md-4 text-muted mt-2">
+                                        @String.Format("{0:MM/dd/yyyy}", Model.StartDate)
+                                    </div>
+
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label">End Date:</label>
+                                    <div class="col-md-4 text-muted mt-2">
+                                        @String.Format("{0:MM/dd/yyyy}", Model.ExpiryDate)
+
+                                    </div>
+
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">Amount:</label>
+                                    <div class="col-md-4 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.Amount)
+                                    </div>
+
+
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label">Frequency:</label>
+                                    <div class="col-md-4 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.PayFrequency.PayFrequencyName)
+                                    </div>
+                                    <label class="col-md-2 col-form-label">Notes:</label>
+                                    <div class="col-md-4 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.Notes)
+
+                                    </div>
+
+
+                                </div>                                   
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteEmployeeBenefit" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteEmployeeBenefit").click(function () {
+            var id = $("#EmployeeBenefitHistoryDeleteId").val();
+            deleteUserBenefit(id);
+        })
+
+    } );
+</script>
+

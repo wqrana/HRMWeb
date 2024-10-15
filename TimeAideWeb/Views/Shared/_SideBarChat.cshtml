@@ -1,0 +1,108 @@
+﻿@using TimeAide.Services.Helpers;
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="/CompanyPortal/Index"><i class="la la-home"></i> <span>Back to Home</span></a>
+                </li>
+                <li class="menu-title">
+                    <span>Chat Groups</span>
+                    @if (SecurityHelper.IsSuperAdmin || SecurityHelper.IsAdmin || SecurityHelper.IsSupervisor)
+                    {
+                        <a href="#" data-toggle="modal" data-target="#add_group"><i class="fa fa-plus"></i></a>
+                    }
+                </li>
+                @*@if (SecurityHelper.IsModuleAvailable("ChatConversation"))*@
+                @if (1 == 1)
+                {
+                    var chatConversations = TimeAide.Services.ChatConversationService.GetChatConversation(TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId, TimeAide.Common.Helpers.SessionHelper.SelectedClientId, TimeAide.Common.Helpers.SessionHelper.LoginId);
+                    foreach (var eachChat in chatConversations)
+                    {
+                        @*@if (SecurityHelper.IsModuleAvailable("ChatConversation"))*@
+                        if (1 == 1)
+                        {
+
+                            if (eachChat.ChatConversationParticipant.Count > 2)
+                            {
+                                <li>
+                                    <a href="/ChatConversation/ChatWindow/@eachChat.Id">
+                                        <span class="chat-avatar-sm user-img">
+                                            <img class="rounded-circle" alt="" src="../Content/themes/assets/img/user.jpg">
+                                        </span>
+                                        <span class="chat-user">#@eachChat.ChatConversationTitle</span>
+                                        @if (eachChat.MyUserInformation.PendingMessageCount > 0)
+                                        {
+                                            <span id="lblPendingMessageCount_@eachChat.Id" class="badge badge-pill bg-danger">@eachChat.MyUserInformation.PendingMessageCount</span>
+                                        }
+                                        else
+                                        {
+                                            <span id="lblPendingMessageCount_@eachChat.Id" class="badge badge-pill bg-danger" style="display:none">@eachChat.MyUserInformation.PendingMessageCount</span>
+                                        }
+                                    </a>
+                                </li>
+                            }
+                        }
+                    }
+
+                }
+
+
+
+                <li class="menu-title">
+                    Direct Chats
+                    @if (SecurityHelper.IsSuperAdmin || SecurityHelper.IsAdmin || SecurityHelper.IsSupervisor || SecurityHelper.IsUser)
+                    {
+                        <a href="#" data-toggle="modal" data-target="#add_chat_user"><i class="fa fa-plus"></i></a>
+                    }
+                </li>
+
+                @*@if (SecurityHelper.IsModuleAvailable("ChatConversation"))*@
+                @if (1 == 1)
+                {
+                    var chatConversations = TimeAide.Services.ChatConversationService.GetChatConversation(TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId, TimeAide.Common.Helpers.SessionHelper.SelectedClientId, TimeAide.Common.Helpers.SessionHelper.LoginId);
+                    foreach (var eachChat in chatConversations)
+                    {
+                        @*@if (SecurityHelper.IsModuleAvailable("ChatConversation"))*@
+                        if (1 == 1)
+                        {
+
+                            if (eachChat.ChatConversationParticipant.Count <= 2 && eachChat.MyUserInformation.DataEntryStatus!=0)
+                            {
+                                <li>
+                                    <a href="/ChatConversation/ChatWindow/@eachChat.Id">
+
+                                        <span class="chat-avatar-sm user-img">
+                                            <img class="rounded-circle" alt="" src="../Content/themes/assets/img/profiles/avatar-02.jpg"><span class="status online"></span>
+                                        </span>
+                                        <span class="chat-user">@eachChat.OtherParticipant.Participant.FullName</span>
+                                        @if (eachChat.MyUserInformation.PendingMessageCount > 0)
+                                        {
+                                            <span id="lblPendingMessageCount_@eachChat.Id" class="badge badge-pill bg-danger">@eachChat.MyUserInformation.PendingMessageCount</span>
+                                        }
+                                        else
+                                        {
+                                            <span id="lblPendingMessageCount_@eachChat.Id" class="badge badge-pill bg-danger" style="display:none">@eachChat.MyUserInformation.PendingMessageCount</span>
+                                        }
+
+                                    </a>
+                                </li>
+                            }
+                        }
+                    }
+
+                }
+
+
+                <li>
+                    <a href="chat.html">
+                        <span class="chat-avatar-sm user-img">
+                            <img class="rounded-circle" alt="" src="../Content/themes/assets/img/user.jpg">
+                        </span>
+                        <span class="chat-user"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

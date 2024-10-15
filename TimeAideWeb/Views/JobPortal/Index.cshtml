@@ -1,0 +1,137 @@
+﻿@model IEnumerable<TimeAide.Web.Models.JobPostingDetail>
+@{
+    ViewBag.Title = "Job Portal";
+    Layout = "~/Views/Shared/_LayoutJob.cshtml";
+}
+@Html.Hidden("selectedJobId",(int)ViewBag.selectedJobId)
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Job Portal</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table mb-0" id="tblJobPortal">
+
+            <thead>
+                <tr>
+                   
+                    <th>Position</th>
+                    <th>Location(s)</th>
+                    <th>Department</th>
+                    <th>Employment Type </th>
+                    <th>Posting Date</th>                   
+                    <th>No Of Vacancies</th>
+                    <th>Experience</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+
+               
+                <tr>           
+                                   
+                   
+
+                    <td>
+                        <a href="javascript:getJobDetail(@item.Id)"> @Html.DisplayFor(modelItem => item.Position.PositionName)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SelectedLocationNames)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmploymentType.EmploymentTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JobPostingStartDate)
+                    </td>
+                   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoOfVacancies)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Experience)
+                    </td>
+                    <td>
+                    <a href="javascript:getApplyJobWizard(@item.Id)" class="btn btn-sm btn-primary">Apply Now</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<div id="divApplyJobPopup">
+
+</div>
+<script>
+    var refreshInterval = 900000; //every 15 min
+    $(document).ready(function () {
+        debugger;
+        var jobId=$("#selectedJobId").val();
+        if (jobId != "0") {
+            getApplyJobWizard(jobId);
+        }
+        $('#tblJobPortal').dataTable({
+                    "searching": true
+        });
+        setTimeout("keepSessionAlive()", refreshInterval); // every 5 min
+    });
+    function keepSessionAlive() {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/JobPortal/AjaxKeepPortalSessionAlive',
+            dataType: 'json',
+            success: function (data) {
+                setTimeout("keepSessionAlive()", refreshInterval);
+            },
+            error: function () {
+               // alert(data.ErrorMessage);
+            }
+        });
+    }
+    function getJobDetail(id) {
+        $.ajax({
+            type: "get",
+            url: '/JobPortal/JobDetail',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divApplyJobPopup").html(data);
+                $("#JobDetail_modal").modal("show");
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function getApplyJobWizard(id) {
+        $.ajax({
+            type: "get",
+            url: '/JobPortal/ApplyJob',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divApplyJobPopup").html(data);
+                $("#applyJob_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+</script>

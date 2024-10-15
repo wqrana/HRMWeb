@@ -1,0 +1,500 @@
+﻿@model TimeAide.Models.ViewModel.ApplicantHireViewModel
+<div id="hireApplicant_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Hire Applicant Wizard</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr class="m-0">
+                <div class="alert alert-info mb-0" id="hiringWizardStepTitle">
+                    <span class="fa fa-user-plus"></span><span class="ml-1 text-md-left">Welcome to Hire Applicant Wizard</span>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <!--Inline form layout -->
+                <div id="hiringWizardS1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <span>The Hire Wizard will guide through the process of converting an applicant into an employee in TimeAide HR.</span>
+
+                            </div>
+                            <div class="form-group row">
+                                <span>You will need the following information in order to hire an applicant.</span>
+                            </div>
+                            <div class="form-group row">
+                                -General Information
+                            </div>
+                            <div class="form-group row">
+                                -Contact Information
+                            </div>
+
+                            <div class="form-group row">                               
+                            </div>
+                            <div class="form-group row">                              
+                            </div>
+                            <div class="form-group row">                              
+                            </div>
+                            <div class="form-group row">
+                            </div>
+                            <div class="form-group row">                                
+                            </div>
+                        </div>
+                     </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnHiringS1Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnHiringS1Back" class="btn btn-dark" disabled>Back</button>
+                        <button id="btnHiringS1Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="hiringWizardS2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr class="m-0">
+                            <h6 class="card-title">Personal Information</h6>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Employee Id: <span class="text-danger">*</span></label>
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">First Name: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-1 col-form-label pr-0">Initial: <span class="text-danger"></span></label>
+                                <div class="col-md-1 pl-0">
+                                    @Html.EditorFor(model => model.MiddleInitial, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <label class="col-md-2 col-form-label pr-0">1st LastName: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FirstLastName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">2nd LastName: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SecondLastName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label">SSN: <span class="text-danger"></span></label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.SSN, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label">Birth Date: <span class="text-danger"></span></label>
+                                <div class="col-md-2 pl-0">
+                                    @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-1 col-form-label  pl-0 pr-0">Gender: <span class="text-danger"></span></label>
+                                <div class="col-md-3">
+                                    @Html.DropDownList("GenderId", new SelectList(@Model.GenderList, "id", "text"), "Please select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0 mt-2">Company <span class="text-danger">*</span></label>
+                                <div class="col-md-5 pt-2">
+                                    @Html.DropDownList("CompanyId", new SelectList(Model.CompanyList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <h6 class="card-title">Home Address</h6>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Address 1
+                                </label>
+                                <div class="col-md-4 pl-0">
+                                    @Html.EditorFor(model => model.HomeAddress1, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Address 2
+                                </label>
+                                <div class="col-md-4 pl-0">
+                                    @Html.EditorFor(model => model.HomeAddress2, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Country
+                                </label>
+                                <div class="col-md-3 ">
+                                    @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("HomeCountryId", null, Model.HomeCountryId, htmlAttributes: new { @class = "form-control" }))
+
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    State
+                                </label>
+                                <div class="col-md-3 pr-0">
+                                    @(Html.CustomDropDownList<TimeAide.Web.Models.State>("HomeStateId", null, Model.HomeStateId, Model.HomeCountryId, htmlAttributes: new { @class = "form-control" }))
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    City
+                                </label>
+                                <div class="col-md-3">
+                                    @(Html.CustomDropDownList<TimeAide.Web.Models.City>("HomeCityId", null, Model.HomeCityId, Model.HomeStateId, htmlAttributes: new { @class = "form-control" }))
+
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Zip Code
+                                </label>
+                                <div class="col-md-3 pr-0 pb-0">
+                                    @Html.EditorFor(model => model.HomeZipCode, new { htmlAttributes = new { @class = "form-control", id = "HomeZipCodeTxt" } })
+
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <h6 class="card-title">Mailing Address</h6>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Address 1
+                                </label>
+                                <div class="col-md-4 pl-0 pr-0">
+                                    @Html.EditorFor(model => model.MailingAddress1, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Address 2
+                                </label>
+                                <div class="col-md-4 pl-0 pr-0">
+                                    @Html.EditorFor(model => model.MailingAddress2, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Country
+                                </label>
+                                <div class="col-md-3">
+                                    @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("MailingCountryId", null, Model.MailingCountryId, htmlAttributes: new { @class = "form-control" }))
+
+                                </div>
+
+                                <label class="col-md-2 col-form-label">
+                                    State
+                                </label>
+                                <div class="col-md-3 pr-0">
+                                    @(Html.CustomDropDownList<TimeAide.Web.Models.State>("MailingStateId", null, Model.MailingStateId, Model.MailingCountryId, htmlAttributes: new { @class = "form-control" }))
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    City
+                                </label>
+                                <div class="col-md-3">
+                                    @(Html.CustomDropDownList<TimeAide.Web.Models.City>("MailingCityId", null, Model.MailingCityId, Model.MailingStateId, htmlAttributes: new { @class = "form-control" }))
+
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Zip Code
+                                </label>
+                                <div class="col-md-3 pr-0">
+                                    @Html.EditorFor(model => model.MailingZipCode, new { htmlAttributes = new { @class = "form-control", id = "MailingZipCodeTxt" } })
+
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnHiringS2Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnHiringS2Back" class="btn btn-primary">Back</button>
+                        <button id="btnHiringS2Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="hiringWizardS3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr class="m-0">
+                            <h6 class="card-title">Phone(s)</h6>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Home:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.HomeNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Mobile:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CelNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Fax:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FaxNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Other:
+                                </label>
+                                <div class="col-md-4 ">
+                                    @Html.EditorFor(model => model.OtherNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <h6 class="card-title">Email(s)</h6>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">
+                                    Personal Email:
+                                </label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.PersonalEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Work Email:
+                                </label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.WorkEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Other Email:
+                                </label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.OtherEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="submit-section mt-1">
+                        <button id="btnHiringS3Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnHiringS3Back" class="btn btn-primary">Back</button>
+                        <button id="btnHireApplicant" class="btn btn-primary">Finish</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/UserInformation/userContactAddresses-js.js?version=1.0"></script>
+<script>
+    var hiringWizardS1Title = "Welcome to Hire Applicant Wizard";
+    var hiringWizardS2Title = "General and Contact Address(es) Information";
+    var hiringWizardS3Title = "Contact Phone(s)/Email(s) Information";
+    $(document).ready(function () {
+       
+        showHiringWizardStep("Step1");
+
+        debugger;
+       
+              
+        $('#SSN').mask('999-99-9999');
+        $("#BirthDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $('#MailingZipCodeTxt').mask("99999?-9999");
+        $('#HomeZipCodeTxt').mask("99999?-9999");
+        $('#HomeNumber').mask('(999) 999-9999');
+        $('#CelNumber').mask('(999) 999-9999');
+        $('#FaxNumber').mask('(999) 999-9999');
+        $('#OtherNumber').mask('(999) 999-9999');
+
+        $('#HomeCountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#HomeStateId', null);
+            LoadCityDropdown(null, '#HomeCityId', null);
+        });
+        $('#HomeStateId').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#HomeCityId', null);
+        });
+
+        $('#MailingCountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#MailingStateId', null);
+            LoadCityDropdown(null, '#MailingCityId', null);
+        });
+        $('#MailingStateId').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#MailingCityId', null);
+        });
+           
+
+        $("#btnHiringS1Next").on("click", function () {
+            debugger;
+            showHiringWizardStep("Step2");
+        });
+        $("#btnHiringS2Next").on("click", function () {
+            debugger;
+            if (!validateWizardStep("Step2")) return;
+            showHiringWizardStep("Step3");
+        });
+        $("#btnHiringS3Back").click(function () {
+            debugger;
+            showHiringWizardStep("Step2");
+        });
+        $("#btnHiringS2Back").click(function () {
+            debugger;
+            showHiringWizardStep("Step1");
+        });
+    //Save Employee
+    $('#btnHireApplicant').click(function () {
+
+        if (!validateWizardStep("Step3")) return;
+            // ajax call for saving data
+            //return; //temp added for verification of pay info validation
+            saveHireApplicantData();
+        
+
+    });
+
+    //popup master data
+    $(".btn-master-data").click(function () {
+        debugger;
+        var masterDataDdl = $(this).parents("div.input-group")
+            .find("select")
+            .first();
+        openMasterDataPopUp(masterDataDdl);
+    });
+    });
+
+
+    function getHireApplicantWizardData() {
+        debugger;
+        var dataObj = new Object();
+
+        dataObj.ApplicantInformationId = $('#ApplicantInformationId').val();
+        dataObj.EmployeeId = $('#EmployeeId').val();
+        dataObj.FirstName = $('#FirstName').val();
+        dataObj.MiddleInitial = $('#MiddleInitial').val();
+        dataObj.FirstLastName = $('#FirstLastName').val();
+        dataObj.SecondLastName = $('#SecondLastName').val();
+        dataObj.GenderId = $('#GenderId').val();
+        dataObj.BirthDate = $('#BirthDate').val();
+        dataObj.SSN = $('#SSN').mask();
+        dataObj.CompanyId = $('#CompanyId').val();
+        dataObj.HomeAddress1 = $('#HomeAddress1').val();
+        dataObj.HomeAddress2 = $('#HomeAddress2').val();
+        dataObj.HomeCityId = $('#HomeCityId').val();
+        dataObj.HomeStateId = $('#HomeStateId').val();
+        dataObj.HomeCountryId = $('#HomeCountryId').val();
+        dataObj.HomeZipCode = $('#HomeZipCodeTxt').mask();
+        dataObj.MailingAddress1 = $('#MailingAddress1').val();
+        dataObj.MailingAddress2 = $('#MailingAddress2').val();
+        dataObj.MailingCityId = $('#MailingCityId').val();
+        dataObj.MailingStateId = $('#MailingStateId').val();
+        dataObj.MailingCountryId = $('#MailingCountryId').val();
+        dataObj.MailingZipCode = $('#MailingZipCodeTxt').mask();
+        dataObj.HomeNumber = $('#HomeNumber').mask();
+        dataObj.CelNumber = $('#CelNumber').mask();
+        dataObj.FaxNumber = $('#FaxNumber').mask();
+        dataObj.OtherNumber = $('#OtherNumber').mask();
+        dataObj.WorkEmail = $('#WorkEmail').val();
+        dataObj.PersonalEmail = $('#PersonalEmail').val();
+        dataObj.OtherEmail = $('#OtherEmail').val();
+      
+
+        return dataObj;
+    }
+    function showHiringWizardStep(step) {
+        debugger;
+        switch (step) {
+            case "Step1":
+                $("#hiringWizardS1").show();
+                $("#hiringWizardStepTitle span:nth-child(2)").text(hiringWizardS1Title);
+                $("#hiringWizardS2").hide();
+                $("#hiringWizardS3").hide();
+                break;
+            case "Step2":
+               
+                $("#hiringWizardS2").show();
+                $("#hiringWizardStepTitle span:nth-child(2)").text(hiringWizardS2Title);
+                $("#hiringWizardS1").hide();
+                $("#hiringWizardS3").hide();
+                break;
+            case "Step3":
+               
+                $("#hiringWizardS3").show();
+                $("#hiringWizardStepTitle span:nth-child(2)").text(hiringWizardS3Title);
+                $("#hiringWizardS1").hide();
+                $("#hiringWizardS2").hide();
+        }
+    }
+    function validateWizardStep(step) {
+        var isValidated = true;
+        var isRequiredValidated = 0;
+        var dataObj = getHireApplicantWizardData();
+        switch (step) {
+            case "Step2":
+                isRequiredValidated += dataObj.EmployeeId.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.FirstName.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.FirstLastName.trim().length > 0 ? 1 : 0;
+               // isRequiredValidated += dataObj.SecondLastName.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.CompanyId.trim().length > 0 ? 1 : 0;
+                if (isRequiredValidated != 4) {
+                    isValidated = false;
+                    showAlertAutoHide("#", "Error", "Missing Required field(s)");
+                }
+                break;
+            case "Step3":
+                if (!IsValidEmailFormat(dataObj.PersonalEmail) ||
+                    !IsValidEmailFormat(dataObj.WorkEmail) ||
+                    !IsValidEmailFormat(dataObj.OtherEmail)) {
+                    isValidated = false;
+                    showAlertAutoHide("#", "Error", "Invalid Email(s) format");
+                }
+                break;
+           
+        }
+        return isValidated;
+    }
+
+    function saveHireApplicantData() {
+        debugger;
+        var datafieldsObject = getHireApplicantWizardData();
+       // return;
+        $.ajax({
+            type: "POST",
+            url: "/ApplicantInformation/HireApplicant",
+            data: JSON.stringify(datafieldsObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                   
+                    $("#hireApplicant_modal").modal("hide");
+                    showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                    location.reload(true);
+                }
+                else {
+                    showAlertAutoHide("#", data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                displayErrorMessage('Error in deleting parent alert data');
+                return false;
+            }
+        });
+    }
+    
+
+</script>

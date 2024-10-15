@@ -1,0 +1,55 @@
+﻿@using TimeAide.Data;
+@model IEnumerable<TimeAide.Web.Models.JobCertificationTemplate>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TemplateTypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @{
+                    var templateType = item.TemplateTypeId == null ? DataHelper.TemplateType[1] : DataHelper.TemplateType[item.TemplateTypeId ?? 0];
+                }
+                @Html.DisplayFor(m => templateType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAllCompanies)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

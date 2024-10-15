@@ -1,0 +1,450 @@
+﻿@using TimeAide.Services.Helpers;
+@model IEnumerable<TimeAide.Web.Models.EmployeePayAccount>
+
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="employeeDepositPctAccList_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;"> Direct Deposit Account(s)</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">
+                                Account(s) Detail
+                                <div class="pull-right dropdown-action" style="height:20px;">
+                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a id="" href="javascript:createDepositAccount();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="">
+                                    <div style="min-height:150px; max-height:300px; width:100%; overflow-y:auto">
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed table-sm table-nowrap mb-0" id="tblDDAccounts">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th style="display:none">Seq</th>
+                                                        <th style="display:none">Id</th>
+                                                        <th>Name</th>
+                                                        <th style="display:none">AccountTypeId</th>
+                                                        <th>Account Type</th>
+                                                        <th>Account Number</th>
+                                                        <th style="display:none">BankId</th>
+                                                        <th>Bank</th>
+                                                        <th>Routing Number</th>
+                                                        <th>Deposit %</th>
+                                                        <th style="display:none">PrimaryVal</th>
+                                                        <th>Primary</th>
+                                                        <th>End Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{ var count = 0;
+                                                        decimal totalDepositPct = 0;
+                                                    }
+                                                    @foreach (var currentAccount in Model)
+                                                    {
+                                                        count++;
+                                                        var isPrimary = currentAccount.IsPrimary ? "Yes" : "No";
+                                                        totalDepositPct += currentAccount.DepositPct ?? 0;
+                                                        <tr>
+                                                            <td width="5%">
+                                                                <div class="pull-right dropdown-action">
+                                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                        <a href="javascript:void(0);" onclick="editDepositAccount(this);" class="dropdown-item" data-id=""><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                        <a href="javascript:void(0);" onclick="getDirectDepositAccountDeleteData(this);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td style="display:none">@count</td>
+                                                            <td style="display:none">@Html.DisplayFor(m => currentAccount.Id)</td>
+                                                            <td>@Html.DisplayFor(m => currentAccount.Name)</td>
+                                                            <td style="display:none">@Html.DisplayFor(m => currentAccount.BankAccountTypeId)</td>
+                                                            <td>@Html.DisplayFor(m => currentAccount.BankAccountType.Name)</td>
+                                                            <td>@Html.DisplayFor(m => currentAccount.AccountNumber)</td>
+                                                            <td style="display:none">@Html.DisplayFor(m => currentAccount.PayBankId)</td>
+                                                            <td>@Html.DisplayFor(m => currentAccount.PayBank.Name)</td>
+                                                            <td>@Html.DisplayFor(m => currentAccount.PayBank.RoutingNumber)</td>
+                                                            <td>@Html.DisplayFor(m => currentAccount.DepositPct)</td>
+                                                            <td style="display:none">@currentAccount.IsPrimary</td>
+                                                            <td>@isPrimary</td>
+                                                            <td>@Html.DisplayFor(m => currentAccount.EndDate)</td>
+
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="6" style="text-align:right">Total Deposit %</th>
+                                                        <th colspan="4" id="thTotalDepositPct">@totalDepositPct</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnsaveEmployeeDepositAccount" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@{ Html.RenderAction("CreateDepositPctAccount"); }
+@{ Html.RenderAction("DeleteDepositAccount");}
+<table id="tblSampleRow" class="table table-condensed table-sm table-nowrap mb-0" style="display:none;">
+    <tr>
+        <td width="5%">
+            <div class="pull-right dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                    <a href="javascript:void(0)" onclick="editDepositAccount(this);" class="dropdown-item" data-id=""><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                    <a href="javascript:void(0);" onclick="getDirectDepositAccountDeleteData(this);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                </div>
+            </div>
+        </td>
+        <td style="display:none;"></td>
+        <td style="display:none;"></td>
+        <td></td>
+        <td style="display:none"></td>
+        <td> </td>
+        <td> </td>
+        <td style="display:none"> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td style="display:none"></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+<script>
+    var directDepositAccountListData = [];
+    var deletedDepositAccListData = [];
+    $(document).ready(function () {
+        initDirectDepositAccountData();
+       
+        $("#btnsaveEmployeeDepositAccount").click(function () {
+            saveDepositAccountsData();
+
+        });
+    });
+    function createDepositAccount(seqId) {
+        debugger;
+        setDDAccountPopupData(seqId)
+        $("#employeeDepositCreateEdit_modal").modal("show");
+    }
+
+    function editDepositAccount(element) {
+        debugger;
+        var seqId = $(element).closest("tr").find("td:eq(1)").text().trim();
+        if (seqId > 0) {
+            setDDAccountPopupData(seqId);
+            $("#employeeDepositCreateEdit_modal").modal("show");
+        }
+    }
+    function saveAddEditDepositAccDataInMemory() {
+
+        debugger;
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.UserInformationId = $("#userID").val();
+        dataObj.SeqId = $('#SeqId').val();
+        dataObj.Id = $('#EmployeePayAccountId').val();
+        dataObj.Name = $('#AccountName').val();
+        dataObj.BankAccountTypeId = $('#BankAccountTypeId').val();
+        dataObj.BankAccountTypeName = $("#BankAccountTypeId option:selected").text();
+        dataObj.AccountNumber = $('#AccountNumber').val();
+        dataObj.PayBankId = $('#PayBankId').val();
+        dataObj.PayBankName = $("#PayBankId option:selected").text();
+        dataObj.RoutingNumber = $('#BankRoutingNumber').val();
+        dataObj.DepositPct = Number($('#DepositPct').val()).toFixed(2);
+        dataObj.IsPrimary = $('#IsPrimaryAE').is(":checked");
+        dataObj.EndDate = $('#EndDate').val();
+        dataObj.PayType = "P";
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.Name.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.BankAccountTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccountNumber.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.PayBankId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.DepositPct.trim().length > 0 ? 1 : 0
+            if (isRequiredValidated != 5) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide("", 'Error', message);
+
+        if (isValidated) {
+
+
+            var existingAccIndex = directDepositAccountListData.findIndex(function (record) {
+                return ((Number(record.SeqId) !== Number(dataObj.SeqId)) && record.EndDate == "" && record.AccountNumber == dataObj.AccountNumber);
+            });
+
+            if (existingAccIndex !== -1) {
+                showAlertAutoHide("", 'Error', "Account Number is already exist.");
+                return;
+            }
+            if (dataObj.IsPrimary == true) {
+                var existingPrimaryIndex = directDepositAccountListData.findIndex(function (record) {
+                    return ((Number(record.SeqId) !== Number(dataObj.SeqId)) && record.EndDate == "" && record.IsPrimary == true);
+                });
+                if (existingPrimaryIndex !== -1) {
+                    directDepositAccountListData[existingPrimaryIndex].IsPrimary = false;
+                }
+            }
+            if (dataObj.EndDate != "") {
+                var todayDate = new Date();
+                if (moment(dataObj.EndDate) > moment(todayDate)) {
+                    showAlertAutoHide("", 'Error', "End Date shouldn't be in future.");
+                    return;
+                }
+                dataObj.DepositPct = "0.00";
+            }
+
+            var index = directDepositAccountListData.findIndex(function (record) {
+                return record.SeqId === dataObj.SeqId;
+            })
+            if (index !== -1) directDepositAccountListData.splice(index, 1);
+
+            directDepositAccountListData.push(dataObj);
+            refreshDDAccountData("AE");
+        }
+    }
+
+    function saveDepositAccountsData() {
+        debugger;
+        //var directDepositAccountListData = [];
+        //var deletedDepositAccListData = [];
+        var userId= $("#userID").val();
+        if (directDepositAccountListData.length <= 0) {
+            showAlertAutoHide("", 'Error', "No Account(s) is/are available for saving.");
+            return;
+        }
+        var totalPct = 0;
+
+        directDepositAccountListData.forEach(function (row, index) {
+            debugger;
+            var num = isNaN(row.DepositPct) ? 0 : Number(row.DepositPct);
+            totalPct += num;
+        });
+        if (totalPct < 100 || totalPct > 100) {
+            showAlertAutoHide("", 'Error', "Total Account(s) % is not equal to 100. Please verify.");
+            return;
+        }
+        //alert(totalPct);
+        //return;
+        var formData = new FormData();
+        formData.append("DepositAccountCreatEditList", JSON.stringify(directDepositAccountListData));
+        formData.append("DepositAccountDeleteList", JSON.stringify(deletedDepositAccListData));
+
+        $.ajax({
+            type: "POST",
+            url: '/EmployeePayMethod/CreateEditDepositPctAccountList',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                // debugger;
+                if (data.status == "Success") {
+                    $("#employeeDepositPctAccList_modal").modal("hide");
+                    retrieveEmployeeAccountByDepositPct(userId);
+                    showAlertAutoHide("#", data.status, data.message);
+                }
+                else {
+                    showAlertAutoHide("#", data.status, data.message);
+                }
+            },
+            error: function (error) {
+            }
+        });
+    }
+    function getDirectDepositAccountDeleteData(element) {
+        debugger;
+        var seqId = $(element).closest("tr").find("td:eq(1)").text().trim();
+        if (seqId > 0) {
+            setDDAccountPopupDelData(seqId);
+            $("#employeeDDAccountDelete_modal").modal("show");
+        }
+    }
+    function deleteEmployeeDirectDepositAccount(sId) {
+        debugger;
+        var result = $.grep(directDepositAccountListData, function (e) {
+            return e.SeqId == sId;
+        });
+        if (result.length == 1) {
+            if (result[0].Id > 0)
+                deletedDepositAccListData.push(result[0].Id);
+
+            var index = directDepositAccountListData.findIndex(function (record) {
+                return record.SeqId == sId;
+            });
+            if (index !== -1) {
+                directDepositAccountListData.splice(index, 1);
+                var seq = 1;
+                directDepositAccountListData.forEach(function (row) {
+                    row.SeqId = seq;
+                    seq++;
+                });
+            }
+            refreshDDAccountData("");
+            $("#employeeDDAccountDelete_modal").modal("hide");
+        }
+    }
+    function initDirectDepositAccountData() {
+        debugger;
+        $("#tblDDAccounts tbody").find("tr").each(function () {
+            var rowObject = new Object();
+            rowObject.UserInformationId = $("#userID").val();
+            rowObject.SeqId = $(this).find("td:eq(1)").text().trim();
+            rowObject.Id = $(this).find("td:eq(2)").text().trim();
+            rowObject.Name = $(this).find("td:eq(3)").text().trim();
+            rowObject.BankAccountTypeId = $(this).find("td:eq(4)").text().trim();
+            rowObject.BankAccountTypeName = $(this).find("td:eq(5)").text().trim();
+            rowObject.AccountNumber = $(this).find("td:eq(6)").text().trim();
+            rowObject.PayBankId = $(this).find("td:eq(7)").text().trim();
+            rowObject.PayBankName = $(this).find("td:eq(8)").text().trim();
+            rowObject.RoutingNumber = $(this).find("td:eq(9)").text().trim();
+            rowObject.DepositPct = $(this).find("td:eq(10)").text().trim();
+            rowObject.IsPrimary = $(this).find("td:eq(11)").text().trim() == "True" ? true : false;
+            rowObject.EndDate = $(this).find("td:eq(13)").text().trim();
+            rowObject.PayType = "P";
+            directDepositAccountListData.push(rowObject);
+        });
+        console.log(directDepositAccountListData);
+    }
+
+    function setDDAccountPopupData(sId) {
+        debugger;
+        var seqId = directDepositAccountListData.length + 1;
+        $("#EmployeePayAccountId").val(0);
+        $("#SeqId").val(seqId);
+        $("#AccountName").val("");
+        $("#BankAccountTypeId").val(null);
+        $("#AccountNumber").val("");
+        $("#PayBankId").val(null);
+        $("#BankRoutingNumber").val("");
+        $("#DepositPct").val(null);
+        $("#IsPrimaryAE").prop("checked", false);
+        $("#IsDeactivatedAE").prop("checked", false);
+        $("#EndDate").val(null);
+        var result = $.grep(directDepositAccountListData, function (e) {
+            return e.SeqId == sId;
+        });
+
+        if (result.length == 1) {
+            $("#EmployeePayAccountId").val(result[0].Id);
+            $("#SeqId").val(result[0].SeqId);
+            $("#AccountName").val(result[0].Name);
+            $("#BankAccountTypeId").val(result[0].BankAccountTypeId);
+            $("#AccountNumber").val(result[0].AccountNumber);
+            $("#PayBankId").val(result[0].PayBankId);
+            $("#BankRoutingNumber").val(result[0].RoutingNumber);
+            $("#DepositPct").val(result[0].DepositPct);
+            if (result[0].IsPrimary == "True" || result[0].IsPrimary == true) {
+                $("#IsPrimaryAE").prop("checked", true);
+            }
+            $("#EndDate").val(result[0].EndDate);
+            if (result[0].EndDate != "") {
+                $("#IsDeactivatedAE").prop("checked", true);
+            }
+        }
+    }
+
+    function setDDAccountPopupDelData(sId) {
+        debugger;
+
+        $("#DeleteSeqId").val(0);
+        $("#spanAccountName").text("");
+        $("#spanAccountNumber").text("");
+        $("#spanAccountTypeName").text("");
+        $("#spanPayBankName").text("");
+
+        var result = $.grep(directDepositAccountListData, function (e) {
+            return e.SeqId == sId;
+        });
+
+        if (result.length == 1) {
+            $("#DeleteSeqId").val(result[0].SeqId);
+            $("#spanAccountName").text(result[0].Name);
+            $("#spanAccountTypeName").text(result[0].BankAccountTypeName);
+            $("#spanAccountNumber").text(result[0].AccountNumber);
+            $("#spanPayBankName").text(result[0].PayBankName);
+        }
+
+    }
+    function refreshDDAccountData(action) {
+        debugger;
+        //$("#tblWorkedHoursTier tbody").remove();
+        var totalDepostPct = 0;
+        var targetTbl = $("#tblDDAccounts tbody");
+        var sourceRow = $("#tblSampleRow tr");
+        var trHtml = "";
+        $(targetTbl).empty();
+        directDepositAccountListData.sort(function (a, b) { return a.SeqId - b.SeqId; });
+        directDepositAccountListData.forEach(function (row) {
+            var newTr = sourceRow.clone();
+            $(newTr).find("td:eq(1)").text(row.SeqId);
+            $(newTr).find("td:eq(2)").text(row.Id);
+            $(newTr).find("td:eq(3)").text(row.Name);
+            //$(newTr).find("td:eq(4)").text(row.TierWorkedHoursMin);
+            $(newTr).find("td:eq(5)").text(row.BankAccountTypeName);
+            $(newTr).find("td:eq(6)").text(row.AccountNumber);
+            // $(newTr).find("td:eq(7)").text(row.TierDescription);
+            $(newTr).find("td:eq(8)").text(row.PayBankName);
+            $(newTr).find("td:eq(9)").text(row.RoutingNumber);
+            $(newTr).find("td:eq(10)").text(row.DepositPct);
+            var prmryAccText = row.IsPrimary == true ? "Yes" : "No";
+            $(newTr).find("td:eq(12)").text(prmryAccText);
+            $(newTr).find("td:eq(13)").text(row.EndDate);
+            $(targetTbl).append(newTr);
+            totalDepostPct += Number(row.DepositPct);
+        });
+        $("#thTotalDepositPct").text(totalDepostPct);
+        if (action == "AE") {
+            $("#employeeDepositCreateEdit_modal").modal("hide");
+        }
+
+
+    }
+</script>
+
+
+
+
+
+
+

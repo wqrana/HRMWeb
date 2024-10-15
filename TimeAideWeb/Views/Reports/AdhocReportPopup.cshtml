@@ -1,0 +1,98 @@
+﻿@model TimeAide.Web.ViewModel.ReportViewModel
+<style>
+
+    iframe {
+        /*width: 100%;*/
+        padding-left: 10px;
+        padding-top: 5px;
+        max-height: 600px;
+    }
+
+    .divAdhocReportView {
+        border: .5px #eaeaea solid;
+        min-height: 650px;
+        /* margin-left: 2%;*/
+    }
+</style>
+<div id="AdhocReportPopup_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="mt-2 p-2 mt-0">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Print Report</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                @Html.HiddenFor(m => m.ReportId)
+                @Html.HiddenFor(m=>m.ReportCriteriaTemplateId)
+                @Html.HiddenFor(m => m.CriteriaType)
+                @Html.HiddenFor(m => m.EmployeeSelectionIds)
+                @Html.HiddenFor(m => m.CompanyId)
+                @Html.HiddenFor(m => m.FromDate)
+                @Html.HiddenFor(m => m.ToDate)                
+                @Html.HiddenFor(m => m.ScheduleDate)
+                @Html.HiddenFor(m => m.AttendanceSchId)
+                @Html.HiddenFor(m=>m.CustomFieldTypeSelectionIds)
+               
+                <div id="divLoadingReport" class="align-content-md-center">
+                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                </div>
+                <div id="divAdhocReportView">
+                </div>
+            </div>
+
+            <div class="submit-section pb-2 mt-0">
+                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        runAdhocReport();
+
+    });
+
+   function runAdhocReport() {
+           $('#divLoadingReport').show();
+      debugger;
+       var dataObj = new Object();
+       var reportURL = "/Reports/ReportView";
+       dataObj.ReportId = $("#ReportId").val();
+       dataObj.ReportCriteriaTemplateId = $("#ReportCriteriaTemplateId").val();
+       dataObj.CriteriaType = $("#CriteriaType").val();
+       dataObj.EmployeeSelectionIds = $("#EmployeeSelectionIds").val();
+       dataObj.CompanyId = $("#CompanyId").val(); 
+       dataObj.FromDate = $("#FromDate").val();
+       dataObj.ToDate = $("#ToDate").val();
+       dataObj.AttendanceSchId = $("#AttendanceSchId").val();
+       dataObj.CustomFieldTypeSelectionIds = $("#CustomFieldTypeSelectionIds").val();
+       if (dataObj.CriteriaType == 2) {
+           //Run Local report
+           reportURL = "/Reports/LocalReportView";
+       }
+            $.ajax({
+                type: "POST",
+               // url: "/Reports/ReportView",
+                url: reportURL,
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                // dataType: "json",
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    $("#divAdhocReportView").html(data);
+                    $('#divLoadingReport').hide();
+                },
+                error: function (request, status, error) {
+                    alert('Error in in runing  report data');
+                    return false;
+                }
+            });
+        }
+</script>

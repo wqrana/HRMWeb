@@ -1,0 +1,200 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PayScaleLevel>
+<div class="panel panel-default" style="margin-left:5px">
+    <!--<div class="panel panel-default" style="width:49%;margin-left:10px">-->
+    <div class="panel-heading" style="padding-left:10px">
+
+
+        @if (ViewBag.PayScaleId != 0)
+        {
+            <span>
+                Pay Scale Detail
+                @("(" + ViewBag.PayScaleId + " - " + ViewBag.PayScaleName + ")" )
+            </span>
+            <div class="pull-right dropdown-action" style="height:20px;">
+                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                    @*<a href="javascript:createEditPayScaleLevel(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>*@
+                    <a href="javascript:void(0);" class="anchorAddPayScaleLevel dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <span>
+                please select a pay scale to display details
+            </span>
+        }
+
+
+    </div>
+    <div class="panel-body">
+        @*<div class="col-auto float-right ml-auto">
+                <a href="" data-toggle="modal" data-target="#employeeCreateEdit_modal" class="btn add-btn"><i class="fa fa-plus"></i> Add Scale New Rating</a>
+            </div>*@
+        <input type="hidden" id="SelectedPayScaleId" value="@ViewBag.PayScaleId" />
+        <div class="table-responsive">
+            <table class="table table-striped custom-table table-nowrap mb-0">
+                <tr>
+                    <th>
+                        Level
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PayScale.PayScaleName)
+                    </th>
+                    <th>
+                        Amount($)
+                    </th>
+                    <th>
+                        Difference($)
+                    </th>
+                    <th></th>
+
+                </tr>
+                @if (Model != null)
+                {
+                    int rowNo = 0; decimal? previousRate = null;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @(rowNo += 1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PayScale.PayScaleName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PayScaleLevelRate)
+                            </td>
+                            <td>
+                                @if (previousRate.HasValue)
+                                {
+                                    @(item.PayScaleLevelRate - previousRate)
+                                }
+                                <span style="visibility:collapse">@(previousRate = (item.PayScaleLevelRate))</span>
+                            </td>
+                            <td width="10%">
+                                <div class="dropdown dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                        @if ((bool)(ViewBag.AllowEdit ?? false))
+                                        {
+                                            <a href="javascript:void(0);" id="anchorEditPayScaleLevel" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                                        }
+                                        @if ((bool)(ViewBag.AllowView ?? false))
+                                        {
+                                            <a href="javascript:void(0);" id="anchorDetailPayScaleLevel" class="dropdown-item" data-id="@item.Id"><i class="fa fa-eye m-r-5"></i> Detail</a>
+                                        }
+                                        @if ((bool)(ViewBag.AllowDelete ?? false))
+                                        {
+                                            <a href="javascript:void(0);" id="anchorDeletePayScaleLevel" class="dropdown-item" data-id="@item.Id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('*[id*=anchorDetailPayScaleLevel]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Details',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+    $('*[id*=anchorEditPayScaleLevel]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Edit',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+    $('*[id*=anchorDeletePayScaleLevel]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Delete',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+    $(".anchorAddPayScaleLevel").click(function () {
+    debugger;
+    var $buttonClicked = $(this);
+        var scaleId = $('#SelectedPayScaleId').val();
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/CreateByPayScale',
+        contentType: "application/json; charset=utf-8",
+        data: { "id": scaleId },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+</script>

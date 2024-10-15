@@ -1,0 +1,155 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@{
+    ViewBag.Title = "Employees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .showFilter {
+        display: block;
+    }
+
+    .hideFilter {
+        display: none;
+    }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Employees</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Employees</li>
+                <li class="breadcrumb-item active">Employee</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="employeeIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+        <div class="col-auto float-right ml-auto">
+            @if (ViewBag.AllowAdd)
+            {
+                <a href="" data-toggle="modal" data-target="#employeeCreateEdit_modal" class="btn add-btn"><i class="fa fa-plus"></i> Add New Employee</a>
+            }
+            <div class="view-icons">
+                <a id="btnGridView" href="javascript:getUserViewData(1)" class="grid-view btn btn-link " title="Grid View"><i class="fa fa-th"></i></a>
+                <a id="btnListView" href="javascript:getUserViewData(0)" class="list-view btn btn-link" title="List View"><i class="fa fa-bars"></i></a>
+                @Html.Hidden("ViewTypeId", 0)
+                @Html.Hidden("PageNo", 1)
+                @Html.Hidden("PageSize", 12)
+                @Html.Hidden("GridSearchTxt", "")
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeId" type="number" class="form-control floating">
+            <label class="focus-label">EmployeeID</label>
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-4 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("SubDepartmentId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Sub-Department</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2">
+        <div class="form-group form-focus select-focus  mb-1">
+            @Html.DropDownList("PositionId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Position</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("EmploymentTypeId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Employment Type</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("EmployeeTypeId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Employee Type</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("EmployeeStatusId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Employee Status</label>
+        </div>
+    </div>
+    @{
+        var isAdminShow = (SecurityHelper.IsAdmin || SecurityHelper.IsSuperAdmin);
+        var showHideClass = (isAdminShow) ? "showFilter" : "hideFilter";
+
+    }
+    <div class="col-sm-4 col-md-2 pr-0 @showHideClass">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("SupervisorId", null, "Self", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Supervisor</label>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-md-2 pr-0">
+        <a href="javascript:getFilterUserList();" class="btn btn-success btn-block"> Apply Filter(s) </a>
+    </div>
+    @*@{
+            var isFilterApplied = (bool)ViewBag.IsFilterApplied;
+            showHideClass = (isFilterApplied) ? "showFilter" : "hideFilter";
+        }*@
+    <div class="col-sm-4 col-md-2 hideFilter" id="divResetFilter">
+        <a href="javascript:resetUserFilterList();" class="btn btn-danger btn-block"> Reset Filter(s) </a>
+    </div>
+</div>
+<div id="divUserGridHeaderBar">
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label style="text-align:left;">
+                Show
+                <select id="userGridPageLen" class="custom-select custom-select-sm form-control form-control-sm" style="display:inline-block;width:auto;">
+                    <option value="12">12</option>
+                    <option value="24">24</option>
+                    <option value="48">48</option>
+                    <option value="96">96</option>
+                </select> entries
+            </label>
+        </div>
+        <div class="col-md-6">
+            <div style="text-align:right;">
+                <label style="text-align:left;">
+                    Search:<input id="userGridSearchTxt" style="display:inline-block; width:auto; margin-left:0.5rem;" type="text" class="form-control form-control-sm" placeholder="">
+                </label>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="divLoadingUsers" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div id="divLayoutView">
+
+</div>
+
+@Html.Partial("_EmployeeCreateEdit")
+<script src="~/Scripts/UserInformation/userMain-js.js?version=1.1"></script>
+

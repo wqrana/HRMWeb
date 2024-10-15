@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TimeAide</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/content/Themes/assets/img/favicon.png">
+    @Styles.Render("~/content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-theme")
+    @Scripts.Render("~/bundles/3rdParty")
+    <script src="~/signalr/hubs"></script>
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header Menu -->
+        @Html.Partial("_HeaderBar")
+        <!-- Sidebar -->
+        @if (Request.IsAuthenticated)
+        {
+
+            @Html.Partial("_SideBar")
+        }
+        <!-- Page Wrapper -->
+        <div class="page-wrapper">
+            <!-- Page Content -->
+            <div class="content container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <div id='myModal' class='modal'>
+        <div id='myModaldialog' class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+
+    <div id='divDdlPopup' class='modal control'>
+        <div class="modal-dialog" id="divDdlPopupdialog">
+            <div class="modal-content">
+                <div id='divDdlPopupContent'></div>
+            </div>
+        </div>
+    </div>
+    <div id="divAdhocReportPopup">
+    </div>
+    @*<!-- Bootstrap Core JS -->
+        <script src="/content/Themes/assets/js/popper.min.js"></script>
+        <script src="/content/Themes/assets/js/bootstrap.min.js"></script>
+        <!-- Custom JS -->
+        <script src="/content/Themes/assets/js/app.js"></script>*@
+
+    <script src="~/Scripts/appCommon-js.js?version=1.0"></script>
+    <script src="~/Scripts/UserInformation/userContact-js.js?version=1.0"></script>
+
+    <style type="text/css">
+        .panel {
+            margin-bottom: 20px !important;
+            background-color: #ffffff !important;
+            border: 1px solid transparent !important;
+            border-color: #ddd !important;
+            border-radius: 4px !important;
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .panel-heading {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
+
+        .dt-button-collection {
+            width: auto !important;
+        }
+
+            .dt-button-collection .dropdown-menu {
+                position: unset !important;
+                width: auto !important;
+                padding: 0 !important;
+            }
+
+        .dataTables_wrapper .dataTables_filter input {
+            margin-left: unset;
+        }
+    </style>
+    <script>
+        function ClosePopup() {
+            alert($(this).closest('.modal').html());
+            $(this).closest('.modal').modal('hide');
+        }
+        function AddToDropDown(controllerName, id) {
+            var $buttonClicked = $(this);
+            //var id = $buttonClicked.attr('data-id');
+            debugger
+            //alert(id);
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/' + controllerName + '/Create',
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    $("#divDdlPopup").clone().attr("id", 'divDdlPopup' + controllerName).appendTo("body");
+                    /*$('#divDdlPopupContent').html(data);*/
+                    $('#divDdlPopup' + controllerName).find('#divDdlPopupContent').html(data);
+                    $('#divDdlPopup' + controllerName).modal(options);
+                    debugger
+                    $('#divDdlPopup' + controllerName).modal('show');
+                    $('#divDdlPopup' + controllerName).find("#popupTargetDdl").val(id);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert("Dynamic content load failed.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+<script type="text/javascript">
+    var idleTime = 0;
+    var isActive = false;
+    $(document).ready(function () {
+        //Increment the idle time counter every minute.
+        var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+        //Zero the idle timer on mouse movement.
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+            isActive = true;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+            isActive = true;
+        });
+        var chat = $.connection.authHub;
+        chat.client.Signout = function () {
+            window.location.href = '@Url.Action("Login", "Account")';
+        };
+        chat.client.Redirect = function (redirectEmail) {
+            window.location.href = '@Url.Action("Login1", "Account")';
+        };
+        $.connection.hub.start().done(function () {
+            chat.server.forceRedirect1('@TimeAide.Common.Helpers.SessionHelper.PreviousLoginEmail', '@TimeAide.Common.Helpers.SessionHelper.CurrentBowser');
+            chat.server.forceRedirect('@TimeAide.Common.Helpers.SessionHelper.LoginEmail', '@TimeAide.Common.Helpers.SessionHelper.CurrentBowser');
+            function PopulateActiveUsers() {
+                debugger;
+                $("#usersTable").empty();
+                chat.server.getConnectedUsers(@TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId).done(function (users) {
+                    $.each(users, function (i, username) {
+                        $("#usersTable").append("<tr><th scope='row'>" + (i + 1) + "</th><td>" + username + "</td><td><a href='javascript:void(0)' data-user='" + username + "' class='btn btn-primary btn-sm btn-logout'>Logout User</a></td></tr>");
+                    });
+                });
+            }
+            $("#displayActiveUsers").on("click", function () {
+                PopulateActiveUsers();
+            });
+            $('body').on('click', 'a.btn-logout', function () {
+                var username = $(this).attr('data-user');
+                chat.server.forceLogOut(username, 'All', 'AdminPanel');
+            });
+        });
+        function timerIncrement() {
+            debugger
+            // alert('auto!');
+            idleTime = idleTime + 1;
+            @* chat.server.send_PrivateMessage($("#spnName").text(), $('#ChatMessageText').val(), $("#OtherParticipantId").val(), '@Model.Id');*@
+            chat.server.updateUserActivity(isActive,'@TimeAide.Common.Helpers.SessionHelper.CurrentBowser');
+            isActive = false;
+            @*if (idleTime > 15) { // 15 minutes
+                //window.location.reload();
+                window.location.href = '@Url.Action("Login", "Account")';
+            }*@
+        }
+    });
+    </script>
+    <script type="text/javascript">
+        function myFunction() {
+            //  alert('Executed!');
+        }
+
+        var interval = setInterval(function () { myFunction(); }, 60000);
+    </script>

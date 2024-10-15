@@ -1,0 +1,88 @@
+﻿@model TimeAide.Web.Models.EmployeeTimeOffRequestDocument
+
+<div id="downloadTimeOffDocument_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Download Document(s)</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0 pb-2">
+                @Html.Hidden("Id", Model.Id)
+                <div class="table-responsive">
+                    <table class="table table-condensed table-sm table-striped  table-nowrap mb-0" id="">
+                        <thead>
+                            <tr>
+                                <th> File#</th>
+                                <th>
+                                    Name
+                                </th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @if (string.IsNullOrEmpty(Model.DocumentFile1Name) == false && Model.DocumentFile1!=null)
+                        {
+                            <tr>
+                                <td> 1</td>
+                                <td>
+                                    @Html.DisplayFor(m => m.DocumentFile1Name)
+                                </td>
+
+                                <td width="10%">
+                                    <button id="btnCancel" onclick="downloadDocumentFile(@Model.Id,1)" class="btn btn-info btn-sm">Download</button>
+                                </td>
+                            </tr>
+                        }
+                        @if (string.IsNullOrEmpty(Model.DocumentFile2Name) == false && Model.DocumentFile2!=null)
+                        {
+                            <tr>
+                                <td> 2</td>
+                                <td>
+                                    @Html.DisplayFor(m => m.DocumentFile2Name)
+                                </td>
+
+                                <td width="10%">
+                                    <button id="btnCancel" onclick="downloadDocumentFile(@Model.Id,2)" class="btn btn-info btn-sm">Download</button>
+                                </td>
+                            </tr>
+                        }
+                        @if (string.IsNullOrEmpty(Model.DocumentFile3Name) == false && Model.DocumentFile3!= null)
+                        {
+                            <tr>
+                                <td> 2</td>
+                                <td>
+                                    @Html.DisplayFor(m => m.DocumentFile3Name)
+                                </td>
+
+                                <td width="10%">
+                                    <button id="btnCancel" onclick="downloadDocumentFile(@Model.Id,3)" class="btn btn-info btn-sm">Download</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div class="submit-section pb-2 mt-2">
+
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Closed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+
+</script>
+
+
+
+

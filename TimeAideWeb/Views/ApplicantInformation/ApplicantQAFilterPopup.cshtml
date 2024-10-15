@@ -1,0 +1,158 @@
+﻿
+<div id="applicantQAFilterPopup_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="border:thin; border-style:solid">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Filter(s) Popup</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0 pl-1 pr-1">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Question: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("ApplicantInterviewQuestionId", null, "Please Select", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div id="divLoadingCriteria" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+                        <div class="form-group row" id="divQADetail">
+
+                        </div>
+                    </div>
+                </div>
+               
+                    <table id="tblSampleRow" class="table table-condensed table-sm custom-table table-nowrap mb-0" style="display:none;">
+                        <tr>
+                            <td>
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">                                                                          
+
+                                        <a href="javascript:void(0);" onclick="deleteQAFilter(this);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="display:none;"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            
+                        </tr>
+                    </table>
+                
+
+                <div class="submit-section mt-1">
+                    <button id="btnSaveQAFilter" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>             
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#divLoadingCriteria").hide();
+        $("#btnSaveQAFilter").click(function () {
+            saveQAFilterData();
+        });
+        $("#ApplicantInterviewQuestionId").change(function () {
+            debugger;
+            var id = $(this).val();
+            if (id == "") {
+                $("#divQADetail").empty();
+                return;
+            }
+            $("#divLoadingCriteria").show();
+            $.ajax({
+                type: "get",
+                url: '/ApplicantInformation/GetApplicantQAnswerType',
+                data: { "id": id },
+
+                success: function (data) {
+                    debugger;
+                    // console.log(data);
+                    $("#divQADetail").html(data);
+                    $("#divLoadingCriteria").hide();
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        });
+    });
+    
+    function saveQAFilterData() {
+        debugger;
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        var selectedValueTextList = [];
+        dataObj.Id = qAnswerFilterListData.length+1;
+        dataObj.ApplicantAnswerTypeId = $("#ApplicantAnswerTypeId").val();
+        dataObj.ApplicantInterviewQuestionId = $("#ApplicantInterviewQuestionId").val();
+        dataObj.QuestionName = $("#ApplicantInterviewQuestionId option:selected").text();
+        dataObj.FilterOpertor = $("#FilterOpertor").val();
+        if (dataObj.ApplicantAnswerTypeId == 3) {
+            dataObj.FilterValue = $("#FilterValue option:selected").text();
+            if ($("#FilterValue").val() == "") {
+                dataObj.FilterValue = "";
+            }
+        }
+        else if (dataObj.ApplicantAnswerTypeId == 2) {
+            $('#FilterValue option:selected').each(function () {
+                selectedValueTextList.push($(this).text());
+            });
+            if (selectedValueTextList.length > 0) {
+                dataObj.FilterValue = selectedValueTextList.join("|");
+            }
+            else {
+                dataObj.FilterValue = "";
+            }
+        }
+        else {
+            dataObj.FilterValue = $("#FilterValue").val();
+        }
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.ApplicantInterviewQuestionId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FilterOpertor.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FilterValue.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 3) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+            else {
+                var index = qAnswerFilterListData.findIndex(function (record) {
+                    return record.ApplicantInterviewQuestionId == dataObj.ApplicantInterviewQuestionId;
+                });
+                if (index !== -1) {
+                    isValidated = false;
+                    message = " Question is already added in filter criteria.";
+                }
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide("", 'Error', message);
+
+        if (isValidated) {
+                       
+            qAnswerFilterListData.push(dataObj);
+            console.log(qAnswerFilterListData);
+            refreshQAFilterData("AE");
+        }
+
+    }
+    
+</script>

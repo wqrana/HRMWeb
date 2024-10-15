@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TimeAide.Web.Models.WorkflowTrigger>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Workflow Trigger Name
+        </th>
+        <th>
+            Workflow
+        </th>
+        <th>
+            Workflow Trigger Type
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th>
+        </th>
+
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkflowTriggerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Workflow.WorkflowName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkflowTriggerType.WorkflowTriggerTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+        </td>
+
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

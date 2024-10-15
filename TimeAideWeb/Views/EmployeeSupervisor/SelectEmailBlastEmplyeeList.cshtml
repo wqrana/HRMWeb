@@ -1,0 +1,488 @@
+﻿<div class="row">
+    <div class="col-md-6">
+        <div class="custom-header">Available Employees</div>
+    </div>
+    <div class="col-md-6">
+        <div class="custom-header">Selected Employees</div>
+    </div>
+</div>
+<div class="row" style="display:none">
+    <div class="col-md-6">
+        <span>Unregistered Users</span>
+        <input type="checkbox" onchange="FilterUnregistered()" id="chkFilterUnregistered" />
+    </div>
+    <div class="col-md-6">
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6" style="overflow-x:scroll">
+        <table id="searchTable" class="display compact" style="width:100%">
+            <thead>
+                <tr>
+                    <th style="display: none">
+                    </th>
+                    <th style="width:12%">
+                        Emp. Id
+                    </th>
+                    <th style="width:20%">
+                        Name
+                    </th>
+                    <th style="width:26%">
+                        Department
+                    </th>
+                    <th style="width:10%">
+                        Position
+                    </th>
+                    <th style="width:10%">
+                        Status
+                    </th>
+                    <th style="width:20%">
+                        Notification Email
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (TimeAide.Models.ViewModel.UserInformationViewModel each in ViewBag.SupervisorListObject)
+                {
+                    <tr>
+                        <td style="display: none">
+                            @Html.HiddenFor(modelItem => each.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.EmployeeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.ShortFullName)
+                        </td>
+                        <td>
+                            <span>@each.DepartmentName</span>
+                        </td>
+                        <td>
+                            <span>@each.PositionName</span>
+                        </td>
+                        <td>
+                            <span>@each.EmployeeStatusName</span>
+                        </td>
+                        <td>
+                            @{
+                                var contact = TimeAide.Services.UserInformationService.GetActiveUserContactInformation(each.Id);
+                            }
+                            @if (contact != null)
+                            {
+                                <span>@contact.NotificationEmail</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+    @*<div class="col-md-1" style="text-align:center;margin-top:200px;width:20px !important">
+            <a href="javascript:;" data-toggle="modal" id="btnAddSelected" class="dropdown-item btn btn-white btn-md" data-id=""><i class="fa fa-angle-right m-r-5"></i></a>
+            <a href="javascript:;" data-toggle="modal" id="btnAddAll" class="dropdown-item btn btn-white btn-md" data-id=""><i class="fa fa-solid fa-angle-double-right m-r-5"> </i></a>
+            <a href="javascript:;" data-toggle="modal" id="btnRemoveSelected" class="dropdown-item btn btn-white btn-md" data-id=""><i class="fa fa-angle-left m-r-5"></i></a>
+            <a href="javascript:;" data-toggle="modal" id="btnRemoveAll" class="dropdown-item btn btn-white btn-md" data-id=""><i class="fa fa-angle-double-left m-r-5" ></i></a>
+        </div>*@
+    <div class="col-md-6" style="overflow-x:scroll">
+        <table id="selectedPropsTable" class="display compact" style="width:100%">
+            <thead>
+                <tr>
+                    <th style="display:none">
+                    </th>
+                    <th style="width:12%">
+                        Emp. Id
+                    </th>
+                    <th style="width:20%">
+                        Name
+                    </th>
+                    <th style="width:26%">
+                        Department
+                    </th>
+
+                    <th style="width:10%">
+                        Position
+                    </th>
+                    <th style="width:10%">
+                        Status
+                    </th>
+                    <th style="width:20%">
+                        Notification Email
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (TimeAide.Models.ViewModel.UserInformationViewModel each in ViewBag.SelectedSupervisorListObject)
+                {
+                    <tr>
+                        <td style="display: none">
+                            @Html.HiddenFor(modelItem => each.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.EmployeeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.ShortFullName)
+                        </td>
+                        <td>
+                            <span>@each.DepartmentName</span>
+                        </td>
+                        <td>
+                            <span>@each.PositionName</span>
+                        </td>
+                        <td>
+                            <span>@each.EmployeeStatusName</span>
+                        </td>
+                        <td>
+                            <span>@each.NotificationEmail</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+   
+    table.dataTable tbody tr.selected {
+        background-color: #b0bed9
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 8px 10px
+    }
+
+    table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {
+        border-top: 1px solid #ddd
+    }
+
+    table.dataTable.row-border tbody tr:first-child th, table.dataTable.row-border tbody tr:first-child td, table.dataTable.display tbody tr:first-child th, table.dataTable.display tbody tr:first-child td {
+        border-top: none
+    }
+
+    table.dataTable.cell-border tbody th, table.dataTable.cell-border tbody td {
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd
+    }
+
+    table.dataTable.cell-border tbody tr th:first-child, table.dataTable.cell-border tbody tr td:first-child {
+        border-left: 1px solid #ddd
+    }
+
+    table.dataTable.cell-border tbody tr:first-child th, table.dataTable.cell-border tbody tr:first-child td {
+        border-top: none
+    }
+
+    table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+        background-color: #f9f9f9
+    }
+
+        table.dataTable.stripe tbody tr.odd.selected, table.dataTable.display tbody tr.odd.selected {
+            background-color: #acbad4
+        }
+
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+        background-color: #f6f6f6
+    }
+
+        table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:hover.selected {
+            background-color: #aab7d1
+        }
+
+    table.dataTable.order-column tbody tr > .sorting_1, table.dataTable.order-column tbody tr > .sorting_2, table.dataTable.order-column tbody tr > .sorting_3, table.dataTable.display tbody tr > .sorting_1, table.dataTable.display tbody tr > .sorting_2, table.dataTable.display tbody tr > .sorting_3 {
+        background-color: #fafafa
+    }
+
+    table.dataTable.order-column tbody tr.selected > .sorting_1, table.dataTable.order-column tbody tr.selected > .sorting_2, table.dataTable.order-column tbody tr.selected > .sorting_3, table.dataTable.display tbody tr.selected > .sorting_1, table.dataTable.display tbody tr.selected > .sorting_2, table.dataTable.display tbody tr.selected > .sorting_3 {
+        background-color: #acbad5
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
+        background-color: #f1f1f1
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd > .sorting_2 {
+        background-color: #f3f3f3
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_3, table.dataTable.order-column.stripe tbody tr.odd > .sorting_3 {
+        background-color: whitesmoke
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_1 {
+        background-color: #a6b4cd
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_2 {
+        background-color: #a8b5cf
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_3, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_3 {
+        background-color: #a9b7d1
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column.stripe tbody tr.even > .sorting_1 {
+        background-color: #fafafa
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_2, table.dataTable.order-column.stripe tbody tr.even > .sorting_2 {
+        background-color: #fcfcfc
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_3, table.dataTable.order-column.stripe tbody tr.even > .sorting_3 {
+        background-color: #fefefe
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_1 {
+        background-color: #acbad5
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_2 {
+        background-color: #aebcd6
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_3, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_3 {
+        background-color: #afbdd8
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_1, table.dataTable.order-column.hover tbody tr:hover > .sorting_1 {
+        background-color: #eaeaea
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_2, table.dataTable.order-column.hover tbody tr:hover > .sorting_2 {
+        background-color: #ececec
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_3, table.dataTable.order-column.hover tbody tr:hover > .sorting_3 {
+        background-color: #efefef
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_1, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_1 {
+        background-color: #a2aec7
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_2, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_2 {
+        background-color: #a3b0c9
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_3, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_3 {
+        background-color: #a5b2cb
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #111
+    }
+
+    .paginate_button {
+        padding: unset !important
+    }
+</style>
+<script>
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            if ($("#chkFilterUnregistered").is(":checked")) {
+                var isregistered = data[6] // use data for the age column
+                debugger
+                return isregistered == "true";
+            }
+            return true;
+        }
+    );
+    $(document).ready(function () {
+        debugger;
+        var table1 = $('#searchTable').DataTable(
+            {
+                searching: true,
+
+                "pageLength": 10,
+                "bLengthChange": false,
+
+                "columnDefs": [
+                    { "width": 0, "targets": 0, "bSortable": false }
+
+                ],
+                "fixedColumns": true
+                //searching: true,
+                //sdom: '<"top"i>rt<"bottom"flp><"clear">',
+                //"pagelength": 10,
+                //"blengthchange": false,
+                //"binfo": true,
+                //"columndefs": [
+                //    { "width": 0, "targets": 0, "bsortable": false }
+
+                //],
+                //"fixedcolumns": true
+            }
+        );
+        var table2 = $('#selectedPropsTable').DataTable(
+            {
+                searching: true,
+
+                "pageLength": 10,
+                "bLengthChange": false,
+                "bInfo": true,
+                "columnDefs": [
+                    { "width": 0, "targets": [0] },
+                    { "bSortable": false, targets: [0] }
+
+                ],
+                "fixedColumns": true
+
+
+                //searching: true,
+                //sDom: '<"top"i>rt<"bottom"flp><"clear">',
+                //"pageLength": 10,
+                //"bLengthChange": false,
+                //"bInfo": true,
+               
+                //"columnDefs": [
+                //    { "width": 0, "targets": [0] },
+                //    { "bSortable": false, targets: [0] }
+
+                //],
+                //"fixedColumns": true
+            }
+        );
+        $("#searchTable").on('dblclick', "tr", function () {
+            debugger
+            var row = table1.row(this);
+            let notificationEmail = $(row.data()[6]).text().trim();
+            if (notificationEmail == "") {
+                toastr.error('Employees with notification email can only be selected.', "error!");
+                return;
+            }
+            var rowNode = row.node();
+            row.remove().draw();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table1.$('tr.selected').removeClass('selected');
+                table2.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            table2.row.add(rowNode).draw();
+        });
+        $("#searchTable").on('click', "tr", function () {
+            debugger
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table1.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        $("#selectedPropsTable").on('click', "tr", function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table2.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+        $("#selectedPropsTable").on('dblclick', "tr", function () {
+            debugger
+            var col = $(this).parent().children().index($(this));
+            if (col == 5)
+                return;
+            var rowTr = $(this).parents('tr')[0];
+            var row = table2.row(rowTr);
+            var rowNode = row.node();
+            row.remove().draw();
+            table1.row.add(rowNode).draw();
+        });
+
+        $("#btnSaveemployeeSupervisors").click(function () {
+            var selectedCredentialsStr = '';
+            $('#selectedPropsTable tr').each(function () {
+                var customerId = $(this).find("td:first").find("input").each(function () {
+                    //alert(this.value);
+                    selectedCredentialsStr += this.value + ',';
+                });
+            });
+            saveemployeeSupervisorData(selectedCredentialsStr);
+        })
+
+        $("#chkFilterUnregistered").change(function () {
+            table1.draw();
+            table2.draw();
+        });
+        $("#btnAddSelected").click(function () {
+            debugger
+            /*alert(table1.rows('.selected').data().length + ' row(s) selected');*/
+            table1.rows('.selected').every(function (rowData) {
+                /*alert(table1.rows(rowData).data());*/
+                let notificationEmail = $(table1.rows(rowData).data()[0][6]).text().trim();
+                if (notificationEmail=="") {
+                    debugger
+                    toastr.error('Employees with notification email can only be selected.', "error!");
+                }
+                else {
+                    debugger
+                    table1.rows('.selected').every(function () {
+                        table2.row.add(this.node());
+                    }).remove();
+                    table1.draw();
+                    table2.draw();
+                }
+            });
+            
+        })
+        $("#btnAddAll").click(function () {
+            let rowIndexes = [];
+            table1.rows(function (idx, data, node) {
+                debugger;
+                let notificationEmail = $(data[6]).text().trim();
+                if (notificationEmail != "") {
+                    rowIndexes.push(idx);
+                }
+                return false;
+            });
+            let myrows = table1.rows(rowIndexes);
+            myrows.every(function () {
+                table2.row.add(this.node());
+            }).remove();
+            table1.draw();
+            table2.draw();
+        })
+        $("#btnRemoveSelected").click(function () {
+            debugger
+            /*alert(table2.rows('.selected').data().length + ' row(s) selected');*/
+
+            table2.rows('.selected').every(function () {
+                table1.row.add(this.node());
+            }).remove();
+            table1.draw();
+            table2.draw();
+        })
+        $("#btnRemoveAll").click(function () {
+            debugger
+            table2.rows().every(function () {
+                let notificationEmail = $(this.data()[6]).text().trim();
+                if (notificationEmail != "") {
+                    var rowNode = this.node();
+                    table1.row.add(this.node());
+                    this.node().remove();
+                }
+            }).remove();
+            table1.draw();
+            table2.draw();
+        })
+    });
+    function UnSelectAllSupervisors() {
+        debugger
+        $('#EmployeeSupervisorList').multiSelect('deselect_all');
+    }
+    function SelectAllSupervisors() {
+        debugger
+        $('#EmployeeSupervisorList').multiSelect('select_all');
+    }
+    function CloseMessagePopup(popUpId) {
+        $('#EmailBlastTemplte_modal').modal("hide");
+    }
+
+</script>

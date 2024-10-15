@@ -1,0 +1,99 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeDependent>
+<div class="form-group row">
+  <div class="col-md-12 p-0" >
+    <div class="panel panel-default" style="margin-left:5px">
+        <div class="panel-heading" style="padding-left:0px">Dependent Information</div>
+        <div class="panel-body">
+
+            <div class="table-responsive">
+                <table class="table table-striped custom-table table-nowrap mb-0">
+                    <thead>
+                        <tr>
+                            <th>
+                                First Name
+                            </th>
+                            <th>
+                                Relationship
+                            </th>
+                            <th>
+                                Gender
+                            </th>
+                            <th>
+                                Date Birth
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+
+                            </th>
+
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender.GenderName)
+                        </td>
+                        <td>
+                            @String.Format("{0:MM/dd/yyyy}", item.BirthDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DependentStatus.StatusName)
+                        </td>
+                        <td width="10%">
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                    <a href="javascript:getUserInsuranceDependentDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="employeeDependentDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Dependent - Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div id="employeeDependentDetail_modalBodyContent">
+
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

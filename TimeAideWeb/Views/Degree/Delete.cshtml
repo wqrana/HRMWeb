@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.Degree
+
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DegreeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DegreeName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DegreeDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DegreeDescription)
+        </dd>
+
+    </dl>
+
+</div>
+@Html.Partial("_DeleteViewFooter")

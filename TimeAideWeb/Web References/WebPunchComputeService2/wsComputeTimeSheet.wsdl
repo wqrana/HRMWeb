@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://cloudaide.timeaide.com/wsComputeTimeSheet/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://cloudaide.timeaide.com/wsComputeTimeSheet/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://cloudaide.timeaide.com/wsComputeTimeSheet/">
+      <s:element name="ComputeEvent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEventUserID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventStartDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventEndDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ComputeEventResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ComputeEventResult" type="tns:clsComputeEventResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="clsComputeEventResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="intTokenValidationResult" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="strTokenValidationResult" type="tns:SessionTokenValidationResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="intComputeEventResult" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="strComputeEventResult" type="tns:enumComputeEventResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="SessionTokenValidationResult">
+        <s:restriction base="s:string">
+          <s:enumeration value="MiscError" />
+          <s:enumeration value="TokenIsValid" />
+          <s:enumeration value="IsEmpty" />
+          <s:enumeration value="InvalidFormat" />
+          <s:enumeration value="NotFoundInDB" />
+          <s:enumeration value="Expired" />
+          <s:enumeration value="ConsumationCountExceeded" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="enumComputeEventResult">
+        <s:restriction base="s:string">
+          <s:enumeration value="Misc_Error" />
+          <s:enumeration value="Compute_Successful" />
+          <s:enumeration value="Error_Saving_In_DB" />
+          <s:enumeration value="EmployeeID_Empty" />
+          <s:enumeration value="EmployeeID_Invalid_Format" />
+          <s:enumeration value="EventDate_Empty" />
+          <s:enumeration value="EventDate_Invalid_Format" />
+          <s:enumeration value="EventTime_Empty" />
+          <s:enumeration value="EventTime_Invalid_Format" />
+          <s:enumeration value="EventResult_Empty" />
+          <s:enumeration value="EventResult_Invalid_Format" />
+          <s:enumeration value="EventTerminalID_Empty" />
+          <s:enumeration value="EventTerminalID_Invalid_Format" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="clsComputeEventResult" nillable="true" type="tns:clsComputeEventResult" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ComputeEventSoapIn">
+    <wsdl:part name="parameters" element="tns:ComputeEvent" />
+  </wsdl:message>
+  <wsdl:message name="ComputeEventSoapOut">
+    <wsdl:part name="parameters" element="tns:ComputeEventResponse" />
+  </wsdl:message>
+  <wsdl:message name="ComputeEventHttpGetIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEventUserID" type="s:string" />
+    <wsdl:part name="dtEventStartDate" type="s:string" />
+    <wsdl:part name="dtEventEndDate" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ComputeEventHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsComputeEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ComputeEventHttpPostIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEventUserID" type="s:string" />
+    <wsdl:part name="dtEventStartDate" type="s:string" />
+    <wsdl:part name="dtEventEndDate" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ComputeEventHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsComputeEventResult" />
+  </wsdl:message>
+  <wsdl:portType name="wsComputeTimeSheetSoap">
+    <wsdl:operation name="ComputeEvent">
+      <wsdl:input message="tns:ComputeEventSoapIn" />
+      <wsdl:output message="tns:ComputeEventSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsComputeTimeSheetHttpGet">
+    <wsdl:operation name="ComputeEvent">
+      <wsdl:input message="tns:ComputeEventHttpGetIn" />
+      <wsdl:output message="tns:ComputeEventHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsComputeTimeSheetHttpPost">
+    <wsdl:operation name="ComputeEvent">
+      <wsdl:input message="tns:ComputeEventHttpPostIn" />
+      <wsdl:output message="tns:ComputeEventHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsComputeTimeSheetSoap" type="tns:wsComputeTimeSheetSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ComputeEvent">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsComputeTimeSheet/ComputeEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsComputeTimeSheetSoap12" type="tns:wsComputeTimeSheetSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ComputeEvent">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsComputeTimeSheet/ComputeEvent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsComputeTimeSheetHttpGet" type="tns:wsComputeTimeSheetHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ComputeEvent">
+      <http:operation location="/ComputeEvent" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsComputeTimeSheetHttpPost" type="tns:wsComputeTimeSheetHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ComputeEvent">
+      <http:operation location="/ComputeEvent" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsComputeTimeSheet">
+    <wsdl:port name="wsComputeTimeSheetSoap" binding="tns:wsComputeTimeSheetSoap">
+      <soap:address location="http://tawqc.timeaide.com:9001/wsComputeTimeSheet.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsComputeTimeSheetSoap12" binding="tns:wsComputeTimeSheetSoap12">
+      <soap12:address location="http://tawqc.timeaide.com:9001/wsComputeTimeSheet.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsComputeTimeSheetHttpGet" binding="tns:wsComputeTimeSheetHttpGet">
+      <http:address location="http://tawqc.timeaide.com:9001/wsComputeTimeSheet.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsComputeTimeSheetHttpPost" binding="tns:wsComputeTimeSheetHttpPost">
+      <http:address location="http://tawqc.timeaide.com:9001/wsComputeTimeSheet.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

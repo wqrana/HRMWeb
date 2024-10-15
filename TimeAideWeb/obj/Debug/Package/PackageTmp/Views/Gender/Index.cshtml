@@ -1,0 +1,31 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Gender>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Gender
+        </th>
+        <th>
+            Description
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GenderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GenderDescription)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

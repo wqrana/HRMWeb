@@ -1,0 +1,394 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeCompensation>
+<div style="font-size: 90%;">
+    <div class="table-responsive">
+        <table class="table" id="tblEmployeeCompensations">
+            <thead>
+                <tr>
+                    <th>
+                        Compensation
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Enabled)
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    <th>
+                        End
+                    </th>
+                    <th>
+                        Money Amount
+                    </th>
+
+                    <th>
+                        Period Entry
+                    </th>
+                    <th>
+                        GL Acc.
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyCompensation.CompensationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Enabled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MoneyAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodEntry.CompensationPeriodEntryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GLAccount.GLAccountName)
+                    </td>
+                    <td>
+                        @if ((ViewBag.AllowAdd || ViewBag.AllowEdit))
+                        {
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:EditEmployeeCompensation(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a href="javascript:getEmployeeCompensationDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                    <a href="javascript:getEmployeeCompensationTimeline(@item.CompanyCompensationId);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Compensation Timeline</a>
+                                    <a href="javascript:getEmployeeCompensationDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblEmployeeCompensations').DataTable({
+            /*searching: false,*/
+            sDom: '<"top"i>rt<"bottom"flp><"clear">',
+            /*"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],*/
+            "bLengthChange": false,
+            "pageLength": 5,
+            "bInfo": false
+        });
+    });
+    function createEditEmployeeCompensation(employeeCompensationId) {
+        debugger;
+        employeeCompensationId = employeeCompensationId == 0 ? $("#EmployeeCompensationDetailId").val() : employeeCompensationId;
+        var id = employeeCompensationId == null ? $('#userID').val() : employeeCompensationId;
+        var ActionMethod = employeeCompensationId == null ? "Create" : "Edit";
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeCompensation/AddByUser',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                    $("#btnAddEmployeeCompensation").click(function (e) {
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            //Id: $('#EmploymentId').val(),
+                            HourlyRate: $('#HourlyRate').val(),
+                            MoneyAmount: $('#MoneyAmount').val(),
+                            StartDate: $('#StartDate').val(),
+                            EndDate: $('#EndDate').val(),
+                            CompanyCompensationId: $('#CompanyCompensationId').val(),
+                            GLAccountId: $('#GLAccountId').val(),
+                            GLLookupField: $('#GLLookupField').val(),
+                            Enabled: $('#Enabled').is(":checked"),
+                            PeriodEntryId: $('#PeriodEntryId').val()
+
+                        }
+
+                        //e.preventDefault();
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmployeeCompensation/AddEmployeeCompensation',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "json",
+                            success: function (html) {
+                                debugger
+                                $('#myModal').modal('hide');
+                                refreshEmployeeCompensations();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+    }
+
+    function createEditEmployeeWithholding(employeeWithholdingId) {
+        debugger;
+        employeeWithholdingId = employeeWithholdingId == 0 ? $("#EmployeeCompensationDetailId").val() : employeeWithholdingId;
+        var id = employeeWithholdingId == null ? $('#userID').val() : employeeWithholdingId;
+        var ActionMethod = employeeWithholdingId == null ? "Create" : "Edit";
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeWithholding/AddByUser',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                    $("#btnAddEmployeeWithholding").click(function (e) {
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            //Id: $('#EmploymentId').val(),
+                            HourlyRate: $('#HourlyRate').val(),
+                            MoneyAmount: $('#MoneyAmount').val(),
+                            StartDate: $('#StartDate').val(),
+                            EndDate: $('#EndDate').val(),
+                            CompanyCompensationId: $('#CompanyCompensationId').val(),
+                            GLAccountId: $('#GLAccountId').val(),
+                            GLLookupField: $('#GLLookupField').val(),
+                            Enabled: $('#Enabled').is(":checked"),
+                            PeriodEntryId: $('#PeriodEntryId').val()
+
+                        }
+
+                        //e.preventDefault();
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmployeeWithholding/AddEmployeeWithholding',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "json",
+                            success: function (html) {
+                                debugger
+                                $('#myModal').modal('hide');
+                                refreshEmployeeCompensations();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+    }
+
+    function EditEmployeeCompensation(employeeCompensationId) {
+        debugger;
+        /*employeeCompensationId = employeeCompensationId == 0 ? $("#EmployeeCompensationDetailId").val() : employeeCompensationId;*/
+        var id = null ? $('#userID').val() : employeeCompensationId;
+        var ActionMethod = employeeCompensationId == null ? "Create" : "Edit";
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeCompensation/Edit',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                    $("#btnAddEmployeeCompensation").click(function (e) {
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            Id: employeeCompensationId,
+                            //Id: $('#EmploymentId').val(),
+                            HourlyRate: $('#HourlyRate').val(),
+                            MoneyAmount: $('#MoneyAmount').val(),
+                            StartDate: $('#StartDate').val(),
+                            EndDate: $('#EndDate').val(),
+                            CompanyCompensationId: $('#CompanyCompensationId').val(),
+                            GLAccountId: $('#GLAccountId').val(),
+                            GLLookupField: $('#GLLookupField').val(),
+                            Enabled: $('#Enabled').is(":checked"),
+                            PeriodEntryId: $('#PeriodEntryId').val()
+
+                        }
+
+                        //e.preventDefault();
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmployeeCompensation/Edit',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "json",
+                            success: function (html) {
+                                debugger
+                                $('#myModal').modal('hide');
+                                refreshEmployeeCompensations();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+    }
+
+    function getEmployeeCompensationDetail(employeeCompensationId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeCompensation/Details',
+            data: { "id": employeeCompensationId },
+
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+    function getEmployeeCompensationTimeline(employeeCompensationId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeCompensation/CompensationTimeline',
+            data: { "id": employeeCompensationId },
+
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getEmployeeCompensationDeleteData(id) {
+        if (id != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/EmployeeCompensation/Delete',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+
+    function addEmployeeCompensationDefaults() {
+        // divEmployeeLicensesCreateEdit
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeCompensation/CreateDefaults',
+
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#myModalContent").html(data);
+                $("#myModal").modal("show");
+            },
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function addEmployeeWithholdingDefaults() {
+        // divEmployeeLicensesCreateEdit
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeWithholding/CreateDefaults',
+
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#myModalContent").html(data);
+                $("#myModal").modal("show");
+            },
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+</script>
+<style>
+    .paginate_button {
+        padding: unset !important
+    }
+
+    .bottom {
+        float: left
+    }
+
+    .dataTables_filter input {
+        display: inline !important;
+        width: unset !important;
+    }
+
+    .dataTables_filter {
+        margin-left: 20px;
+        margin-top: 5px;
+    }
+</style>

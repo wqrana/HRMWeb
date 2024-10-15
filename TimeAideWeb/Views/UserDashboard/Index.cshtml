@@ -1,0 +1,624 @@
+﻿@model TimeAide.Web.ViewModel.DashboardViewModel
+@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Dashboard</h3>
+            @*<ul class="breadcrumb">
+                    <li class="breadcrumb-item">Dashboard</li>
+                    <li class="breadcrumb-item active">Admin Dashboard</li>
+
+                </ul>*@
+            <div class="alert" style="display:none;" id="dashboardIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="welcome-box mb-2">
+            <div class="welcome-img">
+                <img alt="" src="@Model.UserProfilePicture">
+            </div>
+            <div class="welcome-det">
+                <h3>Welcome, @Html.DisplayFor(m => m.UserName)</h3>
+                <p>@DateTime.Now.ToString("dddd, dd MMMM yyyy")</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    @if (TimeAide.Services.ApplicationConfigurationService.IsWidgetAvailable("ShowEmployeeRecords"))
+    {
+        <div class="col-md-12 col-lg-6 col-xl-4 d-flex pl-0">
+            <div class="card flex-fill mb-2">
+                <div class="card-body pb-0">
+                    <h4 class="card-title" style="margin-left:-10px;margin-right:-10px;">
+                        Employee Records
+                        <span class="pull-right" style="font-size:x-small;">
+                            <select id="userRecordPeriodType">
+                                <option value="0">Today</option>
+                                <option value="1">This Week</option>
+                                <option value="2">Two Weeks</option>
+                                <option value="3">One Month</option>
+                                <option value="4" selected>Quarter</option>
+                                <option value="6">Semester</option>
+                                <option value="12">One Year</option>
+                            </select>
+                        </span>
+                    </h4>
+                    <div id="divLoadingUserRecordWidget" class="align-content-md-start">
+                        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                    </div>
+                    <div id="divDashboardEmpRecord">
+
+
+                    </div>
+                </div>
+                <div class="card-footer" style="text-align:center;">
+                    @* <a href="javascript:loadUserWidgetDetail();" class="fa fa-refresh"></a>*@
+                    <a href="/UserInformation/Index" style="color:#007bff;">View all Employees</a>
+
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="col-md-8 d-flex pl-0">
+            <div class="card card-table flex-fill mb-2">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Employees List</h3>
+                </div>
+                <div class="card-body">
+                    <div id="divLoadingEmployeeList" class="align-content-md-start">
+                        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                    </div>
+                    <div id="divDashboardEmpList" style="max-height:270px; overflow-y:auto">
+                        <div class="table-responsive">
+                            <table class="table table-nowrap custom-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            EmployeeID
+                                        </th>
+                                        <th>Status</th>
+
+                                        <th>
+                                            Name
+                                        </th>
+
+                                        <th>
+                                            Company
+                                        </th>
+
+                                        @*<th>
+                                                Position
+                                            </th>*@
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/UserInformation/Index" style="color:#007bff;">View all Employees</a>
+                </div>
+            </div>
+        </div>
+            -->
+    }
+    @if (TimeAide.Services.ApplicationConfigurationService.IsWidgetAvailable("ShowGenderStatistics"))
+    {
+        @*<div class="col-md-12 col-lg-6 col-xl-4 d-flex pl-0">
+                <div class="card flex-fill mb-2">
+                    <div class="card-body">
+                        <h4 class="card-title" style="margin-left:-10px;margin-right:-10px;">
+                            Company Statistics
+                        </h4>
+
+                        <div id="divCompanyStats">
+                            <div class="progress mb-4">
+                                @{
+                                    decimal maleRatio = 0;
+                                    decimal femaleRatio = 0;
+                                    if (Model.CompanyStats != null)
+                                    {
+                                        femaleRatio = Math.Round(Model.CompanyStats.GenderRatio, 2);
+                                        if (Model.CompanyStats.MaleEmployees > 0)
+                                        {
+                                            maleRatio = 100 - femaleRatio;
+                                        }
+                                    }
+                                }
+                                <div class="progress-bar bg-purple" role="progressbar" style="width: @femaleRatio%" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100">@femaleRatio%</div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width: @maleRatio%" aria-valuenow="26" aria-valuemin="0" aria-valuemax="100">@maleRatio%</div>
+
+                            </div>
+                            <p><i class="fa fa-hand-o-right text-info mr-2"></i> Total Empoyees <span class="float-right"> @Html.DisplayFor(model => model.CompanyStats.TotalEmpoyees)</span></p>
+                            <p><i class="fa fa-hand-o-right text-success mr-2"></i>Male Employees <span class="float-right"> @Html.DisplayFor(model => model.CompanyStats.MaleEmployees)</span></p>
+                            <p><i class="fa fa-hand-o-right text-purple mr-2"></i> Female Employees <span class="float-right"> @Html.DisplayFor(model => model.CompanyStats.FemaleEmployees)</span></p>
+                            <p><i class="fa fa-hand-o-right text-muted mr-2"></i> Female - Male Ratio <span class="float-right">  @Html.DisplayFor(model => model.CompanyStats.GenderRatio)%</span></p>
+                            <p><i class="fa fa-hand-o-right text-blue mr-2"></i>New Hiring <span class="float-right">@Html.DisplayFor(model => model.CompanyStats.NewHiring)</span></p>
+                            <p><i class="fa fa-hand-o-right text-danger mr-2"></i> New Terminations <span class="float-right">@Html.DisplayFor(model => model.CompanyStats.NewTerminations)</span></p>
+                            <p><i class="fa fa-hand-o-right text-dark mr-2"></i>  Turn Over Ratio <span class="float-right"> @Html.DisplayFor(model => model.CompanyStats.TurnOverRatio)%</span></p>
+
+                        </div>
+                    </div>
+                    <div class="card-footer" style="text-align:center;">
+                        <a href="javascript:void();" class="fa fa-ban"></a>
+                    </div>
+                </div>
+            </div>*@
+        <div class="col-md-12 col-lg-6 col-xl-4 d-flex pl-0">
+            <div class="card flex-fill mb-2">
+                <div class="card-body pb-0">
+                    <h4 class="card-title" style="margin-left:-10px;margin-right:-10px;">
+                        Gender Statistics
+                        <span class="pull-right" style="font-size:x-small;">
+                            <select id="genderStatPeriodType">
+                                <option value="-1" selected>All</option>
+                                <option value="0">Today</option>
+                                <option value="1">This Week</option>
+                                <option value="2">Last 2 Weeks</option>
+                                <option value="3">Last 1 Month</option>
+                                <option value="4">Last 3 Months</option>
+                                <option value="6">Last 6 Months</option>
+                                <option value="12">Last 1 Year</option>
+                            </select>
+                        </span>
+                    </h4>
+                    <div id="divLoadingcompStatWidget" class="align-content-md-start">
+                        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                    </div>
+                    <div id="divDashboardCompStat">
+
+                    </div>
+                </div>
+                <div class="card-footer" style="text-align:center;">
+                    <a href="javascript:void();" class="fa fa-ban"></a>
+                </div>
+            </div>
+        </div>
+
+    }
+    @if (TimeAide.Services.ApplicationConfigurationService.IsWidgetAvailable("ShowNotificationsCurrentStatistics"))
+    {
+        <div class="col-md-12 col-lg-6 col-xl-4 d-flex pl-0">
+            <div class="card flex-fill mb-2">
+                <div class="card-body pb-0">
+                    <h4 class="card-title" style="margin-left:-10px;margin-right:-10px;">
+                        Notification(s) Statistics
+                        <span class="pull-right" style="font-size:x-small;">
+                            <select id="currentNotificationPeriodType">
+                                <option value="0">Today</option>
+                                <option value="1">This Week</option>
+                                <option value="2">Two Weeks</option>
+                                <option value="3">One Month</option>
+                                <option value="4" selected>Quarter</option>
+                                <option value="6">Semester</option>
+                                <option value="12">One Year</option>
+                            </select>
+                        </span>
+                    </h4>
+                    <div id="divLoadingcurrentNotificationWidget" class="align-content-md-start">
+                        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                    </div>
+                    <div id="divDashboardCurrNotiRecord">
+
+                        <div class="statistics">
+                            <div class="row">
+                                <div class="col-md-6 col-6 text-center">
+                                    <a href="">
+                                        <div class="stats-box mb-4">
+                                            <p>Notifying</p>
+
+                                            <h3>0</h3>
+
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6 col-6 text-center">
+                                    <a href="">
+                                        <div class="stats-box mb-4">
+                                            <p>Expired</p>
+                                            <h3>0</h3>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+
+                        </div>
+                        <div>
+
+                            <p><i class="fa fa-dot-circle-o text-warning mr-2"></i>Notifying <span class="float-right">0</span></p>
+
+                            <p><i class="fa fa-dot-circle-o text-danger mr-2"></i>Expired <span class="float-right">0</span></p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="text-align:center;">
+                    <a href="javascript:loadCurrentNotificationWidgetDetail();" class="fa fa-refresh"></a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (TimeAide.Services.ApplicationConfigurationService.IsWidgetAvailable("ShowExpirationNotifications"))
+    {
+        <div class="col-md-12 col-lg-4 col-xl-4 d-flex pl-0">
+            <div class="card flex-fill mb-2">
+                <div class="card-body pb-0">
+                    <h4 class="card-title" style="margin-left:-10px;margin-right:-10px;">
+                        Expiration Notification(s) Forecast
+
+                    </h4>
+                    <div id="divLoadingNotificationForecastWidget" class="align-content-md-start">
+                        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                    </div>
+                    <div id="divDashboardNotificationForecastRecord">
+
+
+                    </div>
+                </div>
+                <div class="card-footer" style="text-align:center;">
+                    <a href="javascript:getDashboarForecastNotificationWidgetDetail();" class="fa fa-refresh"></a>
+                </div>
+            </div>
+        </div>
+        <!--
+            <div class="col-md-12 d-flex">
+                <div class="card card-table flex-fill">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0" id="notificationTypeList">Notification(s) Current List</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="divLoadingCurrNotificationList" class="align-content-md-start">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                        </div>
+                        <div id="divDashboardNotificationList" style="max-height:270px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap custom-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                EmployeeID
+                                            </th>
+                                            <th>
+                                                Employee Name
+                                            </th>
+                                            <th>Record Name</th>
+                                            <th>Record Type</th>
+                                            <th>Notification Date</th>
+                                            <th>Status</th>
+                                            <th>Expiry Date</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @*<tr>
+                                                <td>
+                                                    11
+                                                </td>
+                                                <td>
+                                                    Employee 12
+                                                </td>
+                                                <td>Driving license</td>
+                                                <td>Document</td>
+                                                <td><span class="badge bg-inverse-warning">Notifying</span></td>
+
+                                                <td>
+                                                    06/20/2020
+                                                </td>
+
+
+                                            </tr>*@
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/UserInformation/Index"></a>
+                    </div>
+                </div>
+            </div>
+        -->
+    }
+    <div id="divMyDashboardPopup">
+
+    </div>
+</div>
+@Html.Partial("_NotificationListPopup")
+@Html.Partial("_EmployeeListPopup")
+<script>
+    $(document).ready(function () {
+        getGenderStatDashboardWidgetDetail();
+        loadUserWidgetDetail();
+        loadCurrentNotificationWidgetDetail();
+        getDashboarForecastNotificationWidgetDetail();
+        $("#genderStatPeriodType").change(function () {
+            getGenderStatDashboardWidgetDetail();
+        });
+        $('#userRecordPeriodType').on('change', function () {
+            loadUserWidgetDetail();
+        });
+        $('#currentNotificationPeriodType').on('change', function () {
+            loadCurrentNotificationWidgetDetail();
+        });
+        //multiple modal overlapping issue (fixed)
+        $(document).on('show.bs.modal', '.modal', function () {
+            var zIndex = 1040 + (10 * $('.modal:visible').length);
+            $(this).css('z-index', zIndex);
+            setTimeout(function () {
+                $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+            }, 0);
+        });
+
+    });
+    function loadUserWidgetDetail() {
+        getUserDashboardWidgetDetail();
+        //getUserDashboardEmployeeList(null);
+    }
+    function loadCurrentNotificationWidgetDetail() {
+        getDashboardCurrentNotificationWidgetDetail();
+        // getDashboardCurrentNotificationList(null);
+    }
+    function getGenderStatDashboardWidgetDetail() {
+        $("#divLoadingcompStatWidget").show();
+        debugger;
+        var parmObject = new Object();
+        parmObject.UserRecordPeriodTypeId = $('#genderStatPeriodType').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/GetDashboardGenderStatWidget',
+            data: JSON.stringify(parmObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+
+                $("#divDashboardCompStat").html(data);
+                $("#divLoadingcompStatWidget").hide();
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getUserDashboardWidgetDetail() {
+        $("#divLoadingUserRecordWidget").show();
+        debugger;
+        var parmObject = new Object();
+        parmObject.UserRecordPeriodTypeId = $('#userRecordPeriodType').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/GetDashboardEmployeeRecordWidget',
+            data: JSON.stringify(parmObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+
+                $("#divDashboardEmpRecord").html(data);
+                $("#divLoadingUserRecordWidget").hide();
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getUserDashboardEmployeeList(statusTypeId) {
+        $("#divLoadingEmployeeList").show();
+        debugger;
+        var parmObject = new Object();
+        parmObject.UserRecordPeriodTypeId = $('#userRecordPeriodType').val();
+        parmObject.UserRecordStatusTypeId = statusTypeId;
+        $("#divDashboardEmployeesList").html("");
+        $("#employeeList_modal").modal("show");
+        $("#divLoadingEmployeesList").show();
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/GetDashboardEmployeeList',
+            data: JSON.stringify(parmObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+
+                //$("#divDashboardEmpList").html(data);
+                //$("#divLoadingEmployeeList").hide();
+
+                $("#divDashboardEmployeesList").html(data);
+                $("#divLoadingEmployeesList").hide();
+                setListDatatable("tblDashboardEmployee");
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getDashboardCurrentNotificationWidgetDetail() {
+        $("#divLoadingCurrentNotificationWidget").show();
+        debugger;
+        var parmObject = new Object();
+        parmObject.UserRecordPeriodTypeId = $('#currentNotificationPeriodType').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/GetDashboardCurrentNotificationRecordWidget',
+            data: JSON.stringify(parmObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+
+                $("#divDashboardCurrNotiRecord").html(data);
+                $("#divLoadingcurrentNotificationWidget").hide();
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getDashboardCurrentNotificationList(statusTypeId) {
+        $("#divLoadingCurrNotificationList").show();
+        debugger;
+        var parmObject = new Object();
+        parmObject.UserRecordPeriodTypeId = $('#currentNotificationPeriodType').val();
+        parmObject.UserRecordStatusTypeId = statusTypeId;
+
+
+        //$('#NotificationTypeName').text("Notification(s) Current List");
+        //$("#divDashboardNotificationsList").html("");
+        //$("#notificationList_modal").modal("show");
+        //$("#divLoadingNotificationList").show();
+        setNotificationTypePopup("Notification(s) Current List");
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/GetDashboardCurrentNotificationList',
+            data: JSON.stringify(parmObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                if (statusTypeId != null) {
+
+                    //$('html, body').animate({
+                    //    scrollTop: ($('#divDashboardNotificationList').offset().top)
+                    //}, 500);
+                }
+                //$('#notificationTypeList').text("Notification(s) Current List");
+                //$("#divDashboardNotificationList").html(data);
+                //$("#divLoadingCurrNotificationList").hide();
+
+                $('#NotificationTypeName').text("Notification(s) Current List");
+                $("#divDashboardNotificationsList").html(data);
+                $("#divLoadingNotificationList").hide();
+                setListDatatable("tblNotification");
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getDashboarForecastNotificationWidgetDetail() {
+        $("#divLoadingNotificationForecastWidget").show();
+        debugger;
+
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/GetDashboardForecastNotificationRecordWidget',
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+
+                $("#divDashboardNotificationForecastRecord").html(data);
+                $("#divLoadingNotificationForecastWidget").hide();
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getDashboardForecastNotificationList(forecastMonthId) {
+        $("#divLoadingCurrNotificationList").show();
+        debugger;
+        var parmObject = new Object();
+        parmObject.ForecastMonthId = forecastMonthId;
+        //$("#divDashboardNotificationsList").html("");
+        //$("#notificationList_modal").modal("show");
+        //$('#NotificationTypeName').text("Notification(s) Forecast List");
+        //$("#divLoadingNotificationList").show();
+        setNotificationTypePopup("Notification(s) Forecast List");
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/GetDashboardForecastNotificationList',
+            data: JSON.stringify(parmObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                if (forecastMonthId != null) {
+                    //$('html, body').animate({
+                    //    scrollTop: ($('#divDashboardNotificationList').offset().top)
+                    //}, 500);
+                }
+                //$('#notificationTypeList').text("Notification(s) Forecast List");
+                //$("#divDashboardNotificationList").html(data);
+                //$("#divLoadingCurrNotificationList").hide();
+
+                $("#divDashboardNotificationsList").html(data);
+                $("#divLoadingNotificationList").hide();
+                setListDatatable("tblNotification");
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getEmployeeDashboardPopup(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/UserDashboard/MyDashboard',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                console.log(data);
+                $("#divMyDashboardPopup").html(data);
+                $("#MyDashboard_modal").modal("show");
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function setNotificationTypePopup(typeName) {
+        $("#divDashboardNotificationsList").html("");
+        $("#notificationList_modal").modal("show");
+        $('#NotificationTypeName').text(typeName);
+        $("#divLoadingNotificationList").show();
+    }
+    function setListDatatable(tableName) {
+        $('#' + tableName).dataTable({
+            "searching": true,
+            "paging": true,
+            "pageLength": 5,
+            "lengthChange": false
+        });
+    }
+
+</script>   

@@ -1,0 +1,33 @@
+﻿@model TimeAide.Web.Models.SupervisoryLevel
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SupervisoryLevelName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupervisoryLevelName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SupervisoryLevelDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupervisoryLevelDescription)
+        </dd>
+
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

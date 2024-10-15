@@ -1,0 +1,126 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeAttendenceSchDetail>
+@Html.Hidden("OldCompanyId", Model.Select(w => w.OldCompanyId).FirstOrDefault())
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblScheduleDetail">
+
+        <thead>
+            <tr>
+                <th style="display:none;"></th>
+                <th>Action</th>
+                <th></th>
+                <th>EmployeeID</th>
+                <th>Punch Date</th>
+                <th>Day Type</th>
+                <th>PunchNum </th>
+                <th>Punch-In 1</th>
+                <th>Punch-Out 1</th>
+                <th>Punch-In 2</th>
+                <th>Punch-Out 2</th>
+                <th>Day Hour(s)</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td style="display:none;">@item.Id</td>
+                <td class="text-left">
+
+                    <div class="dropdown dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:getScheduleDetailEditData(@item.nSchedModPeriodSummId,@item.Id,@item.OldCompanyId);"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                            @*<a class="dropdown-item" href="javascript:getScheduleDeleteData(@item.Id,@item.OldCompanyId);"><i class="fa fa-trash-o m-r-5"></i> Delete</a>*@
+
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    <a href="javascript:getScheduleDetailEditData(@item.nSchedModPeriodSummId,@item.Id,@item.OldCompanyId);"><i class="fa fa-pencil m-r-5"></i></a>
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.nUserID)
+                </td>
+
+                <td>
+                    @{ var punchDate = (item.dPunchDate.Value).ToString("ddd, dd MMMM yyyy");}
+                    @Html.DisplayFor(modelItem => punchDate)
+                </td>
+
+                <td>
+                    @{ 
+                        var showTypeCls = "text-success";
+                        //fa fa-close text-danger
+
+                        if (item.nWorkDayType == 0)
+                        {
+                            showTypeCls = "text-danger";
+                        }
+                        else if (item.nWorkDayType == 2)
+                        {
+                            showTypeCls = "text-warning";
+                        }
+                    }
+                    <span class="@showTypeCls">
+                        @Html.DisplayFor(modelItem => item.sWorkDayTypeName)
+                    </span>
+                </td>
+
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.nPunchNum)
+                </td>
+                <td>
+                    @{ var PunchIn1 = (item.dPunchIn1 == null) ? "" : item.dPunchIn1.Value.ToString("MM/dd hh:mm tt");
+                        if (item.nPunchNum < 1) { PunchIn1 = ""; }
+                    }
+                    @Html.DisplayFor(modelItem => PunchIn1)
+                </td>
+                <td>
+                    @{ var PunchOut1 = (item.dPunchOut1 == null) ? "" : item.dPunchOut1.Value.ToString("MM/dd hh:mm tt");
+                        if (item.nPunchNum < 2) { PunchOut1 = ""; }
+                    }
+                    @Html.DisplayFor(modelItem => PunchOut1)
+                </td>
+                <td>
+                    @{ var PunchIn2 = (item.dPunchIn2 == null) ? "" : item.dPunchIn2.Value.ToString("MM/dd hh:mm tt");
+                        if (item.nPunchNum < 4) { PunchIn2 = ""; }
+                    }
+                    @Html.DisplayFor(modelItem => PunchIn2)
+                </td>
+                <td>
+                    @{ var PunchOut2 = (item.dPunchOut2 == null) ? "" : item.dPunchOut2.Value.ToString("MM/dd hh:mm tt");
+                        if (item.nPunchNum < 4) { PunchOut2 = ""; }
+                    }
+                    @Html.DisplayFor(modelItem => PunchOut2)
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.dblDayHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sNote)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#tblScheduleDetail').dataTable({
+            "searching": true,
+            "paging": false
+        });
+
+
+    });
+
+</script>
+

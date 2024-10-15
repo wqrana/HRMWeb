@@ -1,0 +1,189 @@
+﻿@model TimeAide.Web.Models.EmployeeDependent
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+    
+</style>
+<div id="employeeDependentCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Dependent - Create</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeDependentCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Dependent Information</div>
+                            <div class="panel-body mt-2">
+                                @Html.HiddenFor(m => m.Id, new { id = "EmployeeDependentId" })
+
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                        First Name:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+
+                                    <label class="col-md-2 col-form-label">
+                                        Last Name: <span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="col-md-2 col-form-label">
+                                        SSN: <span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.SSN, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label">
+                                        Birth Date: <span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                        Gender:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        <div class="input-group">
+                                            @Html.DropDownList("GenderId", null, "Please select", new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                        Relationship:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        <div class="input-group">
+                                            @Html.DropDownList("RelationshipId", null, "Please select", new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                        Status:<span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.DropDownList("DependentStatusId", null, "Please select", new { @class = "form-control" })
+                                    </div>
+                                    <label class="col-md-2 col-form-label">
+                                        Full-Time Student: <span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-1">
+                                         @Html.CheckBoxFor(model => model.IsFullTimeStudent, new { id = "IsFullTimeStudentAE" })
+                                        
+                                    </div>
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                        School Attending:<span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.SchoolAttending, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label">
+                                        Health Insurance: <span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.CheckBoxFor(model => model.IsHealthInsurance, new { id = "IsHealthInsuranceAE" })
+                                        <!--<input type="checkbox" id="IsHealthInsurance"  />-->
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label">
+                                        Dental Insurance: <span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-2">
+
+                                        @Html.CheckBoxFor(model => model.IsDentalInsurance, new { id = "IsDentalInsuranceAE" })
+                                        <!--<input type="checkbox" id="IsDentalInsurance"  />-->
+                                    </div>
+                                    <label class="col-md-2 col-form-label">
+                                        Tax Purposes: <span class="text-danger"></span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.CheckBoxFor(model => model.IsTaxPurposes, new { id = "IsTaxPurposesAE" })
+                                        <!-- <input type="checkbox" id="IsTaxPurposes"  />-->
+
+                                    </div>
+                                </div>    
+
+                                </div>
+                            </div>
+                     </div>
+                                 
+                  </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnSaveEmployeeDependent" class="btn btn-primary submit-btn">Save</button>
+                        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+     
+        //$("#ReviewDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        //$("#ExpiryDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $('#SSN').mask('999-99-9999');
+        var currentYear = (new Date).getFullYear();
+        var currentMonth = (new Date).getMonth();
+        var currentDay = (new Date).getDate();
+
+
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({
+                format: 'MM/DD/YYYY',
+
+
+                maxDate: new Date(currentYear, currentMonth, currentDay)
+            });
+
+        });
+
+        $("#btnSaveEmployeeDependent").click(function () {
+            saveUserDependentData();
+        })               
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        }); 
+       
+
+    });
+  
+</script>
+

@@ -1,0 +1,1246 @@
+﻿@using TimeAide.Web.Models;
+@model TimeAide.Models.ViewModel.ApplicantApplyJobViewModel
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+</style>
+@Html.HiddenFor(m => m.JobDetail.IsHomeAddress,new {@id= "IsHomeAddress" })
+@Html.HiddenFor(m => m.JobDetail.IsMailingAddress, new { @id = "IsMailingAddress" })
+@Html.HiddenFor(m => m.JobDetail.IsAvailablity, new { @id = "IsAvailability" })
+@Html.HiddenFor(m => m.JobDetail.IsPreviousEmployment, new { @id = "IsPreviousEmployment" })
+@Html.HiddenFor(m => m.JobDetail.IsEducation, new { @id = "IsEducation" })
+<div id="applyJob_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Apply Job Wizard</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr class="m-0">
+                <div class="alert alert-info mb-0" id="applyJobWizardStepTitle">
+                    <span class="fa fa-user-plus"></span><span class="ml-1 text-md-left">Welcome to Apply Job Wizard</span>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <!--Inline form layout -->
+                <div id="applyJobWizardS1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="job-info job-widget mb-0 p-2">
+                                <h3 class="job-title">@Html.DisplayFor(m => m.JobDetail.Position.PositionName)</h3>
+                                <span class="job-dept">@Html.DisplayFor(m => m.JobDetail.Department.DepartmentName)</span>
+                                <ul class="job-post-det">
+                                    <li><i class=""></i> Location(s): <span class="text-primary">@Html.DisplayFor(m => m.JobDetail.SelectedLocationNames)</span></li>
+                                    <li><i class=""></i> Employment Type: <span class="text-primary">@Html.DisplayFor(m => m.JobDetail.EmploymentType.EmploymentTypeName)</span></li>
+                                    <li><i class=""></i> Experience: <span class="text-primary">@Html.DisplayFor(m => m.JobDetail.Experience)</span></li>
+                                    <li><i class=""></i> No Of Vacancies: <span class="text-primary">@Html.DisplayFor(m => m.JobDetail.NoOfVacancies)</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="job-content job-widget p-2">
+                                <div class="job-desc-title"><h4>Job Description</h4></div>
+                                <div class="job-description" style="max-height:300px; overflow-y:auto">
+                                    @Html.Raw(Model.JobDetail.JobDescription)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section mt-2">
+                        <button id="btnApplyJobS1Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnApplyJobS1Back" class="btn btn-dark" disabled>Back</button>
+                        <button id="btnApplyJobS1Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="applyJobWizardS2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr class="m-0">
+                            <h6 class="card-title">Personal Information</h6>
+                            <div class="form-group row">
+
+                                <label class="col-md-2 col-form-label pr-0">First Name: <span class="text-danger">*</span></label>
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                    <small id="FirstNameValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-1 col-form-label pr-0">Initial: <span class="text-danger"></span></label>
+                                <div class="col-md-1 pl-0">
+                                    @Html.EditorFor(model => model.MiddleInitial, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">1st LastName: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FirstLastName, new { htmlAttributes = new { @class = "form-control" } })
+                                    <small id="FirstLastNameValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">2nd LastName: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SecondLastName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Gender: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("GenderId", null, "Optional", htmlAttributes: new { @class = "form-control" })
+                                    <small id="GenderIdValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Disability:</label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("DisabilityId", null, "Optional", htmlAttributes: new { @class = "form-control" })
+
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Cell Phone: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CellNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                    <small id="CellNumberValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Personal Email: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.PersonalEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                    <small id="PersonalEmailValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label  pr-0">Reference Type: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("ApplicantReferenceTypeId", null, "Optional", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label  pr-0"> Reference Src.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("ApplicantReferenceSourceId", null, "Optional", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label  pr-0">Location(s): <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @*@Html.DropDownList("JobLocationId", null, "Optional", htmlAttributes: new { @class = "form-control" })*@
+                                    @Html.ListBox("JobLocationIds", (IEnumerable<SelectListItem>)ViewBag.JobLocationId, new { @class = "form-control" })
+                                </div>
+                               
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label"> Available to Start: </label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.DateAvailable, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-4 col-form-label">  Have you worked with us before? <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    @Html.CheckBox("IsWorkedBefore", Model.IsWorkedBefore ?? false)
+                                </div>
+                               
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label pr-0"> Willing to work overtime? <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    @Html.CheckBox("IsOvertime", Model.IsOvertime ?? false)
+                                </div>
+                                <label class="col-md-4 col-form-label pr-0">  Any Relatives employed with us?  <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    @Html.CheckBox("IsRelativeInCompany", Model.IsRelativeInCompany ?? false)
+                                    @{
+                                        var showHideCls = (Model.IsRelativeInCompany ?? false) ? "showField" : "hideField";
+                                    }
+                                </div>
+                                <label class="col-md-1 col-form-label @showHideCls" id="lblRelativeName">Name:</label>
+                                <div class="col-md-2 pr-0 @showHideCls" id="divRelativeName">
+                                    @Html.EditorFor(model => model.RelativeName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+                                <label class="col-md-2 col-form-label pr-0"> Upload CV: <span class="text-danger">*</span></label>
+
+                                <div class="col-md-10">
+
+                                    @* <input class="form-control" type="file" id="uploadApplicantCV" accept=".docx,.doc,.pdf">*@
+                                    <div class="form-group files">
+                                        <input type="file" class="form-control" id="uploadApplicantCV" accept=".docx,.doc,.pdf">
+                                    </div>
+                                    <small id="ApplicantCVValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                            </div>
+                            <hr class="m-0">
+
+                        </div>
+                    </div>
+                    <div class="submit-section mt-2">
+                        <button id="btnApplyJobS2Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnApplyJobS2Back" class="btn btn-primary">Back</button>
+                        <button id="btnApplyJobS2Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="applyJobWizardS3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr class="m-0">
+                            <h6 class="card-title">Home Address</h6>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Address 1
+                                </label>
+                                <div class="col-md-4 pl-0 pr-0">
+                                    @Html.EditorFor(model => model.HomeAddress1, new { htmlAttributes = new { @class = "form-control" } })
+                                    <small id="HomeAddress1Valid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Address 2
+                                </label>
+                                <div class="col-md-4 pl-0 pr-0">
+                                    @Html.EditorFor(model => model.HomeAddress2, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Country
+                                </label>
+                                <div class="col-md-3 ">
+                                    @Html.DropDownList("HomeCountryId", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                                    <small id="HomeCountryIdValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    State
+                                </label>
+                                <div class="col-md-3 pr-0">
+                                    <select id="HomeStateId" class="form-control">
+                                        <option value="">Please select</option>
+                                    </select>
+                                    <small id="HomeStateIdValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    City
+                                </label>
+                                <div class="col-md-3">
+                                    <select id="HomeCityId" class="form-control">
+                                        <option value="">Please select</option>
+                                    </select>
+                                    <small id="HomeCityIdValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Zip Code
+                                </label>
+                                <div class="col-md-3 pr-0 pb-0">
+                                    @Html.EditorFor(model => model.HomeZipCode, new { htmlAttributes = new { @class = "form-control", id = "HomeZipCodeTxt" } })
+                                    <small id="HomeZipCodeValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <h6 class="card-title">Mailing Address</h6>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Address 1
+                                </label>
+                                <div class="col-md-4 pl-0 pr-0">
+                                    @Html.EditorFor(model => model.MailingAddress1, new { htmlAttributes = new { @class = "form-control" } })
+                                    <small id="MailingAddress1Valid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Address 2
+                                </label>
+                                <div class="col-md-4 pl-0 pr-0">
+                                    @Html.EditorFor(model => model.MailingAddress2, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Country
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.DropDownList("MailingCountryId", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                                    <small id="MailingCountryIdValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    State
+                                </label>
+                                <div class="col-md-3 pr-0">
+                                    <select id="MailingStateId" class="form-control" >
+                                        <option value="">Please select</option>
+                                        </select>
+                                    <small id="MailingStateIdValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    City
+                                </label>
+                                <div class="col-md-3">
+                                    <select id="MailingCityId" class="form-control">
+                                        <option value="">Please select</option>
+                                    </select>
+                                    <small id="MailingCityIdValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                                <label class="col-md-2 col-form-label">
+                                    Zip Code
+                                </label>
+                                <div class="col-md-3 pr-0">
+                                    @Html.EditorFor(model => model.MailingZipCode, new { htmlAttributes = new { @class = "form-control", id = "MailingZipCodeTxt" } })
+                                    <small id="MailingZipCodeValid" class="form-text text-danger">Missing field value.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="submit-section mt-2">
+                        <button id="btnApplyJobS3Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnApplyJobS3Back" class="btn btn-primary">Back</button>
+                        <button id="btnApplyJobS3Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="applyJobWizardS31">
+                    <hr class="m-0">
+                    <h6 class="card-title">Availability Information</h6>
+                    @{
+                        var shiftModel = new ApplicantApplication();
+
+                    }
+                    @Html.Partial("_ApplicantShift", shiftModel)
+                    <hr class="m-0">
+                    <div class="submit-section mt-2">
+                        <button id="btnApplyJobS31Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnApplyJobS31Back" class="btn btn-primary">Back</button>
+                        <button id="btnApplyJobS31Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="applyJobWizardS32">
+                    @*<hr class="m-0">
+                        <h6 class="card-title">Previous Employment</h6>*@
+
+                    @*@Html.Partial("_ApplicantShift", shiftModel)*@
+                    @{ Html.RenderAction("ApplicantEmployment");}
+                    <hr class="m-0">
+                    <div class="submit-section mt-2">
+                        <button id="btnApplyJobS32Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnApplyJobS32Back" class="btn btn-primary">Back</button>
+                        <button id="btnApplyJobS32Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="applyJobWizardS33">
+                    <hr class="m-0">
+
+                    @{ Html.RenderAction("ApplicantEducation");}
+                    <hr class="m-0">
+                    <div class="submit-section mt-2">
+                        <button id="btnApplyJobS33Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnApplyJobS33Back" class="btn btn-primary">Back</button>
+                        <button id="btnApplyJobS33Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="applyJobWizardS4">
+                    <hr class="m-0">
+                    <h6 class="card-title">General Question(s)</h6>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive" style="max-height:550px; overflow-y:auto">
+                                <table class="table table-condensed table-sm table-striped mb-0" id="tblJobQuestion">
+                                    @{
+                                        var qno = 0;
+                                    }
+                                    @foreach (var item in Model.InterviewQuestionList)
+                                    {
+                                        qno += 1;
+                                    <tr>
+                                        @{ var validQId = item.Id.ToString() + "Valid";
+                                            bool isRequired = item.IsRequired ?? false;
+                                            var showRequireSign = isRequired == true ? "*" : "";
+                                        }
+                                        <td width="10%" style="font-weight:bold">Q @qno:<span class="text-danger">@showRequireSign</span></td>
+                                        <td>
+
+                                            @Html.DisplayFor(m => item.QuestionName)
+                                            <input type="hidden" id="isReqQ_@item.Id" value="@isRequired.ToString()" />
+
+                                            <small id="@validQId" class="form-text text-danger">Missing answer.</small>
+                                        </td>
+                                    </tr>
+                                        <tr>
+
+                                            <td width="5%" style="font-weight:bold">A:</td>
+                                            <td>
+                                                <input type="hidden" name="interviewQuestion" value="@item.Id" />
+                                                @{ Html.RenderAction("GetApplicantQAOption", new { id = item.Id });}
+
+                                                @*<div class="input-group">
+                                                        <input id="@questionAnwId" class="form-control" disabled />
+                                                        <div class="input-group-append">
+                                                          <button id="qbtn_@item.Id" class="btn btn-info btn-sm btn-ans" value="@item.Id" title="Click for Answer">Take</button>
+                                                        </div>
+                                                    </div>*@
+
+                                            </td>
+                                        </tr>
+
+
+
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnApplyJobS4Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnApplyJobS4Back" class="btn btn-primary">Back</button>
+                        <button id="btnApplyJobSubmit" class="btn btn-primary">Finish</button>
+                        @* <button id="btnTestQA" class="btn btn-primary">Test</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divTakeQAnswer"></div>
+<style>
+    .files input {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        padding: 20px 0px 85px 35%;
+        text-align: center !important;
+        margin: 0;
+        width: 100% !important;
+    }
+
+        .files input:focus {
+            outline: 2px dashed #92b0b3;
+            outline-offset: -10px;
+            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            border: 1px solid #92b0b3;
+        }
+
+    .files {
+        position: relative
+    }
+
+        .files:after {
+            pointer-events: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 50px;
+            right: 0;
+            height: 56px;
+            content: "";
+            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+            display: block;
+            margin: 0 auto;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .color input {
+        background-color: #f1f1f1;
+    }
+
+    .files:before {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        right: 0;
+        height: 57px;
+        content: " or drag it here. ";
+        display: block;
+        margin: 0 auto;
+        color: #2ea591;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+    }
+</style>
+
+<script>
+    var applyJobWizardS1Title = "Welcome to Apply Job Wizard";
+    var applyJobWizardS2Title = "Applicant Information";
+    var applyJobWizardS3Title = "Contact Information";
+    var applyJobWizardS31Title = "Availability Information";
+    var applyJobWizardS32Title = "Previous Employment";
+    var applyJobWizardS33Title = "Education";
+    var applyJobWizardS4Title = "General Question(s)";
+    $(document).ready(function () {
+
+        showApplyJobWizardStep("Step1");
+
+        debugger;
+        //$("small[id$=Valid]").each(function () {
+        //    $(this).hide();
+        //});
+        fieldLevelValidation("*", 1); //on load make all valid
+        //$('#SSN').mask('999-99-9999');
+        $("#DateAvailable").datetimepicker({ format: 'MM/DD/YYYY' });
+        $('#MailingZipCodeTxt').mask("99999?-9999");
+        $('#HomeZipCodeTxt').mask("99999?-9999");
+        //$('#HomeNumber').mask('(999) 999-9999');
+         $('#CellNumber').mask('(999) 999-9999');
+        //$('#FaxNumber').mask('(999) 999-9999');
+        //$('#OtherNumber').mask('(999) 999-9999');
+        //AjaxGetStateCity
+        //AjaxGetCountryState
+        $('input[name="SelectDateOPtion"]').datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#JobLocationIds").select2();
+        $(".select2-container").css("width", "100%");;
+        $("#IsRelativeInCompany").change(function () {
+            debugger;
+            var sts = $(this).is(":checked");
+            if (sts) {
+                $('#lblRelativeName').removeClass("hideField").addClass("showField");
+                $('#divRelativeName').removeClass("hideField").addClass("showField");
+            }
+            else {
+                $('#lblRelativeName').removeClass("showField").addClass("hideField");
+                $('#divRelativeName').removeClass("showField").addClass("hideField");
+                $('#RelativeName').val(null);
+            }
+
+        });
+
+        $('#HomeCountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+           // LoadStateDropdown(countyId, '#HomeStateId', null);
+           // LoadCityDropdown(null, '#HomeCityId', null);
+            LoadDropDown('AjaxGetCountryState', countyId, '#HomeStateId', null);
+            LoadDropDown('AjaxGetStateCity', null, '#HomeCityId', null);
+        });
+        $('#HomeStateId').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+           // LoadCityDropdown(stateId, '#HomeCityId', null);
+            LoadDropDown('AjaxGetStateCity', stateId, '#HomeCityId', null);
+        });
+
+        $('#MailingCountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+           // LoadStateDropdown(countyId, '#MailingStateId', null);
+           // LoadCityDropdown(null, '#MailingCityId', null);
+            LoadDropDown('AjaxGetCountryState', countyId, '#MailingStateId', null);
+            LoadDropDown('AjaxGetStateCity', null, '#MailingCityId', null);
+        });
+        $('#MailingStateId').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            //LoadCityDropdown(stateId, '#MailingCityId', null);
+            LoadDropDown('AjaxGetStateCity', stateId, '#MailingCityId', null);
+        });
+
+
+        $("#btnApplyJobS1Next").on("click", function () {
+            debugger;
+            showApplyJobWizardStep("Step2");
+        });
+        $("#btnApplyJobS2Next").on("click", function () {
+            debugger;
+           if (!validateWizardStep("Step2")) return;
+            showApplyJobWizardStep("Step3");
+        });
+        $("#btnApplyJobS3Next").on("click", function () {
+            debugger;
+            if (!validateWizardStep("Step3")) return;
+            showApplyJobWizardStep("Step3.1");
+        });
+        $("#btnApplyJobS31Next").on("click", function () {
+            debugger;
+            if (!validateWizardStep("Step3.1")) return;
+            showApplyJobWizardStep("Step3.2");
+        });
+        $("#btnApplyJobS32Next").on("click", function () {
+            debugger;
+            if (!validateWizardStep("Step3.2")) return;
+            showApplyJobWizardStep("Step3.3");
+            //getApplicantEmploymentData();
+        });
+        $("#btnApplyJobS33Next").on("click", function () {
+            debugger;
+            if (!validateWizardStep("Step3.3")) return;
+            showApplyJobWizardStep("Step4");
+        });
+        $("#btnApplyJobS4Back").click(function () {
+            debugger;
+            showApplyJobWizardStep("Step3.3");
+        });
+        $("#btnApplyJobS33Back").click(function () {
+            debugger;
+            showApplyJobWizardStep("Step3.2");
+        });
+        $("#btnApplyJobS32Back").click(function () {
+            debugger;
+            showApplyJobWizardStep("Step3.1");
+        });
+        $("#btnApplyJobS31Back").click(function () {
+            debugger;
+            showApplyJobWizardStep("Step3");
+        });
+        $("#btnApplyJobS3Back").click(function () {
+            debugger;
+            showApplyJobWizardStep("Step2");
+        });
+        $("#btnApplyJobS2Back").click(function () {
+            debugger;
+            showApplyJobWizardStep("Step1");
+        });
+
+        //$("#btnTestQA").click(function () {
+        //    //console.log(populateQAnswer());
+        //    console.log(getQuestionAnwser());
+        //});
+
+        //Save Employee
+        $('#btnApplyJobSubmit').click(function () {
+            debugger;
+            if (!validateWizardStep("Step4")) return;
+            saveApplyJobData();
+
+        });
+
+    });
+    function getApplicantEmploymentData() {
+        var applicantEmploymentList = new Array();
+        debugger;
+        for (var i = 1; i <= 3; i++) {
+            var fieldPrefix = "#Company" + i;
+            var dataObj = new Object();
+            dataObj.CompanyName = $(fieldPrefix + "Name").val();
+            dataObj.CompanyTelephone = $(fieldPrefix + "Telephone").val();
+            dataObj.CompanyAddress = $(fieldPrefix + "Address").val();
+            dataObj.PositionName = $(fieldPrefix + "PositionName").val();
+            dataObj.EmploymentStartDate = $(fieldPrefix + "StartDate").val();
+            dataObj.IsCurrentEmployment = $(fieldPrefix + "IsCurrentEmployment").is(":checked");
+            dataObj.EmploymentEndDate = $(fieldPrefix + "EndDate").val();
+            dataObj.Rate = $(fieldPrefix + "Rate").val();
+            dataObj.RateFrequencyId = $(fieldPrefix + "RateFrequencyId").val();
+            dataObj.SuperviorName = $(fieldPrefix + "SuperviorName").val();
+            dataObj.ApplicantExitTypeId = $(fieldPrefix + "ExitTypeId").val();
+            dataObj.ExitReason = $(fieldPrefix + "ExitReason").val();
+            applicantEmploymentList.push(dataObj);
+        }
+        return applicantEmploymentList;
+    }
+    function getApplicantEducationData() {
+        var applicantEducationList = new Array();
+        debugger;
+        for (var i = 1; i <= 3; i++) {
+            var fieldPrefix = "#Education" + i;
+            var dataObj = new Object();
+            dataObj.DegreeId = $(fieldPrefix + "DegreeId").val();
+            dataObj.DateCompleted = $(fieldPrefix + "DateCompleted").val();
+            dataObj.InstitutionName = $(fieldPrefix + "InstitutionName").val();
+            dataObj.Title = $(fieldPrefix + "Title").val();
+            dataObj.Note = $(fieldPrefix + "Note").val();
+
+            applicantEducationList.push(dataObj);
+        }
+        return applicantEducationList;
+    }
+    function getQuestionAnwser() {
+        debugger;
+        var qAList = new Array();
+        var qAOptionList = populateQAnswer();
+        $('input[name="interviewQuestion"]').each(function () {
+            //  debugger;
+            var questionId = $(this).val();
+           // var numbericId = id.substr(id.indexOf('_') + 1, id.length);
+            var qOptionList = $.grep(qAOptionList, function (e) {
+                return e.QId == questionId;
+            });
+            qAList.push({ QId: questionId, AnswerOptions: qOptionList });
+            //console.log(id);
+            //console.log(numbericId);
+            //console.log(qList);
+        });
+
+        return qAList;
+    }
+    function getApplicantShiftData() {
+        var dataObj = new Object();
+
+        dataObj.Id = $('#ApplicantApplicationId').val();
+        dataObj.IsMondayShift = $('#IsMondayShift').is(":checked");
+        if (dataObj.IsMondayShift == true) {
+            dataObj.MondayStartShift = $('#MondayStartShift').val();
+            dataObj.MondayEndShift = $('#MondayEndShift').val();
+        }
+        dataObj.IsTuesdayShift = $('#IsTuesdayShift').is(":checked");
+        if (dataObj.IsTuesdayShift == true) {
+            dataObj.TuesdayStartShift = $('#TuesdayStartShift').val();
+            dataObj.TuesdayEndShift = $('#TuesdayEndShift').val();
+        }
+        dataObj.IsWednesdayShift = $('#IsWednesdayShift').is(":checked");
+        if (dataObj.IsWednesdayShift == true) {
+            dataObj.WednesdayStartShift = $('#WednesdayStartShift').val();
+            dataObj.WednesdayEndShift = $('#WednesdayEndShift').val();
+        }
+        dataObj.IsThursdayShift = $('#IsThursdayShift').is(":checked");
+        if (dataObj.IsThursdayShift == true) {
+            dataObj.ThursdayStartShift = $('#ThursdayStartShift').val();
+            dataObj.ThursdayEndShift = $('#ThursdayEndShift').val();
+        }
+        dataObj.IsFridayShift = $('#IsFridayShift').is(":checked");
+        if (dataObj.IsFridayShift == true) {
+            dataObj.FridayStartShift = $('#FridayStartShift').val();
+            dataObj.FridayEndShift = $('#FridayEndShift').val();
+        }
+        dataObj.IsSaturdayShift = $('#IsSaturdayShift').is(":checked");
+        if (dataObj.IsSaturdayShift == true) {
+            dataObj.SaturdayStartShift = $('#SaturdayStartShift').val();
+            dataObj.SaturdayEndShift = $('#SaturdayEndShift').val();
+        }
+        dataObj.IsSundayShift = $('#IsSundayShift').is(":checked");
+        if (dataObj.IsSundayShift == true) {
+            dataObj.SundayStartShift = $('#SundayStartShift').val();
+            dataObj.SundayEndShift = $('#SundayEndShift').val();
+        }
+        return dataObj;
+    }
+
+    function populateQAnswer() {
+        var qAnsOptionList = new Array();
+        debugger;
+       // yesNoOption Qlist
+        //selectAllApplyOption QList
+        //selectOneOption QList
+        //SelectDateOPtion QList
+        //OpenAnswerOption QList
+        $("input[name^='yesNoOption']").each(function () {
+            var selectedOpt = $(this).is(":checked");
+            if (selectedOpt == true) {
+                elemId = $(this).attr("id");
+                var questionId = elemId.substr(elemId.indexOf('_') + 1, elemId.length);
+                var optVal = $(this).val();
+                qAnsOptionList.push({ QId: questionId, AOptionId: 0, AOptionValue: optVal });
+            }
+        });
+        $("input[name='selectAllApplyOption']").each(function () {
+            var selectedOpt = $(this).is(":checked");
+            if (selectedOpt == true) {
+                elemId = $(this).attr("id");
+                var questionId = elemId.substr(elemId.indexOf('_') + 1, elemId.length);
+                var optId = $(this).val();
+                var optVal = $("#answerOption_" + optId).val();
+                qAnsOptionList.push({ QId: questionId, AOptionId: optId, AOptionValue: optVal });
+            }
+        });
+        $("input[name^='selectOneOption']").each(function () {
+            var selectedOpt = $(this).is(":checked");
+            if (selectedOpt == true) {
+                elemId = $(this).attr("id");
+                var questionId = elemId.substr(elemId.indexOf('_') + 1, elemId.length);
+                var optId = $(this).val();
+                var optVal = $("#answerOption_" + optId).val();
+                qAnsOptionList.push({ QId: questionId, AOptionId: optId, AOptionValue: optVal });
+            }
+        });
+        $("input[name='SelectDateOPtion']").each(function () {
+
+                elemId = $(this).attr("id");
+            var questionId = elemId.substr(elemId.indexOf('_') + 1, elemId.length);
+                var optVal = $(this).val();
+            qAnsOptionList.push({ QId: questionId, AOptionId: 0, AOptionValue: optVal });
+
+        });
+        $("input[name='OpenAnswerOption']").each(function () {
+
+            elemId = $(this).attr("id");
+            var questionId = elemId.substr(elemId.indexOf('_') + 1, elemId.length);
+            var optVal = $(this).val();
+            qAnsOptionList.push({ QId: questionId, AOptionId: 0, AOptionValue: optVal });
+
+        });
+        qAnsOptionList.sort(function (a, b) { return a.QId - b.QId });
+        return qAnsOptionList;
+    }
+    function getApplyJobWizardData() {
+        debugger;
+        var dataObj = new Object();
+
+        dataObj.JobPostingDetailId = @Model.JobPostingDetailId;
+        dataObj.FirstName = $('#FirstName').val();
+        dataObj.MiddleInitial = $('#MiddleInitial').val();
+        dataObj.FirstLastName = $('#FirstLastName').val();
+        dataObj.SecondLastName = $('#SecondLastName').val();
+        dataObj.GenderId = $('#GenderId').val();
+        dataObj.DisabilityId = $('#DisabilityId').val();
+        dataObj.ApplicantReferenceTypeId = $('#ApplicantReferenceTypeId').val();
+        dataObj.ApplicantReferenceSourceId = $('#ApplicantReferenceSourceId').val();
+        dataObj.JobLocationIds = $('#JobLocationIds').val().join(",");
+
+        dataObj.CellNumber = $('#CellNumber').val();
+        dataObj.PersonalEmail = $('#PersonalEmail').val();
+
+        dataObj.RelativeName = $('#RelativeName').val();
+        dataObj.IsWorkedBefore = $('#IsWorkedBefore').is(":checked");
+        dataObj.IsOvertime = $('#IsOvertime').is(":checked");
+        dataObj.IsRelativeInCompany = $('#IsRelativeInCompany').is(":checked");
+        dataObj.DateAvailable = $('#DateAvailable').val();
+
+        dataObj.HomeAddress1 = $('#HomeAddress1').val();
+        dataObj.HomeAddress2 = $('#HomeAddress2').val();
+        dataObj.HomeCityId = $('#HomeCityId').val();
+        dataObj.HomeStateId = $('#HomeStateId').val();
+        dataObj.HomeCountryId = $('#HomeCountryId').val();
+        dataObj.HomeZipCode = $('#HomeZipCodeTxt').val();
+
+        dataObj.MailingAddress1 = $('#MailingAddress1').val();
+        dataObj.MailingAddress2 = $('#MailingAddress2').val();
+        dataObj.MailingCityId = $('#MailingCityId').val();
+        dataObj.MailingStateId = $('#MailingStateId').val();
+        dataObj.MailingCountryId = $('#MailingCountryId').val();
+        dataObj.MailingZipCode = $('#MailingZipCodeTxt').val();
+        dataObj.QADataList = getQuestionAnwser();
+        dataObj.ApplicantShiftData = getApplicantShiftData();
+        dataObj.ApplicantEmploymentData = getApplicantEmploymentData();
+        dataObj.ApplicantEducationData = getApplicantEducationData();
+        var totalFiles = document.getElementById("uploadApplicantCV").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadApplicantCV").files[0];
+            dataObj.ApplicantCV = file;
+        }
+
+        return dataObj;
+    }
+
+    function showApplyJobWizardStep(step) {
+        debugger;
+        switch (step) {
+            case "Step1":
+                $("#applyJobWizardS1").show();
+                $("#applyJobWizardStepTitle span:nth-child(2)").text(applyJobWizardS1Title);
+                $("#applyJobWizardS2").hide();
+                $("#applyJobWizardS3").hide();
+                $("#applyJobWizardS31").hide();
+                $("#applyJobWizardS32").hide();
+                $("#applyJobWizardS33").hide();
+                $("#applyJobWizardS4").hide();
+                break;
+            case "Step2":
+
+                $("#applyJobWizardS2").show();
+                $("#applyJobWizardStepTitle span:nth-child(2)").text(applyJobWizardS2Title);
+                $("#applyJobWizardS1").hide();
+                $("#applyJobWizardS3").hide();
+                $("#applyJobWizardS31").hide();
+                $("#applyJobWizardS32").hide();
+                $("#applyJobWizardS33").hide();
+                $("#applyJobWizardS4").hide();
+                break;
+            case "Step3":
+
+                $("#applyJobWizardS3").show();
+                $("#applyJobWizardStepTitle span:nth-child(2)").text(applyJobWizardS3Title);
+                $("#applyJobWizardS31").hide();
+                $("#applyJobWizardS32").hide();
+                $("#applyJobWizardS33").hide();
+                $("#applyJobWizardS1").hide();
+                $("#applyJobWizardS2").hide();
+                $("#applyJobWizardS4").hide();
+                break;
+            case "Step3.1":
+                $("#applyJobWizardS31").show();
+                $("#applyJobWizardStepTitle span:nth-child(2)").text(applyJobWizardS31Title);
+                $("#applyJobWizardS32").hide();
+                $("#applyJobWizardS33").hide();
+                $("#applyJobWizardS3").hide();
+                $("#applyJobWizardS1").hide();
+                $("#applyJobWizardS2").hide();
+                $("#applyJobWizardS4").hide();
+                break;
+            case "Step3.2":
+                $("#applyJobWizardS32").show();
+
+                $("#applyJobWizardStepTitle span:nth-child(2)").text(applyJobWizardS32Title);
+                $("#applyJobWizardS31").hide();
+                $("#applyJobWizardS33").hide();
+                $("#applyJobWizardS3").hide();
+                $("#applyJobWizardS1").hide();
+                $("#applyJobWizardS2").hide();
+                $("#applyJobWizardS4").hide();
+                break;
+            case "Step3.3":
+                $("#applyJobWizardS33").show();
+                $("#applyJobWizardStepTitle span:nth-child(2)").text(applyJobWizardS33Title);
+                $("#applyJobWizardS31").hide();
+                $("#applyJobWizardS32").hide();
+                $("#applyJobWizardS3").hide();
+                $("#applyJobWizardS1").hide();
+                $("#applyJobWizardS2").hide();
+                $("#applyJobWizardS4").hide();
+                break;
+            case "Step4":
+
+                $("#applyJobWizardS4").show();
+                $("#applyJobWizardStepTitle span:nth-child(2)").text(applyJobWizardS4Title);
+                $("#applyJobWizardS1").hide();
+                $("#applyJobWizardS2").hide();
+                $("#applyJobWizardS3").hide();
+                $("#applyJobWizardS31").hide();
+                $("#applyJobWizardS32").hide();
+                $("#applyJobWizardS33").hide();
+                break;
+        }
+    }
+    function validateWizardStep(step) {
+        var isValidated = true;
+        var isRequiredValidated = 0;
+        var isFieldValid = 0;
+        var validatedRequiredFields = 0;
+        var dataObj = getApplyJobWizardData();
+        debugger;
+        switch (step) {
+            case "Step2":
+                validatedRequiredFields = 5;
+                isFieldValid = dataObj.FirstName.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += isFieldValid;
+                fieldLevelValidation('FirstName', isFieldValid);
+
+                isFieldValid = dataObj.FirstLastName.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += isFieldValid;
+                fieldLevelValidation('FirstLastName', isFieldValid);
+
+                //isFieldValid = dataObj.GenderId.trim().length > 0 ? 1 : 0;
+                //isRequiredValidated += isFieldValid;
+                //fieldLevelValidation('GenderId', isFieldValid);
+
+                isFieldValid = dataObj.CellNumber.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += isFieldValid;
+                fieldLevelValidation('CellNumber', isFieldValid);
+
+                isFieldValid = dataObj.PersonalEmail.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += isFieldValid;
+                fieldLevelValidation('PersonalEmail', isFieldValid);
+
+                isFieldValid = dataObj.ApplicantCV == undefined ? 0 : 1;
+                isRequiredValidated += isFieldValid;
+                fieldLevelValidation('ApplicantCV', isFieldValid);
+
+                if (isRequiredValidated != validatedRequiredFields) {
+                    isValidated = false;
+                    showAlertAutoHide("#", "Error", "Missing Required field(s)");
+                }
+                break;
+            case "Step3":               
+                isHomeAddressMand = $("#IsHomeAddress").val();
+                isMailingAddressMand = $("#IsMailingAddress").val();
+                if (isHomeAddressMand == "True") {
+                    validatedRequiredFields += 5;
+                    isFieldValid = dataObj.HomeAddress1.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('HomeAddress1', isFieldValid);
+
+                    isFieldValid = dataObj.HomeCountryId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('HomeCountryId', isFieldValid);
+
+                    isFieldValid = dataObj.HomeStateId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('HomeStateId', isFieldValid);
+
+                    isFieldValid = dataObj.HomeCityId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('HomeCityId', isFieldValid);
+
+                    isFieldValid = dataObj.HomeZipCode.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('HomeZipCode', isFieldValid);
+                }
+                if (isMailingAddressMand == "True") {
+                    validatedRequiredFields += 5;
+                    isFieldValid = dataObj.MailingAddress1.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('MailingAddress1', isFieldValid);
+
+                    isFieldValid = dataObj.MailingCountryId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('MailingCountryId', isFieldValid);
+
+                    isFieldValid = dataObj.MailingStateId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('MailingStateId', isFieldValid);
+
+                    isFieldValid = dataObj.MailingCityId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('MailingCityId', isFieldValid);
+
+                    isFieldValid = dataObj.MailingZipCode.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('MailingZipCode', isFieldValid);
+                }
+                if (isRequiredValidated != validatedRequiredFields) {
+                    isValidated = false;
+                    showAlertAutoHide("#", "Error", "Missing Required field(s)");
+                }
+                break;
+            case "Step3.1":
+                isAvailabilityMand = $("#IsAvailability").val();
+                if (isAvailabilityMand == "True") {
+                    isRequiredValidated += dataObj.ApplicantShiftData.IsMondayShift == true ? 1 : 0;
+                    isRequiredValidated += dataObj.ApplicantShiftData.IsTuesdayShift == true ? 1 : 0;
+                    isRequiredValidated += dataObj.ApplicantShiftData.IsWednesdayShift == true ? 1 : 0;
+                    isRequiredValidated += dataObj.ApplicantShiftData.IsThursdayShift == true ? 1 : 0;
+                    isRequiredValidated += dataObj.ApplicantShiftData.IsFridayShift == true ? 1 : 0;
+                    isRequiredValidated += dataObj.ApplicantShiftData.IsSaturdayShift == true ? 1 : 0;
+                    isRequiredValidated += dataObj.ApplicantShiftData.IsSundayShift == true ? 1 : 0;
+                    if (isRequiredValidated == 0) {
+                        isValidated = false;
+                        showAlertAutoHide("#", "Error", "Availbility information is missing");
+                    }
+                }
+                break;
+            case "Step3.2":
+                isPreEmploymentMand = $("#IsPreviousEmployment").val();
+                if (isPreEmploymentMand == "True") {
+                    validatedRequiredFields += 7;
+                    isFieldValid = dataObj.ApplicantEmploymentData[0].CompanyName.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Company1Name', isFieldValid);
+
+                    isFieldValid = dataObj.ApplicantEmploymentData[0].CompanyTelephone.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Company1Telephone', isFieldValid);
+
+                    isFieldValid = dataObj.ApplicantEmploymentData[0].PositionName.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Company1PositionName', isFieldValid);
+
+                    isFieldValid = dataObj.ApplicantEmploymentData[0].EmploymentStartDate.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Company1StartDate', isFieldValid);
+                    if (dataObj.ApplicantEmploymentData[0].IsCurrentEmployment == true) {
+                        validatedRequiredFields--;
+                        fieldLevelValidation('Company1EndDate', 1);
+                    }
+                    else {
+                        isFieldValid = dataObj.ApplicantEmploymentData[0].EmploymentEndDate.trim().length > 0 ? 1 : 0;
+                        isRequiredValidated += isFieldValid;
+                        fieldLevelValidation('Company1EndDate', isFieldValid);
+                    }
+                    isFieldValid = dataObj.ApplicantEmploymentData[0].ApplicantExitTypeId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Company1ExitTypeId', isFieldValid);
+
+                    isFieldValid = dataObj.ApplicantEmploymentData[0].ExitReason.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Company1ExitReason', isFieldValid);
+                }
+                if (isRequiredValidated != validatedRequiredFields) {
+                    isValidated = false;
+                    showAlertAutoHide("#", "Error", "Missing Employment required field(s)");
+                }
+                break;
+            case "Step3.3":
+                isEducationMand = $("#IsEducation").val();
+                if (isEducationMand == "True") {
+                    validatedRequiredFields += 4;
+                    isFieldValid = dataObj.ApplicantEducationData[0].DegreeId.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Education1DegreeId', isFieldValid);
+
+                    isFieldValid = dataObj.ApplicantEducationData[0].DateCompleted.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Education1DateCompleted', isFieldValid);
+
+                    isFieldValid = dataObj.ApplicantEducationData[0].InstitutionName.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Education1InstitutionName', isFieldValid);
+
+                    isFieldValid = dataObj.ApplicantEducationData[0].Title.trim().length > 0 ? 1 : 0;
+                    isRequiredValidated += isFieldValid;
+                    fieldLevelValidation('Education1Title', isFieldValid);
+
+                    if (isRequiredValidated != validatedRequiredFields) {
+                        isValidated = false;
+                        showAlertAutoHide("#", "Error", "Missing Education required field(s)");
+                    }
+                }
+                break;
+            case "Step4":
+                debugger;
+                dataObj.QADataList.forEach(function (item) {
+                    debugger;
+                    var qId = item.QId;
+                    //item.AnswerOptions
+                    var isRequired = $("#isReqQ_" + qId).val();
+                    if (isRequired == "True") {
+                        var IsQValidated = 0;
+                        if (item.AnswerOptions.length > 0) {                            
+                            item.AnswerOptions.forEach(function (AOptionObj) {
+                                debugger;
+                                IsQValidated += AOptionObj.AOptionValue.trim().length > 0 ? 1 : 0;
+                            });
+                        }
+                        if (IsQValidated == 0) {
+                            fieldLevelValidation(qId, 0);
+                            isValidated = false;
+                        }
+                        else {
+                            fieldLevelValidation(qId, 1);
+                        }
+                    }
+                });
+                if (isValidated == false) {                    
+                    showAlertAutoHide("#", "Error", "Missing required answer(s)");
+                }
+                break;
+        }
+        return isValidated;
+    }
+
+    function saveApplyJobData() {
+        debugger;
+        var dataObj = getApplyJobWizardData();
+        // return;
+        var formData = new FormData();
+        formData.append("JobPostingDetailId", dataObj.JobPostingDetailId);
+        formData.append("FirstName", dataObj.FirstName);
+        formData.append("MiddleInitial", dataObj.MiddleInitial);
+        formData.append("FirstLastName", dataObj.FirstLastName);
+        formData.append("SecondLastName", dataObj.SecondLastName);
+        formData.append("GenderId", dataObj.GenderId);
+        formData.append("DisabilityId", dataObj.DisabilityId);
+
+        formData.append("ApplicantReferenceTypeId", dataObj.ApplicantReferenceTypeId);
+        formData.append("ApplicantReferenceSourceId", dataObj.ApplicantReferenceSourceId);
+        formData.append("JobLocationIds", dataObj.JobLocationIds);
+
+        formData.append("CellNumber", dataObj.CellNumber);
+        formData.append("PersonalEmail", dataObj.PersonalEmail);
+        formData.append("IsWorkedBefore", dataObj.IsWorkedBefore);
+        formData.append("IsOvertime", dataObj.IsOvertime);
+        formData.append("IsRelativeInCompany", dataObj.IsRelativeInCompany);
+        formData.append("RelativeName", dataObj.RelativeName);
+        formData.append("DateAvailable", dataObj.DateAvailable);
+
+        formData.append("HomeAddress1", dataObj.HomeAddress1);
+        formData.append("HomeAddress2", dataObj.HomeAddress2);
+        formData.append("HomeCityId", dataObj.HomeCityId);
+        formData.append("HomeStateId", dataObj.HomeStateId);
+        formData.append("HomeCountryId", dataObj.HomeCountryId);
+        formData.append("HomeZipCode", dataObj.HomeZipCode);
+
+        formData.append("MailingAddress1", dataObj.MailingAddress1);
+        formData.append("MailingAddress2", dataObj.MailingAddress2);
+        formData.append("MailingCityId", dataObj.MailingCityId);
+        formData.append("MailingStateId", dataObj.MailingStateId);
+        formData.append("MailingCountryId", dataObj.MailingCountryId);
+        formData.append("MailingZipCode", dataObj.MailingZipCode);
+
+        formData.append("QADataList", JSON.stringify(dataObj.QADataList));
+        formData.append("ApplicantShiftData", JSON.stringify(dataObj.ApplicantShiftData));
+        formData.append("ApplicantEmploymentData", JSON.stringify(dataObj.ApplicantEmploymentData));
+        formData.append("ApplicantEducationData", JSON.stringify(dataObj.ApplicantEducationData));
+
+        if (dataObj.ApplicantCV != undefined) {
+            formData.append("ApplicantCV", dataObj.ApplicantCV);
+        }
+
+            $.ajax({
+                type: "POST",
+                url: '/JobPortal/ApplyJob',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        $("#applyJob_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                    }
+                    else {
+                        showAlertAutoHide("#", data.status, data.message);
+                    }
+                },
+                error: function (error) {
+                }
+            });
+    }
+    function LoadDropDown(action, parentId, targetElement, selectedValue) {
+        //var model = {
+        //}
+        //debugger
+        //model[parentField] = parentId;
+        $.ajax({
+            url: '/JobPortal/' + action + '/' + parentId,
+            //data: JSON.stringify(model), //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+    function fieldLevelValidation(fieldName, status) {
+        switch (status) {
+            case 1://valid value
+                if (fieldName == "*") {
+                    $("small[id$=Valid]").each(function () {
+                        $(this).hide();
+                    });
+                }
+                else {
+                    $("#" + fieldName + "Valid").hide();
+                }
+                break;
+            case 0://invalid value
+                if (fieldName == "*") {
+                    $("small[id$=Valid]").each(function () {
+                        $(this).show();
+                    });
+                }
+                else {
+                    $("#" + fieldName + "Valid").show();
+                }
+                break;
+        }
+    }
+    function autoCompleteAjaxSetting(request, response, scr, field) {
+        $.ajax({
+            url: scr,
+            dataType: "json",
+            data: {
+                term: request.term,
+                fieldName: field
+            },
+            success: function (data) {
+                response(data);
+            }
+        });
+    }
+
+</script>
+

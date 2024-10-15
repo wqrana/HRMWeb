@@ -1,0 +1,154 @@
+﻿@model TimeAide.Web.Models.EmployeePayAccount
+
+<div id="employeeDepositCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;"> Deposit% Account - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Deposit% Account </div>
+                            <div class="panel-body">
+                                <div id="">
+                                    @Html.HiddenFor(m => m.Id, new { id = "EmployeePayAccountId" })
+                                    @Html.HiddenFor(m => m.PayType)
+                                    @Html.Hidden("TotalAssignedPct", (Double)ViewBag.TotalAssignPct)
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Name:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { id = "AccountName", @class = "form-control" } })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2 pr-0" style="margin-left:0px">Account Type:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.DropDownList("BankAccountTypeId", null, "Please select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2 pr-1" style="margin-left:0px">Account Num.:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Bank:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+
+                                            <div class="input-group">
+                                                @Html.DropDownList("PayBankId", null, "Please select", new { @class = "form-control" })
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Routing Num.:<span class="text-danger"></span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.PayBank.RoutingNumber, new { htmlAttributes = new { id = "BankRoutingNumber", @class = "form-control", @disabled = "disabled" } })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Deposit %:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @*@Html.EditorFor(m => m.DepositPct, new { htmlAttributes = new { @class = "form-control" } })*@
+                                            <div class="input-group">
+                                                @Html.EditorFor(m => m.DepositPct, new { htmlAttributes = new { @class = "form-control" } })
+                                                <div class="input-group-append p-2">
+                                                    Unallocated %: <span class="text-danger" id="balanceTobeAssignPct">25</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Primary:<span class="text-danger"></span></label>
+                                        <div class="col-md-4 mt-3">
+                                            @Html.CheckBoxFor(m => m.IsPrimary,  new { id = "IsPrimaryAE" } )
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">End Date:<span class="text-danger"></span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnsaveEmployeeDepositAccount" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        calcuateUnAllocatedPct();
+
+        $('*[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $("#DepositPct").blur(function () {
+            calcuateUnAllocatedPct();
+        });
+        $("#PayBankId").change(function () {
+            ajaxGetBankRoutingNumber($(this).val());
+        });
+        $("#btnsaveEmployeeDepositAccount").click(function () {
+            debugger;
+            //var assignedPct = Number($("#TotalAssignedPct").val());
+            //var currentAccPct = Number($('#DepositPct').val());
+            //var totalPct = assignedPct + currentAccPct;
+            //if (totalPct < 100) 
+            var unallocatedPct = calcuateUnAllocatedPct();                          
+            saveEmployeeDepositPctAccountData(unallocatedPct);
+        });
+        $("#IsPrimaryAE").change(function () {
+            debugger;
+            var isPrimary = $(this).is(":checked");
+            var endDate = $('#EndDate').val();
+            if (isPrimary == true && endDate == "") {
+                alert("This will override the existing primary account if any.");
+            }
+        });
+
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });
+    });
+    function calcuateUnAllocatedPct() {
+        debugger;
+        var assignedPct = Number($("#TotalAssignedPct").val());
+        var currentAccPct = 0;
+        var endDate = $('#EndDate').val();
+        if (endDate=="")
+          currentAccPct = Number($('#DepositPct').val());
+
+        var totalPct = assignedPct + currentAccPct;
+        var unAllocatedPct = 100 - totalPct;
+        $("#balanceTobeAssignPct").text(unAllocatedPct);
+        return unAllocatedPct;
+    }
+</script>
+
+
+
+
+
+

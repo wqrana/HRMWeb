@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TimeAide.Web.Models.CompanyCompensation>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Compensation Type
+        </th>
+        <th>
+           Compensation Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsEnabled)
+        </th>
+        <th>
+            Import Type
+        </th>
+        <th>
+            GL Account
+        </th>
+        
+        <th>
+            Is FICASSCC Exempt
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompensationType.CompensationTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompensationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEnabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImportType.CompensationImportTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GLAccount.GLAccountName)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFICASSCCExempt)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+        
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

@@ -1,0 +1,338 @@
+﻿@model TimeAide.Web.Models.ChangeRequestEmergencyContact
+@if (Model != null)
+{
+    if (Model.EmergencyContact == null)
+    {
+        Model.EmergencyContact = new TimeAide.Web.Models.EmergencyContact();
+    }
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id, new { id = "ChangeRequestEmergencyContactId" })
+        @Html.HiddenFor(model => model.UserInformationId, new { id = "ChangeRequestEmergencyContactUserInformationId" })
+        <div class="row pb-0">
+            <div class="col-lg-12">
+                <ul class="list-unstyled">
+                    <li><h4 class="mb-0"> @Model.UserInformation.ShortFullName</h4></li>
+                    <li>Employee ID:@Model.UserInformation.EmployeeId</li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="panel panel-default" style="width:50%;">
+                <div class="panel-heading" style="padding-left:10px">Old Emergency Contact</div>
+                <div class="panel-body">
+                    <div class="form-group row" style="margin-left:0px;margin-top:10px">
+                        <div class="col-md-3">
+                            Relationship
+                        </div>
+                        <div class="col-md-9">
+                            @Html.DisplayFor(model => model.EmergencyContact.Relationship.RelationshipName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                        <div class="col-md-3">
+                            Contact Name
+                        </div>
+                        <div class="col-md-9">
+                            @Html.DisplayFor(model => model.EmergencyContact.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                        <div class="col-md-3">
+                            Is Default
+                        </div>
+                        <div class="col-md-9">
+                            @Html.DisplayFor(model => model.EmergencyContact.IsDefault)
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                        <div class="col-md-3">
+                            Main Number
+                        </div>
+                        <div class="col-md-9">
+                            @*@Html.DisplayFor(model => model.EmergencyContact.MainNumber, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @TimeAide.Services.UserInformationService.GetFormattedNumber(Model.MainNumber)
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                        <div class="col-md-3">
+                            Alternate Number
+                        </div>
+                        <div class="col-md-9">
+                            @*@Html.DisplayFor(model => model.EmergencyContact.AlternateNumber, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @TimeAide.Services.UserInformationService.GetFormattedNumber(Model.AlternateNumber)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="width:50%">
+                @if (String.IsNullOrEmpty(Model.ReasonForDelete))
+                {
+                    <div class="panel-heading" style="padding-left:10px">New Emergency Contact</div>
+                }
+                else
+                {
+                    <div class="panel-heading" style="padding-left:10px;color:red !important">Delete Emergency Contact</div>
+                }
+                <div class="panel-body">
+                    @if (String.IsNullOrEmpty(Model.ReasonForDelete))
+                    {
+                        <div class="form-group row" style="margin-left:0px;margin-top:10px">
+                            <div class="col-md-3">
+                                Relationship
+                            </div>
+                            <div class="col-md-9">
+                                @if (Model.EmergencyContact != null && !Model.NewRelationshipId.HasValue)
+                                {
+
+                                    if (@Model.EmergencyContact != null && @Model.EmergencyContact.Relationship != null)
+                                    {
+                                        <span>@Model.EmergencyContact.Relationship.RelationshipName</span>
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (@Model.NewRelationship != null)
+                                    {
+                                        <span style="color:red !important">
+                                            @Model.NewRelationship.RelationshipName
+                                        </span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Contact Name
+                            </div>
+                            <div class="col-md-9">
+                                @if (Model.EmergencyContact != null && String.IsNullOrEmpty(Model.NewContactPersonName))
+                                {
+                                    <span>
+                                        @Model.EmergencyContact.ContactPersonName
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color:red !important">
+                                        @Model.NewContactPersonName
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Is Default
+                            </div>
+                            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                @if (!Model.NewIsDefault)
+                                {
+                                    <span>
+                                        @Model.EmergencyContact.IsDefault
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color:red !important">
+                                        @Model.NewIsDefault
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Main Number
+                            </div>
+                            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                @if (Model.EmergencyContact != null && String.IsNullOrEmpty(Model.NewMainNumber))
+                                {
+                                    <span>
+                                        @TimeAide.Services.UserInformationService.GetFormattedNumber(Model.EmergencyContact.MainNumber)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color:red !important">
+                                        @TimeAide.Services.UserInformationService.GetFormattedNumber(Model.NewMainNumber)
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Alternate Number
+                            </div>
+                            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                @if (Model.EmergencyContact != null && String.IsNullOrEmpty(Model.NewAlternateNumber))
+                                {
+                                    <span>
+                                        @TimeAide.Services.UserInformationService.GetFormattedNumber(Model.AlternateNumber)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color:red !important">
+                                        @TimeAide.Services.UserInformationService.GetFormattedNumber(Model.NewAlternateNumber)
+                                    </span>
+                                }
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+
+                        <div class="form-group row" style="margin-left:0px;margin-top:10px">
+                            <div class="col-md-3">
+                                Reason For Delete
+                            </div>
+                            <div class="col-md-9">
+                                <span style="color:red !important">
+                                    @Model.ReasonForDelete
+                                </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        @if (!ViewBag.IsViewOnly)
+        {
+            <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+                <div class="panel panel-default" style="width:100%;margin-left:10px;margin-right:10px">
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Remarks
+                            </label>
+                            <div class="col-lg text-muted mt-2">
+                                @Html.EditorFor(model => model.ChangeRequestRemarks, new { htmlAttributes = new { @class = "form-control", style = "width: 100% !important;" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+                <div class="col-md-12">
+                    <h4 class="pull-left">Workflow Request History</h4>
+                    <div class="table-responsive">
+                        <table class="table  table-striped custom-table table-nowrap mb-0" style="width:100% !important">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Workflow Level</th>
+                                    <th>Action By</th>
+                                    <th>Workflow Type</th>
+                                    <th>Remarks</th>
+                                    <th>Action Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.WorkflowTriggerRequestDetail != null && ViewBag.WorkflowTriggerRequestDetail.Count > 0)
+                                {
+                                    foreach (TimeAide.Web.Models.WorkflowTriggerRequestDetail workflowTriggerRequestDetail in ViewBag.WorkflowTriggerRequestDetail)
+                                    {
+                                        <tr>
+                                            <td>@workflowTriggerRequestDetail.WorkflowActionType.WorkflowActionTypeName</td>
+                                            <td>@workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelName</td>
+                                            @if (workflowTriggerRequestDetail.ActionBy != null)
+                                            {
+                                                <td>@workflowTriggerRequestDetail.ActionBy.ShortFullName</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                            @if (workflowTriggerRequestDetail.WorkflowLevel != null && workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelType != null)
+                                            {
+                                                <td>@workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelType.WorkflowLevelTypeName</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+
+                                            <td>@workflowTriggerRequestDetail.ActionRemarks</td>
+
+                                            @if (workflowTriggerRequestDetail.ActionDate.HasValue)
+                                            {
+                                                <td>@workflowTriggerRequestDetail.ActionDate.Value</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="submit-section">
+            <input type="hidden" id="popupTargetDdl" />
+            @if (ViewBag.CanTakeAction)
+            {
+                <button type="button" onclick="ChangeRequestAction(2);" class="btn btn-primary submit-btn">Approve</button>
+                <button type="button" onclick="ChangeRequestAction(3);" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Decline</button>
+            }
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Close</button>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.MarkAsRead' != 'null' && '@ViewBag.MarkAsRead' == 'True') {
+            RefreshBellIconCount('');
+        }
+    });
+    function ChangeRequestAction(statusId) {
+
+        var model = {
+            Id: $('#ChangeRequestEmergencyContactId').val(),
+            ChangeRequestRemarks: $('#ChangeRequestRemarks').val(),
+            ChangeRequestStatusId: statusId,
+            UserInformationId: $('#ChangeRequestEmergencyContactUserInformationId').val(),
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/ApproveChangeRequestEmergencyContact/ApproveChangeRequestEmergencyContact',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                //window.location.href = '/UserInformation/Index';
+                //location.reload(true);
+                if (statusId == 2) { toastr.success('Change request approved successfully.', "Success!"); }
+                else if (statusId == 3) { toastr.success('Change request decline.', "Success!"); }
+                $('#myModal').modal('hide');
+                RefreshBellIconCount('');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                window.location.href = '/UserInformation/Index';
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+</script>
+<style>
+    .modal-dialog {
+        width: 80%;
+        max-width: 80% !important;
+    }
+</style>

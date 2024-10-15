@@ -1,0 +1,213 @@
+﻿@model TimeAide.Web.Models.ApplicantContactInformation
+<div style="padding:5px; padding-top:0px;">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-6 p-0">
+                <div class="panel panel-default" style="width:100%;margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Contact Info.
+                        <div class="pull-right dropdown-action" style="height:20px;" id="contactInfoMenu">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                <a a href="javascript:AddEditContactInfo();" class="dropdown-item"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <h5 class="pl-1 pt-1">Phone(s)</h5>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Home:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.HomeNumber)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Mobile:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CelNumber)
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Fax:
+                            </label>
+
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FaxNumber)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Other:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.OtherNumber)
+                            </div>
+                        </div>
+                        <h5 class="pl-1">Email(s)</h5>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Personal Email:
+                            </label>
+
+                            <div class="col-md-8 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PersonalEmail)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Work Email:
+                            </label>
+                            <div class="col-md-8 text-muted mt-2">
+                                @Html.DisplayFor(m => m.WorkEmail)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Other Email:
+                            </label>
+                            <div class="col-md-8 text-muted mt-2">
+                                @Html.DisplayFor(m => m.OtherEmail)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                        </div>
+                        <div class="form-group row">
+                        </div>
+                        <div class="form-group row">
+                        </div>
+                    </div>
+            </div>
+           </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" style="width:100%;margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Address(es)
+
+
+                        <div class="pull-right dropdown-action" style="height:20px;" id="contactAddressMenu">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                <a a href="javascript:AddEditAddressInfo(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="panel-body">
+                        <h5 class="pl-1 pt-1">Home Address</h5>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Address 1:
+                            </label>
+                            <div class="col-md-9 text-muted mt-2">
+                                @Html.DisplayFor(model => model.HomeAddress1)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Address 2:
+                            </label>
+                            <div class="col-md-9 text-muted mt-2">
+                                @Html.DisplayFor(model => model.HomeAddress2)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Country:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(model => model.HomeCountry.CountryName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                State:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(model => model.HomeState.StateName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                City:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(model => model.HomeCity.CityName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Zip Code:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(model => model.HomeZipCode)
+                            </div>
+                        </div>
+                        <h5 class="pl-1">Mailing Address</h5>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Address 1:
+                            </label>
+                            <div class="col-md-9 text-muted mt-2">
+                                @Html.DisplayFor(model => model.MailingAddress1)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Address 2:
+                            </label>
+                            <div class="col-md-9 text-muted mt-2">
+                                @Html.DisplayFor(model => model.MailingAddress2)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Country:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(model => model.MailingCountry.CountryName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                State:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                <span id="lblHomeStateId"> @Html.DisplayFor(model => model.MailingState.StateName)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                City:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(model => model.MailingCity.CityName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Zip Code:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(model => model.MailingZipCode)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger
+        var userInfoId = $("#UserInformationId").val();
+        if (userInfoId != "") {
+            $("#contactInfoMenu").hide();
+            $("#contactAddressMenu").hide();
+        }
+
+
+    });
+
+
+
+</script>

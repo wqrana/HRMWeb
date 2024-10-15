@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://tawqc.timeaide.com:9001/wsValidateEvent.asmx?wsdl" filename="wsValidateEvent.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://tawqc.timeaide.com:9001/wsValidateEvent.asmx?disco" filename="wsValidateEvent.disco" />
+  </Results>
+</DiscoveryClientResultsFile>

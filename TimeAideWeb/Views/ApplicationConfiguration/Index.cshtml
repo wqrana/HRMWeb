@@ -1,0 +1,113 @@
+﻿@model IEnumerable<TimeAide.Web.Models.ApplicationConfiguration>
+
+@Html.Partial("_IndexPageHeaderView")
+
+<thead>
+    <tr>
+        <th>Action</th>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicationConfigurationName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicationConfigurationValue)
+        </th>
+        <th style="display:none;"></th>
+        <th>
+            Module/Form Name
+        </th>
+
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationConfigurationName)
+        </td>
+        <td >
+            @*@if (item.ValueType == "Boolean")
+            {
+                @Html.DisplayFor(modelItem => item.ValueAsBoolean)
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.ApplicationConfigurationValue)
+            }*@
+            @if (item.ValueType == "Boolean")
+            {
+                @Html.CheckBoxFor(m => item.ValueAsBoolean, new {  id = "ConfigurationValue_" + item.Id.ToString() } )
+            }
+            else
+            {
+                @Html.EditorFor(m => item.ApplicationConfigurationValue, new { htmlAttributes = new { @class = "form-control",@id= "ConfigurationValue_"+item.Id.ToString() } })
+            }
+        </td>
+        <td style="display:none;">
+            @Html.DisplayFor(modelItem => item.ValueType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModuleFormName)
+        </td>
+
+        <td>
+            <input onclick="SaveRowConfiguration(this)" value="Save" type="button" class="btn btn-primary submit-btn" style="min-width: 100px;padding: 0px 5px;font-size: 13px;" tooltip="Save the record">
+            <span id="spanSavingConfiguration_@item.Id" style="display:none;">
+                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="20" height="20" />
+            </span>
+        </td>
+    </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<script>
+    function SaveRowConfiguration(saveRowElmt) {
+        debugger;
+        $("#spanSavingConfiguration").show();
+        var rowTr = $(saveRowElmt).closest("tr");
+        var dataObj = new Object();
+        dataObj.Id = $(rowTr).find("td:eq(1)").text().trim();
+        dataObj.ValueType = $(rowTr).find("td:eq(4)").text().trim();
+        if (dataObj.ValueType == "Boolean") {
+            var state = $("#ConfigurationValue_" + dataObj.Id).is(":checked");
+            dataObj.ApplicationConfigurationValue = state == true ? "1" : "0";
+        }
+        else {
+            dataObj.ApplicationConfigurationValue = $("#ConfigurationValue_" + dataObj.Id).val();
+        }
+        console.log(dataObj);
+        $("#spanSavingConfiguration_" + dataObj.Id).show();
+        $.ajax({
+            type: "POST",
+            url: "/ApplicationConfiguration/AjaxEditConfiguration",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+                    $("#spanSavingConfiguration_" + dataObj.Id).hide();
+                    showAlertAutoHide("#", data.status, data.message);                   
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                alert('Error in Saving Configuration');
+                
+            }
+        });
+    }
+</script>

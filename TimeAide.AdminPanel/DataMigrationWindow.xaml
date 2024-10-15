@@ -1,0 +1,163 @@
+﻿<Window x:Class="TimeAide.AdminPanel.DataMigrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TimeAide.AdminPanel"
+        mc:Ignorable="d"
+        Background="{StaticResource Brush_WindowBackground}" 
+        Loaded="Window_Loaded"
+        Title="TimeAide Admin Panel: Migrate Data/Create database" Width="850" Height="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <StackPanel>
+        <Border Style="{StaticResource UserControl_Form_Inner_Border}">
+            <StackPanel>
+                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                        <TextBlock Text="Target Database" Margin="0,0,0,0" VerticalAlignment="Center"  Width="100" FontWeight="Bold"/>
+                        <TextBox Name="txtTargetDatabase" Margin="10,0,0,0" VerticalAlignment="Center" Width="150" LostFocus="TxtTargetDatabase_LostFocus" />
+                        <TextBlock Name="lblTargetDatabaseType"  Margin="10,0,0,0" VerticalAlignment="Center"  Width="300" Style="{StaticResource FaderStyle}" Foreground="Red" FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,15,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                        <TextBlock Text="Source Database" Margin="0,0,0,0" VerticalAlignment="Center"  Width="100" FontWeight="Bold"/>
+                        <TextBox Name="txtSourceDatabase" Margin="10,0,0,0" VerticalAlignment="Center" Width="150" />
+                        <TextBlock Text="Client Name" Margin="10,0,0,0" VerticalAlignment="Center"  Width="100" FontWeight="Bold"/>
+                        <TextBox Name="txtSourceClient" Margin="10,0,0,0" VerticalAlignment="Center" Width="150" />
+                    </StackPanel>
+                </Border>
+                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,15,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                        <TextBlock Text="Execution Type" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" Width="100"/>
+                        <ComboBox Name="cboExecutionType" Margin="10,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="CboExecutionType_SelectionChanged">
+                        </ComboBox>
+                        <TextBlock Name="lblExecutionType"  Margin="10,0,0,0" VerticalAlignment="Center"  Width="300" Style="{StaticResource FaderStyle}" Foreground="Red" FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+                <Border Margin="0,15,0,0" Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                        <CheckBox x:Name="chkDeleteIsEnabled" Content="Migrate Default Values" IsChecked="True" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush_TextForeground}"  />
+                        <CheckBox x:Name="chkDeleteShowText" Content="Migrate Master Data" IsChecked="False" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush_TextForeground}" />
+                        <CheckBox x:Name="chkDeleteShowImage" Content="Migrate Employee Data" IsChecked="True" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush_TextForeground}" />
+                        <CheckBox x:Name="chkShowImage" Content="Download files from DB" IsChecked="False" Visibility="Hidden" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush_TextForeground}" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="0,15,0,0" Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center" Background="{x:Null}">
+                        <Button Name="btnExecuteMigration" Width="150" Content="Execute Migration" Click="BtnExecuteMigration_Click" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <Button Name="btnExecutePreprcessing" Width="150" Content="Preprcessing" Click="BtnExecutePreprcessing_Click"  Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <Button Name="btnUpdateData" Width="150" Content="Update Data" Click="btnUpdateData_Click" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <Button Name="btnCloseApplication" Width="150" Content="Close Window" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" Click="btnCloseApplication_Click"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+        <TabControl  x:Name="tcOpenPages" SelectedIndex="0" TabStripPlacement="Bottom" Style="{DynamicResource TabControlStyle_Application}" >
+            <TabItem Style="{DynamicResource TabItemStyle_Application}" Header="Data Migration">
+                <Border Style="{StaticResource UserControl_Form_Outer_Border}">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Border Style="{StaticResource UserControl_Form_Inner_Border}">
+                            <StackPanel>
+                                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,15,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                                        <TextBox Name="txtLogStatus" Margin="5" Grid.Column="1"  Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="767" Height="310" VerticalScrollBarVisibility="Auto"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+            <TabItem Style="{DynamicResource TabItemStyle_Application}" Header="Pre processing">
+                <Border Style="{StaticResource UserControl_Form_Outer_Border}">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Border Style="{StaticResource UserControl_Form_Inner_Border}">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,15,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                                        <ListView Name="grdResult" Height="310">
+                                            <ListView.View>
+                                                <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Employee Information">
+                                                    <GridViewColumn DisplayMemberBinding= "{Binding Path=strEmployeeID}" Header="Employee ID" Width="100"/>
+                                                    <GridViewColumn DisplayMemberBinding="{Binding Path=strFirstName}" Header="First Name" Width="150"/>
+                                                    <GridViewColumn DisplayMemberBinding="{Binding Path=strLastName}" Header="Last Name" Width="150"/>
+                                                    <GridViewColumn Header="Hire Date" Width="120">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <DatePicker  SelectedDate="{Binding dtOriginalHireDate}"></DatePicker>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn Header="Re-Hire Date" Width="120">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <DatePicker  SelectedDate="{Binding dtEffectiveHireDate}"></DatePicker>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn DisplayMemberBinding="{Binding Path=DaysDiff}" Header="Days Diff" Width="150"/>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                    </StackPanel>
+                                </Border>
+                                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,15,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                                    <StackPanel Width="Auto" Background="{x:Null}" Orientation="Vertical">
+                                        <Button Name="btnExportToExcel" Width="250" Content="Export To Excel" Click="BtnExportToExcel_Click"  Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                                        <Button Name="btnSendEmailAlert" Width="250" Content="Send Email Alert" Click="BtnSendEmailAlert_Click"  Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                                        <Button Name="btnUpdateHireDateWithRehireDate" Width="250" Content="Update Hire Date With Rehire date" Click="BtnUpdateHireDateWithRehireDate_Click"  Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                                        <Button Name="btnUpdateReHireDateWithHireDate" Width="250" Content="Update ReHire Date With hire date" Click="BtnUpdateReHireDateWithHireDate_Click"  Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                                        <Button Name="btnUpdateFromGridValues" Width="250" Content="Update From Grid Values" Click="BtnUpdateReHireDateWithHireDate_Click"  Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+            <TabItem Style="{DynamicResource TabItemStyle_Application}" Header="SubDepartment Mapping">
+                <Border Style="{StaticResource UserControl_Form_Outer_Border}">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Border Style="{StaticResource UserControl_Form_Inner_Border}">
+                            <Grid>
+                                <ListView Name="lvEmps" Height="300" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Department" Width="50" DisplayMemberBinding="{Binding DepartmentName}" />
+                                            <GridViewColumn Header="Company" Width="120" DisplayMemberBinding="{Binding CompanyName}" />
+                                        </GridView>
+                                    </ListView.View>
+                                    <ListView.GroupStyle>
+                                        <GroupStyle>
+                                            <GroupStyle.ContainerStyle>
+                                                <Style TargetType="{x:Type GroupItem}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <Expander IsExpanded="True">
+                                                                    <Expander.Header>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <TextBlock Text="SubDept:" Margin="10,0,20,0" Foreground="DarkSlateGray" FontSize="20" VerticalAlignment="Bottom"/>
+                                                                            <TextBlock Text="{Binding Name}" FontWeight="DemiBold" Foreground="DarkSlateGray" FontSize="20" VerticalAlignment="Bottom" />
+                                                                            <TextBlock Text="{Binding ItemCount}" FontSize="18" Foreground="Gray" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                                            <TextBlock Text=" record(s)" FontSize="16" Foreground="Gray" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                                        </StackPanel>
+                                                                    </Expander.Header>
+                                                                    <ItemsPresenter />
+                                                                </Expander>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </GroupStyle.ContainerStyle>
+                                        </GroupStyle>
+                                    </ListView.GroupStyle>
+                                </ListView>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</Window>

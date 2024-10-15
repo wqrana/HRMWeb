@@ -1,0 +1,422 @@
+﻿@{
+    ViewBag.Title = "Payroll Rules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Payroll Rules</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Settings</li>
+                <li class="breadcrumb-item">Payroll</li>
+                <li class="breadcrumb-item active">Payroll Rules</li>
+            </ul>
+
+            <div class="col-auto float-right ml-auto">
+                @*@Html.ActionLink("Create New User", "Create")*@
+                @if ((bool)(ViewBag.AllowAdd ?? false))
+                {
+                    @*<a href="/Country/Create" class="btn add-btn"><i class="fa fa-plus"></i> Add @ViewBag.FormName</a>*@
+                    <a href="javascript:createEditPayrollRule(0);" class="btn add-btn">+ Add @ViewBag.Label</a>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="divPayrollRuleDetail">
+</div>
+<div id="divPayrollRuleList">
+</div>
+<div id="divPayrollRuleActionPopUp">
+</div>
+
+<script>
+    $(document).ready(function () {
+        //$('#tblTemplate').dataTable({
+        //    "searching": true
+        //});
+
+        getPayrollRuleDetail(0);
+        getPayrollRuleList();
+    });
+    function getPayrollRuleList() {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollRule/IndexByPayrollRule',
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divPayrollRuleList").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionList");
+            }
+        });
+    }
+    function getPayrollRuleDetail(payrollRuleId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollRule/Details',
+            data: { "id": payrollRuleId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divPayrollRuleDetail").html(data);
+                     $('html, body').animate({
+                         scrollTop: ($('.page-header').offset().top)
+                    }, 500);
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionDetail");
+            }
+        });
+    }
+    function createEditPayrollRule(payrollRuleId) {
+        debugger;
+        //var ActionMethod = payrollRuleId == 0 ? "Create" : "Edit";
+        $.ajax({
+            type: "get",
+            url: '/PayrollRule/CreateEditRule',
+            data: { "id": payrollRuleId },
+
+            success: function (data) {
+                 debugger;
+                //console.log(data);
+                $("#divPayrollRuleActionPopUp").html(data);
+                $("#payrollRuleCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function createEditBreakAMealTab(payrollRuleId) {
+        debugger;
+        var id = payrollRuleId == 0 ? null : payrollRuleId;
+        $.ajax({
+            type: "get",
+            url: '/PayrollRule/CreateEditBreakAMeal',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#payrollRule_breakAmealCE").html(data);
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function createEditPunchesAOvertimeTab(payrollRuleId) {
+        debugger;
+        var id = payrollRuleId == 0 ? null : payrollRuleId;
+        $.ajax({
+            type: "get",
+            url: '/PayrollRule/CreateEditPunchesAOvertime',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#payrollRule_punchesAovertimeCE").html(data);
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function createEditHoursComputationTab(payrollRuleId) {
+        debugger;
+        var id = payrollRuleId == 0 ? null : payrollRuleId;
+        $.ajax({
+            type: "get",
+            url: '/PayrollRule/CreateEditHoursComputation',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#payrollRule_hoursCompCE").html(data);
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function createEditAdditionalSettingTab(payrollRuleId) {
+        debugger;
+        var id = payrollRuleId == 0 ? null : payrollRuleId;
+        $.ajax({
+            type: "get",
+            url: '/PayrollRule/CreateEditAdditionalSetting',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#payrollRule_additionalSettingCE").html(data);
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function savePayrollRuleData() {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.Id = $('#PayrollRuleId').val();
+        dataObj.Name = $('#Name').val();
+        dataObj.Description = $('#Description').val();
+        dataObj.NoOfPunchVal = $('#NoOfPunchVal').val();
+        dataObj.PayFrequencyId = $('#PayFrequencyId').val();
+        dataObj.PayweekStartDate = $('#PayweekStartDate').val();
+        dataObj.TimesheetStartDate = $('#TimesheetStartDate').val();
+        dataObj.IsCustomSchedule = $('#IsCustomSchedule').is(":checked");
+        dataObj.IsAssignedWork = $('#IsAssignedWork').is(":checked");
+        dataObj.AssignedDailyHour = $('#AssignedDailyHour').val();
+        dataObj.ScheduledWeeklyHour = $('#ScheduledWeeklyHour').val();
+        dataObj.IsAllCompanies = $('#IsAllCompaniesAE').is(":checked");
+        //break
+        dataObj.IsAllowBreak=$("#IsAllowBreakAE").is(":checked");
+        dataObj.BreakTypeVal=$("#BreakTypeVal").val();
+        dataObj.BreakLengthMinute=$("#BreakLengthMinute").val();
+        dataObj.BreakRoundingMinute=$("#BreakRoundingMinute").val();
+        dataObj.IsShortBreakException=$("#IsShortBreakExceptionAE").is(":checked");
+        dataObj.ShortBreakExceptionMinute=$("#ShortBreakExceptionMinute").val();
+        dataObj.IsLongBreakException=$("#IsLongBreakExceptionAE").is(":checked");
+        dataObj.LongBreakExceptionMinute=$("#LongBreakExceptionMinute").val();
+        //end break
+        //Meal
+        dataObj.IsRoundMealToSchedule=$("#IsRoundMealToScheduleAE").is(":checked");
+        dataObj.MealEarlyRoundMinute=$("#MealEarlyRoundMinute").val();
+        dataObj.MealLateRoundMinute=$("#MealLateRoundMinute").val();
+        dataObj.IsRoundToEndOfMealPeriod=$("#IsRoundToEndOfMealPeriodAE").is(":checked");
+        dataObj.IsRoundMealToQuarter=$("#IsRoundMealToQuarterAE").is(":checked");
+        dataObj.IsEarlyInMealException=$("#IsEarlyInMealExceptionAE").is(":checked");
+        dataObj.EarlyInMealExceptionMinute=$("#EarlyInMealExceptionMinute").val();
+        dataObj.IsLateInMealException=$("#IsLateInMealExceptionAE").is(":checked");
+        dataObj.LateInMealExceptionMinute=$("#LateInMealExceptionMinute").val();
+        dataObj.IsEarlyOutMealException=$("#IsEarlyOutMealExceptionAE").is(":checked");
+        dataObj.EarlyOutMealExceptionMinute=$("#EarlyOutMealExceptionMinute").val();
+        dataObj.IsLateOutMealException=$("#IsLateOutMealExceptionAE").is(":checked");
+        dataObj.LateOutMealExceptionMinute=$("#LateOutMealExceptionMinute").val();
+        dataObj.IsShortMealException=$("#IsShortMealExceptionAE").is(":checked");
+        dataObj.ShortMealExceptionMinute=$("#ShortMealExceptionMinute").val();
+        dataObj.IsLongMealException=$("#IsLongMealExceptionAE").is(":checked");
+        dataObj.LongMealExceptionMinute=$("#LongMealExceptionMinute").val();
+        dataObj.IsUse6HourMinimum=$("#IsUse6HourMinimumAE").is(":checked");
+        dataObj.ScheduledPrimaryMealHour=$("#ScheduledPrimaryMealHour").val();
+        dataObj.ScheduledSecondaryMealHour=$("#ScheduledSecondaryMealHour").val();
+        dataObj.IsComputeLateBreakPenalty=$("#IsComputeLateBreakPenaltyAE").is(":checked");
+        dataObj.LateBreakPenaltyHour=$("#LateBreakPenaltyHour").val();
+        dataObj.IsShortLunchMealPenalty=$("#IsShortLunchMealPenaltyAE").is(":checked");
+        dataObj.SecondaryMealWaiverVal=$("#SecondaryMealWaiverVal").val();
+        dataObj.SecondMealWaiverHour=$("#SecondMealWaiverHour").val();
+        dataObj.IsPrMeal30MinuteWaiver=$("#IsPrMeal30MinuteWaiverAE").is(":checked");
+        //end
+        //punches
+        dataObj.RoundingMethodTypeVal = $("#RoundingMethodTypeVal").val();
+
+        dataObj.IsRoundIn = $("#IsRoundInAE").is(":checked");
+        dataObj.RoundInEarlyMinute = $("#RoundInEarlyMinute").val();
+        dataObj.RoundInLateMinute = $("#RoundInLateMinute").val();
+
+        dataObj.IsRoundOut = $("#IsRoundOutAE").is(":checked");
+        dataObj.RoundOutEarlyMinute = $("#RoundOutEarlyMinute").val();
+        dataObj.RoundOutLateMinute = $("#RoundOutLateMinute").val();
+
+        dataObj.PunchRoundingPeriodVal = $("#PunchRoundingPeriodVal").val();
+
+        dataObj.IsEarlyInException = $("#IsEarlyInExceptionAE").is(":checked");
+        dataObj.EarlyInExceptionMinute = $("#EarlyInExceptionMinute").val();
+
+        dataObj.IsLateInException = $("#IsLateInExceptionAE").is(":checked");
+        dataObj.LateInExceptionMinute = $("#LateInExceptionMinute").val();
+
+        dataObj.IsEarlyOutException = $("#IsEarlyOutExceptionAE").is(":checked");
+        dataObj.EarlyOutExceptionMinute = $("#EarlyOutExceptionMinute").val();
+
+        dataObj.IsLateOutException = $("#IsLateOutExceptionAE").is(":checked");
+        dataObj.LateOutExceptionMinute = $("#LateOutExceptionMinute").val();
+        //end
+        //overtime
+        dataObj.DailyScheduledHour = $("#DailyScheduledHour").val();
+        dataObj.WeeklyScheduledHour = $("#WeeklyScheduledHour").val();
+
+        dataObj.IsNoOvertime = $("#IsNoOvertime").is(":checked");
+
+        dataObj.LawDailyRegularHour = $("#LawDailyRegularHour").val();
+        dataObj.T24HourLawTypeVal = $("#T24HourLawTypeVal").val();
+        dataObj.IsUseLawWeeklyHour = $("#IsUseLawWeeklyHourAE").is(":checked");
+        dataObj.LawWeeklyRegularHour = $("#LawWeeklyRegularHour").val();
+        dataObj.IsUseSeventhDayLaw = $("#IsUseSeventhDayLawAE").is(":checked");
+        //end
+        //hours computation
+        dataObj.HourRoundingSchemeVal = $("#HourRoundingSchemeVal").val();
+        dataObj.LateRoundingSchemeVal = $("#LateRoundingSchemeVal").val();
+
+        dataObj.ScheduledOTLawTypeVal = $("#ScheduledOTLawTypeVal").val();
+        dataObj.ScheduledOTAppTransId = $("#ScheduledOTAppTransId").val();
+        dataObj.ScheduledOTUnAppTransId = $("#ScheduledOTUnAppTransId").val();
+
+        dataObj.DailyOTCompVal = $("#DailyOTCompVal").val();
+        dataObj.DailyOTAppTransId = $("#DailyOTAppTransId").val();
+        dataObj.DailyOTUnAppTransId = $("#DailyOTUnAppTransId").val();
+
+        dataObj.T24HrsOTCompVal = $("#T24HrsOTCompVal").val();
+        dataObj.T24HrsOTAppTransId = $("#T24HrsOTAppTransId").val();
+        dataObj.T24HrsOTUnAppTransId = $("#T24HrsOTUnAppTransId").val();
+
+        dataObj.WeeklyOTCompVal = $("#WeeklyOTCompVal").val();
+        dataObj.WeeklyOTAppTransId = $("#WeeklyOTAppTransId").val();
+        dataObj.WeeklyOTUnAppTransId = $("#WeeklyOTUnAppTransId").val();
+
+        dataObj.MealPenaltyLawTypeVal = $("#MealPenaltyLawTypeVal").val();
+        dataObj.MealPenaltyAppTransId = $("#MealPenaltyAppTransId").val();
+        dataObj.MealPenaltyUnAppTransId = $("#MealPenaltyUnAppTransId").val();
+
+        dataObj.SeventhDayComputationVal = $("#SeventhDayComputationVal").val();
+        
+        //end
+        //Additional Setting
+        dataObj.IsPaidMeal = $("#IsPaidMealAE").is(":checked");
+        dataObj.PaidMealHour = $("#PaidMealHour").val();
+        dataObj.PaidMealMinimumHour = $("#PaidMealMinimumHour").val();
+
+        dataObj.IsDeductMeal = $("#IsDeductMealAE").is(":checked");
+        dataObj.DeductMealHour = $("#DeductMealHour").val();
+        dataObj.DeductMinimumHour = $("#DeductMinimumHour").val();
+
+        dataObj.IsDeductSecondaryMeal = $("#IsDeductSecondaryMealAE").is(":checked");
+        dataObj.DeductSecondaryMealHour = $("#DeductSecondaryMealHour").val();
+        dataObj.DeductSecondaryMealMinimumHour = $("#DeductSecondaryMealMinimumHour").val();
+
+        dataObj.SundayOTVal = $("#SundayOTVal").val();
+        dataObj.MondayOTVal = $("#MondayOTVal").val();
+        dataObj.TuesdayOTVal = $("#TuesdayOTVal").val();
+        dataObj.WednesdayOTVal = $("#WednesdayOTVal").val();
+        dataObj.ThursdayOTVal = $("#ThursdayOTVal").val();
+        dataObj.FridayOTVal = $("#FridayOTVal").val();
+        dataObj.SaturdayOTVal = $("#SaturdayOTVal").val();
+
+        dataObj.IsRoundToSchedule = $("#IsRoundToScheduleAE").is(":checked");
+        dataObj.RoundAfterHour = $("#RoundAfterHour").val();
+        //end
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.Name.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.NoOfPunchVal.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.PayFrequencyId.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 3) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/PayrollRule/CreateEditRule",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#payrollRuleCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);
+                        getPayrollRuleDetail(dataObj.Id);
+                        getPayrollRuleList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in creating data');
+                    return false;
+                }
+            });
+        }
+    }
+    function getPayrollRuleDeleteData(payrollRuleId) {
+        debugger;
+        if (payrollRuleId != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/PayrollRule/Delete',
+                data: { "id": payrollRuleId },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divPayrollRuleActionPopUp").html(data);
+                    $("#payrollRuleDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deletePayrollRule(payrollRuleId) {
+        debugger;
+        alertID = ""
+        if (payrollRuleId != '') {
+            $.ajax({
+                type: "Post",
+                url: "/PayrollRule/ConfirmDelete",
+                data: { "id": payrollRuleId },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#payrollRuleDelete_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        var currPayrollRuleId = $("#SelectedPayrollRuleId").val();
+                        if (currPayrollRuleId == payrollRuleId) {
+                            location.reload(true);
+                        }
+                        else {
+                            getPayrollRuleList();
+                        }
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+   
+
+    
+    //End
+</script>

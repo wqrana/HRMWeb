@@ -1,0 +1,2700 @@
+﻿@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.UserInformation
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .radio-toolbar {
+        margin: 10px;
+    }
+
+        .radio-toolbar input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+
+        .radio-toolbar label {
+            display: inline-block;
+            background-color: #ddd;
+            height: 30px;
+            width: 30px;
+            font-family: sans-serif, Arial;
+            /*font-size: 16px;*/
+            border: 2px solid #444;
+            border-radius: 4px;
+            text-align: center;
+            padding-top: 2px
+        }
+
+            .radio-toolbar label:hover {
+                background-color: #dfd;
+            }
+
+        .radio-toolbar input[type="radio"]:focus + label {
+            border: 2px dashed #444;
+        }
+
+        .radio-toolbar input[type="radio"]:checked + label {
+            background-color: #bfb;
+            border-color: #4c4;
+        }
+
+    .profile-info-right table tr {
+        height: 30px;
+    }
+
+    .title {
+        color: #4f4f4f;
+    }
+
+    .page-header {
+        margin-bottom: 0px;
+    }
+
+
+    .tab-box {
+        margin-bottom: 0px;
+    }
+
+    .profile-img-wrap.edit-img {
+        margin: 0;
+        position: absolute;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    .table th {
+        font-size: small;
+        background-color: #d9edf7 !important;
+    }
+
+    .table thead th {
+        font-size: small;
+        background-color: #d9edf7 !important;
+    }
+
+    .table tbody td {
+        font-size: small;
+    }
+</style>
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Profile</h3>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+@Html.Hidden("userID", @Model.Id)
+<div class="alert" style="display:none;" id="userDetailAlert">
+    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+    <strong>Alert!</strong><span class="ml-1"></span>
+</div>
+<div id="accordion">
+    <div class="card mb-0">
+        <div class="card-header">
+            <div class="text">
+                <h3>
+                    <a class="card-link" data-toggle="collapse" href="#collapseProfileHeader">
+                        <span id="ShortFullNameSpan"> @Html.DisplayFor(model => model.ShortFullName)</span> <span id="showHeader" class="bg-light pull-right fa fa fa-chevron-up" style="font-size:small"></span>
+                        @Html.HiddenFor(model => model.ShortFullName)
+                    </a>
+                </h3>
+                <div>
+                    Employee ID:<span id="mainEmployeeIdSpan" class="text-muted ml-1">@Html.DisplayFor(model => model.EmployeeId)</span>
+                    @{
+                        var bgClass = "bg-inverse-danger";
+                        if (Model.EmployeeStatusId == 1) //active
+                        {
+                            bgClass = "bg-inverse-success";
+                        }
+                        else if (Model.EmployeeStatusId == 2)//inactive
+                        {
+                            bgClass = "bg-inverse-warning";
+                        }
+                        else if (Model.EmployeeStatusId == 4)//employee transfer
+                        {
+                            bgClass = "bg-inverse-info";
+                        }
+                    }
+                    @Html.HiddenFor(model => model.EmployeeStatusId)
+                    <span class="badge @bgClass" id="userStatus">@Html.DisplayFor(model => model.EmployeeStatus.EmployeeStatusName)</span>
+                </div>
+            </div>
+        </div>
+        <div id="collapseProfileHeader" class="collapse show" data-parent="#accordion">
+            <div class="card-body pb-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="profile-view">
+                            <div class="profile-img-wrap edit-img">
+                                <!--<img class="inline-block" src="~/Images/no-profile-image.jpg" alt="user" id="profileMainPicture" >-->
+                                <img class="inline-block" src="@Model.PictureFilePath" alt="user" id="profileMainPicture">
+                                @if (ViewBag.AllowEdit)
+                                {
+                                    <div class="fileupload btn">
+                                        <a href="" class="btn-text" data-toggle="modal" data-target="#upload_picture_modal">Edit</a>
+                                    </div>
+                                }
+                            </div>
+                            <div class="profile-basic">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="profile-info-left">
+
+                                            <div class="staff-id">Company:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.Company.CompanyName)</span></div>
+                                            @{
+                                                var activeEmployment = TimeAide.Services.EmploymentService.GetActiveEmployment(Model.Id);
+                                                if (activeEmployment != null)
+                                                {
+                                                    var activeEmploymentHistory = TimeAide.Services.EmploymentHistoryService.GetActiveEmploymentHistory(Model.Id, activeEmployment.Id);
+                                                    if (activeEmploymentHistory != null && activeEmploymentHistory.Location != null)
+                                                    {
+                                                        <div class="staff-id">Location:<span class="text-muted ml-1">@activeEmploymentHistory.Location.LocationName</span></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="staff-id">Location:<span class="text-muted ml-1"></span></div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="staff-id">Location:<span class="text-muted ml-1"></span></div>
+                                                }
+                                            }
+                                            <div class="staff-id">Department:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.Department.DepartmentName)</span></div>
+                                            <div class="staff-id">Sub-Department:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.SubDepartment.SubDepartmentName)</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="profile-info-right">
+                                            <div class="staff-id">Employee Type:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.EmployeeType.EmployeeTypeName)</span></div>
+                                            <div class="staff-id">Position:<span class="text-muted ml-1">@Html.DisplayFor(model => model.Position.PositionName) </span></div>
+                                            <div class="staff-id">Employment Status:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.EmploymentStatu.EmploymentStatusName)</span></div>
+                                            @*<div class="staff-id">Supervisory Level:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.SupervisoryLevel.SupervisoryLevelName)</span></div>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card tab-box">
+    <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+            @if (SecurityHelper.IsAvailable("EmergencyContact"))
+            {
+                <input type="hidden" id="hdnIsEmergencyContact" value="yes" />
+            }
+            else
+            {
+                <input type="hidden" id="hdnIsEmergencyContact" value="no" />
+            }
+            <ul class="nav nav-tabs nav-tabs-bottom">
+                <li class="nav-item" id="generalInfoTab"><a href="#emp_generalInfo" data-toggle="tab" class="nav-link active">General Info.</a></li>
+                @if (SecurityHelper.IsAvailable("UserContactInformation"))
+                {
+                    <li class="nav-item" id="contactInfoTab" onclick="contactInfoTabClicked()"><a href="#emp_contactInfo" data-toggle="tab" class="nav-link">Contact Info.</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("Employment"))
+                {
+                    <li class="nav-item" id="hiringInfoTab" onclick="hiringInfoTabClicked()"><a href="#emp_hiringDetail" data-toggle="tab" class="nav-link">Hiring</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmploymentHistory"))
+                {
+                    <li class="nav-item" id="employmentInfoTab" onclick="employmentInfoTabClicked()"><a href="#emp_HiringHistory" data-toggle="tab" class="nav-link">Employment</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("PayInformationHistory"))
+                {
+                    <li class="nav-item" id="payInfoTab" onclick="payInformationHistoryTabClicked()"><a href="#emp_PayInformationHistory" data-toggle="tab" class="nav-link">Pay Info</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeEducation"))
+                {
+                    <li class="nav-item" id="employeeEducationTab" onclick="EmployeeEducationTabClicked()"><a href="#emp_educationDetail" data-toggle="tab" class="nav-link">Education</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeTraining"))
+                {
+                    <li class="nav-item" id="employeeTrainingTab" onclick="EmployeeTrainingTabClicked()"><a href="#emp_trainingDetail" data-toggle="tab" class="nav-link">Training</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeePerformance"))
+                {
+                    <li class="nav-item" id="employeeTrainingTab" onclick="EmployeePerformanceTabClicked()"><a href="#emp_performanceDetail" data-toggle="tab" class="nav-link">Performance</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeDependent"))
+                {
+                    <li class="nav-item" id="employeeDependentTab" onclick="EmployeeDependentTabClicked()"><a href="#emp_dependentDetail" data-toggle="tab" class="nav-link">Dependents</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeHealthInsurance"))
+                {
+                    <li class="nav-item" id="employeeHealthInsuranceTab" onclick="EmployeeHealthInsuranceTabClicked()"><a href="#emp_healthInsuranceDetail" data-toggle="tab" class="nav-link">Health Insurance</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeDentalInsurance"))
+                {
+                    <li class="nav-item" id="employeeDentalInsuranceTab" onclick="EmployeeDentalInsuranceTabClicked()"><a href="#emp_dentalInsuranceDetail" data-toggle="tab" class="nav-link">Dental Insurance</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeDocument"))
+                {
+                    <li class="nav-item" id="employeeDocumentTab" onclick="employeeDocumentClicked()"><a href="#emp_employeeDocument" data-toggle="tab" class="nav-link">Document</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeCredential"))
+                {
+                    <li class="nav-item" id="employeeCredentialTab" onclick="employeeCredentialClicked()"><a href="#emp_employeeCredential" data-toggle="tab" class="nav-link">Credential</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeCustomField"))
+                {
+                    <li class="nav-item" id="employeeCustomFieldTab" onclick="employeeCustomFieldClicked()"><a href="#emp_employeeCustomField" data-toggle="tab" class="nav-link">Custom Field</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeBenefitHistory"))
+                {
+                    <li class="nav-item" id="employeeBenefitTab" onclick="EmployeeBenefitTabClicked()"><a href="#emp_benefitDetail" data-toggle="tab" class="nav-link">Benefits And Others</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeAction"))
+                {
+                    <li class="nav-item" id="employeeActionTab" onclick="EmployeeActionTabClicked()"><a href="#emp_actionDetail" data-toggle="tab" class="nav-link">Action History</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("Appraisals"))
+                {
+                    <li class="nav-item" id="employeeAppraisalTab" onclick="EmployeeAppraisalTabClicked()"><a href="#emp_appraisalDetail" data-toggle="tab" class="nav-link">Appraisal(s)</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("Incidents"))
+                {
+                    <li class="nav-item" id="employeeIncidentTab" onclick="EmployeeIncidentTabClicked()"><a href="#emp_incidentDetail" data-toggle="tab" class="nav-link">Incidents</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("Profile"))
+                {
+                    <li class="nav-item" id="employeeSystemAccessTab" onclick="employeeSystemAccessClicked()"><a href="#emp_employeeSystemAccess" data-toggle="tab" class="nav-link">Profile</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("ReportingHierarchy"))
+                {
+                    <li class="nav-item" id="employeeReportingHierarchyTab" onclick="employeeReportingHierarchyClicked()"><a href="#emp_employeeReportingHierarchy" data-toggle="tab" class="nav-link">Supervision </a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeLicensesAndBalances"))
+                {
+                    <li class="nav-item" id="employeeLicensesTab" onclick="EmployeeLicensesTabClicked()"><a href="#emp_licensesDetail" data-toggle="tab" class="nav-link">Licenses/Balances</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeCompensation"))
+                {
+                    <li class="nav-item" id="employeeCompensationTab" onclick="employeeCompensationTabClicked()"><a href="#emp_EmployeeCompensation" data-toggle="tab" class="nav-link">Compensation</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeWithholding"))
+                {
+                    <li class="nav-item" id="employeeWithholdingTab" onclick="employeeWithholdingTabClicked()"><a href="#emp_EmployeeWithholding" data-toggle="tab" class="nav-link">Withholding</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeContribution"))
+                {
+                    <li class="nav-item" id="employeeContributionTab" onclick="employeeContributionTabClicked()"><a href="#emp_EmployeeContribution" data-toggle="tab" class="nav-link">Contribution</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("WebSchedule"))
+                {
+                    <li class="nav-item" id="" onclick="employeeWebSchSettingTabClicked()"><a href="#emp_employeeWebSchSetting" data-toggle="tab" class="nav-link">Web Schedule</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("EmployeeTimeAndAttendanceSetting"))
+                {
+                    <li class="nav-item" id="" onclick="timeAndAttendanceSettingTabClicked()"><a href="#emp_EmployeeTimeAndAttendanceSetting" data-toggle="tab" class="nav-link">T&A Setting</a></li>
+                }
+                @*@if (SecurityHelper.IsAvailable("EmployeeCompensationPreviousHistory"))
+                    {
+                        <li class="nav-item" id="hiringInfoTab" onclick="hiringInfoTabClicked()"><a href="#emp_EmployeeCompensationPreviousHistory" data-toggle="tab" class="nav-link">Compensation PreviousHistory</a></li>
+                    }*@
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tab-content pt-0">
+    <div id="emp_generalInfo" class="pro-overview tab-pane fade show active">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <!--<h3 class="card-title">General Information  <a href="javascript:editGeneralInfo()" class="edit-icon" title="Edit General Info."><i class="fa fa-pencil"></i></a></h3>-->
+                        <!--Tab Title & Right dropdown menu-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    General Information
+                                </h3>
+                            </div>
+                            <div class="col-md-6 pr-0">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            <div class="btn-group" role="group">
+                                                <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(0,@Model.EmployeeId)">Print</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gradient-blue inline-block">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (ViewBag.AllowEdit)
+                                                    {
+                                                        <a href="javascript:editGeneralInfo()" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a href="javascript:activateUser()" class="dropdown-item"><i class="fa fa-user-plus m-r-5"></i> Activate</a>
+                                                        <a href="javascript:deactivateUser()" class="dropdown-item"><i class="fa fa-user-times m-r-5"></i> Deactivate</a>
+                                                        <a href="javascript:transferUser()" class="dropdown-item"><i class="fa fa-chevron-up m-r-5"></i> Employee Transfer</a>
+                                                        <a href="" data-toggle="modal" data-target="#upload_userCV_modal" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload CV</a>
+                                                    }
+                                                    <a href="javascript:downloadUserCV()" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download CV</a>
+                                                    @*@if (SecurityHelper.AllowChangeHistory("UserInformation"))*@
+                                                    @if (ViewBag.AllowChangeHistory)
+                                                    {
+                                                        {
+                                                            <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@Model.Id,'UserInformation')" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                            @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <div class="panel panel-default" style="width:100%;margin-left:10px">
+                                    <div class="panel-heading" style="padding-left:10px">General Info.</div>
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+
+                                            <div class="form-group row">
+
+                                                <label class="col-md-2 col-form-label">Employee Id:</label>
+                                                <div class="col-md-2">
+                                                    <div id="employeeIdDiv" class="text-muted mt-2">@Html.DisplayFor(m => m.EmployeeId)</div>
+                                                </div>
+                                                <label class="col-md-2 col-form-label">SSN:</label>
+                                                <div class="col-md-2">
+                                                    <div class="text-muted mt-2">
+                                                        @*<span id="SSNDiv">@Html.DisplayFor(m => m.SSNComputed)</span>*@
+                                                        <span id="SSNDiv">
+                                                            @TimeAide.Services.UserInformationService.MaskSsn(Model.SSNEncrypted)
+
+                                                        </span>
+                                                        <input type="hidden" id="hdnSSNDe" value="@Model.SSN" />
+                                                        <input type="hidden" id="hdnSSNMasked" value="@Model.SSNComputed" />
+                                                    </div>
+                                                </div>
+                                                <label class="col-md-2 col-form-label">First Name:</label>
+                                                <div class="col-md-2">
+                                                    <div id="firstNameDiv" class="text-muted mt-2">@Html.DisplayFor(m => m.FirstName)</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+
+                                                <label class="col-md-2 col-form-label">Initial:</label>
+                                                <div class="col-md-2">
+                                                    <div id="middleInitialDiv" class="text-muted mt-2">@Html.DisplayFor(m => m.MiddleInitial)</div>
+                                                </div>
+                                                <label class="col-md-2 col-form-label">1st LastName:</label>
+                                                <div class="col-md-2">
+                                                    <div id="firstLastNameDiv" class="text-muted mt-2">@Html.DisplayFor(m => m.FirstLastName)</div>
+                                                </div>
+                                                <label class="col-md-2 col-form-label">2nd LastName:</label>
+                                                <div class="col-md-2">
+                                                    <div id="secondLastNameDiv" class="text-muted mt-2">@Html.DisplayFor(m => m.SecondLastName)</div>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
+
+                                                <label class="col-md-2 col-form-label">Birth Date:</label>
+                                                <div class="col-md-2">
+                                                    <div id="dobDiv" class="text-muted mt-2">@Html.DisplayFor(m => m.BirthDate)</div>
+                                                </div>
+                                                <label class="col-md-2 col-form-label">Birth Place:</label>
+                                                <div class="col-md-2">
+                                                    <div id="BirthPlaceDiv" class="text-muted mt-2">
+                                                        @Html.DisplayFor(m => m.BirthPlace)
+                                                    </div>
+                                                </div>
+                                                <label class="col-md-2 col-form-label">Gender:</label>
+                                                <div class="col-md-2">
+                                                    @{
+                                                        var genderList = ViewBag.GenderId as SelectList;
+                                                        var genderid = Model.GenderId;
+                                                        var genderText = genderList.Where(w => w.Value == genderid.ToString()).Select(s => s.Text).FirstOrDefault();
+                                                    }
+                                                    <div id="genderTextDiv" class="text-muted mt-2">@genderText</div>
+                                                    @Html.Hidden("genderIdDiv", @Model.GenderId)
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
+
+                                                <label class="col-md-2 col-form-label">Marital Status:</label>
+                                                <div class="col-md-2">
+                                                    @{
+                                                        var maritalList = ViewBag.MaritalStatusId as SelectList;
+                                                        var maritalid = Model.MaritalStatusId;
+                                                        var maritalStatusText = maritalList.Where(w => w.Value == maritalid.ToString()).Select(s => s.Text).FirstOrDefault();
+                                                    }
+                                                    <div id="martialStatusTextDiv" class="text-muted mt-2">@maritalStatusText</div>
+                                                    @Html.Hidden("maritalStatusIdDiv", @Model.MaritalStatusId)
+                                                </div>
+                                                <label class="col-md-2 col-form-label">Ethnicity:</label>
+                                                @{
+                                                    var ethnicityId = Model.EthnicityId;
+                                                    var ethnicityText = ethnicityId != null ? Model.Ethnicity.EthnicityName : "";
+                                                    var disabilityId = Model.DisabilityId;
+                                                    var disabilityText = disabilityId != null ? Model.Disability.DisabilityName : ""; ;
+
+                                                }
+                                                <div class="col-md-2">
+                                                    <div id="ethnicityTextDiv" class="text-muted mt-2">@ethnicityText</div>
+                                                    @Html.Hidden("ethnicityIdDiv", @ethnicityId)
+                                                </div>
+                                                <label class="col-md-2 col-form-label">Disability:</label>
+                                                <div class="col-md-2">
+                                                    <div id="disabilityTextDiv" class="text-muted mt-2">@disabilityText</div>
+                                                    @Html.Hidden("disabilityIdDiv", @disabilityId)
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+
+                                                <label class="col-md-2 col-form-label">CV Name:</label>
+                                                <div class="col-md-2">
+                                                    <div id="CVNameDiv" class="text-muted mt-2">@Model.ResumeFilePath</div>
+                                                </div>
+                                                @{
+                                                    var selectedList = Model.EmployeeVeteranStatus.Select(s => s.VeteranStatusId.ToString()).ToList();
+                                                    var VeteranStatusText = string.Join(",", ((SelectList)ViewBag.VeteranStatusId).Where(w => selectedList.Contains(w.Value)).Select(s => s.Text));
+                                                    var selectedListId = string.Join(",", ((SelectList)ViewBag.VeteranStatusId).Where(w => selectedList.Contains(w.Value)).Select(s => s.Value));
+                                                }
+                                                <label class="col-md-2 col-form-label">Veteran Status:</label>
+                                                <div class="col-md-6">
+                                                    <div id="VeteranStatusTextDiv" class="text-muted mt-2">@VeteranStatusText</div>
+                                                    @Html.Hidden("VeteranStatusIdDiv", @selectedListId)
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- Main Gen Row-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--General Info End-->
+    @if (SecurityHelper.IsAvailable("UserContactInformation"))
+    {
+        <div id="emp_contactInfo" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Contact Information
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(0,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue inline-block">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        @if (SecurityHelper.IsSuperAdmin || SecurityHelper.AllowChangeHistory("UserContactInformation"))
+                                                        {
+                                                            {
+                                                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@Model.Id,'UserContactInformation')" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingContactInfoTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divUserContactInformation">
+                                @*  @{Html.RenderAction("Details", "UserContactInformation", new { id = Model.Id });}*@
+                            </div>
+
+                            @if (SecurityHelper.IsAvailable("EmergencyContact"))
+                            {
+                                <div id="divEmergencyContact">
+                                    @*  @{Html.RenderAction("Index", "EmergencyContact", new { id = Model.Id });}*@
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("Employment"))
+    {
+        <div id="emp_hiringDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Hiring Information
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    @if (Model.EmployeeStatusId == 3)
+                                                    {
+                                                        <a class="nav-link btn btn-primary" role="button" href="javascript:generateTerminationLetter(@Model.Id)">Termination Letter</a>
+                                                    }
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(6,@Model.EmployeeId)">Print</a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue inline-block">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                        <a href="javascript:deactivateUser()" class="dropdown-item"><i class="fa fa-user-times m-r-5"></i> Close</a>
+
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingHiringInfoTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divMostRecentRecord" style="margin-left: -15px;">
+                                @*  @{Html.RenderAction("MostRecentRecord", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divEmploymentInformation">
+                                    @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                                </div>
+                            }
+                            <div id="divExitInterviewLetter"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmploymentHistory"))
+    {
+        <div id="emp_HiringHistory" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Employment Information
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(9,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                @*<div class="pull-right dropdown-action">
+
+                                                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                        </div>
+                                                    </div>*@
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingEmploymentInfoTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divEmploymentHistoryDetail" style="margin-left: -15px;">
+                                @*  @{Html.RenderAction("MostRecentRecord", "EmploymentHistory", new { id = Model.Id });}*@
+                            </div>
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divEmploymentHistoryIndex">
+                                    @*@{Html.RenderAction("IndexByUser", "EmploymentHistory", new { id = Model.Id });}*@
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("PayInformationHistory"))
+    {
+        <div id="emp_PayInformationHistory" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Pay Information
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:generateJobCertificate(@Model.Id)">Job Certificate</a>
+                                                </div>
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(11,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                @*<div class="pull-right dropdown-action">
+
+                                                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                        </div>
+                                                    </div>*@
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingPayInfoTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divMostRecentRecordPayInformationHistory" style="margin-left: -15px;">
+                                @*  @{Html.RenderAction("MostRecentRecord", "PayInformationHistory", new { id = Model.Id });}*@
+                            </div>
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divPayInformationHistoryIndex">
+                                    @* @{Html.RenderAction("IndexByUser", "PayInformationHistory", new { id = Model.Id });}*@
+                                </div>
+                            }
+                            <div id="divJobCertificationPopup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    <!--Employee Education tab-->
+    @if (SecurityHelper.IsAvailable("EmployeeEducation"))
+    {
+        <div id="emp_educationDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Education
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue inline-block">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserEducation(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditUserEducation(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a href="javascript:getUserEducationDocView(null)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                        <a href="javascript:downloadUserEducationDoc(null)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingEduTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divEmployeeEducationDetail">
+
+                                </div>
+                            }
+                            <div id="divEmployeeEducationIndex">
+
+                            </div>
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divEmployeeEducationCreateEdit">
+
+                                </div>
+                                <div id="divEmployeeEducationDocUpload">
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeTraining"))
+    {
+        <!--Employee Training tab-->
+        <div id="emp_trainingDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Training
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(15,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" bg-gradient-blue inline-block">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserTraining(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                       <!--
+                                                        <a href="javascript:createEditUserTraining(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a href="javascript:getUserTrainingDocView(null)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                        <a href="javascript:downloadUserTrainingDoc(null)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+                                                           -->
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingTrainingTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divEmployeeTrainingDetail">
+
+                                </div>
+                            }
+                            <div id="divEmployeeTrainingIndex">
+
+                            </div>
+                            <div id="divEmployeeTrainingCreateEdit">
+
+                            </div>
+                            <div id="divEmployeeTrainingDocUpload">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--End Training-->
+    <!--Performance-->
+    @if (SecurityHelper.IsAvailable("EmployeePerformance"))
+    {
+        <div id="emp_performanceDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Performance Review
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(16,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserPerformance(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditUserPerformance(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a href="javascript:getUserPerformanceDocView(null)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                        <a href="javascript:downloadUserPerformanceDoc(null)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingPerformanceTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divEmployeePerformanceDetail">
+
+                            </div>
+                            <div id="divEmployeePerformanceIndex">
+
+                            </div>
+                            <div id="divEmployeePerformanceCreateEdit">
+
+                            </div>
+                            <div id="divEmployeePerformanceDocUpload">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--End Performance-->
+    <!--Dependent(s)-->
+    @if (SecurityHelper.IsAvailable("EmployeeDependent"))
+    {
+        <div id="emp_dependentDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Dependents
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(17,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserDependent(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditUserDependent(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a href="javascript:getUserDependentDocView(null)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                        <a href="javascript:downloadUserDependentDoc(null)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingDependentTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divEmployeeDependentDetail">
+
+                                </div>
+                            }
+                            <div id="divEmployeeDependentIndex">
+
+                            </div>
+                            <div id="divEmployeeDependentCreateEdit">
+
+                            </div>
+                            <div id="divEmployeeDependentDocUpload">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--End Dependent-->
+    <!--Health Insurance-->
+    @if (SecurityHelper.IsAvailable("EmployeeHealthInsurance"))
+    {
+        <div id="emp_healthInsuranceDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Health Insurance
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(22,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserHealthInsurance(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        @if (SecurityHelper.IsSuperAdmin || SecurityHelper.AllowChangeHistory("EmployeeHealthInsurance"))
+                                                        {
+                                                            {
+                                                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistoryEmployeeHealthInsurance()" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingHealthInsuranceTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divEmployeeHealthInsuranceDetail">
+                            </div>
+
+                            <div class="row mt-0">
+                                <div class="col-md-6" id="divDependentDetail">
+                                </div>
+
+                                <div class="col-md-6" id="divCobraPaymentDetail">
+                                </div>
+                            </div>
+
+                            <div id="divEmployeeHealthInsuranceCreateEdit">
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--End Health Insurance-->
+    <!--Dental Insurance-->
+    @if (SecurityHelper.IsAvailable("EmployeeDentalInsurance"))
+    {
+        <div id="emp_dentalInsuranceDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Dental Insurance
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(23,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserDentalInsurance(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        @if (SecurityHelper.IsSuperAdmin || SecurityHelper.AllowChangeHistory("EmployeeDentalInsurance"))
+                                                        {
+                                                            {
+                                                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistoryEmployeeDentalInsurance()" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingDentalInsuranceTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divEmployeeDentalInsuranceDetail">
+                            </div>
+
+                            <div class="row mt-0">
+                                <div class="col-md-6" id="divDentalDependentDetail">
+                                </div>
+
+                                <div class="col-md-6" id="divDentalCobraPaymentDetail">
+                                </div>
+                            </div>
+
+                            <div id="divEmployeeDentalInsuranceCreateEdit">
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--End Dental Insurance-->
+    <!--Benefit and  Other-->
+    @if (SecurityHelper.IsAvailable("EmployeeBenefitHistory"))
+    {
+        <div id="emp_benefitDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Benefits And Others
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(20,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserBenefit(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditUserBenefit(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingBenefitTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divEmployeeBenefitDetail">
+                            </div>
+
+                            <div class="row mt-0">
+                                <h4 class="pull-left"> Benefit History List</h4>
+
+                                <div class="col-md-12" id="divBenefitHistoryDetail">
+                                </div>
+                            </div>
+
+                            <div id="divEmployeeBenefitCreateEdit">
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!--End Benefit And Other-->
+    <!--End Performance-->
+    @if (SecurityHelper.IsAvailable("EmployeeCredential"))
+    {
+        <div id="emp_employeeCredential" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Credential
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openCredentialChecklist(@Model.Id)">Credential Checklist</a>
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(18,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a a href="javascript:void(0);" data-toggle="modal" id="anchorUserContactInformation" class="dropdown-item" onclick="fnAddEmployeeCredentialPopup(@Model.Id,0);" data-id="@ViewBag.UserInformationId">Add Credential</a>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingCredentialTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="divEmployeeCredentialRequired">
+                                        @* @{Html.RenderAction("Index2", "EmployeeCredential", new TimeAide.Web.Models.EmployeeCredential() { UserInformationId = Model.Id, IsRequired = true });}*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="divEmployeeCredentialNonRequired">
+                                        @*   @{Html.RenderAction("Index2", "EmployeeCredential", new TimeAide.Web.Models.EmployeeCredential() { UserInformationId = Model.Id, IsRequired = false });}*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divCredentialChecklist"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeDocument"))
+    {
+        <div id="emp_employeeDocument" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Employee Documents
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="divLoadingDocumentTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divEmployeeDocument" style="margin-left: -15px;">
+                                @* @{Html.RenderAction("IndexByUser", "EmployeeDocument", new { userId = Model.Id });}*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeCustomField"))
+    {
+        <div id="emp_employeeCustomField" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Employee Custom Field
+                                    </h3>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="btn-group" role="group" style="float:right">
+                                        <a class="nav-link btn btn-primary" role="button" href="javascript:printCustomFieldReport()">Print</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="divLoadingCustomFieldTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divEmployeeCustomField" style="margin-left: -15px;">
+                                @*  @{Html.RenderAction("IndexByUser", "EmployeeCustomField", new { userId = Model.Id });}*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--Employee Action-->
+    @if (SecurityHelper.IsAvailable("EmployeeAction"))
+    {
+        <div id="emp_actionDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Action History
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(21,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditUserAction(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditUserAction(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a href="javascript:getUserActionDocView(null)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                        <a href="javascript:downloadUserActionDoc(null)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingActionTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divEmployeeActionDetail">
+
+                            </div>
+                            <div id="divEmployeeActionIndex">
+
+                            </div>
+                            <div id="divEmployeeActionCreateEdit">
+
+                            </div>
+                            <div id="divEmployeeActionDocUpload">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--End Action-->
+    @if (SecurityHelper.IsAvailable("Profile"))
+    {
+        <div id="emp_employeeSystemAccess" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Profile
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            @*<div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                    <div class="btn-group" role="group">
+                                                        <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(0,@Model.EmployeeId)">Print</a>
+                                                    </div>
+                                                </div>*@
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        @*<a a href="javascript:;" data-toggle="modal" id="anchorEmploymentPrivilege" onclick="fnAddEmployeeSystemAccess(@Model.Id);" class="dropdown-item" data-id="@ViewBag.UserInformationId"><i class="fa fa-plus m-r-5"></i>Edit</a>*@
+                                                        @if (SecurityHelper.IsSuperAdmin || SecurityHelper.AllowChangeHistory("Profile"))
+                                                        {
+                                                            <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowEmployeeSystemAccessChangeHistory(@Model.Id)" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingSystemAccessTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divEmployeeSystemAccess" style="margin-left: -15px;">
+                                @* @{Html.RenderAction("EmployeeSystemAccessView", "UserInformation", new { userId = Model.Id });}*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("ReportingHierarchy"))
+    {
+        <div id="emp_employeeReportingHierarchy" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Supervision
+                                    </h3>
+                                </div>
+                                <div class="col-md-6">
+
+                                </div>
+                            </div>
+                            <div id="divLoadingReportingHierarchyTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divEmployeeReportingHierarchy" style="margin-left: -15px;">
+                                @*@{Html.RenderAction("EmployeeReportingHierarchyView", "UserInformation", new { userId = Model.Id });}*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (SecurityHelper.IsAvailable("Appraisals"))
+    {
+        <div id="emp_appraisalDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Appaisal(s)
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            @*<div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                    <div class="btn-group" role="group">
+                                                        <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(0,@Model.EmployeeId)">Print</a>
+                                                    </div>
+                                                </div>*@
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditEmployeeAppraisal(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditEmployeeAppraisal(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingAppraisalTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divEmployeeAppraisalDetail">
+                            </div>
+
+                            <div id="divEmployeeAppraisalIndex">
+                            </div>
+                            <div id="divEmployeeAppraisalCreateEditDel">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("Incidents"))
+    {
+        <div id="emp_incidentDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Incidents
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:viewOSHA301Report()">View OSHA301</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditEmployeeIncident(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditEmployeeIncident(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingIncidentTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divEmployeeIncidentDetail">
+                            </div>
+
+                            <div id="divEmployeeIncidentIndex">
+                            </div>
+                            <div id="divEmployeeIncidentCreateEditDel">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeLicensesAndBalances"))
+    {
+        <div id="emp_licensesDetail" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Licenses And Balances
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(20,@Model.EmployeeId)">Print</a>
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:addEmployeeDefaultAccrualRules();">Create Defaults</a>
+                                                    <a class="nav-link btn btn-primary" role="button" data-target="#employeeCheckBalances_modal" data-toggle="modal" href="#employeeCheckBalances_modal">Check Balances</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:void(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Compute All Accruals</a>
+                                                        <a href="javascript:void(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Recompute From First Entry</a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingLicensesTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divEmployeeLicensesDetail">
+                                @* @{ Html.RenderAction("Index", "EmployeeLicenseAndBalance");}*@
+
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (SecurityHelper.IsAvailable("EmployeeCompensation"))
+    {
+        <div id="emp_EmployeeCompensation" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Employee Compensation
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:addEmployeeCompensationDefaults();">Create Defaults</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue inline-block">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditEmployeeCompensation(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingEmployeeCompensationTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            @*@if (!SecurityHelper.IsUser)
+                                {*@
+                            <div id="divEmployeeCompensation">
+                                @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            <h4 class="pull-left"> Employee Compensation History</h4>
+                            <div id="divEmployeeCompensationPreviousHistory">
+                                @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            @*}*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeWithholding"))
+    {
+        <div id="emp_EmployeeWithholding" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Employee Withholding
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:addEmployeeWithholdingDefaults();">Create Defaults</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue inline-block">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditEmployeeWithholding(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingEmployeeWithholdingTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            @*@if (!SecurityHelper.IsUser)
+                                {*@
+                            <div id="divEmployeeWithholding">
+                                @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            <h4 class="pull-left"> Employee Withholding History</h4>
+                            <div id="divEmployeeWithholdingPreviousHistory">
+                                @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            @*}*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeContribution"))
+    {
+        <div id="emp_EmployeeContribution" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Employee Contribution
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:addEmployeeContributionDefaults();">Create Defaults</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue inline-block">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:createEditEmployeeContribution(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingEmployeeContributionTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            @*@if (!SecurityHelper.IsUser)
+                                {*@
+                            <div id="divEmployeeContribution">
+                                @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            <h4 class="pull-left"> Employee Contribution History</h4>
+                            <div id="divEmployeeContributionPreviousHistory">
+                                @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            @*}*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeCompensationPreviousHistory"))
+    {
+        <div id="emp_EmployeeCompensationPreviousHistory" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Employee Compensation Previous History
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-12 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(6,@Model.EmployeeId)">Print</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                @*<div class="pull-right dropdown-action">
+
+                                                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                        </div>
+                                                    </div>*@
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert" style="display:none;" id="showAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Alert!&nbsp;</strong><span></span>
+                            </div>
+                            <div id="divLoadingEmployeeCompensationPreviousHistoryTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+                            <div id="divMostRecentRecord" style="margin-left: -15px;">
+                                @*  @{Html.RenderAction("MostRecentRecord", "Employment", new { id = Model.Id });}*@
+                            </div>
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                <div id="divEmployeeCompensationPreviousHistory">
+                                    @*    @{Html.RenderAction("IndexByUser", "Employment", new { id = Model.Id });}*@
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("WebSchedule"))
+    {
+        <div id="emp_employeeWebSchSetting" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Web Schedule
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                <div class="btn-group" role="group">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gradient-blue">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divLoadingWebSchSettingTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divEmployeeWebSchSettingDetail">
+                                @* @{ Html.RenderAction("Index", "EmployeeLicenseAndBalance");}*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (SecurityHelper.IsAvailable("EmployeeTimeAndAttendanceSetting"))
+    {
+
+        <div id="emp_EmployeeTimeAndAttendanceSetting" class="pro-overview tab-pane">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body pt-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title pull-left">
+                                        Web Punch Settings
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-11 pl-0 pr-0">
+                                            @*<div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                                    <div class="btn-group" role="group">
+                                                        <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(17,@Model.EmployeeId)">Print</a>
+                                                    </div>
+                                                </div>*@
+                                        </div>
+                                        <div class="bg-gradient-blue">
+                                            @if (!SecurityHelper.IsUser)
+                                            {
+                                                <div class="pull-right dropdown-action">
+
+                                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-2" style="color:white">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:UpdateTandSetting(@Model.Id);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        @if (SecurityHelper.IsSuperAdmin || SecurityHelper.AllowChangeHistory("UserInformation"))
+                                                        {
+                                                            {
+                                                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@Model.Id,'EmployeeTimeAndAttendanceSetting')" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                            }
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="divLoadingTimeAndAttendanceSettingTab" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                            </div>
+
+                            <div id="divTimeAndAttendanceSetting">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <a class="btn btn-primary" title="Back to Users List" href="\UserInformation\Index"><span id="" class="pull-left fa fa fa-chevron-left" style="font-size:medium"></span></a>
+</div>
+
+@Html.Partial("_GeneralInformationEdit")
+<div id="activatePopupDiv">
+</div>
+@*<div id="employeeTransferPopupDiv">
+    </div>*@
+
+@*@{Html.RenderAction("Deactivate", "Employment", new { id = Model.Id });}*@
+@Html.Partial("_ContactInformationCreateEdit")
+@Html.Partial("_EmergencyContactCreateEdit")
+@Html.Partial("_AddressesCreateEdit")
+@Html.Partial("_HiringCreateEdit")
+@Html.Partial("_DeleteConfirmationPopup")
+@Html.Partial("_UploadEmployeePicture")
+@Html.Partial("_UploadEmployeeCV")
+
+
+<script src="~/Scripts/UserInformation/userAppaisal-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userDetail-js.js?version=1.3"></script>
+<script src="~/Scripts/UserInformation/userEducation-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userTraining-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userPerformance-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userDependent-js.js?version=1.1"></script>
+<script src="~/Scripts/UserInformation/userHealthInsurance-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userDependent-js.js?version=1.1"></script>
+<script src="~/Scripts/UserInformation/userDentalInsurance-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userBenefit-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userAction-js.js?version=1.1"></script>
+<script src="~/Scripts/UserInformation/userIncident-js.js?version=1.0"></script>
+<script src="~/Scripts/UserInformation/userContactNumbersAndEmails-js.js?version=1.1"></script>
+<script src="~/Scripts/UserInformation/userContactAddresses-js.js?version=1.1"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $("#divLoadingContactInfoTab").hide();
+        $("#divLoadingHiringInfoTab").hide();
+        $("#divLoadingEmployeeCompensationTab").hide();
+        $("#divLoadingEmployeeCompensationPreviousHistoryTab").hide();
+        $("#divLoadingEmployeeWithholdingTab").hide();
+        $("#divLoadingEmployeeContributionTab").hide();
+        $("#divLoadingEmploymentInfoTab").hide();
+        $("#divLoadingPayInfoTab").hide();
+        $("#divLoadingDocumentTab").hide();
+        $("#divLoadingCredentialTab").hide();
+        $("#divLoadingSystemAccessTab").hide();
+        $("#divLoadingReportingHierarchyTab").hide();
+        $("#divLoadingLicensesTab").hide();
+    });
+    function contactInfoTabClicked() {
+        debugger;
+        retrieveContactInfoDetail();
+        var isEmergencyContact = $("#hdnIsEmergencyContact").val();
+        if (isEmergencyContact=='yes') {
+            retrieveEmergencyContactList();
+        }
+    }
+    function retrieveContactInfoDetail() {
+        $("#divLoadingContactInfoTab").show();
+        $.ajax({
+            type: "get",
+            url: '/UserContactInformation/Details',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divUserContactInformation").html(data);
+                $("#divLoadingContactInfoTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function retrieveEmergencyContactList() {
+        $.ajax({
+            type: "get",
+            url: '/EmergencyContact/Index',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmergencyContact").html(data);
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function hiringInfoTabClicked() {
+        retrieveHiringInfoDetail();
+        retrieveHiringInfoList();
+    }
+    function retrieveHiringInfoDetail() {
+        $("#divLoadingHiringInfoTab").show();
+        $.ajax({
+            type: "get",
+            url: '/Employment/MostRecentRecord',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divMostRecentRecord").html(data);
+                $("#divLoadingHiringInfoTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function retrieveHiringInfoList() {
+        $.ajax({
+            type: "get",
+            url: '/Employment/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmploymentInformation").html(data);
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+
+    function employeeCompensationTabClicked() {
+
+        refreshEmployeeCompensations();
+    }
+    function refreshEmployeeCompensations() {
+        retrieveEmployeeCompensationList();
+        retrieveEmployeeCompensationPreviousHistoryList();
+
+    }
+    function retrieveEmployeeCompensationList() {
+        $("#divLoadingEmployeeCompensationTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeeCompensation/ActiveCompensation',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divEmployeeCompensation").empty();
+                $("#divEmployeeCompensation").html(data);
+                $("#divLoadingEmployeeCompensationTab").hide();
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function retrieveEmployeeCompensationPreviousHistoryList() {
+        $.ajax({
+            type: "get",
+            url: '/EmployeeCompensation/InActiveCompensation',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeCompensationPreviousHistory").empty();
+                $("#divEmployeeCompensationPreviousHistory").html(data);
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+
+
+    function employeeCompensationPreviousHistoryTabClicked() {
+        retrieveemployeeCompensationPreviousHistoryList();
+    }
+    function retrieveemployeeCompensationPreviousHistoryList() {
+        $.ajax({
+            type: "get",
+            url: '/EmployeeCompensationPreviousHistory/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeCompensationPreviousHistory").html(data);
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+
+    /////
+
+    function employeeWithholdingTabClicked() {
+        debugger
+        refreshEmployeeWithholdings();
+    }
+    function refreshEmployeeWithholdings() {
+        retrieveEmployeeWithholdingList();
+        retrieveEmployeeWithholdingPreviousHistoryList();
+
+    }
+    function retrieveEmployeeWithholdingList() {
+        $("#divLoadingEmployeeWithholdingTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeeWithholding/ActiveEmployeeWithholding',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divEmployeeWithholding").empty();
+                $("#divEmployeeWithholding").html(data);
+                $("#divLoadingEmployeeWithholdingTab").hide();
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function retrieveEmployeeWithholdingPreviousHistoryList() {
+        $.ajax({
+            type: "get",
+            url: '/EmployeeWithholding/InActiveEmployeeWithholding',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeWithholdingPreviousHistory").empty();
+                $("#divEmployeeWithholdingPreviousHistory").html(data);
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    /////
+
+    function employeeContributionTabClicked() {
+        debugger
+        refreshEmployeeContributions();
+    }
+    function refreshEmployeeContributions() {
+        retrieveEmployeeContributionList();
+        retrieveEmployeeContributionPreviousHistoryList();
+
+    }
+    function retrieveEmployeeContributionList() {
+        $("#divLoadingEmployeeContributionTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeeContribution/ActiveContribution',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divEmployeeContribution").empty();
+                $("#divEmployeeContribution").html(data);
+                $("#divLoadingEmployeeContributionTab").hide();
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function retrieveEmployeeContributionPreviousHistoryList() {
+        $.ajax({
+            type: "get",
+            url: '/EmployeeContribution/InActiveContribution',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeWithholdingPreviousHistory").empty();
+                $("#divEmployeeContributionPreviousHistory").html(data);
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+
+
+
+
+    function timeAndAttendanceSettingTabClicked() {
+
+        refreshTimeAndAttendanceSetting();
+    }
+    function refreshTimeAndAttendanceSetting() {
+        retrieveTimeAndAttendanceSetting();
+    }
+    function retrieveTimeAndAttendanceSetting() {
+        $("#divLoadingTimeAndAttendanceSettingTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeeTimeAndAttendanceSetting/CreateEditTimeAndAttendanceSetting',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divTimeAndAttendanceSetting").empty();
+                $("#divTimeAndAttendanceSetting").html(data);
+                $("#divLoadingTimeAndAttendanceSettingTab").hide();
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function employmentInfoTabClicked() {
+        retrieveEmploymentInfoDetail();
+        retrieveEmploymentInfoList();
+    }
+    function retrieveEmploymentInfoDetail() {
+        $("#divLoadingEmploymentInfoTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmploymentHistory/MostRecentRecord',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmploymentHistoryDetail").html(data);
+                $("#divLoadingEmploymentInfoTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function retrieveEmploymentInfoList() {
+        $.ajax({
+            type: "get",
+            url: '/EmploymentHistory/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmploymentHistoryIndex").html(data);
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function payInformationHistoryTabClicked() {
+        retrievePayInfoDetail();
+        retrievePayInfoList();
+    }
+    function retrievePayInfoDetail() {
+        $("#divLoadingPayInfoTab").show();
+        $.ajax({
+            type: "get",
+            url: '/PayInformationHistory/MostRecentRecord',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divMostRecentRecordPayInformationHistory").html(data);
+                $("#divLoadingPayInfoTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function retrievePayInfoList() {
+        $.ajax({
+            type: "get",
+            url: '/PayInformationHistory/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayInformationHistoryIndex").html(data);
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function employeeDocumentClicked() {
+        retrieveEmployeeDocumentList()
+    }
+    function retrieveEmployeeDocumentList() {
+        $("#divLoadingDocumentTab").show();
+         $.ajax({
+            type: "get",
+             url: '/EmployeeDocument/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeDocument").html(data);
+                $("#divLoadingDocumentTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function employeeCredentialClicked() {
+        retrieveEmployeeCredential();
+    }
+    function retrieveEmployeeCredential() {
+        $("#divLoadingCredentialTab").show();
+        var obj = new Object();
+        obj.UserInformationId = @Model.Id;
+        obj.IsRequired = "true";
+
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeCredential/Index2',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeCredentialRequired").html(data);
+             //   $("#divLoadingCredentialTab").hide();
+
+                //$('.tblCredentials').dataTable({
+                //    "searching": false
+                //});
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+        obj.IsRequired = "false";
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeCredential/Index2',
+            data: JSON.stringify(obj) ,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeCredentialNonRequired").html(data);
+                $("#divLoadingCredentialTab").hide();
+
+                //$('.tblCredentials').dataTable({
+                //    "searching": false
+                //});
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+function openCredentialChecklist(id) {
+       // $("#divLoadingCredentialTab").show();
+        var obj = new Object();
+        obj.UserInformationId = id ;
+
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeCredential/GetCredentialCheckListPopup',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divCredentialChecklist").html(data);
+                $("#CredentialChecklist_modal").modal("show");
+
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+        obj.IsRequired = "false";
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeCredential/Index2',
+            data: JSON.stringify(obj) ,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeCredentialNonRequired").html(data);
+                $("#divLoadingCredentialTab").hide();
+
+                //$('.tblCredentials').dataTable({
+                //    "searching": false
+                //});
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function employeeCustomFieldClicked() {
+
+        retrieveEmployeeCustomField();
+    }
+    function retrieveEmployeeCustomField() {
+        $("#divLoadingCustomFieldTab").show();
+         $.ajax({
+            type: "get",
+             url: '/EmployeeCustomField/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeCustomField").html(data);
+                $("#divLoadingCustomFieldTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+        }
+        function printCustomFieldReport() {
+            debugger;
+            var customFieldTypeName = $('.custom-filter').text();
+            var customFieldTypeId = "";
+            if (customFieldTypeName == "Regular")
+                customFieldTypeId = "1"
+            else if (customFieldTypeName == "Equipment")
+                customFieldTypeId = "2"
+
+            openAdhocReport(19,@Model.EmployeeId, customFieldTypeId)
+        }
+    function employeeSystemAccessClicked() {
+        $("#divLoadingSystemAccessTab").show();
+         $.ajax({
+            type: "get",
+             url: '/UserInformation/EmployeeSystemAccessView',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeSystemAccess").html(data);
+                $("#divLoadingSystemAccessTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+
+    function employeeReportingHierarchyClicked() {
+        $("#divLoadingReportingHierarchyTab").show();
+         $.ajax({
+            type: "get",
+             url: '/UserInformation/EmployeeReportingHierarchyView',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeReportingHierarchy").html(data);
+                $("#divLoadingReportingHierarchyTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function EmployeeLicensesTabClicked() {
+        $("#divLoadingLicensesTab").show();
+         $.ajax({
+            type: "get",
+             url: '/EmployeeLicenseAndBalance/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeLicensesDetail").html(data);
+               // $("#divLoadingLicensesTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function employeeWebSchSettingTabClicked() {
+         $("#divLoadingTASettingTab").show();
+         $.ajax({
+            type: "get",
+             url: '/EmployeeWebSchedule/Details',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeWebSchSettingDetail").html(data);
+                $("#divLoadingWebSchSettingTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function generateJobCertificate(id) {
+         $.ajax({
+            type: "get",
+             url: '/Reports/JobCertificationPopup',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divExitInterviewLetter").html('');
+                $("#divJobCertificationPopup").html(data);
+                $("#JobCertificatePopup_modal").modal("show");
+                //$("#divLoadingReportingHierarchyTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function generateTerminationLetter(id) {
+        $.ajax({
+            type: "get",
+            url: '/Reports/TerminationLetterPopup',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divJobCertificationPopup").html('');
+                $("#divExitInterviewLetter").html(data);
+                $("#TerminationLetterPopup_modal").modal("show");
+                //$("#divLoadingReportingHierarchyTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+</script>

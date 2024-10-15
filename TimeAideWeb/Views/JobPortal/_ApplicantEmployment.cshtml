@@ -1,0 +1,252 @@
+﻿<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div style="max-height:550px; overflow-y:auto">
+    <div class="row">
+        <div class="col-md-12">
+
+            <hr class="m-0">
+            <h6 class="card-title">Employment 1</h6>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Company Name: <span class="text-danger"></span></label>
+                <div class="col-md-5">
+                    @Html.TextBox("Company1Name", "", new { @class = "form-control text-box single-line company-name-auto" })
+                    <small id="Company1NameValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+
+                <label class="col-md-2 col-form-label">Company Phone: <span class="text-danger"></span></label>
+                <div class="col-md-3">
+                    @Html.TextBox("Company1Telephone", "", new { @class = "form-control text-box single-line" })
+                    <small id="Company1TelephoneValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Company Address: <span class="text-danger"></span></label>
+                <div class="col-md-10">
+                    @Html.TextBox("Company1Address", "", new { @class = "form-control text-box single-line" })
+                    
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label pr-0">Position: <span class="text-danger"></span></label>
+                <div class="col-md-3">
+                    @Html.TextBox("Company1PositionName", "", new { @class = "form-control text-box single-line position-name-auto" })
+                    <small id="Company1PositionNameValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+                <label class="col-md-1 col-form-label pr-0 pl-0"> Start Date: <span class="text-danger"></span></label>
+                <div class="col-md-2">
+                    @Html.TextBox("Company1StartDate", "", new { @class = "form-control text-box single-line" })
+                    <small id="Company1StartDateValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+                <div class="col-md-2 pt-2">
+                    <label class="pr-2">Current</label>
+                    @Html.CheckBox("Company1IsCurrentEmployment", false)
+                </div>
+                <label class="col-md-1 col-form-label pr-0 pl-0">End Date: <span class="text-danger"></span></label>
+                <div class="col-md-2">
+                    @Html.TextBox("Company1EndDate", "", new { @class = "form-control text-box single-line" })
+                    <small id="Company1EndDateValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+            </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label"> Income: </label>
+                    <div class="col-md-2 pr-0">
+                        @Html.TextBox("Company1Rate", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                    <div class="col-md-2 pl-0">
+                        @Html.DropDownList("Company1RateFrequencyId", (IEnumerable<SelectListItem>)ViewBag.RateFrequencyId, "Please select", new { @class = "form-control" })
+
+                    </div>
+                    <label class="col-md-1 col-form-label pl-0 pr-0">Supervisor: <span class="text-danger"></span></label>
+                    <div class="col-md-6">
+                        @Html.TextBox("Company1SuperviorName", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label pr-0">Exit Type: <span class="text-danger"></span></label>
+                    <div class="col-md-4">
+                        @Html.DropDownList("Company1ExitTypeId", (IEnumerable<SelectListItem>)ViewBag.ApplicantExitTypeId, "Please select", new { @class = "form-control" })
+                        <small id="Company1ExitTypeIdValid" class="form-text text-danger">Missing field value.</small>
+                    </div>
+                    <label class="col-md-1 col-form-label pl-0 pr-0">Exit Reason: <span class="text-danger"></span></label>
+                    <div class="col-md-6">
+                        @Html.TextBox("Company1ExitReason", "", new { @class = "form-control text-box single-line" })
+                        <small id="Company1ExitReasonValid" class="form-text text-danger">Missing field value.</small>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <h6 class="card-title">Employment 2</h6>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Company Name: <span class="text-danger"></span></label>
+                    <div class="col-md-5">
+                        @Html.TextBox("Company2Name", "", new { @class = "form-control text-box single-line company-name-auto" })
+
+                    </div>
+
+                    <label class="col-md-2 col-form-label">Company Phone: <span class="text-danger"></span></label>
+                    <div class="col-md-3">
+                        @Html.TextBox("Company2Telephone", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Company Address: <span class="text-danger"></span></label>
+                    <div class="col-md-10">
+                        @Html.TextBox("Company2Address", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label pr-0">Position: <span class="text-danger"></span></label>
+                    <div class="col-md-3">
+                        @Html.TextBox("Company2PositionName", "", new { @class = "form-control text-box single-line position-name-auto" })
+                    </div>
+                    <label class="col-md-1 col-form-label pr-0 pl-0"> Start Date: <span class="text-danger"></span></label>
+                    <div class="col-md-2">
+                        @Html.TextBox("Company2StartDate", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                    <div class="col-md-2 pt-2">
+                        <label class="pr-2">Current</label>
+                        @Html.CheckBox("Company2IsCurrentEmployment", false)
+                    </div>
+                    <label class="col-md-1 col-form-label pr-0 pl-0">End Date: <span class="text-danger"></span></label>
+                    <div class="col-md-2">
+                        @Html.TextBox("Company2EndDate", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label"> Income: </label>
+                    <div class="col-md-2 pr-0">
+                        @Html.TextBox("Company2Rate", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                    <div class="col-md-2 pl-0">
+                        @Html.DropDownList("Company2RateFrequencyId", (IEnumerable<SelectListItem>)ViewBag.RateFrequencyId, "Please select", new { @class = "form-control" })
+
+                    </div>
+                    <label class="col-md-1 col-form-label pl-0 pr-0">Supervisor: <span class="text-danger"></span></label>
+                    <div class="col-md-6">
+                        @Html.TextBox("Company2SuperviorName", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label pr-0">Exit Type: <span class="text-danger"></span></label>
+                    <div class="col-md-4">
+                        @Html.DropDownList("Company2ExitTypeId", (IEnumerable<SelectListItem>)ViewBag.ApplicantExitTypeId, "Please select", new { @class = "form-control" })
+
+                    </div>
+                    <label class="col-md-1 col-form-label pl-0 pr-0">Exit Reason: <span class="text-danger"></span></label>
+                    <div class="col-md-6">
+                        @Html.TextBox("Company2ExitReason", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <hr class="m-0">
+                <h6 class="card-title">Employment 3</h6>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Company Name: <span class="text-danger"></span></label>
+                    <div class="col-md-5">
+                        @Html.TextBox("Company3Name", "", new { @class = "form-control text-box single-line company-name-auto" })
+
+                    </div>
+
+                    <label class="col-md-2 col-form-label">Company Phone: <span class="text-danger"></span></label>
+                    <div class="col-md-3">
+                        @Html.TextBox("Company3Telephone", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Company Address: <span class="text-danger"></span></label>
+                    <div class="col-md-10">
+                        @Html.TextBox("Company3Address", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label pr-0">Position: <span class="text-danger"></span></label>
+                    <div class="col-md-3">
+                        @Html.TextBox("Company3PositionName", "", new { @class = "form-control text-box single-line position-name-auto" })
+                    </div>
+                    <label class="col-md-1 col-form-label pr-0 pl-0"> Start Date: <span class="text-danger"></span></label>
+                    <div class="col-md-2">
+                        @Html.TextBox("Company3StartDate", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                    <div class="col-md-2 pt-2">
+                        <label class="pr-2">Current</label>
+                        @Html.CheckBox("Company3IsCurrentEmployment", false)
+                    </div>
+                    <label class="col-md-1 col-form-label pr-0 pl-0">End Date: <span class="text-danger"></span></label>
+                    <div class="col-md-2">
+                        @Html.TextBox("Company3EndDate", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label"> Income: </label>
+                    <div class="col-md-2 pr-0">
+                        @Html.TextBox("Company3Rate", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                    <div class="col-md-2 pl-0">
+                        @Html.DropDownList("Company3RateFrequencyId", (IEnumerable<SelectListItem>)ViewBag.RateFrequencyId, "Please select", new { @class = "form-control" })
+
+                    </div>
+                    <label class="col-md-1 col-form-label pl-0 pr-0">Supervisor: <span class="text-danger"></span></label>
+                    <div class="col-md-6">
+                        @Html.TextBox("Company3SuperviorName", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-form-label pr-0">Exit Type: <span class="text-danger"></span></label>
+                    <div class="col-md-4">
+                        @Html.DropDownList("Company3ExitTypeId", (IEnumerable<SelectListItem>)ViewBag.ApplicantExitTypeId, "Please select", new { @class = "form-control" })
+
+                    </div>
+                    <label class="col-md-1 col-form-label pl-0 pr-0">Exit Reason: <span class="text-danger"></span></label>
+                    <div class="col-md-6">
+                        @Html.TextBox("Company3ExitReason", "", new { @class = "form-control text-box single-line" })
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var autoCompleteSrc = "/JobPortal/AjaxGetAutoCompleteData";
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $('input[id*=Telephone]').each(function () {
+            $(this).mask('(999) 999-9999');
+
+        });
+        $(".company-name-auto").autocomplete({
+            source: function (request, response) {
+                var field = "CompanyName";
+                autoCompleteAjaxSetting(request, response, autoCompleteSrc, field)
+            },
+            minLength: 3
+
+        });
+        $(".position-name-auto").autocomplete({
+            source: function (request, response) {
+                var field = "PositionName";
+                autoCompleteAjaxSetting(request, response, autoCompleteSrc, field)
+            },
+            minLength: 3
+
+        });
+        $("#Company1IsCurrentEmployment,#Company2IsCurrentEmployment,#Company3IsCurrentEmployment").change(function () {
+            debugger;
+            var st = $(this).is(":checked");
+            var elementId = $(this).attr("id");
+            var prefix = elementId.substr(0, 8);
+            if (st) {
+                $("#" + prefix+"EndDate").hide();
+            }
+            else {
+                $("#" + prefix + "EndDate").show();
+            }
+        })
+    });
+   
+</script>

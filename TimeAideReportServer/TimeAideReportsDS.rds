@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TimeAideReportsDS">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=DSL-WAQARQ;Initial Catalog=TimeAideWebRegularUAT_RptCR</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>b89880a4-7f0a-4745-9bd2-f902f5a215c9</DataSourceID>
+</RptDataSource>

@@ -1,0 +1,695 @@
+﻿@model TimeAide.Models.ViewModel.UserActivationViewModel
+<div id="EmployeeTransfer_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;"> Employee Transfer Wizard</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr class="m-0">
+                <div class="alert alert-info mb-0" id="transferWizardStepTitle">
+                    <span class="fa fa-user-plus"></span><span class="ml-1 text-md-left">Welcome to Employee Transfer Wizard</span>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="employeeTransferAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <!--Inline form layout -->
+                <div id="transferWizardS1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <span>The Employee Transfer Wizard will guide through the process of transfering an employee in TimeAide HR.</span>
+
+                            </div>
+                            <div class="form-group row">
+                                <span>You will need the following information in order to transfer an employee.</span>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Employee Id</label>
+                                <label class="col-md-4 col-form-label">-Transfer To</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">- Hire Date</label>
+                                <label class="col-md-4 col-form-label">-Rehire Date</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Probation Start Date</label>
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Probation End Date</label>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">-Employment Status</label>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Employment Start Date</label>
+                                <label class="col-md-4 col-form-label">-Department</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-5 col-form-label">-Sub-Department</label>
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Position</label>
+
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Employee Type</label>
+                                <label class="col-md-4 col-form-label">-Employment Type</label>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-11 col-form-label">
+                                    -Rate and Rate Frequency (Hourly, Weekly, Monthly, Annualy, etc)
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-11 col-form-label">
+                                    -Pay Frequency (Weekly, Bi-Weekly, Semi-Monthly or Monthly)
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-5 col-form-label">-EEO Category</label>
+                                <label class="col-md-offset-1 col-md-4 col-form-label">
+                                    -Pay Type
+                                </label>
+                            </div>
+                            <div class="form-group row">
+
+
+                            </div>
+                            @*<div class="form-group row">
+        </div>
+        <div class="form-group row">
+        </div>*@
+                            <div class="form-group row">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnTransferS1Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnTransferS1Back" class="btn btn-dark" disabled>Back</button>
+                        <button id="btnTransferS1Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="transferWizardS2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="card-title">Transfer Information</h6>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Employee ID<span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    @* <input id="emp_empid" class="form-control" type="number">*@
+                                    @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                </div>
+                                <label class="col-md-3 col-form-label">Company <span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    @Html.DropDownList("CompanyId", new SelectList(@Model.CompanyList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Transfer To<span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("ToCompanyId", new SelectList(@Model.ToCompanyList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control searchableDDL" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Transfer Date <span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.TerminationDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Type<span class="text-danger">*</span></label>
+                                <div class="col-md-3 pr-0">
+                                 <div class="input-group">
+                                    @Html.DropDownList("TerminationTypeId", new SelectList(@Model.TerminationTypeList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                 </div>
+                                </div>
+                                <label class="col-md-2 col-form-label">Reason <span class="text-danger">*</span></label>
+                                <div class="col-md-4 pl-0">
+                                    <div class="input-group">
+                                    @Html.DropDownList("TerminationReasonId", new SelectList(@Model.TerminationReasonList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Approved By<span class="text-danger"></span></label>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("ApprovedById", new SelectList(@Model.SuperviserList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <hr class="m-0">
+
+                            @*<div class="form-group row">
+                            </div>*@
+                            <h6 class="card-title">Hiring Information</h6>
+                            @Html.HiddenFor(model => model.EmploymentId)
+                            <div class="form-group row">
+
+                                <label class="col-md-3 col-form-label">Hire Date <span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.OriginalHireDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-3 col-form-label">Rehire Date <span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.EffectiveHireDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Probation Start <span class="text-danger"></span></label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.ProbationStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-3 col-form-label">Probation End <span class="text-danger"></span></label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.ProbationEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Employment Status <span class="text-danger">*</span></label>
+                                <div class="col-md-5">
+
+                                    <div class="input-group">
+                                        @Html.DropDownList("EmploymentStatusId", new SelectList(@Model.EmploymentStatusList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="col-md-1 col-form-label"></label>
+                                <div class="col-md-3">
+                                    <div class="radio-toolbar" style="display:inline">
+                                        <input type="radio" id="radio3" name="radioProbationEndDate" value="3" onchange="setProbationEndDate(90);">
+                                        <label for="radio3">3</label>
+
+                                        <input type="radio" id="radio6" name="radioProbationEndDate" value="6" onchange="setProbationEndDate(180);">
+                                        <label for="radio6">6</label>
+
+                                        <input type="radio" id="radio9" name="radioProbationEndDate" value="9" onchange="setProbationEndDate(270);">
+                                        <label for="radio9">9</label>
+
+                                        <input type="radio" id="radio12" name="radioProbationEndDate" value="12" onchange="setProbationEndDate(360);">
+                                        <label for="radio12">12</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="m-0">
+                            <h6 class="card-title">Employment Information</h6>
+                            @Html.HiddenFor(model => model.EmploymentHistoryId)
+                            <div id="divEmploymentHistory">
+                                <div class="form-group row">
+
+                                    <label class="col-md-3 col-form-label">Start Date <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.EmploymentStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="col-md-3 col-form-label">Department <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        @Html.DropDownList("DepartmentId", new SelectList(@Model.DepartmentList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        @*<div class="input-group">
+                                            @Html.DropDownList("DepartmentId", new SelectList(@Model.DepartmentList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>*@
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Sub-Department <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        @Html.DropDownList("SubDepartmentId", new SelectList(@Model.SubDepartmentList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        @*<div class="input-group">
+                                            @Html.DropDownList("SubDepartmentId", new SelectList(@Model.SubDepartmentList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                    <label class="col-md-3 col-form-label">Position <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        @Html.DropDownList("PositionId", new SelectList(@Model.PositionList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                          @*<div class="input-group">
+                                            @Html.DropDownList("PositionId", new SelectList(@Model.PositionList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Employee Type <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        @Html.DropDownList("EmployeeTypeId", new SelectList(@Model.EmployeeTypeList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        @*<div class="input-group">
+                                        @Html.DropDownList("EmployeeTypeId", new SelectList(@Model.EmployeeTypeList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                        </div>
+                                    </div>*@
+                                    </div>
+
+                                    <label class="col-md-3 col-form-label">Employment Type <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        @Html.DropDownList("EmploymentTypeId", new SelectList(@Model.EmploymentTypeList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        @*<div class="input-group">
+                                        @Html.DropDownList("EmploymentTypeId", new SelectList(@Model.EmploymentTypeList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                        </div>
+                                    </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <h6 class="card-title">Pay Info</h6>
+                            @Html.HiddenFor(model => model.PayInformationHistoryId)
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Start Date <span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.PayStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label">Rate <span class="text-danger">*</span></label>
+                                <div class="col-md-2 pr-0">
+                                    @Html.EditorFor(model => model.RateAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-md-3 pl-0">
+                                    <div class="input-group">
+                                        @Html.DropDownList("RateFrequencyId", new SelectList(@Model.RateFrequencyList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Pay Frequency<span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        @Html.DropDownList("PayFrequencyId", new SelectList(@Model.PayFrequencyList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="col-md-2 col-form-label">Period Hours <span class="text-danger">*</span></label>
+                                <div class="col-md-2 pr-0">
+                                    @Html.EditorFor(model => model.PeriodHours, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                @Html.HiddenFor(model => model.PeriodGrossPay)
+                                @Html.HiddenFor(model => model.YearlyGrossPay)
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">EEO Category <span class="text-danger">*</span></label>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        @Html.DropDownList("EEOCategoryId", new SelectList(@Model.EEOCategoryList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="col-md-2 col-form-label">Pay Type<span class="text-danger">*</span></label>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        @Html.DropDownList("PayTypeId", new SelectList(@Model.PayTypeList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+
+                            <div class="submit-section mt-1">
+                                <button id="btnTransferS2Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                <button id="btnTransferS2Back" class="btn btn-primary">Back</button>
+                                <button id="btnSaveTransfer" class="btn btn-primary">Finish</button>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //$('input[id*=Date]').each(function () {
+        //    $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        debugger;
+        $(".searchableDDL").select2();
+        $(".select2-container").css("width", "100%");
+        
+        $("#OriginalHireDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#ProbationStartDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#ProbationEndDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#EffectiveHireDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#EmploymentStartDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#PayStartDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#TerminationDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#btnTransferS1Next").on("click", function () {
+            debugger;
+            showTransferUserWizardStep("Step2");
+        });
+        $("#btnTransferS2Back").click(function () {
+            debugger;
+            showTransferUserWizardStep("Step1");
+        });
+        $('#ToCompanyId').change(function () {
+            debugger;
+            var selectedCompany = $(this).val();
+            getCmpBasedTransferData(selectedCompany);
+        });
+
+        $('#RateAmount,#RateFrequencyId,#PeriodHours').on('change', function () {
+            debugger;
+            ajaxPayCalculation();
+        });
+        $('#PayFrequencyId').on('change', function () {
+            getPayPeriodHours();
+        });
+
+        //$('#DepartmentId').change(function () {
+        //    debugger;
+        //    var selectedDept = $(this).val();
+        //    getDeptBasedSubDeptDDL(selectedDept);
+        //});
+      
+        //Save Employee
+        $('#btnSaveTransfer').click(function () {
+            debugger;
+            alertID = "#transferAlert";
+            var datafieldsObject = getTransferEmployeeFieldsData();
+            var isValidated = validateTransferEmployeeFields(datafieldsObject);
+            if (isValidated) {
+                // ajax call for saving data
+                //return; //temp added for verification of pay info validation
+                saveTransferEmployeeData(datafieldsObject);
+            }
+
+        });
+
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });
+    });
+    function showTransferUserWizardStep(step) {
+        switch (step) {
+            case "Step1":
+                $("#transferWizardS1").show();
+                $("#transferWizardStepTitle span:nth-child(2)").text(transferWizardS1Title);
+                $("#transferWizardS2").hide();
+                break;
+            case "Step2":
+                $("#transferWizardS2").show();
+                $("#transferWizardStepTitle span:nth-child(2)").text(transferWizardS2Title);
+                $("#transferWizardS1").hide();
+        }
+    }
+    function getTransferEmployeeFieldsData() {
+        //Get add employee form fields data and save in object
+        debugger;
+        var dataObj = new Object();
+        dataObj.UserInformationId = $('#userID').val();
+        dataObj.CompanyId = $('#CompanyId').val();
+        dataObj.EmployeeId = $('#EmployeeId').val();
+        dataObj.ToCompanyId = $('#ToCompanyId').val();
+        dataObj.TerminationDate = $('#TerminationDate').val();
+        dataObj.TerminationTypeId = $('#TerminationTypeId').val();
+        dataObj.TerminationReasonId = $('#TerminationReasonId').val();
+        dataObj.ApprovedById = $('#ApprovedById').val();
+        dataObj.EmploymentId = $('#EmploymentId').val();
+        dataObj.OriginalHireDate = $('#OriginalHireDate').val();
+        dataObj.ProbationStartDate = $('#ProbationStartDate').val();
+        dataObj.ProbationEndDate = $('#ProbationEndDate').val();
+        dataObj.EffectiveHireDate = $('#EffectiveHireDate').val();
+        dataObj.EmploymentStatusId = $('#EmploymentStatusId').val();
+        dataObj.EmploymentHistoryId = $('#EmploymentHistoryId').val();
+        dataObj.EmploymentStartDate = $('#EmploymentStartDate').val();
+        dataObj.DepartmentId = $('#DepartmentId').val(); 
+        dataObj.SubDepartmentId = $('#SubDepartmentId').val(); 
+        dataObj.EmployeeTypeId = $('#EmployeeTypeId').val();
+        dataObj.EmploymentTypeId = $('#EmploymentTypeId').val();
+
+        dataObj.PayInformationHistoryId = $('#PayInformationHistoryId').val();
+        dataObj.PayStartDate = $('#PayStartDate').val();
+        dataObj.RateAmount = $('#RateAmount').val();
+        dataObj.RateFrequencyId = $('#RateFrequencyId').val();
+        dataObj.PositionId = $('#PositionId').val();
+        dataObj.PayFrequencyId = $('#PayFrequencyId').val();
+        dataObj.PeriodHours = $("#PeriodHours").val();
+        dataObj.PeriodGrossPay = $('#PeriodGrossPay').val();
+        dataObj.YearlyGrossPay = $('#YearlyGrossPay').val();
+        dataObj.EEOCategoryId = $('#EEOCategoryId').val();
+        dataObj.PayTypeId = $('#PayTypeId').val();
+
+        return dataObj;
+    }
+    function getPayPeriodHours() {
+        var payFreqId = $('#PayFrequencyId').val();
+
+        debugger;
+        if (payFreqId > 0) {
+            $.ajax({
+                type: "GET",
+                url: '/PayInformationHistory/GetPayPeriodHours',
+                data: { "payFrequencyId": payFreqId },
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    $("#PeriodHours").val(data);
+                    ajaxPayCalculation();
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            $("#PeriodHours").val(0);
+            ajaxPayCalculation();
+        }
+    }
+    function ajaxPayCalculation() {
+        var datafieldsObject = new Object();
+        datafieldsObject.PayFrequencyId = $("#PayFrequencyId").val();
+        datafieldsObject.RateFrequencyId = $("#RateFrequencyId").val();
+        datafieldsObject.RateAmount = $("#RateAmount").val();
+        datafieldsObject.PeriodHours = $("#PeriodHours").val();
+        $.ajax({
+            type: "POST",
+            url: "/PayInformationHistory/AjaxPayCalculation",
+            data: JSON.stringify(datafieldsObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data.payInfo);
+                    $('#PeriodGrossPay').val(data.payInfo.PeriodGrossPay);
+                    $('#YearlyGrossPay').val(data.payInfo.YearlyGrossPay);
+
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                debugger;
+                displayErrorMessage('Error in deleting parent alert data');
+                return false;
+            }
+        });
+    }
+    function validateTransferEmployeeFields(dataObj) {
+        debugger;
+        //validate object data
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.EmployeeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.ToCompanyId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.TerminationDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.TerminationTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.TerminationReasonId.trim().length > 0 ? 1 : 0;
+            //isRequiredValidated += dataObj.ApprovedById.trim().length > 0 ? 1 : 0;
+
+            isRequiredValidated += dataObj.OriginalHireDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.EffectiveHireDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.EmploymentStatusId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.EmploymentStartDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.DepartmentId.trim().length > 0 ? 1 : 0;
+            //isRequiredValidated += dataObj.SubDepartmentId.trim().length > 0 ? 1 : 0;
+            
+            isRequiredValidated += dataObj.EmploymentTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.PositionId.trim().length > 0 ? 1 : 0;
+          
+            isRequiredValidated += dataObj.PayStartDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.RateAmount.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.RateFrequencyId.trim().length > 0 ? 1 : 0;
+
+            isRequiredValidated += dataObj.PayFrequencyId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.PeriodHours.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.EEOCategoryId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.PayTypeId.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 19) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+            else {
+                var RateAmount = dataObj.RateAmount.trim();
+                if ((isNaN(RateAmount)) || (Number(RateAmount) <= 0)) {
+                    isValidated = false;
+                    message = " Please enter the valid Rate amount";
+                }
+
+            }
+
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        return isValidated;
+    }
+   function getCmpBasedTransferData(companyId) {
+            debugger;
+          
+            $.ajax({
+                type: "get",
+                url: '/Employment/EmployeeTransferCmpBasedEmploymentData',
+                data: { "id": companyId },
+
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    $("#divEmploymentHistory").html(data);
+                   
+                },
+                error: function () {
+                    alert("Error Loading ajax");
+                }
+            });
+      }
+    function getDeptBasedSubDeptDDL(departmentId, targetElement) {
+        debugger;
+        var toCompanyId = $('#ToCompanyId').val();
+        $.ajax({
+            type: "get",
+            url: '/Employment/GetTransferToCmpSubDeptByDept',
+            data: {
+                "departmentId": departmentId,
+                "TransferToCmpId": toCompanyId
+                },
+
+            success: function (data) {
+               
+                debugger; 
+             //   var targetElement = $('#SubDepartmentId');
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });              
+                $(targetElement).val( "");
+
+            },
+            error: function () {
+                alert("Error Loading ajax");
+            }
+        });
+    }
+    function saveTransferEmployeeData(datafieldsObject) {
+        debugger;
+
+        $.ajax({
+            type: "POST",
+            url: "/Employment/EmployeeTransfer",
+            data: JSON.stringify(datafieldsObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    $("#userStatus").removeClass("bg-inverse-warning")
+                        .removeClass("bg-inverse-danger")
+                        .addClass("bg-inverse-success");
+                    $("#userStatus").text(data.userStatus.name);
+                    $("#EmployeeStatusId").val(data.userStatus.id);
+
+                    $("#EmployeeTransfer_modal").modal("hide");
+                    showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                    location.reload(true);
+                }
+                else {
+                    showAlertAutoHide("#activateEmploymentAlert", data.status, data.message);
+                    if (data.statusCode == -1) {
+                        $('#EmployeeId').removeAttr("disabled");
+                    }
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                displayErrorMessage('Error in deleting parent alert data');
+                return false;
+            }
+        });
+    }
+    //function setProbationEndDate(monthSpan) {
+    //    debugger;
+
+    //    var tempDate = document.getElementById('ProbationStartDate').value;
+    //    if (tempDate !='') {
+    //        var probStartDate =new Date(tempDate);
+    //        var probEndDate = probStartDate.setMonth(probStartDate.getMonth() + Number(monthSpan));
+    //        var newProbEndDate = new Date(probEndDate);
+    //        var formattedProEndDate = (newProbEndDate.getMonth() + 1) + '/' + newProbEndDate.getDate() + '/' + newProbEndDate.getFullYear();
+    //        document.getElementById('ProbationEndDate').value = formattedProEndDate;
+
+    //        $("input:radio[name=radioProbationEndDate]").each(function (i) {
+    //            this.checked = false;
+    //        });
+    //    }
+
+    //}
+    function setProbationEndDate(daysSpan) {
+        debugger;
+
+        var tempDate = document.getElementById('ProbationStartDate').value;
+        if (tempDate != '') {
+            var probStartDate = new Date(tempDate);
+            var probEndDate = probStartDate.setDate(probStartDate.getDate() + Number(daysSpan));
+            var newProbEndDate = new Date(probEndDate);
+            //var formattedProEndDate = (newProbEndDate.getMonth() + 1) + '/' + newProbEndDate.getDate() + '/' + newProbEndDate.getFullYear();
+            var formattedProEndDate = moment(newProbEndDate).format('MM/DD/YYYY');
+            document.getElementById('ProbationEndDate').value = formattedProEndDate;
+
+            $("input:radio[name=radioProbationEndDate]").each(function (i) {
+                this.checked = false;
+            });
+        }
+
+    }
+
+</script>

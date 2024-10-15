@@ -1,0 +1,53 @@
+﻿@model TimeAide.Web.Models.PayScale
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayScaleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayScaleName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            Rate Frequency
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RateFrequency.RateFrequencyName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelCount)
+        </dd>
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>

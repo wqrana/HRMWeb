@@ -1,0 +1,184 @@
+﻿@model IEnumerable<TimeAide.Web.Models.TAWinTimeOffDocument>
+@using TimeAide.Data;
+<div class="panel panel-default" style="margin-left:5px">
+    <div class="panel-heading" style="padding-left:10px">
+        Time-Off Documents
+        @{
+            var transName = (string)ViewBag.TransName;
+            var transId = (int)ViewBag.TransId;
+        }
+        @if (transId != 0)
+        {
+
+            <span>
+                (@Html.DisplayFor(m => transName))
+            </span>
+
+            <div class="pull-right dropdown-action" style="height:20px;">
+                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                    <a href="javascript:createEditTimeoffDocument(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="panel-body">
+
+        <input type="hidden" id="SelectedTransId" , value="@transId" />
+        <div class="table-responsive">
+
+            <table class="table table-striped custom-table table-nowrap mb-0">
+                <tr>
+                    <th>
+                        Document Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Submission Type
+                    </th>
+                    <th></th>
+                    <th></th>
+
+                </tr>
+
+                @foreach (var item in Model)
+                {
+
+                    var documentTypeName = DataHelper.TimeOffDocumentType[item.intDocumentType];
+                    var submissionTypeName = DataHelper.TimeOffSubmissionType[item.intSubmissionType];
+                    var timeoffDays = item.intSubmissionType == 3 ? string.Format("> {0} day(s)", item.intTimeOffDays):"";
+                    <tr>
+                        <td>@Html.DisplayFor(m => item.sDocumentName)</td>
+                        <td>@Html.DisplayFor(m => documentTypeName)</td>
+                        <td>@Html.DisplayFor(m => submissionTypeName)</td>
+                        <td>@Html.DisplayFor(m => timeoffDays)</td>
+                        <td width="10%">
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:createEditTimeoffDocument(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a href="javascript:getTimeOffDocumentDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                }               
+            </table>
+
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+    function createEditTimeoffDocument(id) {
+        debugger;
+        var transId = $('#SelectedTransId').val();
+        if (transId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/TAWinTimeOffDocument/CreateOrEditTimeOffDocument',
+                data: { "id": id },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#addEdit_Timeoffdocument_modal").modal("show");
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide("#", "Error", " Please first select the Time-off Transaction");
+        }
+    }
+    function saveTransDefTimeOffDocument(dataObj) {
+        debugger;
+        var alertID = "#";       
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/TAWinTimeOffDocument/CreateOrEditTimeOffDocument",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#addEdit_Timeoffdocument_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        getTransDefTimeOffDocumentList(dataObj.intTransId);
+                    }
+                    else {
+                        showAlertAutoHide("#", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger                    
+                    showAlertAutoHide(alertID, "Error", thrownError);
+                }
+            });       
+    }
+
+    function getTimeOffDocumentDeleteData(id) {
+        if (id != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/TAWinTimeOffDocument/Delete',
+                data: { "id": id },
+
+                success: function (data) {
+                    //debugger;                    
+                    $('#divCreateEditDelPopUp').html(data);
+                    $('#timeoffDocumentDelete_modal').modal('show');
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteTimeOffDocument(id) {
+        debugger;
+        alertID = "#"
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/TAWinTimeOffDocument/ConfirmDelete",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#timeoffDocumentDelete_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        var transId = $("#SelectedTransId").val();
+                        getTransDefTimeOffDocumentList(transId);
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+</script>
+

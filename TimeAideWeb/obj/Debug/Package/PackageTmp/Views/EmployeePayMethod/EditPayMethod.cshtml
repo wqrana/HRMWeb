@@ -1,0 +1,73 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="employeepayMethodCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;"> Pay Method - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+               
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Inital Balance </div>
+                            <div class="panel-body">
+                                <div id="divInitBalance">
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label mt-2" style="margin-left:0px">Pay Method:<span class="text-danger">*</span></label>
+                                        <div class="col-md-6 mt-2">
+                                            @Html.DropDownList("PayMethodTypeId", null, "Please select", new { @class = "form-control"})
+                                        </div>                                       
+
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnsaveEmployeePayMethod" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#btnsaveEmployeePayMethod").click(function () {
+            debugger;
+            var isValidated = $("#PayMethodTypeId").val() == "" ? false : true;
+            if (!isValidated) {
+                showAlertAutoHide("", 'Error', "Missing required field(s).");
+                return;
+            }
+            savePayMethodData();
+        });
+
+    });
+
+</script>
+
+
+
+
+

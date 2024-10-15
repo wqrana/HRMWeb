@@ -1,0 +1,89 @@
+﻿@model TimeAide.Web.Models.DentalInsuranceCobraHistory
+@{
+    ViewBag.Label = "Health Insurnce Cobra History";
+}
+<div id="employeeDInsCobraHistoryDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+            @*<div class="mt-2 p-1">
+                    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                        <h4 style="display: inline;">Education - Create</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <hr>
+                </div>*@
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeDInsCobraHistoryDeleteAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                @Html.HiddenFor(model => model.Id, new { id = "EmployeeDInsCobraHistoryDeleteId" })
+                
+                <div class="form-group row">
+                    <div class="panel panel-default" style="width:100%;margin-left:10px">
+                        <div class="panel-heading" style="padding-left:10px">Cobra Payment Detail</div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Due Date:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id="">  @String.Format("{0:MM/dd/yyyy}", Model.DueDate)</span>
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Payment Date:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                                                                                      
+                                        @String.Format("{0:MM/dd/yyyy}", Model.PaymentDate)
+                                                                     
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Payment Amount:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.PaymentAmount)</span>
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Status:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.CobraPaymentStatus.CobraPaymentStatusName)</span>
+                                </div>
+
+                            </div>
+                           
+
+                        </div>
+                    </div>
+                    
+
+
+                </div>
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteDInsCobraHistory" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteDInsCobraHistory").click(function () {
+            var id = $("#EmployeeDInsCobraHistoryDeleteId").val();
+            deleteUserDInsCobraHistory(id);
+        })
+
+    });
+</script>
+

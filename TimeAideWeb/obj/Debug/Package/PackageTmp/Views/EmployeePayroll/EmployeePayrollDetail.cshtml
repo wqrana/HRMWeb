@@ -1,0 +1,552 @@
+﻿
+<style>
+
+    iframe {
+        /*width: 100%;*/
+        padding-left: 10px;
+        padding-top: 5px;
+        max-height: 600px;
+    }
+
+    .divAdhocReportView {
+        border: .5px #eaeaea solid;
+        min-height: 650px;
+        /* margin-left: 2%;*/
+    }
+
+    .profile-view1 .profile-basic1 {
+        margin-left: 0px;
+        padding-right: 0px;
+    }
+
+    .profile-basic1 {
+        margin-left: 0px;
+    }
+</style>
+<div id="employeePayrollDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="mt-2 p-2 mt-0">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Payroll Preview</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text">
+                                    <h4>
+                                        <span id="ShortFullNameSpan"> Employee Name</span>
+                                    </h4>
+                                    <div>
+                                        Employee ID:<span id="mainEmployeeIdSpan" class="text-muted ml-1">1223</span>
+                                    </div>
+                                    <div>
+                                        Payroll Status: <span class="badge bg-inverse-danger" id="userStatus">Closed</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="profile-view profile-view1">
+                                    <div class="profile-basic profile-basic1">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="profile-info-left">
+                                                    <div class="staff-id">Pay Period:<span class="text-muted ml-1">10/30/2022 - 11/12/2022 </span></div>
+                                                    <div class="staff-id">Pay Date:<span class="text-muted ml-1">11/18/2022 </span></div>
+                                                    <div class="staff-id">Pay Week:<span class="text-muted ml-1">120224546</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="profile-info-right">
+                                                    <div class="staff-id">Compensations:<span class="text-muted ml-1"> 1003.14</span></div>
+                                                    <div class="staff-id">Withholdings:<span class="text-muted ml-1">-197.96</span></div>
+                                                    <div class="staff-id">Net Pay:<span class="text-muted ml-1"> 805.15</span></div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Pay Check(s)
+
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Pay Date</th>
+                                                <th>Pay Amt.</th>
+                                                <th>Pay Method</th>
+                                                <th>Check# </th>
+                                                <th>Bank </th>
+                                                <th>Account Type</th>
+                                                <th>Account#</th>
+                                                <th>Routing#</th>
+                                                <th>Deposit%</th>
+                                                <th>Deposit Amt.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td width="5%">
+                                                    <div class="pull-right dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                <td>11/18/2022</td>
+                                                <td>805.15</td>
+                                                <td>Check</td>
+                                                <td>1234</td>
+                                                <td>BPPR</td>
+                                                <td>Checking</td>
+                                                <td>12345668</td>
+                                                <td>546587878</td>
+                                                <td>100.00</td>
+                                                <td>0.00</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 pr-1">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Earnings and Compensations
+                                <div class="pull-right dropdown-action" style="height:20px;">
+                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a id="" href="javascript:void();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height:150px;max-height:150px; overflow-y:auto">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Compensation</th>
+                                                    <th>Hrs.</th>
+                                                    <th>Pay Amt.</th>
+                                                    <th>GLAccount </th>
+                                                    <th>Entry Type </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit GL</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>Vacations</td>
+                                                    <td>8.00</td>
+                                                    <td>104.50</td>
+                                                    <td>74699</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Employee YTD Compensations
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height:150px;max-height:150px; overflow-y:auto">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                            <thead>
+                                                <tr>
+                                                    <th>Compensation</th>
+                                                    <th>YTD Pay Amt.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Vacations</td>
+                                                    <td>104.50</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Regular Wages</td>
+                                                    <td>0.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sick</td>
+                                                    <td>0.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Witholdings-->
+                <div class="row">
+                    <div class="col-md-8 pr-1">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Witholdings and Dedutions
+                                <div class="pull-right dropdown-action" style="height:20px;">
+                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a id="" href="javascript:void();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height:150px;max-height:150px; overflow-y:auto">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Witholding</th>
+                                                    <th>W/H Amt.</th>
+                                                    <th>GLAccount </th>
+                                                    <th>Entry Type </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit GL</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>FICA Med</td>
+                                                    <td>(1.51)</td>
+                                                    <td>20540</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>FICA SS</td>
+                                                    <td>(6.45)</td>
+                                                    <td>20520</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>SINOT</td>
+                                                    <td>(0.31)</td>
+                                                    <td>20590</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>ST ITAX</td>
+                                                    <td>(0.00)</td>
+                                                    <td>20560</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Employee YTD Witholdings
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height:150px;max-height:150px; overflow-y:auto">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                            <thead>
+                                                <tr>
+                                                    <th>Witholding</th>
+                                                    <th>YTD W/H Amt.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>401K</td>
+                                                    <td>104.50</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ASUME</td>
+                                                    <td>0.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>CFSE</td>
+                                                    <td>0.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>FICA MED</td>
+                                                    <td>(1.51)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>FICA MED PLUS</td>
+                                                    <td>0.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Contributions-->
+                <div class="row">
+                    <div class="col-md-8 pr-1">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Company Contributions
+                                <div class="pull-right dropdown-action" style="height:20px;">
+                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a id="" href="javascript:void();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height:150px;max-height:150px; overflow-y:auto">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Contribution</th>
+                                                    <th>Cont. Amt.</th>
+                                                    <th>GLExpense </th>
+                                                    <th>GLPayable </th>
+                                                    <th>Entry Type </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit GL</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>FICA Med</td>
+                                                    <td>(1.51)</td>
+                                                    <td>75599</td>
+                                                    <td>20550</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>FICA SS</td>
+                                                    <td>(6.45)</td>
+                                                    <td>75499</td>
+                                                    <td>20530</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>FUTA</td>
+                                                    <td>(0.61)</td>
+                                                    <td>20590</td>
+                                                    <td>75699</td>
+                                                    <td>20570</td>
+                                                </tr>
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Company YTD Contributions
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height:150px;max-height:150px; overflow-y:auto">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                            <thead>
+                                                <tr>
+                                                    <th>Contribution</th>
+                                                    <th>YTD Cont. Amt.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>CFSE</td>
+                                                    <td>(1.09)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>FICA MED</td>
+                                                    <td>(1.51)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>FICA SS</td>
+                                                    <td>(6.45)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>FUTA</td>
+                                                    <td>(0.62)</td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section pb-2 mt-0">
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+    });
+
+    function runAdhocReport() {
+        //$('#divLoadingReport').show();
+        debugger;
+        var dataObj = new Object();
+        var reportURL = "/Reports/ReportView";
+        dataObj.ReportId = $("#ReportId").val();
+        dataObj.ReportCriteriaTemplateId = $("#ReportCriteriaTemplateId").val();
+        dataObj.CriteriaType = $("#CriteriaType").val();
+        dataObj.EmployeeSelectionIds = $("#EmployeeSelectionIds").val();
+        dataObj.CompanyId = $("#CompanyId").val();
+        dataObj.FromDate = $("#FromDate").val();
+        dataObj.ToDate = $("#ToDate").val();
+        dataObj.AttendanceSchId = $("#AttendanceSchId").val();
+        if (dataObj.CriteriaType == 2) {
+            //Run Local report
+            reportURL = "/Reports/LocalReportView";
+        }
+        $.ajax({
+            type: "POST",
+            // url: "/Reports/ReportView",
+            url: reportURL,
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divAdhocReportView").html(data);
+                $('#divLoadingReport').hide();
+            },
+            error: function (request, status, error) {
+                alert('Error in in runing  report data');
+                return false;
+            }
+        });
+    }
+</script>
+

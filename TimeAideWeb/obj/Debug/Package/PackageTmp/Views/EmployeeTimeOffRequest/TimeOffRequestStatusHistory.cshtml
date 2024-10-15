@@ -1,0 +1,114 @@
+﻿@using TimeAide.Web.Models
+
+<div id="timeOffRequestStatusHistory_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Request Status History</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table  table-striped custom-table table-nowrap mb-0" style="width:100% !important">
+                                    <thead>
+                                        <tr>
+                                           
+                                            <th>Level</th>
+                                            <th>Action</th>
+                                            <th>Action By</th>
+                                            <th>Action Date</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (ViewBag.WorkflowTriggerRequestDetail != null && ViewBag.WorkflowTriggerRequestDetail.Count > 0)
+                                        {
+                                            List<WorkflowTriggerRequestDetail> WorkflowTriggerRequestDetailList = ViewBag.WorkflowTriggerRequestDetail;
+                                            WorkflowTriggerRequestDetailList = WorkflowTriggerRequestDetailList.OrderByDescending(od => od.WorkflowLevelId).ToList();
+                                            foreach (WorkflowTriggerRequestDetail workflowTriggerRequestDetail in WorkflowTriggerRequestDetailList)
+                                            {
+                                                <tr>
+                                                   
+                                                    @{
+                                                    var workflowLevelTypeId = "N/A";
+                                                    if (workflowTriggerRequestDetail.WorkflowLevel != null && workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelType != null)
+                                                    {
+                                                        workflowLevelTypeId = workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelTypeId.ToString();
+                                                    }
+                                                }
+                                                    <td>@workflowLevelTypeId</td>
+                                                    <td>@workflowTriggerRequestDetail.WorkflowActionType.WorkflowActionTypeName</td>
+                                                    @{
+                                                    var actionBy = "N/A";
+                                                    if (workflowTriggerRequestDetail.ActionBy != null)
+                                                    {
+                                                        actionBy = workflowTriggerRequestDetail.ActionBy.ShortFullName;
+                                                    }
+                                                }
+                                                    <td>@actionBy</td>
+                                                    @{
+                                                    var actionDate = "N/A";
+                                                    if (workflowTriggerRequestDetail.ActionDate != null)
+                                                    {
+                                                        actionDate = workflowTriggerRequestDetail.ActionDate.ToString();
+                                                    }
+                                                }
+                                                    <td>@actionDate</td>
+                                                    <td>@workflowTriggerRequestDetail.ActionRemarks</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                @*<table class="table table-striped custom-table mb-0" id="">
+                                        <thead>
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th>Action</th>
+                                                <th>Action Date</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td width="40%">xyz</td>
+                                                <td>Approved</td>
+                                                <td>12/06/2021</td>
+                                                <td>Approved</td>
+                                            </tr>
+                                            <tr>
+                                                <td>abc</td>
+                                                <td>Approved</td>
+                                                <td>11/06/2021</td>
+                                                <td>Approved</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>*@
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section mt-1">
+
+                        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Closed</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+
+
+

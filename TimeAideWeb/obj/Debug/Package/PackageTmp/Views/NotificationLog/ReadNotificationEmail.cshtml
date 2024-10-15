@@ -1,0 +1,93 @@
+﻿@model TimeAide.Web.Models.NotificationLog
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="padding:10px;padding-bottom:0px">
+    @if (Model.NotificationTypeId == 13)
+    {
+        <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+            <h4 style="display: inline;">Read Email Blast Message</h4>
+            <button class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <dl class="dl-horizontal">
+            <dt>
+                Subject
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EmailBlast.EmailTemplate.EmailSubject)
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Message
+            </dt>
+
+            <dd>
+                @Html.Raw(Model.EmailBlast.EmailTemplate.EmailBody)
+            </dd>
+        </dl>
+    }
+    else
+    {
+        @Html.Partial("_CreatePageTitleView")
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.UserInformationName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserInformationName)
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.NotificationType.NotificationTypeName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NotificationType.NotificationTypeName)
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.NotificationScheduleDetail.NotificationMessage.NotificationMessageName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NotificationScheduleDetail.NotificationMessage.NotificationMessageName)
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.NotificationScheduleDetail.DaysBefore)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NotificationScheduleDetail.DaysBefore)
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ExpiringDays)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ExpiringDays)
+            </dd>
+        </dl>
+    }
+</div>
+<p>
+    @*<button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>*@
+</p>
+<script>
+    $(document).ready(function () {
+        if ('@ViewBag.MarkAsRead' != 'null' && '@ViewBag.MarkAsRead' == 'True') {
+            RefreshBellIconCount('');
+        }
+    });
+</script>

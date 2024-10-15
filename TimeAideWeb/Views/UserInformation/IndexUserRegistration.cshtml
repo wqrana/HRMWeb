@@ -1,0 +1,528 @@
+﻿@using TimeAide.Web.Models;
+@model List<UserInformation>
+<div id="divMainArea">
+    <div class="row">
+        <div class="panel panel-default" style="width:45%">
+            <div class="panel-body" style="padding-top:20px">
+                <div class="col-md-12">
+                    <button type="button" id="btnAddEmployees" onclick="fnAddSupervisedUsers(1);" class="btn btn-primary submit-btn">Select Employees</button>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    @*<button type="button" id="btnUploadFromFile" class="btn btn-primary submit-btn">Import from Excel</button>*@
+                    <label class="btn btn-primary submit-btn" for="btnUpload">
+                        Import from Excel
+                    </label>
+
+                    <input id="btnUpload" type="file" multiple="multiple" name="ImportFromExcel" accept=".xls,.xlsx" style="visibility: hidden">
+
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="width:53%">
+            <div class="panel-heading">
+                <div style="margin-left:10px">Assign Role and Employee Group</div>
+                <div style="margin-left:10px;font-size:80%;">selected role and employee group will be assigned to employees those do not have associated role and employee group</div>
+            </div>
+            <div class="panel-body" style="padding-top:20px">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-3" style="margin-left:10px">
+                            @Html.Label("Role Type:", htmlAttributes: new { @class = "control-label" })
+                        </label>
+                        <div class="col-md-8">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.RoleType>("ddlRoleTypeId", null, 4, htmlAttributes: new { @class = "form-control" }))
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-3" style="margin-left:10px">
+                            @Html.Label("Role Id:", htmlAttributes: new { @class = "control-label" })
+                        </label>
+                        <div class="col-md-8">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.Role>("RoleId", null, null, 4, htmlAttributes: new { @class = "form-control" }))
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">Employee Group:</label>
+                        <div class="col-md-8">
+                            @Html.ListBox("EmployeeGroupId", (SelectList)ViewBag.EmployeeGroupId, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">Login Email Type </label>
+                        <div class="col-md-8">
+                            <select class="form-control" id="DefaultEmailTypeId" name="DefaultEmailTypeId" onchange="onDefaultEmailTypeChange()">
+                                <option value="">- --- -</option>
+                                <option value="WorkEmail">Work Email</option>
+                                <option value="PersonalEmail">Personal Email</option>
+                                <option value="OtherEmail">Other Email</option>
+                            </select>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="LoginEmail" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="table-responsive">
+            <table class="table table-striped custom-table table-nowrap mb-0" id="tblUser">
+                <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="selectAllRow"></th>
+                        <th>Emp Id</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>EmployeeType</th>
+                        <th>Position</th>
+                        <td>Login Email</td>
+                        <th>Role</th>
+                        <th>
+                            Employee Groups
+                        </th>
+                    </tr>
+                </thead>
+                @*@foreach (var item in Model)*@
+                <tbody id="tbodyTblUser">
+                    @if (Model != null)
+                    {
+                        for (int index = 0; index < Model.Count(); index++)
+                        {
+                            var item = Model.ElementAt(index);
+                            var activeEmployment = TimeAide.Services.EmploymentService.GetActiveEmployment(item.Id);
+                            EmploymentHistory activeEmploymentHistory = null;
+                            if (activeEmployment != null)
+                            {
+                                activeEmploymentHistory = TimeAide.Services.EmploymentHistoryService.GetActiveEmploymentHistory(item.Id, activeEmployment.Id);
+                            }
+                            <tr>
+                                <td>
+                                    @*@Html.EditorFor(modelItem => item.SendRegistrationEmail)*@
+                                    <input id="SendRegistrationEmail" name="SendRegistrationEmail" type="checkbox">
+                                    @Html.HiddenFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserInformationName)
+                                </td>
+                                <td>
+                                    @if (activeEmploymentHistory != null && activeEmploymentHistory.Department != null)
+                                    {
+                                        <span>@activeEmploymentHistory.Department.DepartmentName</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (activeEmploymentHistory != null && activeEmploymentHistory.EmployeeType != null)
+                                    {
+                                        <span>@activeEmploymentHistory.EmployeeType.EmployeeTypeName</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (activeEmploymentHistory != null && activeEmploymentHistory.Position != null)
+                                    {
+                                        <span>@activeEmploymentHistory.Position.PositionName</span>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model[index].UserContactInformations.FirstOrDefault().LoginEmail)
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="submit-section">
+        <button type="button" id="btnSendBulkRegistrationEmail" class="btn btn-primary submit-btn">Send Email</button>
+        <button type="button" class="btn btn-primary submit-btn">Refresh</button>
+    </div>
+</div>
+<div id="divReportArea" style="display:none">
+</div>
+<script>
+    $(document).ready(function () {
+        LoadRoleDropdown(4, '#RoleId', null);
+        $('#tblUser').dataTable({
+            "searching": true,
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": [0],
+
+                }
+            ]
+        });
+
+        $("#btnSendBulkRegistrationEmail").click(function () {
+            var dataArray = [];
+            debugger
+
+
+            var selectedEmployeeGroupIdList = [];
+            var selectedEmployeeGroupIdStr = "";
+            $('#EmployeeGroupId option:selected').each(function () {
+                selectedEmployeeGroupIdList.push($(this).val());
+            });
+            if (selectedEmployeeGroupIdList.length > 0) {
+                selectedEmployeeGroupIdStr = selectedEmployeeGroupIdList.join(",");
+            }
+
+            $('#tblUser tbody tr').each((index, tr) => {
+                var element = {};
+                var isChecked = false;
+                $(tr).children('td').each((index_td, td) => {
+                    debugger
+                    element['RoleId'] = $('#RoleId  :selected').val();
+                    element['SelectedEmployeeGroupId'] = selectedEmployeeGroupIdStr;
+                    //$(td).find("input").each(function () {
+                    //    debugger
+                    //    if (index_td == 0)
+                    //        element['UserInformationId'] = this.value;
+                    //    else if (index_td == 2) {
+                    //        isChecked = $(this).is(":checked");
+                    //    }
+                    //});
+                    if (index_td == 6) {
+                        debugger
+                        element['LoginEmail'] = $(td).find('option:selected').text();
+                    }
+                    if (index_td == 0) {
+                        debugger
+                        $(td).find("input[type=checkbox]").each(function () {
+                            debugger
+                            isChecked = $(this).prop('checked');
+                        });
+                        $(td).find("input[type=hidden]").each(function () {
+                            debugger
+                            element['UserInformationId'] = this.value;
+                        });
+                        
+                    }
+                });
+                if (isChecked)
+                    dataArray.push(element)
+            });
+            if (dataArray == null || dataArray.length == 0) {
+                debugger
+                toastr.error("Please select atleast one record to send email.", "Error!");
+                return;
+            }
+            sendBulkRegistrationEmail(dataArray);
+        })
+
+        $('#ddlRoleTypeId').change(function (e) {
+            debugger;
+            var roleTypeId = $(this).val();
+            LoadRoleDropdown(roleTypeId, '#RoleId', null);
+        });
+        $('#EmployeeGroupId').select2();
+        $('table').on('change', '.selectAllRow', function (e) {
+            var selectAllCheck = $('.selectAllRow').prop('checked');
+            $('#tblUser tbody tr').each((index, tr) => {
+                $(tr).children('td').each((index_td, td) => {
+                    $(td).find("input[type=checkbox]").each(function () {
+                        debugger
+                        isChecked = $(this).prop('checked', selectAllCheck);
+
+                    });
+                });
+            });
+        });
+
+        $("#btnUpload").change(function () {
+            uploadFile();
+        });
+    });
+    function sendBulkRegistrationEmail(dataArray) {
+        debugger;
+
+        $.ajax({
+            type: "post",
+
+            contentType: 'application/json; charset=utf-8',
+            url: '/UserInformation/sendBulkRegistrationEmail',
+            data: JSON.stringify(dataArray),
+            datatype: "html",
+            success: function (data) {
+
+                debugger;
+                if (data == 'Error') {
+                    toastr.error('There was an error while sending test email.', "error!");
+                    return;
+                }
+
+                $("#divMainArea").hide();
+                $("#divReportArea").show();
+                $("#divReportArea").empty();
+                $("#divReportArea").html(data);
+
+                toastr.success("Registration emails are sent to selected employees", "Success!");
+
+            },
+            error: function () {
+                toastr.error("There was an error in sending registration emails are sent to selected employees", "Error!");
+            }
+        });
+    }
+    function LoadRoleDropdown(roleTypeId, targetElement, selectedValue) {
+        $.ajax({
+            url: '/Role/AjaxGetRoleByRoleType',
+            data: { 'roleTypeId': roleTypeId }, //dataString,
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                var tempselectedValue = '';
+                $(data).each(function () {
+                    tempselectedValue = this.id;
+                    var option = '<option value=' + this.id + ' selected="selected">' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? tempselectedValue : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+    function fnAddSupervisedUsers(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/SelectEmplyees',
+            contentType: "application/json; charset=utf-8",
+            data: { "userId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function saveemployeeSupervisorData(selectedSupervisorStr) {
+        debugger;
+        alertID = "#employeeSupervisorCreateEditAlert"
+        var positionId = $("#SelectedEmployeeSupervisorId").val();
+        if (positionId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/EmployeeSupervisor/SelectEmplyees',
+                data: {
+                    "id": positionId,
+                    "selectedSupervisorIds": selectedSupervisorStr
+                },
+
+                success: function (data) {
+                    $("#myModal").modal("hide");
+                    debugger;
+                    fnClickAddRow(data, 'tbodyTblUser', 'tblUser', true, true);
+
+                    if (data.status == "Success") {
+                        //$("#myModal").modal("hide");
+                        //LoadSupervisedEmployees(positionId);
+                        //toastr.success('Changes updated successfully.', "Success!");
+                    }
+                },
+                error: function () {
+                    //alert("error in saveemployeeSupervisorData");
+                    toastr.error("There was an error in uploading information", "Error!");
+                }
+            });
+        }
+    }
+    function addSelectedEmployeeRow(data, tbodyTblUser, tblUser, showDllLoginEmail, clear) {
+        if (clear)
+            $("#" + tbodyTblUser + "").empty();
+        jQuery.each(data, function (index, item) {
+            if (item.LoginEmail == null) { item.LoginEmail = ""; }
+            if (item.PositionName == null) { item.PositionName = ""; }
+            if (item.DepartmentName == null) { item.DepartmentName = ""; }
+            if (item.EmployeeTypeName == null) { item.EmployeeTypeName = ""; }
+            debugger
+            var rowHtml = '<tr class="odd">'
+                + '<td style = "display: none"><input  id="item_' + item.Id + '" name="item.' + item.Id + '" type="hidden" value="' + item.Id + '"></td>'
+                + '<td style = "display: none"><input  id="item_' + item.LoginEmail + '" name=item.' + item.LoginEmail + '" type="hidden" value="' + item.LoginEmail + '"></td>'
+                + '<td><input id="SendRegistrationEmail" name="SendRegistrationEmail" type="checkbox"></td>'
+                + '<td>' + item.EmployeeId + '</td>'
+                + '<td>' + item.ShortFullName + '</td>'
+                + '<td><span>' + item.DepartmentName + '</span></td>'
+                + '<td><span>' + item.EmployeeTypeName + '</span></td>'
+                + '<td>' + item.PositionName + '</td>';
+
+            if (showDllLoginEmail)
+                rowHtml += '<td>' + AddLoginEmailDropdown(item.ListOfEmails, item.LoginEmail) + '</td>';
+            else
+                rowHtml += '<td>' + item.LoginEmail + '</td>';
+            rowHtml += '<td>' + item.UserRole + '</td>';
+            debugger
+            rowHtml += '<td>' + item.EmployeeGroups + '</td>'
+                + '</tr>'
+            $('#' + tblUser + '').append(rowHtml);
+        });
+    }
+    function fnClickAddRow(data, tbodyTblUser, tblBulkUser, showDllLoginEmail, clear) {
+        jQuery.each(data, function (index, item) {
+            if (showDllLoginEmail) {
+                debugger
+                $('#' + tblBulkUser + '').dataTable().fnAddData([
+                    //'<input  id="item_' + item.Id + '" name="item.' + item.Id + '" type="hidden" value="' + item.Id + '">',
+                    //'<input  id="item_' + item.LoginEmail + '" name=item.' + item.LoginEmail + '" type="hidden" value="' + item.LoginEmail + '">',
+                    '<input id="SendRegistrationEmail" name="SendRegistrationEmail" type="checkbox">'
+                    + '<input  id="hdnUSerInformationId " name="hdnUSerInformationId" type="hidden" value="' + item.Id + '">',
+                    item.EmployeeId,
+                    item.ShortFullName,
+                    item.DepartmentName,
+                    item.EmployeeTypeName,
+                    item.PositionName,
+                    AddLoginEmailDropdown(item.ListOfEmails, item.LoginEmail),
+                    item.UserRole,
+                    item.EmployeeGroups
+                ]);
+            }
+            else {
+                $('#' + tblBulkUser + '').dataTable().fnAddData([
+                    '<input  id="item_' + item.Id + '" name="item.' + item.Id + '" type="hidden" value="' + item.Id + '">',
+                    '<input  id="item_' + item.LoginEmail + '" name=item.' + item.LoginEmail + '" type="hidden" value="' + item.LoginEmail + '">',
+                    '<input id="SendRegistrationEmail" name="SendRegistrationEmail" type="checkbox">',
+                    item.EmployeeId,
+                    item.ShortFullName,
+                    item.DepartmentName,
+                    item.EmployeeTypeName,
+                    item.PositionName,
+                    item.LoginEmail,
+                    item.UserRole,
+                    item.EmployeeGroups
+                ]);
+            }
+        });
+    }
+    function AddLoginEmailDropdown(userEmails, loginEmail) {
+        debugger
+        var ddlHtml = '<select class="form-control" id="LoginEmailAddressTypeId" name="LoginEmailAddressTypeId"><option value="">- Please select -</option>';
+
+        //for (var i = 0; i < userEmails.length; i++) {
+        //    ddlHtml += '<option value="' + userEmails[i]+'"';
+        //    if (userEmails[i] == loginEmail)
+        //        ddlHtml += ' selected ';
+        //    ddlHtml += '>' + userEmails[i] + '</option>';
+        //}
+        ddlHtml += AddEmailOption('WorkEmail', userEmails, loginEmail)
+        ddlHtml += AddEmailOption('PersonalEmail', userEmails, loginEmail)
+        ddlHtml += AddEmailOption('OtherEmail', userEmails, loginEmail)
+        ddlHtml += '</select>'
+
+        return ddlHtml;
+    }
+    function AddEmailOption(emailType, userEmails, loginEmail) {
+        if (userEmails[emailType] != null && userEmails[emailType] != '') {
+            var useremail = userEmails[emailType];
+            var optionHtml = '';
+            optionHtml += '<option value="' + emailType + '"';
+            if (useremail == loginEmail)
+                optionHtml += ' selected ';
+            optionHtml += '>' + useremail + '</option>';
+            return optionHtml;
+        }
+    }
+    function uploadFile() {
+        //function uploadEmployeeDoc() {
+        debugger
+        var formData = new FormData();
+        var totalFiles = document.getElementById("btnUpload").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("btnUpload").files[0];
+            formData.append("EmployeeList", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeSupervisor/SelectEmplyeesFromExcelFile',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                debugger;
+
+                fnClickAddRow(data.SelectedEmployees, 'tbodyTblUser', 'tblUser', true, true);
+                if (data.NotFoundList.length > 0) {
+                    toastr.error("Followning Employee Ids are invaid:" + data.NotFoundList, "Error!");
+                }
+            },
+            error: function (error) {
+
+                showAlertAutoHide(alertID, "Error", error);
+
+            }
+        });
+    }
+    function onDefaultEmailTypeChange() {
+        debugger
+        var emailType = $('#DefaultEmailTypeId').val();
+        $('select').each(function (index) {
+            if (this.id == 'LoginEmailAddressTypeId') {
+                if ($(this).val() == null || $(this).val() == '') {
+                    $(this).val(emailType);
+                }
+            }
+        });
+        //$.each($("#LoginEmailAddressTypeId"), function () {
+        //    $(this).append($('<option>my-option</option>'));
+        //    if ($(this).options[emailType] != null)
+        //        $(this).options[emailType].selected = true
+        //})
+        //$('#tblUser tbody tr').each((index, tr) => {
+        //    $(tr).find()
+        //    $('#startTime option[value=17:00:00]').prop('selected', true);
+        //    //$(tr).children('td').each((index_td, td) => {
+        //    //    debugger
+        //    //    var isChecked;
+        //    //    //$(td).find("input").each(function () {
+        //    //    //    if (index_td == 0)
+        //    //    //        element['UserInformationId'] = this.value;
+        //    //    //    else if (index_td == 1)
+        //    //    //        element['LoginEmail'] = this.value;
+        //    //    //    else if (index_td == 2)
+        //    //    //        isChecked = $(this).is(":checked");
+        //    //    //});
+        //    //    //if (isChecked)
+        //    //    //    dataArray.push(element)
+        //    //});
+        //});
+    }
+
+
+</script>
+

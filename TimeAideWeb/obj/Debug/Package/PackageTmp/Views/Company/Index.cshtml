@@ -1,0 +1,289 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Company>
+
+@Html.Partial("_IndexPageHeaderView")
+
+<thead>
+    <tr>
+        <th>Action</th>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            Company Description
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyLogo)
+        </th>
+        <th>
+            Portal Statement
+        </th>
+        <th> Default Template</th>
+        <th> Default Signee</th>
+
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Client.ClientName)
+        </td>
+        <td>
+            @if (item.CompanyLogo != null && item.CompanyLogo.Length > 0)
+            {
+                var base64 = Convert.ToBase64String(item.CompanyLogo);
+                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                <img src='@imgsrc' style="max-width:100px;max-height:100px" class="thumbnail" />
+            }
+        </td>
+        <td>
+            <div style="max-width:400px; max-height:100px; overflow-y:auto" id="txtWelcomeStatement">@Html.Raw(item.PortalWelcomeStatement) </div>
+        </td>
+        <td> @Html.DisplayFor(modelItem => item.DefaultLetterTemplate.Name)</td>
+        <td> @Html.DisplayFor(modelItem => item.DefaultLetterSignee.Name)</td>
+
+    </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<div id="divEmployeeEducationDocUpload">
+
+</div>
+<script>
+    $(document).ready(function () {
+        var width = $(window).width();
+        var modal = $(".modal-content");
+        if (width >= 1024) {
+            modal.css('width', '750px');
+        }
+        else {
+            modal.css('width', width + 'px');
+        }
+    });
+    function fnSaveCompany(actionMethod) {
+        debugger;
+        var $buttonClicked = $(this);
+        var id = $buttonClicked.attr('data-id');
+        $("#savecompany").attr("disabled", true);
+        var options = { "backdrop": "static", keyboard: true };
+        var model = {
+            CompanyName: $('#CompanyName').val(),
+            CompanyDescription: $('#CompanyDescription').val(),
+            PortalWelcomeStatement: $('.richtext-editor').summernote('code'),
+            DefaultLetterSigneeId: $('#DefaultLetterSigneeId').val(),
+            DefaultLetterTemplateId: $('#DefaultLetterTemplateId').val(),
+            IsDefaultPortalPicture: $('#IsDefaultPortalPicture').val(),
+            PortalPictureFilePath: $('#PortalPictureFilePath').val()            
+        }
+
+        if (actionMethod == "Edit") {
+            model['Id'] = $('#Id').val();
+        }
+
+
+
+        $.ajax({
+             
+            type: "post",
+            url: '/Company/' + actionMethod,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(model),
+            datatype: "json",
+            success: function (data) {
+                debugger;
+
+                $("#savecompany").removeAttr("disabled");
+
+                $('.richtext-editor').summernote('destroy');
+                //$('#myModal').modal('hide');
+                //getPayScaleLevel($('#PayScaleId').val());
+                var totalFiles = document.getElementById("uploadCompanyLogo").files.length;
+                if (totalFiles > 0) {
+                    uploadCompanyLogo($('#Id').val());
+                }
+                else {
+                    $('#myModal').modal('hide');
+                    location.reload(true);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#savecompany").removeAttr("disabled");
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function uploadCompanyLogo(id) {
+        debugger;
+        var formData = new FormData();
+        formData.append("CompanyId", id);
+
+        var totalFiles = document.getElementById("uploadCompanyLogo").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadCompanyLogo").files[0];
+            $("#divUploadingCompanyLogo").show();
+            formData.append("CompanyLogoFile", file);
+            $.ajax({
+                type: "POST",
+                url: '/Company/UploadCompanyLogo',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    $('#myModal').modal('hide');
+                    if (data.status == "Success") {
+
+                    }
+                    else {
+
+                    }
+                    location.reload(true);
+                },
+                error: function (error) {
+                    location.reload(true);
+                }
+            });
+
+        }
+
+    }
+</script>
+<script type="text/javascript">
+    function AddCompanyEmployeeTab(companyId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/CompanyEmployeeTab/CreateEdit',
+            data: { "userId": companyId },
+            success: function (data) {
+
+                $('#divDdlPopupContent').html(data);
+               
+                $('#divDdlPopup').modal('show');
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function getCompanyDocView(educationId) {
+        debugger;
+        var id = educationId == null ? $("#EmployeeEducationDetailId").val() : educationId;
+        if (id != 0) {
+
+            $.ajax({
+                type: "get",
+                url: '/Company/UploadDocument',
+                data: { "id": id },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divEmployeeEducationDocUpload").html(data);
+                    $("#upload_EducationDoc_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide("#userDetailAlert", "Error", "Record doesn't exists!");
+        }
+    }
+
+    function LoadLetterSigneeDDL(targetElement, selectedValue,companyId) {
+        var model = {
+        }
+        debugger
+
+        $.ajax({
+            url: '/JobCertificationSignee/AjaxGetJobCertificationSignee',
+            data: { CompanyId: companyId, IsAllCompanies: true },
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    debugger;
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+    function LoadLetterTemplateDDL(targetElement, selectedValue,companyId) {
+        var model = {
+        }
+        debugger
+
+        $.ajax({
+            url: '/JobCertificationTemplate/AjaxGetJobCertificationTemplate',
+            data: { CompanyId: companyId, IsAllCompanies: true },
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    debugger;
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+</script>
+<style>
+    .thumbnail:hover {
+        position: relative;
+        top: -25px;
+        left: -35px;
+        width: 500px;
+        height: 500px;
+        display: block;
+        z-index: 999;
+    }
+</style>

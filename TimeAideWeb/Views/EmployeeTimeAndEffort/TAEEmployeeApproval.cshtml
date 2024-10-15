@@ -1,0 +1,92 @@
+﻿@model TimeAide.Models.ViewModel.TimeAndEffortApprovalViewModel
+
+<div id="TAEEmployeeApproval_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">TAE Employee Approval</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <h4 class="text-info text-center">
+                            Do you want to approve the TAE record?
+                        </h4>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnEmployeeApprove" class="btn btn-success submit-btn">Approve</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#btnEmployeeApprove").click(function () {
+            updateTAEEmployeeApproval();
+        });
+    });
+
+
+        function updateTAEEmployeeApproval() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.TAEIds = '@Model.TAEIds';
+        dataObject.ApprovalTypeId = '@Model.ApprovalTypeId';
+        
+        $.ajax({
+            url: "/EmployeeTimeAndEffort/TAEEmployeeApproval",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+
+                    showAlertAutoHide("", data.status, data.message);
+                    $("#TAEEmployeeApproval_modal").modal("hide");
+                    getSelfServiceTAEDetail();
+
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+
+    }
+
+
+
+
+</script>
+
+
+
+
+

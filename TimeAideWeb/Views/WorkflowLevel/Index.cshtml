@@ -1,0 +1,246 @@
+﻿@model IEnumerable<TimeAide.Web.Models.WorkflowLevel>
+
+<div class="panel panel-default" style="margin-left:5px">
+    <div class="panel-heading" style="padding-left:10px">
+        Workflow Detail
+        @if (ViewBag.WorkflowId != 0)
+        {
+            <span>
+                
+                @("(" + ViewBag.WorkflowId + " - " + ViewBag.WorkflowName + ")" )
+            </span>
+            if (ViewBag.IsZeroLevel != null && !ViewBag.IsZeroLevel)
+            {
+                <div class="pull-right dropdown-action" style="height:20px;">
+                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                        <a href="javascript:createEditWorkflowLevel(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <span>
+                (please select the workflow to display details)
+            </span>
+        }
+
+
+    </div>
+    <div class="panel-body">
+
+        <input type="hidden" id="SelectedWorkflowId" , value="@ViewBag.WorkflowId" />
+        <div class="table-responsive">
+            @if (ViewBag.IsZeroLevel == null || !ViewBag.IsZeroLevel)
+            {
+                <table class="table table-striped custom-table table-nowrap mb-0">
+                    <tr>
+                        <th>
+                            Workflow Level 
+                        </th>
+                        <th>
+                            Level #
+                        </th>
+                        @*<th>
+                            Workflow Level Id
+                        </th>*@
+                        <th>
+                           Level Type
+                        </th>
+                        <th>Level Groups</th>
+                        <th>Notification Message</th>
+                        <th></th>
+
+                    </tr>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.WorkflowLevelName</td>
+                                <td>@item.LevelNumber</td>
+                                @*<td>@item.Id</td>*@
+                                <td>@item.WorkflowLevelType.WorkflowLevelTypeName</td>
+                                <td>@item.SelectedWorkflowLevelGroupNames</td>
+                                <td>@item.NotificationMessage.NotificationMessageName</td>
+                                <td width="10%">
+                                    <div class="pull-right dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                            <a href="javascript:createEditWorkflowLevel(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            <a href="javascript:getWorkflowLevelDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </table>
+            }
+            else
+            {
+                <br />
+                <br />
+                <br />
+                <div class="alert alert-danger" style="text-align:center;padding:10px;font-weight:bold">
+                    Zero Level Workflows cannot have Levels
+                </div>
+                <br />
+                <br />
+            }
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+    function createEditWorkflowLevel(scaleDetailId) {
+        debugger;
+        var ActionMethod = scaleDetailId == 0 ? "Create" : "Edit";
+        var ScaleId = $('#SelectedWorkflowId').val();
+        if (ScaleId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/WorkflowLevel/' + ActionMethod,
+                data: { "id": scaleDetailId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#WorkflowLevelCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide("#IndexPageAlert", "Error", " Please first select the Scale");
+        }
+    }
+    function saveWorkflowLevelData() {
+        debugger;
+        var alertID = "#WorkflowLevelCreateEditAlert";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        var workflowLevelId = $('#WorkflowLevelId').val();
+        if (workflowLevelId > 0)
+            dataObj.id = $('#WorkflowLevelId').val();
+        dataObj.WorkflowId = $('#SelectedWorkflowId').val();
+        dataObj.WorkflowLevelTypeId = $('#WorkflowLevelTypeId').val();
+        dataObj.NotificationMessageId = $('#NotificationMessageId').val();
+        dataObj.WorkflowLevelName = $('#WorkflowLevelName').val();
+        //--------------------------------------------------------
+
+
+        var selectedRoleIdList = [];
+        var selectedRoleIdStr = "";
+        $('#WorkflowLevelGroupId option:selected').each(function () {
+            selectedRoleIdList.push($(this).val());
+        });
+        if (selectedRoleIdList.length > 0) {
+            selectedRoleIdStr = selectedRoleIdList.join(",");
+        }
+        dataObj.SelectedWorkflowLevelGroupId = selectedRoleIdStr;
+        //--------------------------------------------------------
+
+        if (dataObj != null) {
+            //isRequiredValidated += dataObj.DaysBefore.trim().length > 0 ? 1 : 0;
+            //if (isRequiredValidated != 1) {
+            //    isValidated = false;
+            //    message = " Missing Required field(s)";
+            //}
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/WorkflowLevel/Create",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    $("#WorkflowLevelCreateEdit_modal").modal("hide");
+                    showAlertAutoHide("#IndexPageAlert", data.status, data.message);
+                    //location.reload(true);
+                    getWorkflowLevel(dataObj.WorkflowId);
+                }
+                ,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger
+                    var responseText = jQuery.parseJSON(xhr.responseText)
+                    var errorObject = jQuery.parseJSON(responseText.errors)
+                    debugger
+
+                    $.each(errorObject, function (idx, errorMessage) {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    });
+                }
+            });
+        }
+    }
+
+    function getWorkflowLevelDeleteData(scaleDetailId) {
+        if (scaleDetailId != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/WorkflowLevel/Delete',
+                data: { "id": scaleDetailId },
+
+                success: function (data) {
+                    //debugger;
+                    //$("#divCreateEditDelPopUp").html(data);
+                    //$("#WorkflowLevelDelete_modal").modal("show");
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteWorkflowLevel(scaleDetailId) {
+        debugger;
+        alertID = "#WorkflowLevelDeleteAlert"
+        if (scaleDetailId != '') {
+            $.ajax({
+                type: "Post",
+                url: "/WorkflowLevel/ConfirmDelete",
+                data: { "id": scaleDetailId },
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#WorkflowLevelDelete_modal").modal("hide");
+                        showAlertAutoHide("#IndexPageAlert", data.status, data.message);
+                        getWorkflowLevel(scaleDetailId);
+                        //location.reload(true);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+</script>

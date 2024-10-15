@@ -1,0 +1,99 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeGroup>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeGroupName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeGroupDescription)
+        </th>
+        <th>
+            Employee Group Type
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmployeeGroupName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmployeeGroupDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.EmployeeGroupType.EmployeeGroupTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+
+<script type="text/javascript">
+    function fnAddEmployeeGroupMembers(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeGroup/AddRemoveMembers',
+            contentType: "application/json; charset=utf-8",
+            data: { "groupId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function EmployeeGroupMembersHistory(recordId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeGroup/EmployeeGroupMembersHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "refrenceId": recordId },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                //$('#myModal').modal(options);
+                //$('#myModal').css({ 'width': '70%' });
+                //$('#myModal').css({ 'max-width': '70%' });
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

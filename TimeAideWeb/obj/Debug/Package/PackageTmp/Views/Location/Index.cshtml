@@ -1,0 +1,67 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Location>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationCountry.CountryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationState.StateName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationCity.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ZipCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationCountry.CountryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationState.StateName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationCity.CityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ZipCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

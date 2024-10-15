@@ -1,0 +1,320 @@
+﻿@model TimeAide.Web.Models.EmailTemplate
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <input type="hidden" id="hdnCanCreateAllCompany" , value="@ViewBag.CanCreateAllCompany" />
+    <input type="hidden" id="hdnCanCreateForCompany" , value="@ViewBag.CanCreateForCompany" />
+    @*<div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.EmailTypeId, "Email Type", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.EmailType>("EmailTypeId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.EmailTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.EmailSubject, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.EmailSubject, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailSubject, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.EmailBody, "Email Body", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.EmailBody, 10, 50, new { style = "width:100% !important;background: none;margin-top: 0;border: none;resize: none;resize:none;", @class = "form-control richtext-editor" })
+                @Html.ValidationMessageFor(model => model.EmailBody, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                Add any of the field to the email body.
+            </div>
+            <div class="col-md-8">
+                <ul style="float: left;list-style: none;padding-inline-start: 0;">
+                    <li class="draggable">[FirstName]</li>
+                    <li class="draggable">[MiddleInitial]</li>
+                    <li class="draggable">[FirstLastName]</li>
+                    <li class="draggable">[SecondLastName]</li>
+                    <li class="draggable">[ShortFullName]</li>
+                    <li class="draggable">[CompanyName]</li>
+                    <li class="draggable">[Department]</li>
+                    <li class="draggable">[SubDepartment]</li>
+                    <li class="draggable">[EmployeeType]</li>
+                    <li class="draggable">[EmploymentStatus]</li>
+                    <li class="draggable">[PositionId]</li>
+                    <li class="draggable">[URL]</li>
+                    <li class="draggable">[LoginUserName]</li>
+                </ul>
+            </div>
+        </div>*@
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.EmailTypeId, "Email Type", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.EmailType>("EmailTypeId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.EmailTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.EmailSubject, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.EmailSubject, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EmailSubject, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3 pr-0">
+            @* @Html.LabelFor(model => model.Message, "Message", htmlAttributes: new { @class = "control-label" })*@
+            <label class="col-form-label">Tags List <span class="text-danger"></span></label>
+            <div style="max-height:450px; overflow-y:auto">
+                <ul class="list-group">
+
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[EmployeeId]</a></li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[FirstName]</a></li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[MiddleInitial]</a></li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[FirstLastName]</a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[SecondLastName] </a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[ShortFullName]</a></li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[CompanyName] </a> </li>
+
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[Department]</a></li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[SubDepartment]</a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[EmployeeType] </a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[EmploymentStatus]</a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[PositionId] </a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[URL] </a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[LoginUserName] </a> </li>
+                    <li class="list-group-item"><a href="#" class="label label-primary" title="Click on">[Password] </a> </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9 pr-3">
+            <label class="col-form-label">Email Body <span class="text-danger"></span></label>
+            @*@Html.TextAreaFor(model => model.Message, 10, 50, new { style = "width:100% !important;background: none;margin-top: 0;border: none;resize: none;resize:none;", @class = "form-control richtext-editor" })*@
+            @Html.TextAreaFor(model => model.EmailBody, 10, 50, new { style = "width:100% !important;background: none;margin-top: 0;border: none;resize: none;resize:none;", @class = "form-control richtext-editor" })
+            @Html.ValidationMessageFor(model => model.EmailBody, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @if (ViewBag.IsBaseCompanyObject)
+    {
+        <div class="submit-section">
+            <span>All Companies</span>
+            <input type="hidden" id="hdnSelectedCompanyId" value="@TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId" />
+            @if (ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+            {
+                <input type="checkbox" id="chkAllCompanies" checked="checked" />
+            }
+            else if (!ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+            {
+                <input type="checkbox" id="chkAllCompanies" checked="checked" disabled="disabled" />
+            }
+            else if (!ViewBag.IsAllCompanies)
+            {
+                <input type="checkbox" id="chkAllCompanies" value="@ViewBag.IsAllCompanies" />
+            }
+        </div>
+    }
+
+    <div class="submit-section">
+        <input type="hidden" id="popupTargetDdl" />
+        <button type="button" onclick="fnAddMasterData('@ViewBag.FormName');" class="btn btn-primary submit-btn">Save</button>
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        @*<button onclick="$(this).closest('.modal').modal('hide'); return false;">Cancel</button>*@
+    </div>
+</div>
+}
+@Scripts.Render("~/bundles/jqueryval")
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+
+<script type="text/javascript">
+    function fnAddMasterData(controller) {
+        var model = {
+        }
+
+        debugger
+        $('input, select, textarea').each(
+            function (index) {
+                var input = $(this);
+                model[input.attr('name')] = input.val();
+            }
+        );
+
+        $('input[type=checkbox]').each(
+            function (index) {
+                var input = $(this);
+                debugger
+                if (this.id == 'chkAllCompanies') {
+                    if (input.is(":checked")) {
+                        model['CompanyId'] = '';
+                    }
+                    else {
+                        model['CompanyId'] = $('#hdnSelectedCompanyId').val();
+                    }
+
+                }
+                else {
+                    model[input.attr('name')] = (input.is(":checked"));
+                }
+            }
+        );
+        //alert($('.IsExpirable').is(":checked"));
+        //alert(JSON.stringify(model));
+        debugger
+        var actionMethod = "";
+        if (model.Id == null || (typeof (model.Id) === "undefined") || model.Id == 0) { actionMethod = "Create" }
+        else { actionMethod = "Edit" }
+        if ($('#divDdlPopup').is(':visible')) {
+            model.Id = undefined;
+            $.ajax({
+                type: 'post',
+                url: '/' + controller + '/Create',
+                data: JSON.stringify(model),
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                success: function (data) {
+                    debugger
+                    //alert(JSON.stringify(data))
+
+                    var id = $("#popupTargetDdl").val();
+                    //alert(id);
+
+                    if (id == null || (typeof (id) === "undefined") || id == '') {
+                        id = controller + 'Id';
+                    }
+
+                    var nameField = controller + 'Name';
+                    if (controller == 'WCClassCode') {
+                        nameField = "ClassName";
+                    }
+
+                    //$('#btnWithDdl').parent().parent().find('select').html()
+                    $('#' + id + '').append('<option value=' + data.Id + '>' + data['' + nameField + ''] + '</option>');
+                    $('#' + id + ' option[value=\'' + data.Id + '\']').prop('selected', 'selected');
+                    $('#divDdlPopup').modal('hide');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger
+                    var responseText = jQuery.parseJSON(xhr.responseText)
+                    var errorObject = jQuery.parseJSON(responseText.errors)
+                    debugger
+
+                    $.each(errorObject, function (idx, errorMessage) {
+                        if (errorMessage.Key == 'OneRecordPerCompanyValidation') {
+                            toastr.error(errorMessage.Key, "Error!");
+                        }
+                        else {
+                            $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                        }
+                    });
+
+                    
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: 'post',
+                url: '/' + controller + '/' + actionMethod,
+                data: JSON.stringify(model),
+                contentType: 'application/json; charset=utf-8',
+                dataType: "html",
+                success: function (html) {
+                    debugger
+                    location.reload(true);
+                    $('#myModal').modal('hide');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger
+                    var responseText = jQuery.parseJSON(xhr.responseText)
+                    var errorObject = jQuery.parseJSON(responseText.errors)
+
+                    $.each(errorObject, function (idx, errorMessage) {
+                        if (errorMessage.Key == 'OneRecordPerCompanyValidation') {
+                            toastr.error(errorMessage.Message, "Error!");
+                        }
+                        else {
+                            $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                        }
+                    });
+                }
+            });
+        }
+    }
+</script>
+<style type="text/css">
+    .panel {
+        margin-bottom: 20px !important;
+        background-color: #ffffff !important;
+        border: 1px solid transparent !important;
+        border-color: #ddd !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .panel-heading {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+</style>
+<style>
+    .modal-dialog {
+        width: 800px;
+        max-width: 800px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.richtext-editor').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['']],
+                ['insert', ['link']],
+                ['view', []],
+            ],
+
+            height: 350, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            //  disableDragAndDrop: true
+
+        });
+        $('div.note-popover').css("display", "none");
+        setTimeout(function () {
+            debugger;
+            $('.richtext-editor').summernote('fontName', 'Arial');
+            $('.richtext-editor').summernote('fontSizeUnit', 'pt');
+            $('.richtext-editor').summernote('fontSize', 14);
+            $('.richtext-editor').summernote('justifyLeft');
+
+
+        }, 500);
+    });
+
+    $(".list-group li a").click(function () {
+        $('.richtext-editor').summernote('editor.insertText', $(this).text());
+    });
+</script>

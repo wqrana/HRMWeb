@@ -1,0 +1,59 @@
+﻿@model TimeAide.Web.Models.IncidentTreatmentFacility
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TreatmentFacilityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TreatmentFacilityName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TreatmentFacilityAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TreatmentFacilityAddress)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.State.StateName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State.StateName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.City.CityName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City.CityName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            Zip
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ZipCode)
+        </dd>
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

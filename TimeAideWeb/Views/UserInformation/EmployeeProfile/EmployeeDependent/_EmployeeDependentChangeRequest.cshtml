@@ -1,0 +1,272 @@
+﻿@model TimeAide.Web.Models.EmployeeDependent
+
+<div class="modal-header alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;padding:10px">
+    <h4 class="modal-title">Employee Dependent</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form>
+        @Html.HiddenFor(model => model.Id, new { id = "EmployeeDependentId" })
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            @if (Model.Id > 0)
+            {
+                <div class="panel panel-default" style="width:50%;">
+                    <div class="panel-heading" style="padding-left:10px">Old Employee Dependent</div>
+                    <div class="panel-body" style="padding-left:10px">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">First Name:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FirstName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Last Name:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.LastName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">SSN:</label>
+                            <div class="col-md-4 text-muted  mt-2">
+                                @TimeAide.Services.UserInformationService.MaskSsn(Model.SSN)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Birth Date:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.BirthDate);
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Gender:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @if (Model.Gender != null)
+                                {
+                                    @Html.DisplayFor(m => m.Gender.GenderName)
+                                }
+                            </div>
+                            <label class="col-md-2 col-form-label">Relationship:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @if (Model.Relationship != null)
+                                {
+                                    @Html.DisplayFor(m => m.Relationship.RelationshipName)
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Status:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @if (Model.DependentStatus != null)
+                                {
+                                    @Html.DisplayFor(m => m.DependentStatus.StatusName)
+                                }
+                            </div>
+                            <label class="col-md-2 col-form-label">Full-Time Student:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @* @{ var IsFullTimeStudent = Model == null ? false : Model.IsFullTimeStudent ?? false; }*@
+                                @Html.CheckBoxFor(model => model.IsFullTimeStudent, new { @disabled = "disabled" })
+
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">School Attending:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SchoolAttending)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Health Insurance:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @* @{ var IsHealthInsurance = Model == null ? false : Model.IsHealthInsurance ?? false; }*@
+                                @Html.CheckBoxFor(model => model.IsHealthInsurance, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Dental Insurance:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @*  @{ var IsDentalInsurance = Model == null ? false : Model.IsDentalInsurance ?? false; }*@
+                                @Html.CheckBoxFor(model => model.IsDentalInsurance, new { @disabled = "disabled" })
+                            </div>
+                            <label class="col-md-2 col-form-label">Tax Purposes:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @*  @{ var IsTaxPurposes = Model == null ? false : Model.IsTaxPurposes ?? false; }*@
+                                @Html.CheckBoxFor(model => model.IsTaxPurposes, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        @*<div class="form-group row">
+
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Document Name:
+                            </label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.DocName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Expiry Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.ExpiryDate);
+                                }
+
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+            }
+                <div class="panel panel-default" style="@ViewBag.EmployeeDependentStyle">
+                    <div class="panel-heading" style="margin-bottom:15px;padding-left:10px">New Employee Dependent</div>
+                    <div class="panel-body" style="padding-left:10px">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                First Name:<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", maxLength = "30" } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+
+                            <label class="col-md-2 col-form-label">
+                                Last Name: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", maxLength = "30" } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">
+                                SSN: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @{
+                                    Model.SSN = Model.SSNComputed;
+                                }
+                                @Html.EditorFor(model => model.SSN, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SSN, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-md-2 col-form-label">
+                                Birth Date: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control", max = "new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate()" } })
+                                @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Gender:<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-4">
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.Gender>("GenderId", null, Model.GenderId, false, null, htmlAttributes: new { @class = "form-control" }))
+                                @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Relationship:<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-4">
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.Relationship>("RelationshipId", null, Model.RelationshipId, false, null, htmlAttributes: new { @class = "form-control" }))
+                                @Html.ValidationMessageFor(model => model.RelationshipId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Status:<span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.DependentStatus>("DependentStatusId", null, Model.DependentStatusId, false, null, htmlAttributes: new { @class = "form-control" }))
+                                @Html.ValidationMessageFor(model => model.DependentStatusId, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-md-2 col-form-label">
+                                Full-Time Student: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.IsFullTimeStudent, new { id = "IsFullTimeStudentAE" })
+                                @Html.ValidationMessageFor(model => model.IsFullTimeStudent, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label id="newschoolattendinglabel" class="col-md-2 col-form-label" style="margin-left:0px">
+                                School Attending:<span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.SchoolAttending, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SchoolAttending, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-md-2 col-form-label">
+                                Health Insurance: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.IsHealthInsurance, new { id = "IsHealthInsuranceAE" })
+                                <!--<input type="checkbox" id="IsHealthInsurance"  />-->
+                                @Html.ValidationMessageFor(model => model.IsHealthInsurance, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">
+                                Dental Insurance: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.IsDentalInsurance, new { id = "IsDentalInsuranceAE" })
+                                <!--<input type="checkbox" id="IsDentalInsurance"  />-->
+                                @Html.ValidationMessageFor(model => model.IsDentalInsurance, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-md-2 col-form-label">
+                                Tax Purposes: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.IsTaxPurposes, new { id = "IsTaxPurposesAE" })
+                                <!-- <input type="checkbox" id="IsTaxPurposes"  />-->
+                                @Html.ValidationMessageFor(model => model.IsTaxPurposes, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        <div>
+            @if (ViewBag.CanEmployeeDependantWorkflowIntiated.Count > 0)
+            {
+                <div style="color:red">
+                    Change request can not be submitted due to following reasons:
+                </div>
+                foreach (var each in ViewBag.CanEmployeeDependantWorkflowIntiated)
+                {
+                    <div style="color:red">
+                        @each
+                    </div>
+                }
+            }
+        </div>
+        <div class="submit-section" style="display: flex;align-items: center;justify-content: center;">
+            @if (ViewBag.CanEmployeeDependantWorkflowIntiated.Count == 0)
+            {
+                <button id="btnSaveEmployeeDependent" class="btn btn-primary submit-btn" type="button">Submit</button>
+            }
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger
+        var currentYear = (new Date).getFullYear();
+        var currentMonth = (new Date).getMonth();
+        var currentDay = (new Date).getDate();
+
+
+        $('input[id*=BirthDate]').each(function () {
+            $(this).datetimepicker({
+                format: 'MM/DD/YYYY',
+              
+                
+                maxDate: new Date(currentYear, currentMonth, currentDay) });
+
+        });
+        $('#SSN').mask('999-99-9999', { autoclear: false });
+    });
+</script>

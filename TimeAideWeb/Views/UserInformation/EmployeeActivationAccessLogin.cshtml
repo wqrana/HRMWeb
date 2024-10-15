@@ -1,0 +1,258 @@
+﻿@model TimeAide.Web.ViewModel.EmployeePrivilegeViewModel
+<div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+    <h4 style="display: inline;">Edit Info.</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.RoleId, "Role Type:", htmlAttributes: new { @class = "control-label" })
+            </label>
+            <div class="col-md-7" style="width:100% !important">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.RoleType>("ddlRoleTypeId", null, Model.RoleTypeId, htmlAttributes: new { @class = "form-control" }))
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.RoleId, "Role Id:", htmlAttributes: new { @class = "control-label" })
+            </label>
+            <div class="col-md-7" style="width:100% !important">
+                @Html.DropDownList("RoleId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                Email for Login
+            </label>
+            <div class="col-md-7">
+                @Html.DropDownList("LoginEmailAddressTypeId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+
+            </div>
+            @if (ViewBag.LoginEmailAddressTypeId == null || ViewBag.LoginEmailAddressTypeId.Items.Count == 0)
+            {
+
+                <div class="alert alert-danger alert-dismissible fade show danger " role="alert">
+                    <strong>Alert!</strong> Selected employee does not have any email, please add employee emails in employee contact information
+                </div>
+
+            }
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                Action Type
+            </label>
+            <div class="col-md-8">
+                <div class="radio-inline pt-2">
+                    <input type="radio" id="radio1" name="registrationType" value="1" onchange="setRegistrationType(1);">
+                    <label for="radio1">Send Registration Email</label>
+                    <input type="radio" id="radio2" name="registrationType" value="2" onchange="setRegistrationType(2);">
+                    <label for="radio2">Manual User Registration</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="submit-section mt-1 mb-2">
+    <button id="btnUpdateAccessLogin" class="btn btn-primary">Update</button>
+    <button id="btnActivateS1Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function () {
+    debugger
+    var viewTypeJS = '@Model.ViewType';
+    LoadRoleDropdown(@Model.RoleTypeId, '#RoleId', @Model.RoleId);
+        $('#ddlRoleTypeId').change(function (e) {
+            debugger;
+            var roleTypeId = $(this).val();
+            LoadRoleDropdown(roleTypeId, '#RoleId', null);
+        })
+
+
+});
+
+function LoadRoleDropdown(roleTypeId, targetElement, selectedValue) {
+    $.ajax({
+        url: '/Role/AjaxGetRoleByRoleType',
+        data: { 'roleTypeId': roleTypeId }, //dataString,
+        type: 'GET',
+        success: function (res) {
+            debugger;
+            var data = res;
+            $(targetElement + ' option').remove();
+            var option = '<option value=""> Please Select </option>';
+            $(targetElement).append(option);
+            $(data).each(function () {
+                var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                $(targetElement).append(option);
+            });
+            // if (selectedValue != null)
+            $(targetElement).val(selectedValue == null ? "" : selectedValue);
+        },
+        error: function (xhr, status, error) {
+            //displayErrorMessage('Error during retrieving Data:' + error);
+        }
+    });
+    $(targetElement+ " select").val(@Model.RoleId);
+}
+
+$("#btnAddEmployeeUserLogin").click(function () {
+    debugger
+    var viewTypeJS = '@Model.ViewType';
+    if (viewTypeJS == 'Access Restrictions') {
+        var selectedCompanyIdList = [];
+        var selectedCompanyIdStr = "";
+        $('#CompanyId option:selected').each(function () {
+            selectedCompanyIdList.push($(this).val());
+        });
+        if (selectedCompanyIdList.length > 0) {
+            selectedCompanyIdStr = selectedCompanyIdList.join(",");
+        }
+
+        var selectedEmployeeTypeIdList = [];
+        var selectedEmployeeTypeIdStr = "";
+        $('#EmployeeTypeId option:selected').each(function () {
+            selectedEmployeeTypeIdList.push($(this).val());
+        });
+        if (selectedEmployeeTypeIdList.length > 0) {
+            selectedEmployeeTypeIdStr = selectedEmployeeTypeIdList.join(",");
+        }
+
+        var selectedDepartmentIdList = [];
+        var selectedDepartmentIdStr = "";
+        $('#DepartmentId option:selected').each(function () {
+            selectedDepartmentIdList.push($(this).val());
+        });
+        if (selectedDepartmentIdList.length > 0) {
+            selectedDepartmentIdStr = selectedDepartmentIdList.join(",");
+        }
+
+        var selectedSubDepartmentIdList = [];
+        var selectedSubDepartmentIdStr = "";
+        $('#SubDepartmentId option:selected').each(function () {
+            selectedSubDepartmentIdList.push($(this).val());
+        });
+        if (selectedSubDepartmentIdList.length > 0) {
+            selectedSubDepartmentIdStr = selectedSubDepartmentIdList.join(",");
+        }
+    }
+    if (viewTypeJS == 'Member Of') {
+        var selectedEmployeeGroupIdList = [];
+        var selectedEmployeeGroupIdStr = "";
+        $('#EmployeeGroupId option:selected').each(function () {
+            selectedEmployeeGroupIdList.push($(this).val());
+        });
+        if (selectedEmployeeGroupIdList.length > 0) {
+            selectedEmployeeGroupIdStr = selectedEmployeeGroupIdList.join(",");
+        }
+    }
+    var model = {
+
+        UserInformationId: $('#UserInformationId').val(),
+        Id: $('#UserContactInformationId__').val(),
+        RoleId: $('#RoleId  :selected').val(),
+        LoginEmail: $('#LoginEmailAddressTypeId  :selected').text(),
+        SelectedCompanyId: selectedCompanyIdStr,
+        SelectedEmployeeGroupId: selectedEmployeeGroupIdStr,
+        SelectedSubDepartmentId: selectedSubDepartmentIdStr,
+        SelectedDepartmentId: selectedDepartmentIdStr,
+        SelectedEmployeeTypeId: selectedEmployeeTypeIdStr,
+        ViewType: $('#txtViewType').val(),
+    }
+
+    if (viewTypeJS == 'Account') {
+        if (model.LoginEmail == '- Please select -') {
+            debugger
+            model["LoginEmail"] = '';
+        }
+        else {
+            debugger
+        }
+    }
+
+    $.ajax({
+        type: 'post',
+        url: '/UserInformation/EmployeeSystemAccess',
+        data: JSON.stringify(model),
+        contentType: 'application/json; charset=utf-8',
+        dataType: "html",
+        success: function (html) {
+            debugger
+            $('#divEmployeeSystemAccess').html(html);
+            if ($('#userRegisterModal').length)
+                $('#userRegisterModal').modal('hide');
+            else
+                $('#myModal').modal('hide');
+            toastr.success(viewTypeJS + ' information updated successfully.', "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            debugger
+            var responseText = jQuery.parseJSON(xhr.responseText)
+            var errorObject = jQuery.parseJSON(responseText.errors)
+            debugger
+
+            $.each(errorObject, function (idx, errorMessage) {
+                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+            });
+        }
+    });
+});
+$("#btnRegistrUser").click(function () {
+    debugger
+    var viewTypeJS = '@Model.ViewType';
+    var model = {
+
+        UserInformationId: $('#UserInformationId').val(),
+        Id: $('#UserContactInformationId__').val(),
+        LoginEmail: $('#LoginEmailAddressTypeId  :selected').text(),
+        ViewType: $('#txtViewType').val()+'Register',
+    }
+
+    if (model.LoginEmail == '- Please select -') {
+        debugger
+        model["LoginEmail"] = '';
+    }
+
+    $.ajax({
+        type: 'post',
+        url: '/UserInformation/EmployeeSystemAccess',
+        data: JSON.stringify(model),
+        contentType: 'application/json; charset=utf-8',
+        dataType: "html",
+        success: function (html) {
+            debugger
+            $('#divEmployeeSystemAccess').html(html);
+
+            if ($('#userRegisterModal').length)
+                $('#userRegisterModal').modal('hide');
+            else
+                $('#myModal').modal('hide');
+            toastr.success(viewTypeJS + ' information updated successfully.', "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            debugger
+            var responseText = jQuery.parseJSON(xhr.responseText)
+            var errorObject = jQuery.parseJSON(responseText.errors)
+            debugger
+
+            $.each(errorObject, function (idx, errorMessage) {
+                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+            });
+        }
+    });
+});
+
+</script>
+
+<style>
+    .modal-dialog {
+        width: 50%;
+        max-width: 80% !important;
+    }
+</style>

@@ -1,0 +1,26 @@
+﻿<div class="card-body">
+    <h3 class="card-title" style="border-bottom: 1px;border-bottom: 1px solid #dee2e6;padding-bottom: 20px;">Education Info</h3>
+    <div class="experience-box">
+        <ul class="experience-list">
+            @foreach (var eachEducation in Model.EmployeeEducation)
+            {
+                <li>
+                    <div class="experience-user">
+                        <div class="before-circle"></div>
+                    </div>
+                    <div class="experience-content">
+                        <div class="timeline-content">
+                            <a href="#/" class="name">@eachEducation.InstitutionName</a>
+                            @if (eachEducation.Degree != null)
+                            {
+                                <div>@eachEducation.Degree.DegreeName</div>
+                            }
+                            <span class="time">@String.Format("{0:MM/dd/yyyy}", eachEducation.DateCompleted)</span>
+                        </div>
+                    </div>
+                </li>
+            }
+
+        </ul>
+    </div>
+</div>

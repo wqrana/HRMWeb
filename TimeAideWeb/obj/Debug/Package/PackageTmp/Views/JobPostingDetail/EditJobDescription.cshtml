@@ -1,0 +1,98 @@
+﻿
+
+@model TimeAide.Web.Models.JobPostingDetail
+@Html.HiddenFor(m=>m.Id, new { @id= "JobPostingDetailId" })
+<div id="JobPostingCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit Job Description</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="job-info job-widget mb-0 p-2">
+                            <h3 class="job-title">@Html.DisplayFor(m => m.Position.PositionName)</h3>
+                            <span class="job-dept">@Html.DisplayFor(m => m.Department.DepartmentName)</span>
+                            <ul class="job-post-det">
+                                <li><i class=""></i> Location: <span class="text-primary">@Html.DisplayFor(m => m.SelectedLocationNames)</span></li>
+                                <li><i class=""></i> Employment Type: <span class="text-primary">@Html.DisplayFor(m => m.EmploymentType.EmploymentTypeName)</span></li>
+                                <li><i class=""></i> Experience: <span class="text-primary">@Html.DisplayFor(m => m.Experience)</span></li>
+                                <li><i class=""></i> Salary Range: <span class="text-primary">@Html.DisplayFor(m => m.SalaryFrom)-@Html.DisplayFor(m => m.SalaryTo)</span></li>
+                                <li><i class=""></i> Post Date: <span class="text-primary">@Html.DisplayFor(m => m.JobPostingStartDate)</span></li>
+                                <li><i class=""></i> Last Date: <span class="text-primary">@Html.DisplayFor(m => m.JobPostingExpiringDate)</span></li>
+                                <li><i class=""></i> No Of Vacancies: <span class="text-primary">@Html.DisplayFor(m => m.NoOfVacancies)</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="job-content job-widget p-2">
+                            <div class="job-desc-title"><h4>Job Description</h4></div>
+                            <div class="job-description">
+                                @Html.TextAreaFor(m => m.JobDescription, new { rows = "20", style = "resize:none;width:600px;", @class = "form-control richtext-editor" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+                    <button id="btnSaveJobDescription" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+
+<script>
+    $(document).ready(function () {
+       
+        $('.richtext-editor').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['']],
+                ['insert', ['link', 'picture']]              
+            ],
+
+            height: 450, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            disableDragAndDrop: true
+
+        });
+        $('div.note-popover').css("display", "none");
+
+        $('.richtext-editor').summernote('fontName', 'Arial');
+        $('.richtext-editor').summernote('fontSizeUnit', 'pt');
+        $('.richtext-editor').summernote('fontSize', 14);
+
+        $('#btnSaveJobDescription').click(function () {
+            saveJobDecription();
+        });
+    });
+   
+</script>
+
+
+
+

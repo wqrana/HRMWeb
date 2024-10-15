@@ -1,0 +1,120 @@
+﻿@model TimeAide.Web.Models.EmployeeWithholding
+
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyCompensation.CompensationName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyCompensation.CompensationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompensationComputationType.CompensationComputationTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompensationComputationType.CompensationComputationTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompensationType.CompensationTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompensationType.CompensationTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GLAccount.GLAccountName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GLAccount.GLAccountName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PeriodEntry.CompensationPeriodEntryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PeriodEntry.CompensationPeriodEntryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Enabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Enabled)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MoneyAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MoneyAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClientId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClientId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataEntryStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataEntryStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Old_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Old_Id)
+        </dd>
+
+    </dl>
+
+</div>
+@Html.Partial("_DeleteViewFooter")

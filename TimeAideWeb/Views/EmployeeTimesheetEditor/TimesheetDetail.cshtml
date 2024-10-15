@@ -1,0 +1,158 @@
+﻿@model IEnumerable<TimeAide.Data.tPunchDate>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblPunchDate">
+        @{
+
+        }
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Sys Id</th>
+                <th>Punch Date</th>
+                <th>Punch Summary</th>
+                <th>Hours Summary</th>
+                <th>Exceptions</th>
+                <th>Schedule</th>
+                <th>Reg</th>
+                <th>Half</th>
+                <th>Double</th>
+                <th>Meal</th>
+                <th>Others</th>
+                <th>Reg+Oth</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-left">
+                        <div id="divAction_@item.tpdID" style="display:none;">
+                            <div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                    <a class="dropdown-item showEditOption" href="javascript:editPunchDate()"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    @if ((bool)ViewBag.AllowAdd)
+                                    {
+                                        <a class="dropdown-item" href="javascript:addTransaction()"><i class="fa fa-calendar m-r-5"></i> Add Trans.</a>
+                                    }
+                                    @if ((bool)ViewBag.AllowDelete)
+                                    {
+                                        <a class="dropdown-item" href="javascript:deleteTransaction()"><i class="fa fa-trash m-r-5"></i> Delete Trans.</a>
+                                    }
+                                    @if ((bool)ViewBag.AllowAdd)
+                                    {
+                                        <a class="dropdown-item" href="javascript:addPunches()"><i class="fa fa-clock-o m-r-5"> </i> Add Punch</a>
+                                    }
+                                    @if ((bool)ViewBag.AllowDelete)
+                                    {
+                                        <a class="dropdown-item" href="javascript:deletePunches()"><i class="fa fa-trash-o m-r-5"> </i> Delete Punch</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="@item.tpdID" name="SelectedTSDetail" value="" onchange="selectedTimeSheetDetail(this);">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.e_id)
+
+                    </td>
+                    <td>
+                        <a href="javascript:getDailyCompensation(@item.e_id,'@item.DTPunchDate');" title="View Detail"> @Html.DisplayFor(modelItem => item.DTPunchDate)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sPunchSummary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sHoursSummary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sExceptions)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sDaySchedule)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblREGULAR)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblONEHALF)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblDOUBLE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblMEAL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblOTHERS)
+                    </td>
+                    <td>
+                        @(item.dblREGULAR + item.dblOTHERS)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="divAddTransction">
+
+</div>
+<div id="divEditPunchDate">
+
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        getSelectedCompensation();
+    });
+
+    function selectedTimeSheetDetail(tsRow) {
+        debugger;
+        var id = $(tsRow).attr("id");
+        var isSelected = $(tsRow).is(":checked");
+        var divActionList = "#divAction_" + id;
+        if (isSelected) {
+            $(divActionList).show();
+        }
+        else {
+            $(divActionList).hide();
+        }
+
+        getSelectedCompensation();
+        showAhideEditorOption();
+    }
+    function getSelectedCompensation(tbRow) {
+        debugger;
+        var defaultRow = $('#tblPunchDate tbody').children('tr:first');
+        var selectedRows = getSelectedTSDetail();
+        debugger;
+        if (selectedRows.length > 0) {
+            maxRow = Math.max(...selectedRows);
+            defaultRow = $("#" + maxRow).closest("tr");
+        }
+
+        var userId = $(defaultRow).find("td:eq(2)").text().trim();
+        var punchDate = $(defaultRow).find("td:eq(3)").text().trim();
+        getDailyCompensation(userId, punchDate);
+    }
+    function showAhideEditorOption() {
+        var selectedCount = 0;
+        debugger;
+        $('input[name="SelectedTSDetail"]').each(function () {
+            debugger;
+            var isSelectetTSD = $(this).is(":checked");
+            if (isSelectetTSD) {
+                selectedCount++;
+            }
+        });
+        if (selectedCount > 1) {
+            $(".showEditOption").addClass("hideSection");
+        }
+        else {
+            $(".showEditOption").removeClass("hideSection");
+        }
+    }
+</script>

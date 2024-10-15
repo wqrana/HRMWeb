@@ -1,0 +1,50 @@
+﻿@model TimeAide.Web.Models.EmergencyContact
+
+@{
+    /**/
+
+    ViewBag.Title = "";
+    Layout = null;
+}
+
+@using (Html.BeginForm("Create", "EmergencyContact", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.UserInformationId)
+    <table class="table" style="margin-bottom:10px !important">
+        <tr>
+            <th width="18%">
+                @Html.EditorFor(model => model.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContactPersonName, "", new { @class = "text-danger" })
+            </th>
+            <th width="18%">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Relationship>("RelationshipId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.RelationshipId, "", new { @class = "text-danger" })
+            </th>
+            <th width="18%">
+                @Html.EditorFor(model => model.IsDefault)
+                @Html.ValidationMessageFor(model => model.IsDefault, "", new { @class = "text-danger" })
+            </th>
+            <th width="18%">
+                @Html.EditorFor(model => model.MainNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MainNumber, "", new { @class = "text-danger" })
+            </th>
+            <th width="18%">
+                @Html.EditorFor(model => model.AlternateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AlternateNumber, "", new { @class = "text-danger" })
+            </th>
+            <th width="10%"><input type="submit" value="Create" class="btn btn-default" /></th>
+        </tr>
+    </table>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <style type="text/css">
+        .col-md-2 {
+            width: 9% !important;
+        }
+    </style>
+}
+

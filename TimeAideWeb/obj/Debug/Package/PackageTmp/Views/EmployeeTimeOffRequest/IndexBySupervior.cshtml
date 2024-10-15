@@ -1,0 +1,156 @@
+﻿
+@model  IEnumerable<TimeAide.Web.Models.EmployeeTimeOffRequest>
+@{ 
+        var showTimeOffDoc = TimeAide.Services.ApplicationConfigurationService.GetConfigurationStatus("ShowTimeOffDocument");
+ }
+<style>
+    .showApproval {
+        display: block;
+    }
+
+    .hideApproval {
+        display: none;
+    }
+</style>
+<div class="table-responsive">
+    <table class="table table-striped custom-table mb-0" id="tblEmpTimeOff">
+        <thead>
+            <tr role="row">
+                <th>Action</th>
+                <th>EmpId</th>
+                <th>Name</th>
+                <th>Time-Off Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Working Day(s)</th>
+                <th>Time-Off (Hrs)</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @{
+                        var requestStatus = item.ChangeRequestStatusId;
+                        var canTakeAction = item.CanTakeAction;
+                        var badgeCSS = "bg-inverse-primary";
+                        var showHideApprovalCSS = "hideApproval";
+                        if (requestStatus == 1 && canTakeAction == true)
+                        {
+                            showHideApprovalCSS = "showApproval";
+                        }
+                        if (requestStatus >= 3)
+                        {
+                            badgeCSS = "bg-inverse-danger";
+                        }
+                        else if (requestStatus == 2)
+                        {
+                            badgeCSS = "bg-inverse-success";
+                        }
+                    }
+                    <td class="text-left">
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="javascript:getTimeOffRequestStatusHistory(@item.Id);"><i class="fa fa-eye m-r-5"> View History</i> </a>
+                                <a class="dropdown-item @showHideApprovalCSS" href="javascript:getTimeOffRequestApproval(@item.Id);"><i class="fa fa-pencil m-r-5">Approval</i> </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@Html.DisplayFor(m => item.UserInformation.EmployeeId)</td>
+                    <td>@Html.DisplayFor(m => item.UserInformation.ShortFullName)</td>
+                    <td>
+                        @Html.DisplayFor(m => item.TransType)
+                    </td>
+                    <td>@Html.DisplayFor(m => item.StartDate)</td>
+                    <td>@Html.DisplayFor(m => item.EndDate)</td>
+                    @{
+                        var WorkingDays = String.Format("{0:0.0}", item.WorkingDays ?? 0);
+                        //var requestedTime = (item.WorkingDays ?? 0) * (item.DayHours ?? 0);
+                    }
+                    <td>@Html.DisplayFor(m => WorkingDays) day(s)</td>
+                    <td>@Html.DisplayFor(m => item.RequestedTime) Hrs</td>
+                    <td>@Html.DisplayFor(m => item.RequestNote)</td>
+                    <td>
+
+                        <span class="badge @badgeCSS">@Html.DisplayFor(m => item.ChangeRequestStatus.ChangeRequestStatusName)</span>
+
+                    </td>
+
+                    <td>
+                        <div class="action-label">
+                            <span class="btn btn-info btn-sm btn-rounded" onclick="javascript:getTimeOffRequestStatusHistory(@item.Id);">
+                                @*<i class="fa fa-dot-circle-o text-info"></i>*@ History
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        @if (showTimeOffDoc)
+                        {
+                        <div class="action-label">
+                            <span class="btn btn-secondary btn-sm btn-rounded" onclick="javascript:getTimeOffRequestDocument(@item.Id);">
+                                Doc(s)
+                            </span>
+                        </div>
+                        }
+                    </td>
+                    <td>
+                        <div class="action-label @showHideApprovalCSS">
+                            <span class="btn btn-primary btn-sm btn-rounded" onclick="javascript:getTimeOffRequestApproval(@item.Id);">
+                                @*<i class="fa fa-dot-circle-o text-success"></i>*@ Approval
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+@Html.Partial("~/Views/EmployeeTimeOffRequestDocument/_PostSubmitRequestDocument.cshtml")
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#tblEmpTimeOff').dataTable({
+            "searching": true,
+            "paging": true
+        });
+    });
+    function getTimeOffRequestStatusHistory(timeoffRequestId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeOffRequest/GetTimeOffRequestStatusHistory',
+            data: { "id": timeoffRequestId },
+            success: function (data) {
+                debugger;
+                $("#divTimeOffRequestHistory").html(data);
+                $("#timeOffRequestStatusHistory_modal").modal("show");
+            },
+            error: function () {
+            }
+        });
+    }
+    function getTimeOffRequestApproval(timeoffRequestId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeOffRequest/ApproveTimeOffRequestBySupervior',
+            data: { "id": timeoffRequestId },
+            success: function (data) {
+                debugger;
+                $("#divTimeOffRequestHistory").html(data);
+                $("#timeOffRequestApproval_modal").modal("show");
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>

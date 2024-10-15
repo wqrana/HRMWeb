@@ -1,0 +1,24 @@
+﻿@using ReportViewerForMvc;
+
+@if (ViewBag.ReportView != null)
+{
+
+    @Html.ReportViewer(ViewBag.ReportView as Microsoft.Reporting.WebForms.ReportViewer)
+}
+<script>
+    $(document).ready(function () {
+        adjustReportLayout();
+    });
+
+    function adjustReportLayout() {
+        // Adjusting the iframe Width onload event
+        var iframe = document.getElementsByTagName('iframe');
+        iframe[0].onload = function () {
+            debugger;
+            setTimeout(function () { iframe[0].style.width = "100%"; iframe[0].style.minHeight = "600px";  }, 2000);
+            $('#divLoadingReport').hide(); 
+            console.log(iframe[0].style.width);
+        }
+    }
+
+</script>

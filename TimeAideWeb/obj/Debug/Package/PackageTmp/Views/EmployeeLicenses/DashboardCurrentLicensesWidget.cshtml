@@ -1,0 +1,31 @@
+﻿@model IEnumerable<TimeAide.Web.Models.CompensationBalance>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0">       
+        <thead>
+            <tr>
+                <th>Accrual Type</th>
+                <th>Balance</th>
+                <th>Available</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            var balance = Math.Round(item.Balance.Value, 2);
+            var available = Math.Round(item.RemainingBalance.Value, 2);
+
+
+        <tr>
+            <td>@Html.DisplayFor(m => item.AccrualType)</td>
+            <td>@Html.DisplayFor(m => balance)</td>
+            <td>@Html.DisplayFor(m => available)</td>
+            <td>@Html.DisplayFor(m => item.SearchDate)</td>
+
+        </tr>
+        }
+
+    </table>
+</div>
+
+
+

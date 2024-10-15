@@ -1,0 +1,245 @@
+﻿
+@{
+    ViewBag.Title = "Payroll Center";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .showFilter {
+        display: block;
+    }
+
+    .hideFilter {
+        display: none;
+    }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Payroll Center</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Payroll Management</li>
+                <li class="breadcrumb-item active">Payroll Center</li>
+            </ul>
+            <div class="alert" style="display:none;" id="employeeIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+        <div class="col-auto float-right ml-auto">
+            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                <div class="btn-group" role="group">
+                    @*<a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(20,1)">Print</a>
+        <a class="nav-link btn btn-primary" role="button" href="javascript:addEmployeeDefaultAccrualRules();">Add Payroll</a>
+        <a class="nav-link btn btn-primary" role="button" data-target="#employeeCheckBalances_modal" data-toggle="modal" href="#">Add Additional Payroll</a>*@
+                    <a class="nav-link btn btn-primary" role="button" href="javascript:showSyncPayrollPopup();">Sync Payroll From TA7</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Payroll</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">From Date</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">To Date</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus  mb-1">
+            <select class="form-control">
+                <option>All</option>
+                <option>Regular Payroll</option>
+                <option>Additional Payroll</option>
+            </select>
+            <label class="focus-label">Payroll Type</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus  mb-1">
+            <select class="form-control">
+                <option>All</option>
+                <option>OPEN</option>
+                <option>CLOSED</option>
+            </select>
+            <label class="focus-label">Status</label>
+        </div>
+    </div>
+
+    <div class="col-sm-2 col-md-1 pr-0">
+        <a href="javascript:void();" class="btn btn-success btn-block"> Apply </a>
+    </div>
+</div>
+@*<div id="divLoadingUsers" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>*@
+<div id="divPayrollView">
+    @*<div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblCompanyPayroll">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Payroll</th>
+                    <th>Payroll Type</th>
+                    <th>Pay Date</th>
+                    <th>Pay Week </th>
+                    <th>Start Date</th>
+                    <th>End Date </th>
+                    <th>Payroll Status</th>
+                    <th>Created By</th>
+                    <th>Created On</th>
+                    <th>Closed By</th>
+                    <th>Closed On</th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="5%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Recompute</a>
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td> <a href="\CompanyPayroll\PayrollDetail\1"><span class="fa fa-eye"></span></a></td>
+                    <td>PAYROLL 12/18/2022</td>
+                    <td>Regular Payroll</td>
+                    <td>12/18/2022</td>
+                    <td>120224546</td>
+                    <td>11/30/2022</td>
+                    <td>12/12/2022</td>
+                    <td><span class="badge bg-inverse-primary">OPEN</span></td>
+                    <td>Admin</td>
+                    <td>12/13/2022</td>
+                    <td>Payroll Executive</td>
+                    <td>12/20/2022</td>
+                </tr>
+                <tr>
+                    <td width="5%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Recompute</a>
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                    <td>PAYROLL 11/18/2022</td>
+                    <td>Regular Payroll</td>
+                    <td>11/18/2022</td>
+                    <td>120224546</td>
+                    <td>10/30/2022</td>
+                    <td>11/12/2022</td>
+                    <td><span class="badge bg-inverse-danger">CLOSED</span></td>
+                    <td>Admin</td>
+                    <td>11/13/2022</td>
+                    <td>Payroll Executive</td>
+                    <td>11/20/2022</td>
+                </tr>
+                <tr>
+                    <td width="5%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Recompute</a>
+                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                    <td>PAYROLL 11/4/2022</td>
+                    <td>Regular Payroll</td>
+                    <td>11/04/2022</td>
+                    <td>120224541</td>
+                    <td>10/16/2022</td>
+                    <td>10/29/2022</td>
+                    <td><span class="badge bg-inverse-danger">CLOSED</span></td>
+                    <td>Admin</td>
+                    <td>10/30/2022</td>
+                    <td>Payroll Executive</td>
+                    <td>11/06/2022</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>*@
+</div>
+<div id="divSyncPayroll">
+    @Html.Partial("SyncTA7PayrollPopup")
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        retrievePayroll();
+    });
+    function showSyncPayrollPopup() {
+        $("#syncpayrollTA7_modal_popup").modal("show");
+    }
+    function fetchPayrollFromTA7(dataObj) {
+
+        $(".loading").show();
+
+        $.ajax({
+            type: "get",
+            url: '/CompanyPayroll/FetchPayrollFromTA7',
+            data: { "fromDate": dataObj.fromDate, "toDate": dataObj.toDate },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                console.log(data);
+                $(".loading").hide();
+                if (data.Status == 1) {
+                    showAlertAutoHide("", "Success", data.Message);
+                    $("#syncpayrollTA7_modal_popup").modal("hide");
+                    retrievePayroll();
+                }
+                else {
+                    showAlertAutoHide("", "Error", data.Message);
+                }
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });     
+      
+    
+    }
+    function retrievePayroll() {
+
+        $.ajax({
+            type: "get",
+            url: '/CompanyPayroll/FetchPayroll',   
+           
+            success: function (data) {
+                debugger;
+                $("#divPayrollView").html(data);
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+</script>

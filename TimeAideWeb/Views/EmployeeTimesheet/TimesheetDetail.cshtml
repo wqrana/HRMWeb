@@ -1,0 +1,100 @@
+﻿@model IEnumerable<TimeAide.Data.tPunchDate>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblPunchDate">
+
+        <thead>
+            <tr>
+                
+                <th>Sys Id</th>
+                <th>Punch Date</th>
+                <th>Punch Summary</th>
+                <th>Hours Summary</th>
+                <th>Exceptions</th>
+                <th>Schedule</th>
+                <th>Reg</th>
+                <th>Half</th>
+                <th>Double</th>
+                <th>Meal</th>
+                <th>Others</th>
+                <th>Reg+Oth</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    
+
+                    <td>
+                        <a href="javascript: getDailyCompensation(@item.e_id,'@item.DTPunchDate');" title="View Detail"> @Html.DisplayFor(modelItem => item.e_id)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DTPunchDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sPunchSummary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sHoursSummary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sExceptions)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sDaySchedule)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblREGULAR)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblONEHALF)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblDOUBLE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblMEAL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblOTHERS)
+                    </td>
+                    <td>
+                        @(item.dblREGULAR + item.dblOTHERS)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        getDefaultSelectedCompensation();
+
+        $('#tblPunchDate tbody').on('click', 'tr', function () {
+            debugger
+            if ($(this).hasClass('selected')) {
+
+            }
+            else {
+                $('#tblPunchDate tr').removeClass("selected");
+                var userId = $(this).find("td:eq(0)").text();
+                var punchDate = $(this).find("td:eq(1)").text();
+            /* getTimeSheetDetail(hdnnWeekID);*/
+                getDailyCompensation(userId, punchDate);
+                $(this).addClass('selected');
+            }
+        });
+
+
+
+    });
+    function getDefaultSelectedCompensation() {
+        debugger;
+        var defaultRow = $('#tblPunchDate tbody').children('tr:first');
+        var userId = $(defaultRow).find("td:eq(0)").text().trim();
+        var punchDate = $(defaultRow).find("td:eq(1)").text().trim();
+        getDailyCompensation(userId, punchDate);
+    }
+</script>

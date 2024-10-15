@@ -1,0 +1,366 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.PayrollRule
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-4 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Break
+
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-6 col-form-label" style="margin-left:10px">
+                                Allow Break:
+                            </label>
+                            <div class="col-md-4 pt-2">
+                                @*@Html.CheckBoxFor(m => m.IsAllowBreak, new { @disabled = "disabled" })*@
+                                @Html.DisplayFor(m => m.IsAllowBreak)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 col-form-label" style="margin-left:10px">
+                                Break Type:
+                            </label>
+                            <div class="col-md-5  text-muted mt-2">
+                                @{
+                                    var BreakTypeValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.BreakTypeField, Model.BreakTypeVal ?? 0);
+                                }
+                                @Html.DisplayFor(m => BreakTypeValText)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 col-form-label" style="margin-left:10px">
+                                Break Length Mins.:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @*@Html.EditorFor(m => m.BreakLengthMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.DisplayFor(m => m.BreakLengthMinute)
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 col-form-label" style="margin-left:10px">
+                                Break Rounding Mins.:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @*@Html.EditorFor(m => m.BreakRoundingMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.DisplayFor(m => m.BreakRoundingMinute)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 col-form-label" style="margin-left:10px">
+                                Short Break Exception?:
+                            </label>
+                            <div class="col-md-1 pt-2">
+                                @* @Html.CheckBoxFor(m => m.IsShortBreakException, new { id = "IsShortBreakExceptionAE" })*@
+                                @Html.DisplayFor(m => m.IsShortBreakException)
+                            </div>
+                            <div class="col-md-4 text-muted mt-2">
+                                <div class="input-group ">
+                                    <div class="input-group-prepend pr-1">
+                                        Mins:
+                                    </div>
+                                    @*@Html.EditorFor(m => m.ShortBreakExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DisplayFor(m => m.ShortBreakExceptionMinute)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 col-form-label" style="margin-left:10px">
+                                Long Break Exception?:
+                            </label>
+                            <div class="col-md-1 pt-2">
+                                @* @Html.CheckBoxFor(m => m.IsLongBreakException, new { id = "IsLongBreakExceptionAE" })*@
+                                @Html.DisplayFor(m => m.IsLongBreakException)
+                            </div>
+
+                            <div class="col-md-4 text-muted mt-2">
+                                <div class="input-group ">
+                                    <div class="input-group-prepend pr-1">
+                                        Mins:
+                                    </div>
+                                    @*@Html.EditorFor(m => m.LongBreakExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DisplayFor(m => m.LongBreakExceptionMinute)
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Meal
+
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 pr-0">
+                                <div class="panel panel-default" style="margin-left:0px">
+                                    <div class="panel-heading" style="padding-left:5px">
+                                        Meal Rounding and Exceptions
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:10px">
+                                                Alternate Round for Meal:
+                                            </label>
+                                            <div class="col-md-3 pt-2">                                                
+                                                @Html.DisplayFor(m => m.IsRoundMealToSchedule)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:10px">
+                                                If early, max. no. of mins. to round:
+                                            </label>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                @*@Html.EditorFor(m => m.MealEarlyRoundMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.DisplayFor(m => m.MealEarlyRoundMinute)
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:10px">
+                                                If late, max. no. of mins. to round:
+                                            </label>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                @*@Html.EditorFor(m => m.MealLateRoundMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.DisplayFor(m => m.MealLateRoundMinute)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:10px">
+                                                If outside of sch. round to end of Meal Period:
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @*@Html.CheckBoxFor(m => m.IsRoundToEndOfMealPeriod, new { id = "IsRoundToEndOfMealPeriodAE" })*@
+                                                @Html.DisplayFor(m => m.IsRoundToEndOfMealPeriod)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:10px">
+                                                Round Meal to Quarter? Hrs:
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @*@Html.CheckBoxFor(m => m.IsRoundMealToQuarter, new { id = "IsRoundMealToQuarterAE" })*@
+                                                @Html.DisplayFor(m => m.IsRoundMealToQuarter)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Early In,Exception?:
+                                            </label>
+                                            <div class="col-md-1 pt-2">
+
+                                                @*@Html.CheckBoxFor(m => m.IsEarlyInMealException, new { id = "IsEarlyInMealExceptionAE" })*@
+                                                @Html.DisplayFor(m => m.IsEarlyInMealException)
+                                            </div>
+                                            <div class="col-md-3  text-muted mt-2">
+                                                <div class="input-group ">
+                                                    <div class="input-group-prepend pr-1">
+                                                        Mins:
+                                                    </div>
+                                                    @*@Html.EditorFor(m => m.EarlyInMealExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                    @Html.DisplayFor(m => m.EarlyInMealExceptionMinute)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Late In,Exception?:
+                                            </label>
+                                            <div class="col-md-1 pt-2">
+                                                @Html.DisplayFor(m => m.IsLateInMealException)
+                                                @*@Html.CheckBoxFor(m => m.IsLateInMealException, new { id = "IsLateInMealExceptionAE" })*@
+                                            </div>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                <div class="input-group ">
+                                                    <div class="input-group-prepend pr-1">
+                                                        Mins
+                                                    </div>
+                                                    @Html.DisplayFor(m => m.LateInMealExceptionMinute)
+                                                    @*@Html.EditorFor(m => m.LateInMealExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Early Out,Exception?:
+                                            </label>
+                                            <div class="col-md-1 pt-2">
+                                                @Html.DisplayFor(m => m.IsEarlyOutMealException)
+                                                @*@Html.CheckBoxFor(m => m.IsEarlyOutMealException, new { id = "IsEarlyOutMealExceptionAE" })*@
+                                            </div>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                <div class="input-group ">
+                                                    <div class="input-group-prepend pr-1">
+                                                        Mins
+                                                    </div>
+                                                    @Html.DisplayFor(m => m.EarlyOutMealExceptionMinute)
+                                                    @*@Html.EditorFor(m => m.EarlyOutMealExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Late Out,Exception?:
+                                            </label>
+                                            <div class="col-md-1 pt-2">
+                                                @Html.DisplayFor(m => m.IsLateOutMealException)
+                                                @*@Html.CheckBoxFor(m => m.IsLateOutMealException, new { id = "IsLateOutMealExceptionAE" })*@
+                                            </div>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                <div class="input-group ">
+                                                    <div class="input-group-prepend pr-1">
+                                                        Mins
+                                                    </div>
+                                                    @Html.DisplayFor(m => m.LateOutMealExceptionMinute)
+                                                    @*@Html.EditorFor(m => m.LateOutMealExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Short Meal Exception?:
+                                            </label>
+                                            <div class="col-md-1 pt-2">
+                                                @Html.DisplayFor(m => m.IsShortMealException)
+                                                @*@Html.CheckBoxFor(m => m.IsShortMealException, new { id = "IsShortMealExceptionAE" })*@
+                                            </div>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                <div class="input-group ">
+                                                    <div class="input-group-prepend pr-1">
+                                                        Mins
+                                                    </div>
+                                                    @Html.DisplayFor(m => m.ShortMealExceptionMinute)
+                                                    @*@Html.EditorFor(m => m.ShortMealExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Long Meal Exception?:
+                                            </label>
+                                            <div class="col-md-1 pt-2">
+                                                @Html.DisplayFor(m => m.IsLongMealException)
+                                                @*@Html.CheckBoxFor(m => m.IsLongMealException, new { id = "IsLongMealExceptionAE" })*@
+                                            </div>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                <div class="input-group ">
+                                                    <div class="input-group-prepend pr-1">
+                                                        Mins
+                                                    </div>
+                                                    @Html.DisplayFor(m => m.LongMealExceptionMinute)
+                                                    @*@Html.EditorFor(m => m.LongMealExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            <div class="col-md-6 pl-0">
+                                <div class="panel panel-default" style="margin-left:5px">
+                                    <div class="panel-heading" style="padding-left:5px">
+                                        Meal Info.
+
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Use 6 hour minimum?:
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @Html.DisplayFor(m => m.IsUse6HourMinimum)
+                                                @*@Html.CheckBoxFor(m => m.IsUse6HourMinimum, new { id = "IsUse6HourMinimumAE" })*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label pr-0" style="margin-left:10px">
+                                                Primary Meal Break Hours:
+                                            </label>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                @Html.DisplayFor(m => m.ScheduledPrimaryMealHour)
+                                                @*@Html.EditorFor(m => m.ScheduledPrimaryMealHour, new { htmlAttributes = new { @class = "form-control" } })*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label pr-0" style="margin-left:10px">
+                                                Secondary Meal Break Hours:
+                                            </label>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                @Html.DisplayFor(m => m.ScheduledSecondaryMealHour)
+                                                @*@Html.EditorFor(m => m.ScheduledSecondaryMealHour, new { htmlAttributes = new { @class = "form-control" } })*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Compute Meal Penalty?:
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @Html.DisplayFor(m => m.IsComputeLateBreakPenalty)
+                                                @*@Html.CheckBoxFor(m => m.IsComputeLateBreakPenalty, new { id = "IsComputeLateBreakPenaltyAE" })*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label pr-0" style="margin-left:10px">
+                                                Meal Penalty Hours:
+                                            </label>
+                                            <div class="col-md-3 text-muted">
+                                                @Html.DisplayFor(m => m.LateBreakPenaltyHour)
+                                                @*@Html.EditorFor(m => m.LateBreakPenaltyHour, new { htmlAttributes = new { @class = "form-control" } })*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Short Meal Penalty?:
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @Html.DisplayFor(m => m.IsShortLunchMealPenalty)
+                                                @*@Html.CheckBoxFor(m => m.IsShortLunchMealPenalty, new { id = "IsShortLunchMealPenaltyAE" })*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Secondary Meal:
+                                            </label>
+                                            <div class="col-md-4 text-muted mt-2">
+                                                @*@Html.DropDownList("SecondaryMealWaiverVal", null, "Please select", new { @class = "form-control" })*@
+                                                @{
+                                                    var SecondaryMealWaiverValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.SecondaryMealWaiverField, Model.SecondaryMealWaiverVal ?? 0);
+                                                }
+                                                @Html.DisplayFor(m => SecondaryMealWaiverValText)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label pr-0" style="margin-left:10px">
+                                                Second Meal Waiver Hrs.:
+                                            </label>
+                                            <div class="col-md-3 text-muted mt-2">
+                                                @Html.DisplayFor(m => m.SecondMealWaiverHour)
+                                                @*@Html.EditorFor(m => m.SecondMealWaiverHour, new { htmlAttributes = new { @class = "form-control" } })*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Primary Meal 30 Min. Waiver?:
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @Html.DisplayFor(m => m.IsPrMeal30MinuteWaiver)
+                                                @*@Html.CheckBoxFor(m => m.IsPrMeal30MinuteWaiver, new { id = "IsPrMeal30MinuteWaiverAE" })*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

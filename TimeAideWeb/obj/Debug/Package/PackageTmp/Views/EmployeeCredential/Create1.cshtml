@@ -1,0 +1,233 @@
+﻿@model TimeAide.Web.Models.EmployeeCredential
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.AntiForgeryToken()
+        <div class="form-group" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="panel panel-default" style="margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Employee Information</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-2" style="margin-left:10px">
+                            @Html.LabelFor(model => model.UserInformation.FullName, "Employee Name", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-4 text-muted mt-2">
+                            @Html.EditorFor(model => model.UserInformation.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-1" style="margin-left:10px">
+                            @Html.LabelFor(model => model.UserInformation.Id, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-4 text-muted mt-2">
+                            @Html.EditorFor(model => model.UserInformationId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.UserInformationId)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-2" style="margin-left:10px">
+                            @Html.LabelFor(model => model.CredentialId, "CredentialId", htmlAttributes: new { @class = "control-label" })
+                            @Html.HiddenFor(model => model.CredentialId)
+                        </div>
+                        <div class="col-4 text-muted mt-2">
+                            @Html.EditorFor(model => model.Credential.CredentialName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="panel panel-default" style="margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Credential History</div>
+                <div class="panel-body">
+                    <div class="form-group">
+
+                        <div id="divEmergencyContact">
+                            @*@{Html.RenderAction("Index", "EmployeeCredential", new { id = Model.Id });}*@
+                            @{Html.RenderAction("Index1", "EmployeeCredential", new { id = Model });}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divCreateRecordEmployeeCredential">
+            @{Html.RenderAction("CreateRecord", "EmployeeCredential", new { id = Model.Id });}
+        </div>
+        @Scripts.Render("~/bundles/jqueryval")
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+   
+    function fnAddEmployeeCredential(id) {
+        debugger;
+
+        //$.ajax({
+        //    url: '/EmployeeCredential/GetEmployeeCredential',
+        //    data: { 'id': id }, //dataString,
+        //    type: 'GET',
+        //    success: function (res) {
+        //        debugger;
+        //        var data = res;
+
+        //    },
+        //    error: function (xhr, status, error) {
+        //        //displayErrorMessage('Error during retrieving Data:' + error);
+        //    }
+        //});
+
+
+        var isProceed = true;
+        var formData = new FormData();
+        formData.append("eduDocRecordID", id);
+
+        var totalFiles = document.getElementById("uploadEduDocFile").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadEduDocFile").files[0];
+            formData.append("EduDocFile", file);
+
+        }
+        else {
+            isProceed = false;
+            //showAlertAutoHide(alertID, "Error", "Please choose the User Education Document");
+        }
+
+        //var model = {
+        //    UserInformationId: $('#UserInformationId').val(),
+        //    EmployeeCredentialName: $('#EmployeeCredentialName').val(),
+        //    EmployeeCredentialDescription: $('#EmployeeCredentialDescription').val(),
+        //    IssueDate: $('#IssueDate').val(),
+        //    ExpirationDate: $('#ExpirationDate').val(),
+        //    CredentialId: $('#CredentialId').val(),
+        //    Note: $('#Note').val(),
+        //    CredentialTypeId: $('#CredentialTypeId  :selected').val(),
+        //}
+
+        //var model = {
+        
+        formData.append("EmployeeCredentialId", $('#hdnEmployeeCredentialId').val());
+        formData.append("UserInformationId", $('#UserInformationId').val());
+        formData.append("EmployeeCredentialName", $('#EmployeeCredentialName').val());
+        formData.append("EmployeeCredentialDescription", $('#EmployeeCredentialDescription').val());
+        formData.append("IssueDate", $('#IssueDate').val());
+        formData.append("ExpirationDate", $('#ExpirationDate').val());
+        formData.append("CredentialId", $('#CredentialId').val());
+        formData.append("Note", $('#Note').val());
+        formData.append("CredentialTypeId", $('#CredentialTypeId  :selected').val());
+        //}
+
+
+        $.ajax({
+            type: 'post',
+            url: '/EmployeeCredential/Create',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "html",
+            success: function (html) {
+                debugger
+                $('#divEmployeeCredential').html(html);
+                $('#myModal').modal('hide');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+
+    function uploadEmployeeCredentialDoc(id) {
+
+        debugger;
+        alertID = "#userEducationDocAlert"
+
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/EmployeeDocument/UploadDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        $('#myModal').modal('hide');
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        var userInformationId = $('#UserInformationId').val();
+                        fnRefreshEmployeeDocuments(userInformationId)
+                        //retreiveEmployeeEducationTab();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                },
+                error: function (error) {
+
+                    showAlertAutoHide(alertID, "Error", error);
+
+                }
+            });
+        }
+    }
+
+    function EditEmployeeCredential(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/CreateRecord',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                //debugger;
+                $('#divCreateRecordEmployeeCredential').html(html);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function EditEmployeeCredential_(id) {
+        alert(id);
+        $.ajax({
+            url: '/EmployeeCredential/AjaxGetEmployeeCredential',
+            data: { 'id': id }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $('#UserInformationId').val(data.UserInformationId);
+                $('#EmployeeCredentialName').val(data.EmployeeCredentialName);
+                $('#EmployeeCredentialDescription').val(data.EmployeeCredentialDescription);
+                $('#IssueDate').val(data.IssueDate);
+                $('#ExpirationDate').val(data.ExpirationDate);
+                $('#CredentialId').val(data.CredentialId);
+                $('#Note').val(data.Note);
+                $('#CredentialTypeId  :selected').val(data.CredentialTypeId);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+</script>

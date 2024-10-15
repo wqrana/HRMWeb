@@ -1,0 +1,393 @@
+﻿@model TimeAide.Web.ViewModel.EmployeePrivilegeViewModel
+
+<div class="form-horizontal" style="padding:10px;padding-top:0px;width:100%">
+    @Html.HiddenFor(model => model.UserInformationId)
+    <input id="UserContactInformationId__" name="UserContactInformationId_" type="hidden" value="@Model.Id">
+
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+
+        <div class="col-md-6">
+            <div class="panel panel-default" style="margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Access Level
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@Model.UserInformationId,'Access Level');" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <input id="UserContactInformationId__" name="UserContactInformationId_" type="hidden" value="@Model.Id">
+                        <input id="UserInformationId" name="UserInformationId" type="hidden" value="@Model.UserInformationId">
+                    </div>
+                    <div class="form-group row">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" style="margin-left:10px">
+                            @Html.LabelFor(model => model.RoleId, "Role Type:", htmlAttributes: new { @class = "control-label" })
+                        </label>
+                        <div class="col-md-7" style="width:100% !important">
+                            @Html.DisplayFor(model => model.Role.RoleType.RoleTypeName)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" style="margin-left:10px">
+                            @Html.LabelFor(model => model.RoleId, "Role Id:", htmlAttributes: new { @class = "control-label" })
+                        </label>
+                        <div class="col-md-7" style="width:100% !important">
+                            @Html.DisplayFor(model => model.Role.RoleName)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        </label>
+                        <div class="col-md-7" style="width:100% !important">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        </label>
+                        <div class="col-md-7" style="width:100% !important">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        </label>
+                        <div class="col-md-7" style="width:100% !important">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default" style="margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Access Restrictions:
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@Model.UserInformationId,'Access Restrictions');" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <div class="form-group row">
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" style="margin-left:10px">Company:</label>
+                            <div class="col-md-7">
+                                @if (!(Model.HasAllCompany ?? false) && String.IsNullOrEmpty(Model.SelectedCompanyId))
+                                {
+                                    <span>None</span>
+                                }
+                                else if (Model.HasAllCompany.HasValue && Model.HasAllCompany.Value)
+                                {
+                                    <span>All</span>
+                                }
+                                else if (!String.IsNullOrEmpty(Model.SelectedCompanyId))
+                                {
+                                    @Html.DisplayFor(model => model.SelectedCompanyId)
+                                }
+                                
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" style="margin-left:10px">Department:</label>
+                            <div class="col-md-7">
+                                @if (!(Model.HasAllCompany ?? false) && String.IsNullOrEmpty(Model.SelectedCompanyId))
+                                {
+                                    <span>None</span>
+                                }
+                                else if (Model.HasAllCompany.HasValue && Model.HasAllCompany.Value && String.IsNullOrEmpty(Model.SelectedDepartmentId))
+                                {
+                                    <span>All</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.SelectedDepartmentId)
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" style="margin-left:10px">SubDepartment:</label>
+                            <div class="col-md-7">
+                                @if (!(Model.HasAllCompany??false) && String.IsNullOrEmpty(Model.SelectedCompanyId))
+                                {
+                                    <span>None</span>
+                                }
+                                else if (Model.HasAllCompany.HasValue && Model.HasAllCompany.Value && String.IsNullOrEmpty(Model.SelectedSubDepartmentId))
+                                {
+                                    <span>All</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.SelectedSubDepartmentId)
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                Employee Type
+                            </label>
+                            <div class="col-md-7">
+                                @if (!(Model.HasAllCompany ?? false) && String.IsNullOrEmpty(Model.SelectedCompanyId))
+                                {
+                                    <span>None</span>
+                                }
+                                else if (Model.HasAllCompany.HasValue && Model.HasAllCompany.Value && String.IsNullOrEmpty(Model.SelectedEmployeeTypeId))
+                                {
+                                    <span>All</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.SelectedEmployeeTypeId)
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="col-md-6">
+            <div class="panel panel-default" style="margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Account:
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@Model.UserInformationId,'Account');" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                    </div>
+                    <div class="form-group row">
+
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">
+                            Email for Login
+                        </label>
+                        <div class="col-md-8">
+                            @if (!String.IsNullOrEmpty(Model.LoginEmail))
+                            {
+                                @Html.DisplayFor(model => model.LoginEmail)
+                                @*@if (Model.UserInformationActivation != null && !TimeAide.Web.Extensions.UserManagmentService.IsActive(Model.UserInformationActivation))
+                    {
+                        <a href="javascript:resendEmail();" id="anchorDetail" style="margin-left:50px" data-id="@Model.Id">Resend email</a>
+                    }*@
+                            }
+                            else
+                            {
+                                <span class="alert-danger">Unregistered</span>
+                            }
+                             <a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@Model.UserInformationId,'Account');"><i class="fa fa-pencil pl-2"></i></a>
+                        </div>
+                    </div>
+                    @if (ViewBag.IsSeperateEmailNotification == true)
+                    {
+                    <div class="form-group row">
+
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">
+                            Email for Notification
+                        </label>
+                        <div class="col-md-8">
+                            @if (!String.IsNullOrEmpty(Model.NotificationEmail))
+                            {
+                                @Html.DisplayFor(model => model.NotificationEmail)
+
+                            }
+                            else
+                            {
+                                <span class="alert-danger">Unregistered</span>
+                            }
+                             <a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@Model.UserInformationId,'Notification');"><i class="fa fa-pencil pl-2"></i></a>
+                        </div>
+                    </div>
+                    }
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">
+                            Lock Account
+                        </label>
+                        <div class="col-md-8">
+                            @*@Html.DisplayFor(model => model.LockAccount)*@
+                            @if (!String.IsNullOrEmpty(Model.LoginEmail))
+                            {
+                                if (Model.LockAccount)
+                                {
+                                    <span>Yes</span>
+                                }
+                                else
+                                {
+                                    <span>No</span>
+                                }
+                                <a href="javascript:fnAddEmployeeSystemAccess(@Model.UserInformationId,'LockAccount');"><i class="fa fa-pencil pl-2 m-r-5"></i></a>
+                            }
+                            @*else
+                {
+                    <span>unregistered</span>
+                }*@
+                            @if (!String.IsNullOrEmpty(Model.LoginEmail) && Model.EmployeeStatusId.HasValue && Model.EmployeeStatusId.Value != 2 && Model.EmployeeStatusId.Value != 3)
+                            {
+                                <a id="btnChangePassword" href="javascript:fnShowChangePasswordByAdmin(@Model.Id);" class="fa fa-refresh" style="margin-left:20px"> Change Password</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default" style="margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Member Of:
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@Model.UserInformationId,'Member Of');" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" style="margin-left:10px">Employee Group:</label>
+                        <div class="col-md-7">
+                            @Html.DisplayFor(model => model.SelectedEmployeeGroupId)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        </label>
+                        <div class="col-md-7">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    function fnShowChangePasswordByAdmin(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Account/ChangePasswordByAdmin',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#divDdlPopupContent').html(data);
+                $('#divDdlPopup').modal(options);
+                $('#divDdlPopup').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+    function fnAddEmployeeSystemAccess(id, viewType) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        var model = {
+            "id": id,
+            "viewType": viewType,
+        }
+        $.ajax({
+            type: "GET",
+            url: '/UserInformation/EmployeeSystemAccess',
+            contentType: "application/json; charset=utf-8",
+            data: { "id" : id, "viewType" : viewType},
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function resendEmail() {
+        debugger;
+
+        var model = {
+            UserInformationId: @Model.Id,
+            Id: $('#UserContactInformationId__').val(),
+            LoginEmail: $('#LoginEmailAddressTypeId  :selected').text()
+        }
+
+        $.ajax({
+            type: "post",
+            url: '/UserInformation/ResendEmail',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger;
+
+                var model2 = {
+            UserInformationId: @Model.Id,
+            Id: $('#UserContactInformationId__').val(),
+            LoginEmail: $('#LoginEmailAddressTypeId  :selected').text()
+                }
+
+                toastr.success('Registration email sent to the user.', "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+                //alert('Success');
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger;
+
+                 var model3 = {
+            UserInformationId: @Model.Id,
+            Id: $('#UserContactInformationId__').val(),
+            LoginEmail: $('#LoginEmailAddressTypeId  :selected').text()
+                }
+
+                // displayWarningMessage(data.ErrorMessage);
+                alert('failed');
+            }
+        });
+    }
+
+    function ShowEmployeeSystemAccessChangeHistory(recordId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/UserInformation/EmployeeSystemAccessChangeHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "refrenceId": recordId },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                //$('#myModal').modal(options);
+                //$('#myModal').css({ 'width': '70%' });
+                //$('#myModal').css({ 'max-width': '70%' });
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

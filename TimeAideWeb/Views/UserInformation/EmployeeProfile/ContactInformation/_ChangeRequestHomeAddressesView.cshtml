@@ -1,0 +1,234 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<div id="employee_home_addresse_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:1300px">
+        <div class="modal-content" style="padding:10px">
+            <div class="modal-header alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;padding:10px">
+                <h4 class="modal-title">Employee Home Addresses</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+                        <div class="panel panel-default" style="width:50%;">
+                            <div class="panel-heading" style="padding-left:10px">Old Home Address</div>
+                            <div class="panel-body">
+                                @if (Model.ActiveUserContactInformation != null)
+                                {
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Address 1
+                                        </label>
+                                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                                            @Model.ActiveUserContactInformation.HomeAddress1
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Address 2
+                                        </label>
+                                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                                            @Model.ActiveUserContactInformation.HomeAddress2
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Country
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @if (Model.ActiveUserContactInformation.HomeCountry != null)
+                                            {
+                                                @Model.ActiveUserContactInformation.HomeCountry.CountryName
+                                            }
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            State
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @if (Model.ActiveUserContactInformation.HomeState != null)
+                                            {
+                                                @Model.ActiveUserContactInformation.HomeState.StateName
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            City
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @if (Model.ActiveUserContactInformation.HomeCity != null)
+                                            {
+                                                @Model.ActiveUserContactInformation.HomeCity.CityName
+                                            }
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Zip Code
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @Model.ActiveUserContactInformation.HomeZipCodeFormatted
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="panel panel-default" style="width:49%;margin-left:10px">
+                            <div class="panel-heading" style="padding-left:10px">New Home Address</div>
+                            <div class="panel-body">
+                                @if (Model.ActiveUserContactInformation != null)
+                                {
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Address 1
+                                        </label>
+                                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                                            @Html.EditorFor(model => model.ActiveUserContactInformation.HomeAddress1, new { htmlAttributes = new { @class = "form-control", style = "width: 100% !important;" } })
+                                            @Html.ValidationMessageFor(model => model.ActiveUserContactInformation.HomeAddress1, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Address 2
+                                        </label>
+                                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                                            @Html.EditorFor(model => model.ActiveUserContactInformation.HomeAddress2, new { htmlAttributes = new { @class = "form-control", style = "width: 100% !important;" } })
+                                            @Html.ValidationMessageFor(model => model.ActiveUserContactInformation.HomeAddress2, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Country
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("ddlCountryId_Home", null, Model.ActiveUserContactInformation.HomeCountryId, htmlAttributes: new { @class = "form-control" }))
+                                            @Html.ValidationMessageFor(model => model.ActiveUserContactInformation.HomeCountryId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            State
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @(Html.CustomDropDownList<TimeAide.Web.Models.State>("ddlStateId_Home", null, Model.ActiveUserContactInformation.HomeStateId, Model.ActiveUserContactInformation.HomeCountryId, htmlAttributes: new { @class = "form-control" }))
+                                            @Html.ValidationMessageFor(model => model.ActiveUserContactInformation.HomeStateId, "", new { @class = "text-danger" })
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            City
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @(Html.CustomDropDownList<TimeAide.Web.Models.City>("ddlCityId_Home", null, Model.ActiveUserContactInformation.HomeCityId, Model.ActiveUserContactInformation.HomeStateId, htmlAttributes: new { @class = "form-control searchableDDL" }))
+                                            @Html.ValidationMessageFor(model => model.ActiveUserContactInformation.HomeCityId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                            Zip Code
+                                        </label>
+                                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                            @Html.EditorFor(model => model.ActiveUserContactInformation.HomeZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.ActiveUserContactInformation.HomeZipCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="panel panel-default" style="width:0%;margin-left:10px;visibility:collapse;height:0px">
+                            <div class="panel-heading" style="padding-left:10px">Change Request</div>
+                            <div class="panel-body">
+
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Field</th>
+                                                <th>Old Value</th>
+                                                <th>New Value</th>
+                                                <th>Action</th>
+                                                <th>Request Date</th>
+                                                <th>Action Date</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>HomeCity</td>
+                                                <td>Old HomeCity</td>
+                                                <td>New HomeCity</td>
+                                                <td>Pending</td>
+                                                <td>@DateTime.Now</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>HomeAddress1</td>
+                                                <td>Old Address1</td>
+                                                <td>New Address1</td>
+                                                <td>Declined</td>
+                                                <td>@DateTime.Now</td>
+                                                <td>@DateTime.Now</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>HomeAddress2</td>
+                                                <td>Old Address2</td>
+                                                <td>New Address2</td>
+                                                <td>Accepted</td>
+                                                <td>@DateTime.Now</td>
+                                                <td>@DateTime.Now</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        @if (ViewBag.CanAddressWorkflowIntiated.Count > 0)
+                        {
+                            <div style="color:red">
+                                Change request can not be submitted due to following reasons:
+                            </div>
+                            foreach (var each in ViewBag.CanAddressWorkflowIntiated)
+                            {
+                                <div style="color:red">
+                                    @each
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="submit-section">
+                        @if (ViewBag.CanAddressWorkflowIntiated.Count == 0)
+                        {
+                            <button type="button" id="btnAddUserContactInformation" onclick="btnSaveMailingAddressess('Home')" class="btnAddUserContactInformation btn btn-primary submit-btn">Submit</button>
+                        }
+                        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/UserInformation/userContactAddresses-js.js?version=1.0"></script>
+<script>
+    $(document).ready(function () {
+        $('#ddlCityId_Home').select2();
+        $('#ActiveUserContactInformation_HomeZipCode').mask('99999-9999', { autoclear: false }).on('blur', function () {
+            ValidateZipCodeChangeRequest('ActiveUserContactInformation_HomeZipCode', 'ActiveUserContactInformation_HomeZipCode');
+        });
+        $('#ddlCountryId_Home').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#ddlStateId_Home', null);
+            LoadCityDropdown(null, '#ddlCityId_Home', null);
+        });
+        $('#ddlStateId_Home').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#ddlCityId_Home', null);
+
+        });
+    });
+</script>

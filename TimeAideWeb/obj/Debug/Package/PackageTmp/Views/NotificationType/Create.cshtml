@@ -1,0 +1,16 @@
+﻿@model TimeAide.Web.Models.NotificationType
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.NotificationTypeName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.NotificationTypeName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificationTypeName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+

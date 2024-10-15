@@ -1,0 +1,101 @@
+﻿@model TimeAide.Web.Models.ApplicantDocument
+<style>
+    .showExpiryDate {
+        display: block;
+    }
+
+    .hideExpiryDate {
+        display: none;
+    }
+</style>
+<div id="applicantDocumentCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Applicant Document - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.HiddenFor(model => model.Id, new { id = "ApplicantDocumentId" })
+                        @Html.HiddenFor(model => model.Document.IsExpirable, new { @id = "IsExpirable" })
+                        @{
+                            var showHideCssCls = Model.Document.IsExpirable ? "showExpiryDate" : "hideExpiryDate";
+                        }
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Document: <span class="text-danger">*</span></label>
+                            <div class="col-md-8">
+
+                                <div class="input-group">
+                                    @Html.DropDownList("DocumentId", null, "Please select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label"> Note: <span class="text-danger"></span></label>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.DocumentNote, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 pr-0 col-form-label @showHideCssCls">Expiration Date: <span class="text-danger">*</span></label>
+                            <div class="col-md-8 @showHideCssCls">
+                                @Html.EditorFor(model => model.ExpirationDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnSaveApplicantDocument" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#ExpirationDate").datetimepicker({ format: 'MM/DD/YYYY' });
+
+        $("#DocumentId").change(function () {
+            debugger;
+            var id = $(this).val();
+            ajaxCheckExpirableDocument(id);
+        });
+
+        $("#btnSaveApplicantDocument").click(function () {
+            saveApplicantDocumentData();
+        });
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });
+
+    });
+
+</script>
+

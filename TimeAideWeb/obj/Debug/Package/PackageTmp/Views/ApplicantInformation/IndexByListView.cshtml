@@ -1,0 +1,94 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.ApplicantInformationViewModel>
+@using TimeAide.Common.Helpers;
+@{
+    var filterStatus = SessionHelper.ApplicantFilterInSession.IsFilterApllied;
+
+}
+@Html.Hidden("IsFilteredApplied", filterStatus)
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblApplicant">
+
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>View</th>
+                    <th>Status</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Position </th>
+                    <th>Location(s)</th>
+                    <th>Cell Phone</th>
+                    <th>Personal Email</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                var lastName = (item.FirstLastName ?? "") + " " + (item.SecondLastName ?? "");
+                var appStatusBgClass = item.UseAsHire ? "bg-inverse-success" : "bg-inverse-primary";
+                <tr>
+                    <td class="text-left">
+
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                <a class="dropdown-item" href="/ApplicantInformation/Details/@item.ApplicantInformationId"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                @if (item.UserInformationId == null)
+                                {
+                                    <a class="dropdown-item" href="javascript:getApplicantDeleteData(@item.ApplicantInformationId);"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                }
+                            </div>
+                        </div>
+
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Edit", "Details", new { @id = item.ApplicantInformationId })
+
+                    </td>
+                    <td>
+                        <span class="badge @appStatusBgClass">@item.ApplicantStatusName</span>
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+
+                    <td>
+                        @lastName
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PositionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CelNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PersonalEmail)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#tblApplicant').dataTable({
+            "searching": true
+        });
+        var filterStatus = $("#IsFilteredApplied").val();
+        if (filterStatus == "True") {
+            $("#divResetFilter").removeClass("hideFilter").addClass("showFilter");
+        }
+        else {
+            $("#divResetFilter").removeClass("showFilter").addClass("hideFilter");
+        }
+    });
+</script>

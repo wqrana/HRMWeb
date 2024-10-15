@@ -1,0 +1,259 @@
+﻿@{
+    ViewBag.Title = "Payroll Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .profile-view1 .profile-basic1 {
+        margin-left: 0px;
+        padding-right: 0px;
+    }
+
+    .profile-basic1 {
+        margin-left: 0px;
+    }
+</style>
+<div class="page-header mb-2">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Payroll Detail</h3>
+
+            <div class="alert" style="display:none;" id="employeeIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+        <div class="col-auto float-right ml-auto">
+            <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                <div class="btn-group" role="group">
+                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(20,1)">Print</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="card mb-2">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="text">
+                    <h4>
+                        <span id="ShortFullNameSpan">PAYROLL 10/21/2022</span>
+                    </h4>
+                    <div>
+                        Payroll Type:<span id="mainEmployeeIdSpan" class="text-muted ml-1">Normal Pay</span>
+                    </div>
+                    <div>
+                        Payroll Status: <span class="badge bg-inverse-danger" id="userStatus">Closed</span>
+                    </div>
+                    <div>
+                        No Of Employees: <span class="text-muted" id="userStatus">12</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="profile-view profile-view1">
+                    <div class="profile-basic profile-basic1">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="profile-info-left">
+                                    <div class="staff-id">Pay Period:<span class="text-muted ml-1">10/30/2022 - 11/12/2022 </span></div>
+                                    <div class="staff-id">Pay Date:<span class="text-muted ml-1">11/18/2022 </span></div>
+                                    <div class="staff-id">Pay Week:<span class="text-muted ml-1">120224546</span></div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="profile-info-right">
+                                    <div class="staff-id">Compensations:<span class="text-muted ml-1"> 1003.14</span></div>
+                                    <div class="staff-id">Withholdings:<span class="text-muted ml-1">-197.96</span></div>
+                                    <div class="staff-id">Net Pay:<span class="text-muted ml-1"> 805.15</span></div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row filter-row">
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeId" type="number" class="form-control floating">
+            <label class="focus-label">EmployeeID</label>
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-4 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <select class="form-control">
+                <option> Dept -1</option>
+                <option> Dept -2</option>
+            </select>
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus  mb-1">
+            <select class="form-control">
+                <option> Position 1</option>
+                <option> Position 2</option>
+            </select>
+            <label class="focus-label">Position</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus">
+            <select class="form-control">
+                <option> Full Time</option>
+                <option> Part Time</option>
+            </select>
+            <label class="focus-label">Employee Type</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus">
+            <select class="form-control">
+                <option> Active</option>
+                <option> Inactive</option>
+            </select>
+            <label class="focus-label">Employee Status</label>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-md-2 pr-0">
+        <a href="javascript:getFilterUserList();" class="btn btn-success btn-block"> Apply Filter(s) </a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+        <thead>
+            <tr>
+                <th></th>
+                <th>EmployeeID</th>
+                <th>Name</th>
+                <th>Net Pay</th>
+                <th>Compensations</th>
+                <th>Withholdings</th>
+                <th>DD Pay</th>
+                <th>Check Pay</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>1200</td>
+                <td>Employee 1</td>
+                <td>1003.14</td>
+                <td>1003.14</td>
+                <td>-197.96</td>
+                <td>1003.14</td>
+                <td>0.00</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>1201</td>
+                <td>Employee 2</td>
+                <td>2003.14</td>
+                <td>2003.14</td>
+                <td>-197.96</td>
+                <td>2003.14</td>
+                <td>0.00</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>1300</td>
+                <td>Employee 3</td>
+                <td>1103.14</td>
+                <td>1103.14</td>
+                <td>-157.96</td>
+                <td>0.00</td>
+                <td>1103.14</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>1501</td>
+                <td>Employee 4</td>
+                <td>1003.14</td>
+                <td>1003.14</td>
+                <td>-197.96</td>
+                <td>0.00</td>
+                <td>1003.14</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="divEmployeePayrollDetail">
+</div>
+<script>
+    $(document).ready(function () {
+        $('#tblEmployeePayroll').dataTable({
+            "searching": true,
+            "paging": true,
+            "dom": 'rt<"bottom"flpi><"clear">'
+        });
+
+    });
+    function getEmployeePayrollDetail(id) {
+        debugger;
+        // $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayroll/EmployeePayrollDetail',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeePayrollDetail").html(data);
+                $("#employeePayrollDetail_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+</script>

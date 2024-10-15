@@ -1,0 +1,91 @@
+﻿@model IEnumerable<TimeAide.Web.Models.UserInformation>
+<div class="form-group row">
+    <div class="col-md-12">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblUser">
+            <thead>
+                <tr>
+                    <th>
+                        Emp. Id
+                    </th>
+                    <th>
+                        Short Name
+                    </th>
+                    <th>
+                        Company
+                    </th>
+                    <th>
+                        Department
+                    </th>
+                    <th>
+                        SubDepartment
+                    </th>
+                </tr>
+            </thead>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+
+                    <tr>
+
+                        @{
+                            var activeEmployment = TimeAide.Services.EmploymentService.GetActiveEmployment(item.Id);
+                            TimeAide.Web.Models.EmploymentHistory activeEmploymentHistory = null;
+                            if (activeEmployment != null)
+                            {
+                                activeEmploymentHistory = TimeAide.Services.EmploymentHistoryService.GetActiveEmploymentHistory(item.Id, activeEmployment.Id);
+
+                            }
+                        }
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShortFullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Company.CompanyName)
+                        </td>
+                        <td>
+                            @if (activeEmploymentHistory != null && activeEmploymentHistory.Department != null)
+                            {
+                                @Html.DisplayFor(modelItem => activeEmploymentHistory.Department.DepartmentName)
+                            }
+                        </td>
+
+                        <td>
+                            @if (activeEmploymentHistory != null && activeEmploymentHistory.Position != null)
+                            {
+                                <span>@activeEmploymentHistory.Position.PositionName</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#tblUser').dataTable({
+            scrollX: true,
+            "searching": true,
+            "dom": '<"pull-left"f>r<"pull-right"l>tip',
+            "bLengthChange": false,
+              "language": {
+
+                search: '<label  style="margin-right:125px;margin-bottom: 1px; margin-top: 0px" >Search:</label>'
+
+            }
+        });
+        var filterStatus = $("#IsFilteredApplied").val();
+        if (filterStatus == "True") {
+            $("#divResetFilter").removeClass("hideFilter").addClass("showFilter");
+        }
+        else {
+            $("#divResetFilter").removeClass("showFilter").addClass("hideFilter");
+        }
+    });
+</script>

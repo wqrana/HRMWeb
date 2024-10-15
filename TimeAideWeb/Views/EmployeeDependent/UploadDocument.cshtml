@@ -1,0 +1,374 @@
+﻿@model TimeAide.Web.Models.EmployeeDependent
+
+<div id="upload_DependentDoc_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Upload - Dependent Doc.</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="container" role="main">
+                    <form action="UploadDocument" method="post" enctype="multipart/form-data" class="needs-validation box" novalidate>
+
+
+                        <div class="alert" style="display:none;" id="userDependentDocAlert">
+                            <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                            <strong>Alert!</strong><span class="ml-1"></span>
+                        </div>
+                        @Html.HiddenFor(m => m.Id, new { id = "dependentDocRecordID" })
+                        <div class="row">
+                            <div class="col-md-12 p-0">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">First Name:</label>
+                                    <div class="col-sm-7 text-muted">
+                                        @Html.DisplayFor(m => m.FirstName)
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">Relationship:</label>
+                                    <div class="col-sm-7 text-muted">
+                                        @Html.DisplayFor(m => m.Relationship.RelationshipName)
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">Expiry Date:</label>
+                                    <div class="col-sm-7">
+                                        @Html.EditorFor(m => m.ExpiryDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+
+                                </div>
+                                @*<div class="form-group row">
+
+                                        <input class="form-control" type="file" id="uploadDependentDocFile" accept=".doc,.docx,.pdf,.jpg,.png">
+
+                                    </div>*@
+                                <div class="form-group">
+                                    <div class="box__input" style="margin-top: 20px;">
+                                        @*<svg class="box__icon" xmlns="http://www.w3.org/2000/svg" width="50" height="43" viewBox="0 0 50 43"><path d="M48.4 26.5c-.9 0-1.7.7-1.7 1.7v11.6h-43.3v-11.6c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v13.2c0 .9.7 1.7 1.7 1.7h46.7c.9 0 1.7-.7 1.7-1.7v-13.2c0-1-.7-1.7-1.7-1.7zm-24.5 6.1c.3.3.8.5 1.2.5.4 0 .9-.2 1.2-.5l10-11.6c.7-.7.7-1.7 0-2.4s-1.7-.7-2.4 0l-7.1 8.3v-25.3c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v25.3l-7.1-8.3c-.7-.7-1.7-.7-2.4 0s-.7 1.7 0 2.4l10 11.6z" /></svg>*@
+                                        <input type="file" name="files[]" id="uploadDependentDocFile" class="box__file" data-multiple-caption="{count} files selected" multiple />
+                                        <label for="uploadDependentDocFile" id="lbldocumentfile"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>
+                                        <a class="btn" id="btnClearFileSelection" href="#" style="margin-bottom: 2rem;display: none;" onclick="clearFileSelection()"><i class="fa fa-minus-square"></i></a>
+                                    </div>
+                                    <div class="submit-section">
+                                        <button type="submit" id="btnDependentDocFile" class="box__button">Upload</button>
+                                    </div>
+                                    @*<input class="form-control" type="file" id="userPictureUpload" accept=".jpg">*@
+                                    <div class="row">
+                                        @*<div class="box__uploading"><img src="~/Images/spinning-loading.gif" /></div>*@
+                                        <div class="box__success">Done! <a href="https://css-tricks.com/examples/DragAndDropFileUploading//?" class="box__restart" role="button">Upload more?</a></div>
+                                        <div class="box__error">Error! <span></span>. <a href="https://css-tricks.com/examples/DragAndDropFileUploading//?" class="box__restart" role="button">Try again!</a></div>
+                                    </div>
+                                    @*<button class="btn btn-primary submit-btn mt-2 ml-4" id="btnUploadPic">Upload</button>
+                                        <button id="btnDeletePicture" class="btn btn-secondary submit-btn mt-2 ml-4">Delete</button>*@
+                                </div>
+                            </div>
+
+                        </div>
+                        @*<div class="submit-section mt-1">
+
+                                <button id="btnDependentDocFile" class="btn btn-primary submit-btn">Upload</button>
+
+                            </div>*@
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $("#btnDependentDocFile").click(function () {
+            debugger;
+            //var id = $('#dependentDocRecordID').val();
+            //var expiryDate = $('#ExpiryDate').val();
+            //uploadUserDependentDoc(id, expiryDate);
+        });
+
+    });
+</script>
+<link href="~/Content/drag-and-drop.css" rel="stylesheet" />
+<script>(function (e, t, n) { var r = e.querySelectorAll("html")[0]; r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2") })(document, window, 0);</script>
+<script>
+
+    'use strict';
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                   
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    ; (function (document, window, index) {
+        // feature detection for drag&drop upload
+        var isAdvancedUpload = function () {
+            var div = document.createElement('div');
+            return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+        }();
+
+
+        // applying the effect for every form
+        var forms = document.querySelectorAll('.box');
+
+        Array.prototype.forEach.call(forms, function (form) {
+            var input = form.querySelector('input[type="file"]'),
+                label = form.querySelector('#lbldocumentfile'),
+                errorMsg = form.querySelector('.box__error span'),
+                restart = form.querySelectorAll('.box__restart'),
+                droppedFiles = false,
+                showFiles = function (files) {
+                    //const allowedTypes = ['image/jpeg'];
+                    const allowedTypes = ['application/pdf', 'application/msword', 'image/png', 'image/jpeg', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                    let isValidType = true;
+                    Array.prototype.forEach.call(droppedFiles, function (eachFile) {
+                        var mimeType = eachFile.type;
+                        if (jQuery.inArray(mimeType, allowedTypes) == -1) {
+                            toastr.error("Invalid file type: " + mimeType + ", Please select another file.", "Error!");
+                            isValidType = false;
+                        }
+                    });
+                    if (isValidType) {
+                        label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
+                        $('#btnClearFileSelection').show();
+                        /*$('#btnUploadDocument').prop('disabled', false);*/
+                    }
+                },
+                triggerFormSubmit = function () {
+                    debugger
+                    alert('hi1');
+                    return false;
+                    //var event = document.createEvent('HTMLEvents');
+                    //event.initEvent('submit', true, false);
+                    //form.dispatchEvent(event);
+                    //uploadProfilePicture1("U");
+
+                };
+
+            // letting the server side to know we are going to make an Ajax request
+            var ajaxFlag = document.createElement('input');
+            ajaxFlag.setAttribute('type', 'hidden');
+            ajaxFlag.setAttribute('name', 'ajax');
+            ajaxFlag.setAttribute('value', 1);
+            form.appendChild(ajaxFlag);
+
+            // automatically submit the form on file select
+            input.addEventListener('change', function (e) {
+                showFiles(e.target.files);
+                showSelectedImage(e.target);
+
+            });
+
+            // drag&drop files if the feature is available
+            if (isAdvancedUpload) {
+                form.classList.add('has-advanced-upload'); // letting the CSS part to know drag&drop is supported by the browser
+
+                ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function (event) {
+                    form.addEventListener(event, function (e) {
+                        // preventing the unwanted behaviours
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+                });
+                ['dragover', 'dragenter'].forEach(function (event) {
+                    form.addEventListener(event, function () {
+                        form.classList.add('is-dragover');
+                    });
+                });
+                ['dragleave', 'dragend', 'drop'].forEach(function (event) {
+                    form.addEventListener(event, function () {
+                        form.classList.remove('is-dragover');
+                    });
+                });
+                form.addEventListener('drop', function (e) {
+                    droppedFiles = e.dataTransfer.files; // the files that were dropped
+                    showFiles(droppedFiles);
+
+                });
+            }
+
+
+            // if the form was submitted
+            form.addEventListener('submit', function (e) {
+                // preventing the duplicate submissions if the current one is in progress
+                debugger
+                if (form.checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    alert('hi11121');
+                    e.preventDefault();
+                    return false;
+                }
+
+                if (form.classList.contains('is-uploading')) return false;
+
+                form.classList.add('is-uploading');
+                form.classList.remove('is-error');
+
+                if (isAdvancedUpload) // ajax file upload for modern browsers
+                {
+                    e.preventDefault();
+
+                    // gathering the form data
+                    var ajaxData = new FormData(form);
+                    if (droppedFiles) {
+                        Array.prototype.forEach.call(droppedFiles, function (file) {
+                            ajaxData.append(input.getAttribute('name'), file);
+                        });
+                    }
+
+                    uploadDroppedFiles(droppedFiles);
+                    // ajax request
+                    //var ajax = new XMLHttpRequest();
+                    //ajax.open(form.getAttribute('method'), form.getAttribute('action'), true);
+
+                    //ajax.onload = function () {
+                    //    form.classList.remove('is-uploading');
+                    //    if (ajax.status >= 200 && ajax.status < 400) {
+                    //        var data = JSON.parse(ajax.responseText);
+                    //        form.classList.add(data.success == true ? 'is-success' : 'is-error');
+                    //        if (!data.success) errorMsg.textContent = data.error;
+                    //    }
+                    //    else alert('Error. Please, contact the webmaster!');
+                    //};
+
+                    //ajax.onerror = function () {
+                    //    form.classList.remove('is-uploading');
+                    //    alert('Error. Please, try again!');
+                    //};
+
+                    //ajax.send(ajaxData);
+                }
+                else // fallback Ajax solution upload for older browsers
+                {
+                    var iframeName = 'uploadiframe' + new Date().getTime(),
+                        iframe = document.createElement('iframe');
+
+                    $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
+                    iframe.setAttribute('name', iframeName);
+                    iframe.style.display = 'none';
+
+                    document.body.appendChild(iframe);
+                    form.setAttribute('target', iframeName);
+
+                    iframe.addEventListener('load', function () {
+                        var data = JSON.parse(iframe.contentDocument.body.innerHTML);
+                        form.classList.remove('is-uploading')
+                        form.classList.add(data.success == true ? 'is-success' : 'is-error')
+                        form.removeAttribute('target');
+                        if (!data.success) errorMsg.textContent = data.error;
+                        iframe.parentNode.removeChild(iframe);
+                    });
+                }
+            });
+
+
+            // restart the form if has a state of error/success
+            Array.prototype.forEach.call(restart, function (entry) {
+                entry.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    form.classList.remove('is-error', 'is-success');
+                    input.click();
+                });
+            });
+
+            // Firefox focus bug fix for file input
+            input.addEventListener('focus', function () { input.classList.add('has-focus'); });
+            input.addEventListener('blur', function () { input.classList.remove('has-focus'); });
+
+        });
+    }(document, window, 0));
+
+    function clearFileSelection() {
+        debugger
+        $('#lbldocumentfile').html('<strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.');
+        /*$('#btnUploadCredential').prop('disabled', true);*/
+        $('#btnClearFileSelection').hide();
+        /*$("#lbldocumentfile").text('');*/
+        $('.box__input').css('visibility', 'visible');
+    }
+    function uploadDroppedFiles(droppedFiles) {
+        var id = $('#dependentDocRecordID').val();
+        var expiryDate = $('#ExpiryDate').val();
+        uploadUserDependentDocDaD(id, expiryDate, droppedFiles);
+    }
+    function uploadUserDependentDocDaD(id, expiryDate, droppedFiles) {
+
+        debugger;
+        var alertID = "#userDependentDocAlert"
+        var isProceed = true;
+        var formData = new FormData();
+        //var id = $('#eduDocRecordID').val();
+
+        formData.append("dependentDocRecordID", id);
+        formData.append("expiryDate", expiryDate);
+
+        var totalFiles = document.getElementById("uploadDependentDocFile").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadDependentDocFile").files[0];
+            formData.append("dependentDocFile", file);
+
+        }
+        else if (droppedFiles) {
+            Array.prototype.forEach.call(droppedFiles, function (eachFile) {
+                formData.append("dependentDocFile", eachFile);
+            });
+        }
+        else {
+            isProceed = false;
+            showAlertAutoHide(alertID, "Error", "Please choose the User Dependent Document");
+        }
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/EmployeeDependent/UploadDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        $('#upload_DependentDoc_modal').modal('hide');
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        retreiveEmployeeDependentTab();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                },
+                error: function (error) {
+
+                    showAlertAutoHide(alertID, "Error", error);
+
+                }
+            });
+        }
+        clearFileSelection();
+    }
+</script>

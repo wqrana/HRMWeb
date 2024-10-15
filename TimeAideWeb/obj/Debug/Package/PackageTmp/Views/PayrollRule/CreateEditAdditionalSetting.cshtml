@@ -1,0 +1,231 @@
+﻿@model TimeAide.Web.Models.PayrollRule
+<div class="row">
+    <div class="col-md-12 d-flex">
+        <div class="card profile-box flex-fill">
+            <div class="card-body pb-0">
+                <div class="form-group row">
+                    <div class="col-md-12 p-1">
+                        <div class="panel panel-default" style="margin-left:0px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Additional Setting
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group row">
+                                    <div class="col-md-5">
+                                        <div class="form-group row mb-0">
+                                            <label class="col-md-6 col-form-label">
+                                                Paid Meal
+                                            </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Paid Meal?:
+                                            </label>
+                                            <div class="col-md-2 pt-2">
+                                                @Html.CheckBoxFor(m => m.IsPaidMeal, new { id = "IsPaidMealAE" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Meal Hours:
+                                            </label>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(m => m.PaidMealHour, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                After How Many Hours?:
+                                            </label>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(m => m.PaidMealMinimumHour, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0">
+                                            <label class="col-md-6 col-form-label">
+                                                Deduct Meal
+                                            </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Deduct Meal?:
+                                            </label>
+                                            <div class="col-md-2 pt-2">
+                                                @Html.CheckBoxFor(m => m.IsDeductMeal, new { id = "IsDeductMealAE" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Meal Hours:
+                                            </label>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(m => m.DeductMealHour, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                After How Many Hours?:
+                                            </label>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(m => m.DeductMinimumHour, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0">
+                                            <label class="col-md-6 col-form-label">
+                                                Deduct Secondary Meal
+                                            </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Deduct Secondary Meal?:
+                                            </label>
+                                            <div class="col-md-2 pt-2">
+                                                @Html.CheckBoxFor(m => m.IsDeductSecondaryMeal, new { id = "IsDeductSecondaryMealAE" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                Meal Hours:
+                                            </label>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(m => m.DeductSecondaryMealHour, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                                After How Many Hours?:
+                                            </label>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(m => m.DeductSecondaryMealMinimumHour, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default" style="margin-left:0px">
+                                                    <div class="panel-heading" style="padding-left:10px">
+                                                        Overtime Days
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="form-group row">
+                                                            <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                                Sunday:
+                                                            </label>
+                                                            <div class="col-md-9 pt-2">
+                                                                @Html.DropDownList("SundayOTVal", null, "Please select", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                                Monday:
+                                                            </label>
+                                                            <div class="col-md-9 pt-2">
+                                                                @Html.DropDownList("MondayOTVal", null, "Please select", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                                Tuesday:
+                                                            </label>
+                                                            <div class="col-md-9 pt-2">
+                                                                @Html.DropDownList("TuesdayOTVal", null, "Please select", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                                Wednesday:
+                                                            </label>
+                                                            <div class="col-md-9 pt-2">
+                                                                @Html.DropDownList("WednesdayOTVal", null, "Please select", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                                Thursday:
+                                                            </label>
+                                                            <div class="col-md-9 pt-2">
+                                                                @Html.DropDownList("ThursdayOTVal", null, "Please select", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                                Friday:
+                                                            </label>
+                                                            <div class="col-md-9 pt-2">
+                                                                @Html.DropDownList("FridayOTVal", null, "Please select", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                                Saturday:
+                                                            </label>
+                                                            <div class="col-md-9 pt-2">
+                                                                @Html.DropDownList("SaturdayOTVal", null, "Please select", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0">
+                                            <label class="col-md-6 col-form-label">
+                                               Daily Hours Rounding
+                                            </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                                Round to Schedule?:
+                                            </label>
+                                            <div class="col-md-2 pt-2">
+                                                @Html.CheckBoxFor(m => m.IsRoundToSchedule, new { id = "IsRoundToScheduleAE" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                                After how many hours?:
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.EditorFor(m => m.RoundAfterHour, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        setAdditionSettingFieldsName();
+        setAdditionalSettingFieldsSetting();
+        $("#IsPaidMealAE,#IsDeductMealAE,#IsDeductSecondaryMealAE,#IsRoundToScheduleAE").change(function () {
+            setAdditionalSettingFieldsSetting();
+        });
+        
+    });
+
+    function setAdditionSettingFieldsName() {
+        $("#PaidMealHour").attr("name", "PaidMeal");
+        $("#PaidMealMinimumHour").attr("name", "PaidMeal");
+
+        $("#DeductMealHour").attr("name", "DeductMeal");
+        $("#DeductMinimumHour").attr("name", "DeductMeal");
+
+        $("#DeductSecondaryMealHour").attr("name", "SecondaryMeal");
+        $("#DeductSecondaryMealMinimumHour").attr("name", "SecondaryMeal");
+
+        $("#RoundAfterHour").attr("name", "DailyHoursRd");
+       
+    }
+  
+</script>

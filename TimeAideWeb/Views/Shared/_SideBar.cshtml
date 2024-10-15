@@ -1,0 +1,902 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@using TimeAide.Reports;
+@using TimeAide.Data;
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+
+            <ul>
+                <li class="menu-title">
+                    <span>Main</span>
+                </li>
+                @if (SecurityHelper.IsSuperAdmin)
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-university"></i> <span>@TimeAide.Services.CompanyService.SelectedCompanyName</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li class="submenu">
+                                @foreach (TimeAide.Web.Models.Client eachClient in TimeAide.Services.ClientService.GetClients())
+                                {
+                                    <a href="#"><span>@eachClient.ClientName</span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @foreach (TimeAide.Web.Models.Company eachCompany in TimeAide.Services.CompanyService.GetCompany(eachClient.Id).OrderBy(o => o.CompanyName))
+                                        {
+                                            <li class="submenu">
+                                                <a href="javascript:void(0);" onclick="SelectCompany(@eachCompany.Id)"><span> @eachCompany.CompanyName </span> </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (SecurityHelper.IsModuleAvailable("App"))
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-window-maximize"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            @if (SecurityHelper.IsAvailable("ChatConversation"))
+                            {
+                                <li><a href="/ChatConversation/ChatWindow/">Chat</a></li>
+                            }
+                        </ul>
+                    </li>
+                }
+                <li class="">
+                    <a href="/CompanyPortal/Index"><i class="fa fa-newspaper-o"></i> <span> Company Portal</span> </a>
+                </li>
+                @if (TimeAide.Services.ApplicationConfigurationService.GetConfigurationStatus("ShowCompanyMedia"))
+                {
+                    <li class="">
+                        <a href="/CompanyMedia/Index"><i class="fa fa-film"></i> <span> Company Media</span> </a>
+                    </li>
+                }
+                @{
+                    var selfServicePrivileges = TimeAide.Services.RoleFormPrivilegeService.GetFormPrivileges("SelfService");
+                    var dashboardPrivileges = TimeAide.Services.RoleFormPrivilegeService.GetFormPrivileges("Dashboard");
+                }
+
+                @if (SecurityHelper.IsUser && selfServicePrivileges.AllowView)
+                {
+                    <li class="">
+                        <a href="/UserDashboard/MyDashboard"><i class="la la-user"></i> <span> Self Service</span> </a>
+                    </li>
+                }
+                else
+                {
+                    if (dashboardPrivileges.AllowAdd)
+                    {
+                        <li class="">
+                            <a href="/UserDashboard/Index"><i class="la la-dashboard"></i> <span>Dashboard</span> </a>
+                        </li>
+                    }
+                    if (selfServicePrivileges.AllowAdd)
+                    {
+                        <li class="">
+                            <a href="/UserDashboard/MyDashboard"><i class="la la-user"></i> <span> Self Service</span> </a>
+                        </li>
+                    }
+                }
+
+                @*<li class="">
+                        <a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            @if (SecurityHelper.IsUser)
+                            {
+
+                                <li><a href="/UserDashboard/MyDashboard">Employee Dashboard</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="/UserDashboard/Index">Admin Dashboard</a></li>
+                                <li><a href="/UserDashboard/MyDashboard">Employee Dashboard</a></li>
+                            }
+                        </ul>
+                    </li>*@
+
+                @if (SecurityHelper.IsModuleAvailable("Employees"))
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="la la-users"></i> <span> Employees </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;" id="ulUserManagement">
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                if (SecurityHelper.IsAvailable("UserInformation"))
+                                {
+                                    <li>@Html.ActionLink("Employee", "Index", "UserInformation")</li>
+                                }
+                            }
+                            @if (SecurityHelper.IsAvailable("ChangePassword"))
+                            {
+                                <li>@Html.ActionLink("Change Password", "ChangePassword", "Account")</li>
+                            }
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                if (SecurityHelper.IsAvailable("IndexBulkUserRegistration"))
+                                {
+                                    <li>@Html.ActionLink("Bulk Registration", "IndexBulkUserRegistration", "UserInformation")</li>
+                                }
+                                if (SecurityHelper.IsAvailable("UserRegistrationReport"))
+                                {
+                                    <li>@Html.ActionLink("User Registration Report", "UserRegistrationReport", "UserInformation")</li>
+                                }
+                                if (SecurityHelper.IsAvailable("EmailBlast"))
+                                {
+                                    <li>@Html.ActionLink("Email Blast", "Index", "EmailBlast")</li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+                @if (SecurityHelper.IsModuleAvailable("Applicants"))
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-clone"></i> <span> Applicants </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;" id="ulApplicantManagement">
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                if (SecurityHelper.IsAvailable("ApplicantInformation"))
+                                {
+                                    <li>@Html.ActionLink("Applicant", "Index", "ApplicantInformation")</li>
+                                }
+                            }
+
+                        </ul>
+                    </li>
+                }
+
+                @if (SessionHelper.IsTimeAideWindowClient == true && !SecurityHelper.IsUser && (SecurityHelper.IsModuleAvailable("Attendance")))
+                {
+                    <li class="">
+                        <a href="#"><i class="fa fa-clock-o"></i> <span> Attendance</span> <span class="menu-arrow"></span></a>
+                        <ul>
+
+                            @if (SecurityHelper.IsAvailable("EmployeeAttendenceSchedule"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"> <span> Schedule </span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a href="/EmployeeAttendanceSchedule/Index">Schedule Grid</a></li>
+                                        <li><a href="/EmployeeAttendanceSchedule/IndexByOverview">Schedule Overview</a></li>
+                                        <li><a href="/EmployeeAttendanceSchedule/IndexByCalendar">Schedule Calendar</a></li>
+
+                                    </ul>
+                                </li>
+                            }
+                            @if (SecurityHelper.IsAvailable("EmployeeTimesheet"))
+                            {
+                                <li><a href="/EmployeeTimesheet/Index">Timesheet</a></li>
+                            }
+                            @if (SecurityHelper.IsAvailable("EmployeeTimesheetEditor"))
+                            {
+                                <li><a href="/EmployeeTimesheetEditor/Index">Timesheet Editor</a></li>
+                            }
+
+
+
+
+                            @if (SecurityHelper.IsAvailable("EmployeeTimeAndEffort"))
+                            {
+                                <li><a href="/EmployeeTimeAndEffort/Index">Time and Effort</a></li>
+                            }
+
+                            @if (SecurityHelper.IsAvailable("EmployeeTimeOffRequest"))
+                            {
+                                <li><a href="/EmployeeTimeOffRequest/Index">Time-Off Request</a></li>
+                            }
+
+                        </ul>
+                    </li>
+                }
+                @if (SecurityHelper.IsModuleAvailable("AttendanceWeb"))
+                {
+                    <li class="">
+                        <a href="#"><i class="fa fa-clock-o"></i> <span> Web Attendance</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            @if (SecurityHelper.IsAvailable("BaseSchedule"))
+                            {
+                                <li><a href="/BaseSchedule/Index">Base Schedule</a></li>
+                            }
+                            @if (SecurityHelper.IsAvailable("WebScheduledEditor"))
+                            {
+                                <li><a href="/EmployeeWebAttendanceSchedule/Index">Web Schedule</a></li>
+                            }
+                            @if (SecurityHelper.IsAvailable("WebPunchConfiguration"))
+                            {
+                                <li><a href="/WebPunchConfiguration/Index">Web Punch Configuration</a></li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+
+                @if (SecurityHelper.IsModuleAvailable("Settings"))
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-cogs"></i> <span> Settings </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            @if (SecurityHelper.IsModuleAvailable("Licenses And Accruals"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"><span> Accruals </span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @if (SecurityHelper.IsAvailable("AccrualType"))
+                                        {
+                                            <li><a href="/AccrualType/Index">Accrual Type</a></li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("LicensesAndAccruals"))
+                                        {
+                                            <li>@Html.ActionLink("Accrual Rule", "Index", "AccrualRule")</li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            @*@if (SecurityHelper.IsModuleAvailable("AttendanceWeb"))
+                                {
+                                    <li class="submenu">
+                                        <a href="#"><span> Attendance Web </span> <span class="menu-arrow"></span></a>
+                                        <ul style="display: none;">
+                                            @if (SecurityHelper.IsAvailable("BaseSchedule"))
+                                            {
+                                                <li><a href="/BaseSchedule/Index">Base Schedule</a></li>
+                                            }
+                                            @if (SecurityHelper.IsAvailable("WebPunchConfiguration"))
+                                            {
+                                                <li><a href="/WebPunchConfiguration/Index">Web Punch Configuration</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }*@
+                            @if (SecurityHelper.IsModuleAvailable("Employment"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"><span> Employment </span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @if (SecurityHelper.IsAvailable("Client"))
+                                        {
+                                            <li>@Html.ActionLink("Client", "Index", "Client")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Company"))
+                                        {
+                                            <li>@Html.ActionLink("Company", "Index", "Company")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Department"))
+                                        {
+                                            <li>@Html.ActionLink("Department", "IndexByCompany", "Department")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("SubDepartment"))
+                                        {
+                                            <li>@Html.ActionLink("Sub Department", "IndexByCompany", "SubDepartment")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("EmployeeType"))
+                                        {
+                                            <li>@Html.ActionLink("Employee Type", "Index", "EmployeeType")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Position"))
+                                        {
+                                            <li>@Html.ActionLink("Position", "IndexByCompany", "Position")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Location"))
+                                        {
+                                            <li>@Html.ActionLink("Location", "Index", "Location")</li>
+                                        }
+
+                                        @if (SecurityHelper.IsAvailable("EmploymentType"))
+                                        {
+                                            <li>@Html.ActionLink("Employment Type", "Index", "EmploymentType")</li>
+                                        }
+
+                                        @if (SecurityHelper.IsAvailable("JobCode"))
+                                        {
+                                            <li>@Html.ActionLink("Job Codes", "Index", "JobCode")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("CFSECode"))
+                                        {
+                                            <li>@Html.ActionLink("CFSE Codes", "Index", "CFSECode")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("EmployeeGroup"))
+                                        {
+                                            <li>@Html.ActionLink("Employee Group", "Index", "EmployeeGroup")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("JobCertificationSignee"))
+                                        {
+                                            <li>@Html.ActionLink("Letter Signee", "Index", "JobCertificationSignee")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("JobCertificationTemplate"))
+                                        {
+                                            <li>@Html.ActionLink("Letter Template", "Index", "JobCertificationTemplate")</li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            @if (SecurityHelper.IsModuleAvailable("General"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"><span> General</span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @if (SecurityHelper.IsAvailable("Gender"))
+                                        {
+                                            <li>@Html.ActionLink("Gender", "Index", "Gender")</li>
+                                        }
+                                        @*@if (SecurityHelper.IsAvailable("Ethnicity"))
+                                            {
+                                                <li>@Html.ActionLink("Ethnicity", "Index", "Ethnicity")</li>
+                                            }*@
+                                        @if (SecurityHelper.IsAvailable("VeteranStatus"))
+                                        {
+                                            <li>@Html.ActionLink("Veteran Status", "Index", "VeteranStatus")</li>
+                                        }
+                                        @*@if (SecurityHelper.IsAvailable("Disability"))
+                                            {
+                                                <li>@Html.ActionLink("Disability", "Index", "Disability")</li>
+                                            }*@
+                                        @if (SecurityHelper.IsAvailable("Country"))
+                                        {
+                                            <li>@Html.ActionLink("Country", "Index", "Country")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("State"))
+                                        {
+                                            <li>@Html.ActionLink("State", "IndexByCountry", "State")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("City"))
+                                        {
+                                            <li>@Html.ActionLink("City", "IndexByState", "City")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("EmailTemplate"))
+                                        {
+                                            <li>@Html.ActionLink("Email Template", "IndexByCompany", "EmailTemplate")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Relationship"))
+                                        {
+                                            <li>@Html.ActionLink("Relationship", "Index", "Relationship")</li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            @if (SecurityHelper.IsModuleAvailable("Human Resources"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"><span> Human Resources </span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+
+                                        @if (SecurityHelper.IsModuleAvailable("Applicant Management"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"><span> Applicant </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("JobPostingDetail"))
+                                                    {
+                                                        <li>@Html.ActionLink("Job Posting", "Index", "JobPostingDetail")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantStatus"))
+                                                    {
+                                                        <li>@Html.ActionLink("Applicant Status", "Index", "ApplicantStatus")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantReferenceType"))
+                                                    {
+                                                        <li>@Html.ActionLink("Reference Type", "Index", "ApplicantReferenceType")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantReferenceSource"))
+                                                    {
+                                                        <li>@Html.ActionLink("Reference Source", "Index", "ApplicantReferenceSource")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantCompany"))
+                                                    {
+                                                        <li>@Html.ActionLink("Previous Company", "Index", "ApplicantCompany")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantPosition"))
+                                                    {
+                                                        <li>@Html.ActionLink("Previous Position", "Index", "ApplicantPosition")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantExitType"))
+                                                    {
+                                                        <li>@Html.ActionLink("Exit Type", "Index", "ApplicantExitType")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantInterviewQuestion"))
+                                                    {
+                                                        <li>@Html.ActionLink("Interview Question", "Index", "ApplicantInterviewQuestion")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ApplicantInterviewQuestion"))
+                                                    {
+                                                        <li>@Html.ActionLink("Interview Answer", "Index", "ApplicantInterviewAnswer")</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        @if (SecurityHelper.IsModuleAvailable("Hiring and Termination"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"><span> Hiring and Termination </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("EmploymentStatus"))
+                                                    {
+                                                        <li>@Html.ActionLink("Employment Status", "Index", "EmploymentStatus")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("TerminationType"))
+                                                    {
+                                                        <li>@Html.ActionLink("Termination Type", "Index", "TerminationType")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("TerminationReason"))
+                                                    {
+                                                        <li>@Html.ActionLink("Termination Reason", "Index", "TerminationReason")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("TerminationEligibility"))
+                                                    {
+                                                        <li>@Html.ActionLink("Termination Eligibility", "Index", "TerminationEligibility")</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        @if (SecurityHelper.IsModuleAvailable("PayInfo"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Pay Info </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("PayFrequency"))
+                                                    {
+                                                        <li>@Html.ActionLink("Pay Frequency", "Index", "PayFrequency")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("PayScale"))
+                                                    {
+                                                        <li>@Html.ActionLink("Pay Scale", "Index", "PayScale")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("RateFrequency"))
+                                                    {
+                                                        <li>@Html.ActionLink("Rate Frequency", "Index", "RateFrequency")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("PayType"))
+                                                    {
+                                                        <li>@Html.ActionLink("Pay Type", "Index", "PayType")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("EEOCategory"))
+                                                    {
+                                                        <li>@Html.ActionLink("EEO Category", "Index", "EEOCategory")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("WCClassCode"))
+                                                    {
+                                                        <li>@Html.ActionLink("WC Class Code", "Index", "WCClassCode")</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+
+                                        @if (SecurityHelper.IsModuleAvailable("Education"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Education </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+
+                                                    @if (SecurityHelper.IsAvailable("Degree"))
+                                                    {
+                                                        <li>@Html.ActionLink("Degree", "Index", "Degree")</li>
+                                                    }
+
+                                                </ul>
+                                            </li>
+                                        }
+
+                                        @if (SecurityHelper.IsModuleAvailable("Training"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Training </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+
+                                                    @if (SecurityHelper.IsAvailable("Training"))
+                                                    {
+                                                        <li>@Html.ActionLink("Training", "Index", "Training")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("TrainingType"))
+                                                    {
+                                                        <li>@Html.ActionLink("Training Type", "Index", "TrainingType")</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+
+                                        @if (SecurityHelper.IsModuleAvailable("Performance Review"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Performance Review </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("PerformanceDescription"))
+                                                    {
+                                                        <li>@Html.ActionLink("Performance Description", "Index", "PerformanceDescription")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("PerformanceResult"))
+                                                    {
+                                                        <li>@Html.ActionLink("Performance Result", "Index", "PerformanceResult")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("ActionTaken"))
+                                                    {
+                                                        <li>@Html.ActionLink("Action Taken", "Index", "ActionTaken")</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        @if (SecurityHelper.IsModuleAvailable("Documents"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Documents </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("Document"))
+                                                    {
+                                                        <li>@Html.ActionLink("Document", "Index", "Document", new { userId = 1 }, null)</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        @if (SecurityHelper.IsModuleAvailable("Credentials"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Credentials </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("Credential"))
+                                                    {
+                                                        <li>@Html.ActionLink("Credential", "Index", "Credential")</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("CredentialType"))
+                                                    {
+                                                        <li>@Html.ActionLink("Credential Type", "Index", "CredentialType")</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+
+                                        @if (SecurityHelper.IsModuleAvailable("Custom Fields"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Custom Fields </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+
+                                                    @if (SecurityHelper.IsAvailable("CustomField"))
+                                                    {
+                                                        <li>@Html.ActionLink("Custom Field", "Index", "CustomField", new { userId = 1 }, null)</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+
+                                        @if (SecurityHelper.IsModuleAvailable("Benefits"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Benefits </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("Benefit"))
+                                                    {
+                                                        <li>@Html.ActionLink("Benefit", "Index", "Benefit", new { userId = 1 }, null)</li>
+                                                    }
+
+                                                </ul>
+                                            </li>
+                                        }
+
+
+                                        @if (SecurityHelper.IsModuleAvailable("Action History"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Action History </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+
+                                                    @if (SecurityHelper.IsAvailable("ActionType"))
+                                                    {
+                                                        <li>@Html.ActionLink("Action Type", "Index", "ActionType", new { userId = 1 }, null)</li>
+                                                    }
+
+                                                </ul>
+                                            </li>
+                                        }
+
+                                        @if (SecurityHelper.IsModuleAvailable("Appraisals"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Appraisals </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("AppraisalTemplate"))
+                                                    {
+                                                        <li>@Html.ActionLink("Appraisal Template", "Index", "AppraisalTemplate", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("AppraisalGoal"))
+                                                    {
+                                                        <li>@Html.ActionLink("Appraisal Goals", "Index", "AppraisalGoal", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("AppraisalSkill"))
+                                                    {
+                                                        <li>@Html.ActionLink("Appraisal Skills", "Index", "AppraisalSkill", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("AppraisalResult"))
+                                                    {
+                                                        <li>@Html.ActionLink("Appraisal Result", "Index", "AppraisalResult", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("AppraisalRatingScale"))
+                                                    {
+                                                        <li>@Html.ActionLink("Rating Scale", "Index", "AppraisalRatingScale", new { userId = 1 }, null)</li>
+                                                    }
+
+                                                </ul>
+                                            </li>
+                                        }
+
+                                        @if (SecurityHelper.IsModuleAvailable("Incidents"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Incidents </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @*@if (SecurityHelper.IsAvailable("IncidentType"))
+                                                        {
+                                                            <li>@Html.ActionLink("Incident Type", "Index", "IncidentType")</li>
+                                                        }*@
+                                                    @if (SecurityHelper.IsAvailable("IncidentArea"))
+                                                    {
+                                                        <li>@Html.ActionLink("Incident Area", "IndexByCompany", "IncidentArea", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("IncidentBodyPart"))
+                                                    {
+                                                        <li>@Html.ActionLink("Incident Body Part", "Index", "IncidentBodyPart", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("IncidentInjuryDescription"))
+                                                    {
+                                                        <li>@Html.ActionLink("Injury Description", "Index", "IncidentInjuryDescription", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("IncidentInjurySource"))
+                                                    {
+                                                        <li>@Html.ActionLink("Injury Source", "Index", "IncidentInjurySource", new { userId = 1 }, null)</li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("IncidentTreatmentFacility"))
+                                                    {
+                                                        <li>@Html.ActionLink("Treatment Facility", "Index", "IncidentTreatmentFacility", new { userId = 1 }, null)</li>
+                                                    }
+
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+
+                            @if (SecurityHelper.IsModuleAvailable("Application Access"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"> <span> Application Access </span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @if (SecurityHelper.IsAvailable("RoleFormPrivilege"))
+                                        {
+                                            <li>@Html.ActionLink("Role Form Privilege", "CreateMatrix", "RoleFormPrivilege")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("ApplicationConfiguration"))
+                                        {
+                                            <li>@Html.ActionLink("Application Configuration", "Index", "ApplicationConfiguration")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("UserSessionLog"))
+                                        {
+                                            <li>@Html.ActionLink("Logged In Users", "IndexAllUsers", "UserSessionLog")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("UserInformationRole"))
+                                        {
+                                            <li>@Html.ActionLink("User Role", "Index", "UserInformationRole")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("UserSessionLog"))
+                                        {
+                                            <li>@Html.ActionLink("User Session Log", "IndexUserSessionLog", "UserSessionLog")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("UserSessionLogEvent"))
+                                        {
+                                            <li>@Html.ActionLink("User Session Log Event", "IndexUserSessionLogEvent", "UserSessionLogEvent")</li>
+                                        }
+                                        @*@if (SecurityHelper.IsAvailable("AuditLog"))
+                                        {
+                                            <li>@Html.ActionLink("Audit Log", "IndexAuditLog", "AuditLog")</li>
+                                        }*@
+                                        @if (SecurityHelper.IsAvailable("SenderEmailConfiguration"))
+                                        {
+                                            <li>@Html.ActionLink("Sender Email Configuration", "Index", "SenderEmailConfiguration")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Module"))
+                                        {
+                                            <li>@Html.ActionLink("Module", "Index", "Module")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Form"))
+                                        {
+                                            <li>@Html.ActionLink("Form", "Index", "Form")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Role"))
+                                        {
+                                            <li>@Html.ActionLink("Role", "Index", "Role")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("RoleType"))
+                                        {
+                                            <li>@Html.ActionLink("Role Type", "Index", "RoleType")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("Privilege"))
+                                        {
+                                            <li>@Html.ActionLink("Privilege", "Index", "Privilege")</li>
+                                        }
+
+                                    </ul>
+                                </li>
+                            }
+
+                            @if (SecurityHelper.IsModuleAvailable("Notifications"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"> <span> Notifications </span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @if (SecurityHelper.IsAvailable("NotificationMessage") )
+                                        {
+                                            <li>@Html.ActionLink("Notification Message", "Index", "NotificationMessage")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("NotificationSchedule") )
+                                        {
+                                            <li>@Html.ActionLink("Notification Schedule", "Index", "NotificationSchedule")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("EmployeeNotification"))
+                                        {
+                                            <li>@Html.ActionLink("Notification Setup", "Index", "EmployeeNotification")</li>
+                                        }
+                                        @if (SecurityHelper.IsSuperAdmin)
+                                        {
+                                            <li>@Html.ActionLink("Notification Log", "Index", "NotificationLog")</li>
+                                        }
+                                        @*@if (SecurityHelper.IsAvailable("NotificationType"))
+                                        {
+                                            <li>@Html.ActionLink("Notification Type", "Index", "NotificationType")</li>
+                                        }*@
+
+                                    </ul>
+                                </li>
+                            }
+                            @if (SecurityHelper.IsModuleAvailable("Workflow"))
+                            {
+                                <li class="submenu">
+                                    <a href="#"> <span> Workflow </span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @if (SecurityHelper.IsAvailable("Workflow"))
+                                        {
+                                            <li>@Html.ActionLink("Workflow", "Index", "Workflow")</li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("WorkflowTrigger"))
+                                        {
+                                            <li>@Html.ActionLink("Workflow Trigger", "Index", "WorkflowTrigger")</li>
+                                        }
+
+
+                                    </ul>
+                                </li>
+                            }
+
+                            @if (SecurityHelper.IsModuleAvailable("Payroll"))
+                            {
+                                <li class="">
+                                    <a href="#"><span> Payroll</span> <span class="menu-arrow"></span></a>
+                                    <ul>
+                                        @if (SecurityHelper.IsAvailable("GLAccountType"))
+                                        {
+                                            <li><a href="/GLAccountType/Index">GL Account Type</a></li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("GLAccount"))
+                                        {
+                                            <li><a href="/GLAccount/Index">GL Account</a></li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("CompanyCompensation"))
+                                        {
+                                            <li><a href="/CompanyCompensation/Index">Compensation</a></li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("CompanyWithholding"))
+                                        {
+                                            <li><a href="/CompanyWithholding/Index">Withholding</a></li>
+                                        }
+                                        @if (SecurityHelper.IsAvailable("CompanyContribution"))
+                                        {
+                                            <li><a href="/CompanyContribution/Index">Contributions</a></li>
+                                        }
+                                        @if (SecurityHelper.IsModuleAvailable("Transaction"))
+                                        {
+                                            <li class="submenu">
+                                                <a href="#"> <span> Transaction </span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    @if (SecurityHelper.IsAvailable("TransactionConfiguration"))
+                                                    {
+                                                        <li><a href="/TransactionConfiguration/Index">Transaction Config.</a></li>
+                                                    }
+                                                    @if (SecurityHelper.IsAvailable("PayRateMultiplier"))
+                                                    {
+                                                        <li><a href="/PayRateMultiplier/Index">Rate Multiplier</a></li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+
+                                    </ul>
+
+                                </li>
+                            }
+
+                            @if (SessionHelper.IsTimeAideWindowClient == true && (SecurityHelper.IsModuleAvailable("TA-Window")))
+                            {
+                                <li class="">
+                                    <a href="#"><span> TA-Window</span> <span class="menu-arrow"></span></a>
+                                    @if (SecurityHelper.IsAvailable("TAWindowTimeOffTransaction"))
+                                    {
+                                        <ul>
+                                            <li><a href="/TAWinTimeOffDocument/Index">Time-off Transaction</a></li>
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+                <!--Report Menu-->
+                @if (SecurityHelper.IsModuleAvailable("Reports"))
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-object-ungroup"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            @{
+                                var rgpName = "";
+                                var reportMenuList = TimeAideReports.GetReportMenuData();
+
+                                foreach (var reportMenuGroup in reportMenuList)
+                                {
+                                    if (SecurityHelper.IsModuleAvailable(reportMenuGroup.GroupName))
+                                    {
+
+                                        <li class="submenu">
+                                            <a href="#"> <span> @reportMenuGroup.GroupName </span> <span class="menu-arrow"></span></a>
+                                            <ul style="display: none;">
+
+                                                @foreach (var reportMenuItem in reportMenuGroup.GroupReports)
+                                                {
+                                                    if (!SecurityHelper.IsUser)
+                                                    {
+                                                        if (SecurityHelper.IsAvailable(reportMenuItem.RptName))
+                                                        {
+                                                            <li><a tabindex="-1" href="/reports/Index?id=@((int)reportMenuItem.RptId)">@reportMenuItem.RptName</a></li>
+                                                        }
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+
+                    </li>
+
+                }
+                @if (!SecurityHelper.IsUser && (SecurityHelper.IsModuleAvailable("Audit")))
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="la la-bell"></i> <span> Audit </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;" id="ulApplicantManagement">
+                            @if (SecurityHelper.IsAvailable("AuditLog"))
+                            {
+                                <li>@Html.ActionLink("Audit Log", "Index", "AuditLog")</li>
+                            }
+                            @if (!SecurityHelper.IsUser)
+                            {
+                                if (SecurityHelper.IsAvailable("ShowAllWorkflowNotifications") || SecurityHelper.IsAvailable("ShowAllExpirationNotification"))
+                                {
+                                    <li>@Html.ActionLink("Notifications", "NotiificationList", "ChangeRequest")</li>
+                                }
+                            }
+
+                        </ul>
+                    </li>
+                }
+
+            </ul>
+            @*@foreach (var parentModule in TimeAide.Services.ModuleService.GetParentModules())
+                {
+                    <li>@parentModule.ModuleName</li>
+                    foreach (var childModule in TimeAide.Services.ModuleService.GetChildModules(parentModule.Id))
+                    {
+                        <li>@childModule.ModuleName</li>
+                    }
+                }*@
+        </div>
+    </div>
+</div>
+<!-- /Sidebar -->

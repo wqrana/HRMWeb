@@ -1,0 +1,66 @@
+﻿@model TimeAide.Web.Models.PayScaleLevel
+
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayScale.PayScaleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayScale.PayScaleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PayScaleLevelRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayScaleLevelRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataEntryStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataEntryStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

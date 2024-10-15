@@ -1,0 +1,32 @@
+﻿@model IEnumerable<TimeAide.Web.Models.TerminationReason>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Termination Reason
+        </th>
+        <th>
+            Description
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TerminationReasonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TerminationReasonDescription)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

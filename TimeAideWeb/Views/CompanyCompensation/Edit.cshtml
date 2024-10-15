@@ -1,0 +1,373 @@
+﻿@model TimeAide.Web.Models.CompanyCompensation
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-group row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.CompensationName, "Compensation Name", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.CompensationName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CompensationName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.CompensationTypeId, "Compensation Type", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationType>("CompensationTypeId", null, Model.CompensationTypeId, false, null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.CompensationTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.ComputationTypeId, "Computation Type", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationComputationType>("ComputationTypeId", null, Model.ComputationTypeId, false, null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.ComputationTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.IsEnabled, "Is Enabled", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsEnabled)
+                            @Html.ValidationMessageFor(model => model.IsEnabled, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.ImportTypeId, "Import Type", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationImportType>("ImportTypeId", null, Model.ImportTypeId, false, null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.ImportTypeId, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.GLAccountId, "GL Account", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.GLAccount>("GLAccountId", null, Model.GLAccountId, false,1, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.GLAccountId, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.IsCovidCompensation, "Is Covid Compensation", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsCovidCompensation)
+                            @Html.ValidationMessageFor(model => model.IsCovidCompensation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.IsFICASSCCExempt, "Is FICASSCC Exempt", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsFICASSCCExempt)
+                            @Html.ValidationMessageFor(model => model.IsFICASSCCExempt, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                @*<div class="form-group row">
+                    @Html.LabelFor(model => model.ReportOrder, "Report Order", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.ReportOrder, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ReportOrder, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.GLLookupField, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GLLookupField, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.GLLookupField, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-left:10px">
+                        <div class="col-md-12 row">
+                            <div class="col-md-8">
+                                Transactions
+                            </div>
+                            <div class="col-md-4 pr-0">
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a a href="javascript:;" data-toggle="modal" id="anchorEmploymentPrivilege" onclick="fnCompanyCompensation(@Model.Id);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i>Edit</a>
+                                        @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                        {
+                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowSupervisedEmployeesChangeHistory(@Model.Id,'SupervisorUserId')" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a> @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="divSupervisedEmployees">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-left:10px">
+                        <div class="col-md-12 row">
+                            <div class="col-md-8">
+                                PR Pay Export
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding-left: 5px;">
+                        <div class="table-responsive" style="padding-left:2px">
+                            @Html.HiddenFor(model => model.CompanyCompensationPRPayExport.Id)
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Wages, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.Wages)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.Wages, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Commissions, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.Commissions)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.Commissions, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Allowances, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.Allowances)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.Allowances, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Tips, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.Tips)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.Tips, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Income401K, "Income 401K", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.Income401K)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.Income401K, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.OtherRetirement, "Other Retirement", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.OtherRetirement)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.OtherRetirement, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Cafeteria, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.Cafeteria)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.Cafeteria, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Reimbursements, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.Reimbursements)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.Reimbursements, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CODA401K, "CODA 401K", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.CODA401K)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.CODA401K, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.ExemptSalaries, "Exempt Salaries", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.ExemptSalaries)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.ExemptSalaries, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome1, "Custom Income 1", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.CustomIncome1)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.CustomIncome1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome2, "Custom Income 2", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.CustomIncome2)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.CustomIncome2, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome3, "Custom Income 3", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.CustomIncome3)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.CustomIncome3, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome4, "Custom Income 4", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.CustomIncome4)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.CustomIncome4, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome5, "Custom Income 5", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.CustomIncome5)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.CustomIncome5, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable1, "NonTaxable 1", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.NonTaxable1)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.NonTaxable1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable2, "NonTaxable 2", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.NonTaxable2)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.NonTaxable2, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable3, "NonTaxable 3", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.NonTaxable3)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.NonTaxable3, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable4, "NonTaxable 4", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.NonTaxable4)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.NonTaxable4, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable5, "NonTaxable 5", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-2">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.CompanyCompensationPRPayExport.NonTaxable5)
+                                        @Html.ValidationMessageFor(model => model.CompanyCompensationPRPayExport.NonTaxable5, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+    <div id='compensationTransactionModal' class='modal'>
+        <div id='compensationTransactionModaldialog' class="modal-dialog">
+            <div class="modal-content">
+                <div id='compensationTransactionModalContent'></div>
+            </div>
+        </div>
+    </div>
+ }
+<style>
+    #myModaldialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 70% !important;
+        width: 70% !important;
+        top: 0px !important;
+    }
+
+    .form-control {
+        height: unset
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadCompanyCompensation(@Model.Id);
+    });
+    function LoadCompanyCompensation(id) {
+        $.ajax({
+            type: "GET",
+            url: '/CompensationTransaction/IndexCompensationTransaction',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": id },
+            datatype: "html",
+            success: function (html) {
+                $('#divSupervisedEmployees').empty()
+                $('#divSupervisedEmployees').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnCompanyCompensation(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/CompensationTransaction/CreateEditCompensationTransaction',
+            contentType: "application/json; charset=utf-8",
+            data: { "companyCompensationId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#compensationTransactionModalContent').html(data);
+                $('#compensationTransactionModal').modal(options);
+                $('#compensationTransactionModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

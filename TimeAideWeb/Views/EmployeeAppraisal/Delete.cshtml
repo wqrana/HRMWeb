@@ -1,0 +1,76 @@
+﻿@model TimeAide.Web.Models.EmployeeAppraisal
+
+@{
+    ViewBag.Label = "Appraisal Template";
+}
+<div id="employeeAppraisalDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+            
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeAppraisalDeleteAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                @Html.HiddenFor(model => model.Id, new { id = "EmployeeAppraisalDeleteId" })
+               
+                <div class="form-group row">
+                    <div class="panel panel-default" style="width:100%;margin-left:10px">
+                        <div class="panel-heading" style="padding-left:10px">Information</div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">
+                                   Review Date:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.AppraisalReviewDate)</span>
+                                </div>
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">
+                                    Template:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.AppraisalTemplate.TemplateName)</span>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">
+                                    Evaluation From:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.EvaluationStartDate)</span>
+                                </div>
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">
+                                    Evaulation To:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.EvaluationEndDate)</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                                       
+                </div>
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteEmployeeAppraisal" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteEmployeeAppraisal").click(function () {
+            var id = $("#EmployeeAppraisalDeleteId").val();
+            deleteEmployeeAppraisal(id);
+        })
+
+    } );
+</script>
+

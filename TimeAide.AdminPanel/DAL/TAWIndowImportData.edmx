@@ -1,0 +1,1187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TAWinImportDataContext.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblBatch">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strBatchDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtBatchCreated" Type="datetime" Nullable="false" />
+          <Property Name="intCreatedByID" Type="int" Nullable="false" />
+          <Property Name="strCreateByName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtBatchUpdates" Type="datetime" Nullable="false" />
+          <Property Name="intBatchStatus" Type="int" Nullable="false" />
+          <Property Name="dtPayDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="intBatchType" Type="int" Nullable="false" />
+          <Property Name="intTemplateID" Type="int" Nullable="false" />
+          <Property Name="ClosedByUserID" Type="int" />
+          <Property Name="ClosedDateTime" Type="datetime" />
+          <Property Name="intPaymentStatusId" Type="int" />
+          <Property Name="strPaymentStatusByName" Type="nvarchar" MaxLength="100" />
+          <Property Name="dtPaymentStatusDate" Type="datetime" />
+          <Property Name="varPaymentConfirmation" Type="varbinary(max)" />
+          <Property Name="strPaymentConfirmationRptName" Type="nvarchar" MaxLength="100" />
+          <Property Name="varCompanyPayrollSummary" Type="varbinary(max)" />
+          <Property Name="strPayrollSummaryRptName" Type="nvarchar" MaxLength="100" />
+          <Property Name="intFederalTaxDepositScheduleId" Type="int" />
+          <Property Name="intFederalTaxDepositStatusId" Type="int" />
+          <Property Name="decFederalTaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="dtFederalTaxDepositDate" Type="datetime" />
+          <Property Name="strFederalTaxEFTPSNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtFederalTaxStatusDate" Type="datetime" />
+          <Property Name="strFederalTaxStatusByName" Type="nvarchar" MaxLength="50" />
+          <Property Name="varFederalTaxConfirmation" Type="varbinary(max)" />
+          <Property Name="strFederalTaxRptName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intHaciendaTaxDepositScheduleId" Type="int" />
+          <Property Name="intHaciendaTaxDepositStatusId" Type="int" />
+          <Property Name="decHaciendaTaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="dtHaciendaTaxDepositDate" Type="datetime" />
+          <Property Name="strHaciendaTaxReceiptNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtHaciendaTaxStatusDate" Type="datetime" />
+          <Property Name="strHaciendaTaxStatusByName" Type="nvarchar" MaxLength="50" />
+          <Property Name="varHaciendaTaxConfirmation" Type="varbinary(max)" />
+          <Property Name="strHaciendaTaxRptName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intFUTATaxDepositScheduleId" Type="int" />
+          <Property Name="intFUTATaxDepositStatusId" Type="int" />
+          <Property Name="decFUTATaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="dtFUTATaxDepositDate" Type="datetime" />
+          <Property Name="strFUTATaxReceiptNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtFUTATaxStatusDate" Type="datetime" />
+          <Property Name="strFUTATaxStatusByName" Type="nvarchar" MaxLength="50" />
+          <Property Name="varFUTATaxConfirmation" Type="varbinary(max)" />
+          <Property Name="strFUTATaxRptName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intACHSentCount" Type="int" Nullable="false" />
+          <Property Name="ACHFileName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblCompanyBatchWithholdings">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtPayDate" Type="datetime" Nullable="false" />
+          <Property Name="decBatchEffectivePay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="decWithholdingsAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="intPrePostTaxDeduction" Type="int" Nullable="false" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="boolDeleted" Type="bit" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intEditType" Type="int" Nullable="false" />
+          <Property Name="intUBMESequence" Type="int" Nullable="false" />
+          <Property Name="strGLContributionPayable" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblCompanyBatchWithholdings_ManualEntry">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtPayDate" Type="datetime" Nullable="false" />
+          <Property Name="decBatchEffectivePay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="decWithholdingsAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="intPrePostTaxDeduction" Type="int" Nullable="false" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="boolDeleted" Type="bit" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intSupervisorID" Type="int" Nullable="false" />
+          <Property Name="strNote" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="intEditType" Type="int" />
+          <Property Name="strGLContributionPayable" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblCompanySchedulesProcessed">
+          <Key>
+            <PropertyRef Name="strCompanyName" />
+            <PropertyRef Name="intPayrollScheduleID" />
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intPayrollScheduleID" Type="int" Nullable="false" />
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="intPayWeekNumber" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblCompensationItems">
+          <Key>
+            <PropertyRef Name="strCompensationName" />
+          </Key>
+          <Property Name="strCompensationName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="intCompensationType" Type="int" Nullable="false" />
+          <Property Name="intComputationType" Type="int" Nullable="false" />
+          <Property Name="boolEnabled" Type="bit" Nullable="false" />
+          <Property Name="intImportType" Type="int" Nullable="false" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="boolCovidCompensation" Type="bit" Nullable="false" />
+          <Property Name="boolFICASSCCExempt" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPayrollImportFileTemplate">
+          <Key>
+            <PropertyRef Name="intTemplateId" />
+          </Key>
+          <Property Name="intTemplateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sTemplateName" Type="nvarchar" MaxLength="100" />
+          <Property Name="dtCreationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblPayrollImportFileTemplateDetail">
+          <Key>
+            <PropertyRef Name="intTemplateDetailId" />
+          </Key>
+          <Property Name="intTemplateDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intTemplateId" Type="int" />
+          <Property Name="intFieldIndex" Type="int" />
+          <Property Name="sFieldName" Type="nvarchar" MaxLength="100" />
+          <Property Name="sFieldNameAsValue" Type="nvarchar" MaxLength="100" />
+          <Property Name="sFieldMapping" Type="nvarchar" MaxLength="15" />
+          <Property Name="sMappingTable" Type="nvarchar" MaxLength="50" />
+          <Property Name="sMappingColumn" Type="nvarchar" MaxLength="50" />
+          <Property Name="sColumnDataType" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtCreationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblUserBatch">
+          <Key>
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strBatchID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intPayWeekNum" Type="int" Nullable="false" />
+          <Property Name="intUserBatchStatus" Type="int" Nullable="false" />
+          <Property Name="dtStartDatePeriod" Type="datetime" Nullable="false" />
+          <Property Name="dtEndDatePeriod" Type="datetime" Nullable="false" />
+          <Property Name="intCompanyID" Type="int" />
+          <Property Name="intDepartmentID" Type="int" />
+          <Property Name="intSubdepartmentID" Type="int" />
+          <Property Name="intEmployeeTypeID" Type="int" />
+          <Property Name="intPayMethodType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserBatchCompensations">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strCompensationName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="decPayRate" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="dtPayDate" Type="datetime" Nullable="false" />
+          <Property Name="decHours" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="decPay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="boolDeleted" Type="bit" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intEditType" Type="int" Nullable="false" />
+          <Property Name="intUBMESequence" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserBatchCompensations_ManualEntry">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strCompensationName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="decPayRate" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="dtPayDate" Type="datetime" Nullable="false" />
+          <Property Name="decHours" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="decPay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="boolDeleted" Type="bit" Nullable="false" />
+          <Property Name="intSupervisorID" Type="int" Nullable="false" />
+          <Property Name="strNote" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intEditType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserBatchWithholdings">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtPayDate" Type="datetime" Nullable="false" />
+          <Property Name="decBatchEffectivePay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="decWithholdingsAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="intPrePostTaxDeduction" Type="int" Nullable="false" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="boolDeleted" Type="bit" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intEditType" Type="int" Nullable="false" />
+          <Property Name="intUBMESequence" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserBatchWithholdings_ManualEntry">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtPayDate" Type="datetime" Nullable="false" />
+          <Property Name="decBatchEffectivePay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="decWithholdingsAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="intPrePostTaxDeduction" Type="int" Nullable="false" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="boolDeleted" Type="bit" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intSupervisorID" Type="int" Nullable="false" />
+          <Property Name="strNote" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="intEditType" Type="int" />
+        </EntityType>
+        <EntityType Name="tblWithholdingsItems">
+          <Key>
+            <PropertyRef Name="strWithHoldingsName" />
+          </Key>
+          <Property Name="strWithHoldingsName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strDescription" Type="nvarchar" MaxLength="150" />
+          <Property Name="intPrePostTaxDeduction" Type="int" Nullable="false" />
+          <Property Name="intComputationType" Type="int" Nullable="false" />
+          <Property Name="decEmployeePercent" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="decEmployeeAmount" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="decCompanyPercent" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="decCompanyAmount" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="decMaximumSalaryLimit" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="decMinimumSalaryLimit" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="boolDeleted" Type="bit" Nullable="false" />
+          <Property Name="intWithholdingsTaxType" Type="int" />
+          <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" />
+          <Property Name="strContributionsName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strGLAccount_Contributions" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="boolIsLoan" Type="bit" Nullable="false" />
+          <Property Name="boolIs401kPlan" Type="bit" Nullable="false" />
+          <Property Name="boolUserWithholding" Type="bit" Nullable="false" />
+          <Property Name="boolCompanyContribution" Type="bit" Nullable="false" />
+          <Property Name="strGLContributionPayable" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TIMEAIDE_7_SOUTHERN.dbo.viewPay_UserRecord' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="viewPay_UserRecord">
+          <Key>
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="strCompanyName" />
+            <PropertyRef Name="intPayrollUserStatus" />
+            <PropertyRef Name="id" />
+            <PropertyRef Name="strEIN" />
+            <PropertyRef Name="intPositionID" />
+          </Key>
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intPayrollUserStatus" Type="int" Nullable="false" />
+          <Property Name="strStatusName" Type="nvarchar" MaxLength="50" />
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" />
+          <Property Name="idno" Type="varchar" MaxLength="30" />
+          <Property Name="nStatus" Type="int" />
+          <Property Name="sNotes" Type="nvarchar" MaxLength="50" />
+          <Property Name="sCompanyName" Type="nvarchar" MaxLength="30" />
+          <Property Name="sDeptName" Type="nvarchar" MaxLength="30" />
+          <Property Name="sJobTitleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="sEmployeeTypeName" Type="nvarchar" MaxLength="30" />
+          <Property Name="sPayrollRuleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="sScheduleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="nDeptID" Type="int" />
+          <Property Name="nJobTitleID" Type="int" />
+          <Property Name="nGroupID" Type="int" />
+          <Property Name="nEmployeeType" Type="int" />
+          <Property Name="nCompanyID" Type="int" />
+          <Property Name="nPayrollRuleID" Type="int" />
+          <Property Name="nScheduleID" Type="int" />
+          <Property Name="dCompanySeniorityDate" Type="datetime" />
+          <Property Name="sSSN" Type="nvarchar" MaxLength="15" />
+          <Property Name="sHomeAddressLine1" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHomeAddressLine2" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHomeCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHomeState" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHomeZipCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHomePhoneHum" Type="nvarchar" MaxLength="50" />
+          <Property Name="sSex" Type="nvarchar" MaxLength="15" />
+          <Property Name="sMaritalStatus" Type="nvarchar" MaxLength="15" />
+          <Property Name="dBirthDate" Type="datetime" />
+          <Property Name="dOriginalHiredDate" Type="datetime" />
+          <Property Name="dblHourlyRate" Type="float" />
+          <Property Name="sRegTempCode" Type="nvarchar" MaxLength="15" />
+          <Property Name="sFullPartTimeCode" Type="nvarchar" MaxLength="15" />
+          <Property Name="dblBaseCompensationRate" Type="float" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="strEIN" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intPositionID" Type="int" Nullable="false" />
+          <Property Name="strPositionName" Type="nvarchar" MaxLength="50" />
+          <Property Name="dTerminationDate" Type="datetime" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="30" />
+          <Property Name="MiddleInitial" Type="nvarchar" MaxLength="2" />
+          <Property Name="FirstLastName" Type="varchar" MaxLength="30" />
+          <Property Name="SecondLastName" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail">
+          <End Role="tblPayrollImportFileTemplate" Type="Self.tblPayrollImportFileTemplate" Multiplicity="0..1" />
+          <End Role="tblPayrollImportFileTemplateDetail" Type="Self.tblPayrollImportFileTemplateDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPayrollImportFileTemplate">
+              <PropertyRef Name="intTemplateId" />
+            </Principal>
+            <Dependent Role="tblPayrollImportFileTemplateDetail">
+              <PropertyRef Name="intTemplateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spPay_Compute_UserBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BATCHID" Type="nvarchar" Mode="In" />
+          <Parameter Name="USERID" Type="int" Mode="In" />
+          <Parameter Name="SUPERVISORID" Type="int" Mode="In" />
+          <Parameter Name="SUPERVISORNAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spPay_Create_CompanyBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BATCHID" Type="nvarchar" Mode="InOut" />
+          <Parameter Name="COMPANYNAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="PAYROLLDESCRIPTION" Type="nvarchar" Mode="In" />
+          <Parameter Name="PAYDATE" Type="date" Mode="In" />
+          <Parameter Name="SUPERVISORID" Type="int" Mode="In" />
+          <Parameter Name="SUPERVISORNAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="BATCH_TYPE" Type="int" Mode="In" />
+          <Parameter Name="TEMPLATEID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="TAWinImportDataContextStoreContainer">
+          <EntitySet Name="tblBatch" EntityType="Self.tblBatch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCompanyBatchWithholdings" EntityType="Self.tblCompanyBatchWithholdings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCompanyBatchWithholdings_ManualEntry" EntityType="Self.tblCompanyBatchWithholdings_ManualEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCompanySchedulesProcessed" EntityType="Self.tblCompanySchedulesProcessed" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCompensationItems" EntityType="Self.tblCompensationItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPayrollImportFileTemplate" EntityType="Self.tblPayrollImportFileTemplate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPayrollImportFileTemplateDetail" EntityType="Self.tblPayrollImportFileTemplateDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserBatch" EntityType="Self.tblUserBatch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserBatchCompensations" EntityType="Self.tblUserBatchCompensations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserBatchCompensations_ManualEntry" EntityType="Self.tblUserBatchCompensations_ManualEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserBatchWithholdings" EntityType="Self.tblUserBatchWithholdings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserBatchWithholdings_ManualEntry" EntityType="Self.tblUserBatchWithholdings_ManualEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblWithholdingsItems" EntityType="Self.tblWithholdingsItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viewPay_UserRecord" EntityType="Self.viewPay_UserRecord" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [viewPay_UserRecord].[intUserID] AS [intUserID], 
+    [viewPay_UserRecord].[strCompanyName] AS [strCompanyName], 
+    [viewPay_UserRecord].[intPayrollUserStatus] AS [intPayrollUserStatus], 
+    [viewPay_UserRecord].[strStatusName] AS [strStatusName], 
+    [viewPay_UserRecord].[id] AS [id], 
+    [viewPay_UserRecord].[name] AS [name], 
+    [viewPay_UserRecord].[idno] AS [idno], 
+    [viewPay_UserRecord].[nStatus] AS [nStatus], 
+    [viewPay_UserRecord].[sNotes] AS [sNotes], 
+    [viewPay_UserRecord].[sCompanyName] AS [sCompanyName], 
+    [viewPay_UserRecord].[sDeptName] AS [sDeptName], 
+    [viewPay_UserRecord].[sJobTitleName] AS [sJobTitleName], 
+    [viewPay_UserRecord].[sEmployeeTypeName] AS [sEmployeeTypeName], 
+    [viewPay_UserRecord].[sPayrollRuleName] AS [sPayrollRuleName], 
+    [viewPay_UserRecord].[sScheduleName] AS [sScheduleName], 
+    [viewPay_UserRecord].[nDeptID] AS [nDeptID], 
+    [viewPay_UserRecord].[nJobTitleID] AS [nJobTitleID], 
+    [viewPay_UserRecord].[nGroupID] AS [nGroupID], 
+    [viewPay_UserRecord].[nEmployeeType] AS [nEmployeeType], 
+    [viewPay_UserRecord].[nCompanyID] AS [nCompanyID], 
+    [viewPay_UserRecord].[nPayrollRuleID] AS [nPayrollRuleID], 
+    [viewPay_UserRecord].[nScheduleID] AS [nScheduleID], 
+    [viewPay_UserRecord].[dCompanySeniorityDate] AS [dCompanySeniorityDate], 
+    [viewPay_UserRecord].[sSSN] AS [sSSN], 
+    [viewPay_UserRecord].[sHomeAddressLine1] AS [sHomeAddressLine1], 
+    [viewPay_UserRecord].[sHomeAddressLine2] AS [sHomeAddressLine2], 
+    [viewPay_UserRecord].[sHomeCity] AS [sHomeCity], 
+    [viewPay_UserRecord].[sHomeState] AS [sHomeState], 
+    [viewPay_UserRecord].[sHomeZipCode] AS [sHomeZipCode], 
+    [viewPay_UserRecord].[sHomePhoneHum] AS [sHomePhoneHum], 
+    [viewPay_UserRecord].[sSex] AS [sSex], 
+    [viewPay_UserRecord].[sMaritalStatus] AS [sMaritalStatus], 
+    [viewPay_UserRecord].[dBirthDate] AS [dBirthDate], 
+    [viewPay_UserRecord].[dOriginalHiredDate] AS [dOriginalHiredDate], 
+    [viewPay_UserRecord].[dblHourlyRate] AS [dblHourlyRate], 
+    [viewPay_UserRecord].[sRegTempCode] AS [sRegTempCode], 
+    [viewPay_UserRecord].[sFullPartTimeCode] AS [sFullPartTimeCode], 
+    [viewPay_UserRecord].[dblBaseCompensationRate] AS [dblBaseCompensationRate], 
+    [viewPay_UserRecord].[email] AS [email], 
+    [viewPay_UserRecord].[strEIN] AS [strEIN], 
+    [viewPay_UserRecord].[intPositionID] AS [intPositionID], 
+    [viewPay_UserRecord].[strPositionName] AS [strPositionName], 
+    [viewPay_UserRecord].[dTerminationDate] AS [dTerminationDate], 
+    [viewPay_UserRecord].[FirstName] AS [FirstName], 
+    [viewPay_UserRecord].[MiddleInitial] AS [MiddleInitial], 
+    [viewPay_UserRecord].[FirstLastName] AS [FirstLastName], 
+    [viewPay_UserRecord].[SecondLastName] AS [SecondLastName]
+    FROM [dbo].[viewPay_UserRecord] AS [viewPay_UserRecord]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail" Association="Self.FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail">
+            <End Role="tblPayrollImportFileTemplate" EntitySet="tblPayrollImportFileTemplate" />
+            <End Role="tblPayrollImportFileTemplateDetail" EntitySet="tblPayrollImportFileTemplateDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TAWinImportDataContext" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblBatch">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="strCompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="strBatchDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dtBatchCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intCreatedByID" Type="Int32" Nullable="false" />
+          <Property Name="strCreateByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dtBatchUpdates" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intBatchStatus" Type="Int32" Nullable="false" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="intBatchType" Type="Int32" Nullable="false" />
+          <Property Name="intTemplateID" Type="Int32" Nullable="false" />
+          <Property Name="ClosedByUserID" Type="Int32" />
+          <Property Name="ClosedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="intPaymentStatusId" Type="Int32" />
+          <Property Name="strPaymentStatusByName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="dtPaymentStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="varPaymentConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strPaymentConfirmationRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="varCompanyPayrollSummary" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strPayrollSummaryRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="intFederalTaxDepositScheduleId" Type="Int32" />
+          <Property Name="intFederalTaxDepositStatusId" Type="Int32" />
+          <Property Name="decFederalTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="dtFederalTaxDepositDate" Type="DateTime" Precision="3" />
+          <Property Name="strFederalTaxEFTPSNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtFederalTaxStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="strFederalTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="varFederalTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strFederalTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intHaciendaTaxDepositScheduleId" Type="Int32" />
+          <Property Name="intHaciendaTaxDepositStatusId" Type="Int32" />
+          <Property Name="decHaciendaTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="dtHaciendaTaxDepositDate" Type="DateTime" Precision="3" />
+          <Property Name="strHaciendaTaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtHaciendaTaxStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="strHaciendaTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="varHaciendaTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strHaciendaTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intFUTATaxDepositScheduleId" Type="Int32" />
+          <Property Name="intFUTATaxDepositStatusId" Type="Int32" />
+          <Property Name="decFUTATaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="dtFUTATaxDepositDate" Type="DateTime" Precision="3" />
+          <Property Name="strFUTATaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtFUTATaxStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="strFUTATaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="varFUTATaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strFUTATaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intACHSentCount" Type="Int32" Nullable="false" />
+          <Property Name="ACHFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblPayrollImportFileTemplate">
+          <Key>
+            <PropertyRef Name="intTemplateId" />
+          </Key>
+          <Property Name="intTemplateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sTemplateName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="dtCreationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblPayrollImportFileTemplateDetails" Relationship="Self.FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail" FromRole="tblPayrollImportFileTemplate" ToRole="tblPayrollImportFileTemplateDetail" />
+        </EntityType>
+        <EntityType Name="tblPayrollImportFileTemplateDetail">
+          <Key>
+            <PropertyRef Name="intTemplateDetailId" />
+          </Key>
+          <Property Name="intTemplateDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intTemplateId" Type="Int32" />
+          <Property Name="intFieldIndex" Type="Int32" />
+          <Property Name="sFieldName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="sFieldNameAsValue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="sFieldMapping" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="sMappingTable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sMappingColumn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sColumnDataType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtCreationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblPayrollImportFileTemplate" Relationship="Self.FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail" FromRole="tblPayrollImportFileTemplateDetail" ToRole="tblPayrollImportFileTemplate" />
+        </EntityType>
+        <Association Name="FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail">
+          <End Role="tblPayrollImportFileTemplate" Type="Self.tblPayrollImportFileTemplate" Multiplicity="0..1" />
+          <End Role="tblPayrollImportFileTemplateDetail" Type="Self.tblPayrollImportFileTemplateDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPayrollImportFileTemplate">
+              <PropertyRef Name="intTemplateId" />
+            </Principal>
+            <Dependent Role="tblPayrollImportFileTemplateDetail">
+              <PropertyRef Name="intTemplateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TA7_ImportData_Context" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblBatches" EntityType="Self.tblBatch" />
+          <EntitySet Name="tblPayrollImportFileTemplates" EntityType="Self.tblPayrollImportFileTemplate" />
+          <EntitySet Name="tblPayrollImportFileTemplateDetails" EntityType="Self.tblPayrollImportFileTemplateDetail" />
+          <AssociationSet Name="FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail" Association="Self.FK_tblPayrollImportFileTemplateDetail_tblPayrollImportFileTemplateDetail">
+            <End Role="tblPayrollImportFileTemplate" EntitySet="tblPayrollImportFileTemplates" />
+            <End Role="tblPayrollImportFileTemplateDetail" EntitySet="tblPayrollImportFileTemplateDetails" />
+          </AssociationSet>
+          <EntitySet Name="tblCompanyBatchWithholdings" EntityType="TAWinImportDataContext.tblCompanyBatchWithholding" />
+          <EntitySet Name="tblCompanyBatchWithholdings_ManualEntry" EntityType="TAWinImportDataContext.tblCompanyBatchWithholdings_ManualEntry" />
+          <EntitySet Name="tblCompanySchedulesProcesseds" EntityType="TAWinImportDataContext.tblCompanySchedulesProcessed" />
+          <EntitySet Name="tblUserBatchWithholdings" EntityType="TAWinImportDataContext.tblUserBatchWithholding" />
+          <EntitySet Name="tblUserBatchWithholdings_ManualEntry" EntityType="TAWinImportDataContext.tblUserBatchWithholdings_ManualEntry" />
+          <EntitySet Name="tblUserBatchCompensations" EntityType="TAWinImportDataContext.tblUserBatchCompensation" />
+          <EntitySet Name="tblUserBatchCompensations_ManualEntry" EntityType="TAWinImportDataContext.tblUserBatchCompensations_ManualEntry" />
+          <EntitySet Name="viewPay_UserRecord" EntityType="TAWinImportDataContext.viewPay_UserRecord" />
+          <FunctionImport Name="spPay_Create_CompanyBatch" ReturnType="Collection(TAWinImportDataContext.spPay_Create_CompanyBatch_Result)">
+            <Parameter Name="BATCHID" Mode="InOut" Type="String" />
+            <Parameter Name="COMPANYNAME" Mode="In" Type="String" />
+            <Parameter Name="PAYROLLDESCRIPTION" Mode="In" Type="String" />
+            <Parameter Name="PAYDATE" Mode="In" Type="DateTime" />
+            <Parameter Name="SUPERVISORID" Mode="In" Type="Int32" />
+            <Parameter Name="SUPERVISORNAME" Mode="In" Type="String" />
+            <Parameter Name="BATCH_TYPE" Mode="In" Type="Int32" />
+            <Parameter Name="TEMPLATEID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="tblUserBatches" EntityType="TAWinImportDataContext.tblUserBatch" />
+          <FunctionImport Name="spPay_Compute_UserBatch" ReturnType="Collection(TAWinImportDataContext.spPay_Compute_UserBatch_Result)">
+            <Parameter Name="BATCHID" Mode="In" Type="String" />
+            <Parameter Name="USERID" Mode="In" Type="Int32" />
+            <Parameter Name="SUPERVISORID" Mode="In" Type="Int32" />
+            <Parameter Name="SUPERVISORNAME" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="tblCompensationItems" EntityType="TAWinImportDataContext.tblCompensationItem" />
+          <EntitySet Name="tblWithholdingsItems" EntityType="TAWinImportDataContext.tblWithholdingsItem" />
+        </EntityContainer>
+        <EntityType Name="tblCompanyBatchWithholding">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="decBatchEffectivePay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="decWithholdingsAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="intPrePostTaxDeduction" Type="Int32" Nullable="false" />
+          <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intEditType" Type="Int32" Nullable="false" />
+          <Property Name="intUBMESequence" Type="Int32" Nullable="false" />
+          <Property Name="strGLContributionPayable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblCompanyBatchWithholdings_ManualEntry">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="decBatchEffectivePay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="decWithholdingsAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="intPrePostTaxDeduction" Type="Int32" Nullable="false" />
+          <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intSupervisorID" Type="Int32" Nullable="false" />
+          <Property Name="strNote" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intEditType" Type="Int32" />
+          <Property Name="strGLContributionPayable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblCompanySchedulesProcessed">
+          <Key>
+            <PropertyRef Name="strCompanyName" />
+            <PropertyRef Name="intPayrollScheduleID" />
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intPayrollScheduleID" Type="Int32" Nullable="false" />
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="intPayWeekNumber" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserBatchWithholding">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="decBatchEffectivePay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="decWithholdingsAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="intPrePostTaxDeduction" Type="Int32" Nullable="false" />
+          <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intEditType" Type="Int32" Nullable="false" />
+          <Property Name="intUBMESequence" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserBatchWithholdings_ManualEntry">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strWithHoldingsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="decBatchEffectivePay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="decWithholdingsAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="intPrePostTaxDeduction" Type="Int32" Nullable="false" />
+          <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intSupervisorID" Type="Int32" Nullable="false" />
+          <Property Name="strNote" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intEditType" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblUserBatchCompensation">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strCompensationName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decPayRate" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="decHours" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="decPay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intEditType" Type="Int32" Nullable="false" />
+          <Property Name="intUBMESequence" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserBatchCompensations_ManualEntry">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="intSequenceNumber" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strCompensationName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decPayRate" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="decHours" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="decPay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="intSupervisorID" Type="Int32" Nullable="false" />
+          <Property Name="strNote" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intEditType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="viewPay_UserRecord">
+          <Key>
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="strCompanyName" />
+            <PropertyRef Name="intPayrollUserStatus" />
+            <PropertyRef Name="id" />
+            <PropertyRef Name="strEIN" />
+            <PropertyRef Name="intPositionID" />
+          </Key>
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intPayrollUserStatus" Type="Int32" Nullable="false" />
+          <Property Name="strStatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="idno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="nStatus" Type="Int32" />
+          <Property Name="sNotes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sCompanyName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sDeptName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sJobTitleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sEmployeeTypeName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sPayrollRuleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sScheduleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nDeptID" Type="Int32" />
+          <Property Name="nJobTitleID" Type="Int32" />
+          <Property Name="nGroupID" Type="Int32" />
+          <Property Name="nEmployeeType" Type="Int32" />
+          <Property Name="nCompanyID" Type="Int32" />
+          <Property Name="nPayrollRuleID" Type="Int32" />
+          <Property Name="nScheduleID" Type="Int32" />
+          <Property Name="dCompanySeniorityDate" Type="DateTime" Precision="3" />
+          <Property Name="sSSN" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="sHomeAddressLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHomeAddressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHomeCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHomeState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHomeZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHomePhoneHum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sSex" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="sMaritalStatus" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="dBirthDate" Type="DateTime" Precision="3" />
+          <Property Name="dOriginalHiredDate" Type="DateTime" Precision="3" />
+          <Property Name="dblHourlyRate" Type="Double" />
+          <Property Name="sRegTempCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="sFullPartTimeCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="dblBaseCompensationRate" Type="Double" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strEIN" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intPositionID" Type="Int32" Nullable="false" />
+          <Property Name="strPositionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dTerminationDate" Type="DateTime" Precision="3" />
+          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleInitial" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="FirstLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SecondLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spPay_Create_CompanyBatch_Result">
+          <Property Type="Int32" Name="ErrorNumber" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <EntityType Name="tblUserBatch">
+          <Key>
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strBatchID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intPayWeekNum" Type="Int32" Nullable="false" />
+          <Property Name="intUserBatchStatus" Type="Int32" Nullable="false" />
+          <Property Name="dtStartDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dtEndDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intCompanyID" Type="Int32" />
+          <Property Name="intDepartmentID" Type="Int32" />
+          <Property Name="intSubdepartmentID" Type="Int32" />
+          <Property Name="intEmployeeTypeID" Type="Int32" />
+          <Property Name="intPayMethodType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="spPay_Compute_UserBatch_Result">
+          <Property Type="Int32" Name="ErrorNumber" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <EntityType Name="tblCompensationItem">
+          <Key>
+            <PropertyRef Name="strCompensationName" />
+          </Key>
+          <Property Name="strCompensationName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intCompensationType" Type="Int32" Nullable="false" />
+          <Property Name="intComputationType" Type="Int32" Nullable="false" />
+          <Property Name="boolEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="intImportType" Type="Int32" Nullable="false" />
+          <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="boolCovidCompensation" Type="Boolean" Nullable="false" />
+          <Property Name="boolFICASSCCExempt" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblWithholdingsItem">
+          <Key>
+            <PropertyRef Name="strWithHoldingsName" />
+          </Key>
+          <Property Name="strWithHoldingsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="intPrePostTaxDeduction" Type="Int32" Nullable="false" />
+          <Property Name="intComputationType" Type="Int32" Nullable="false" />
+          <Property Name="decEmployeePercent" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="decEmployeeAmount" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="decCompanyPercent" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="decCompanyAmount" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="decMaximumSalaryLimit" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="decMinimumSalaryLimit" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+          <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="intWithholdingsTaxType" Type="Int32" />
+          <Property Name="strGLAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strContributionsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strGLAccount_Contributions" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="boolIsLoan" Type="Boolean" Nullable="false" />
+          <Property Name="boolIs401kPlan" Type="Boolean" Nullable="false" />
+          <Property Name="boolUserWithholding" Type="Boolean" Nullable="false" />
+          <Property Name="boolCompanyContribution" Type="Boolean" Nullable="false" />
+          <Property Name="strGLContributionPayable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TAWinImportDataContextStoreContainer" CdmEntityContainer="TA7_ImportData_Context">
+          <EntitySetMapping Name="tblBatches">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblBatch">
+              <MappingFragment StoreEntitySet="tblBatch">
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+                <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+                <ScalarProperty Name="dtBatchCreated" ColumnName="dtBatchCreated" />
+                <ScalarProperty Name="intCreatedByID" ColumnName="intCreatedByID" />
+                <ScalarProperty Name="strCreateByName" ColumnName="strCreateByName" />
+                <ScalarProperty Name="dtBatchUpdates" ColumnName="dtBatchUpdates" />
+                <ScalarProperty Name="intBatchStatus" ColumnName="intBatchStatus" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="intBatchType" ColumnName="intBatchType" />
+                <ScalarProperty Name="intTemplateID" ColumnName="intTemplateID" />
+                <ScalarProperty Name="ClosedByUserID" ColumnName="ClosedByUserID" />
+                <ScalarProperty Name="ClosedDateTime" ColumnName="ClosedDateTime" />
+                <ScalarProperty Name="intPaymentStatusId" ColumnName="intPaymentStatusId" />
+                <ScalarProperty Name="strPaymentStatusByName" ColumnName="strPaymentStatusByName" />
+                <ScalarProperty Name="dtPaymentStatusDate" ColumnName="dtPaymentStatusDate" />
+                <ScalarProperty Name="varPaymentConfirmation" ColumnName="varPaymentConfirmation" />
+                <ScalarProperty Name="strPaymentConfirmationRptName" ColumnName="strPaymentConfirmationRptName" />
+                <ScalarProperty Name="varCompanyPayrollSummary" ColumnName="varCompanyPayrollSummary" />
+                <ScalarProperty Name="strPayrollSummaryRptName" ColumnName="strPayrollSummaryRptName" />
+                <ScalarProperty Name="intFederalTaxDepositScheduleId" ColumnName="intFederalTaxDepositScheduleId" />
+                <ScalarProperty Name="intFederalTaxDepositStatusId" ColumnName="intFederalTaxDepositStatusId" />
+                <ScalarProperty Name="decFederalTaxDepositAmount" ColumnName="decFederalTaxDepositAmount" />
+                <ScalarProperty Name="dtFederalTaxDepositDate" ColumnName="dtFederalTaxDepositDate" />
+                <ScalarProperty Name="strFederalTaxEFTPSNo" ColumnName="strFederalTaxEFTPSNo" />
+                <ScalarProperty Name="dtFederalTaxStatusDate" ColumnName="dtFederalTaxStatusDate" />
+                <ScalarProperty Name="strFederalTaxStatusByName" ColumnName="strFederalTaxStatusByName" />
+                <ScalarProperty Name="varFederalTaxConfirmation" ColumnName="varFederalTaxConfirmation" />
+                <ScalarProperty Name="strFederalTaxRptName" ColumnName="strFederalTaxRptName" />
+                <ScalarProperty Name="intHaciendaTaxDepositScheduleId" ColumnName="intHaciendaTaxDepositScheduleId" />
+                <ScalarProperty Name="intHaciendaTaxDepositStatusId" ColumnName="intHaciendaTaxDepositStatusId" />
+                <ScalarProperty Name="decHaciendaTaxDepositAmount" ColumnName="decHaciendaTaxDepositAmount" />
+                <ScalarProperty Name="dtHaciendaTaxDepositDate" ColumnName="dtHaciendaTaxDepositDate" />
+                <ScalarProperty Name="strHaciendaTaxReceiptNo" ColumnName="strHaciendaTaxReceiptNo" />
+                <ScalarProperty Name="dtHaciendaTaxStatusDate" ColumnName="dtHaciendaTaxStatusDate" />
+                <ScalarProperty Name="strHaciendaTaxStatusByName" ColumnName="strHaciendaTaxStatusByName" />
+                <ScalarProperty Name="varHaciendaTaxConfirmation" ColumnName="varHaciendaTaxConfirmation" />
+                <ScalarProperty Name="strHaciendaTaxRptName" ColumnName="strHaciendaTaxRptName" />
+                <ScalarProperty Name="intFUTATaxDepositScheduleId" ColumnName="intFUTATaxDepositScheduleId" />
+                <ScalarProperty Name="intFUTATaxDepositStatusId" ColumnName="intFUTATaxDepositStatusId" />
+                <ScalarProperty Name="decFUTATaxDepositAmount" ColumnName="decFUTATaxDepositAmount" />
+                <ScalarProperty Name="dtFUTATaxDepositDate" ColumnName="dtFUTATaxDepositDate" />
+                <ScalarProperty Name="strFUTATaxReceiptNo" ColumnName="strFUTATaxReceiptNo" />
+                <ScalarProperty Name="dtFUTATaxStatusDate" ColumnName="dtFUTATaxStatusDate" />
+                <ScalarProperty Name="strFUTATaxStatusByName" ColumnName="strFUTATaxStatusByName" />
+                <ScalarProperty Name="varFUTATaxConfirmation" ColumnName="varFUTATaxConfirmation" />
+                <ScalarProperty Name="strFUTATaxRptName" ColumnName="strFUTATaxRptName" />
+                <ScalarProperty Name="intACHSentCount" ColumnName="intACHSentCount" />
+                <ScalarProperty Name="ACHFileName" ColumnName="ACHFileName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPayrollImportFileTemplates">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblPayrollImportFileTemplate">
+              <MappingFragment StoreEntitySet="tblPayrollImportFileTemplate">
+                <ScalarProperty Name="intTemplateId" ColumnName="intTemplateId" />
+                <ScalarProperty Name="sTemplateName" ColumnName="sTemplateName" />
+                <ScalarProperty Name="dtCreationDate" ColumnName="dtCreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPayrollImportFileTemplateDetails">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblPayrollImportFileTemplateDetail">
+              <MappingFragment StoreEntitySet="tblPayrollImportFileTemplateDetail">
+                <ScalarProperty Name="intTemplateDetailId" ColumnName="intTemplateDetailId" />
+                <ScalarProperty Name="intTemplateId" ColumnName="intTemplateId" />
+                <ScalarProperty Name="intFieldIndex" ColumnName="intFieldIndex" />
+                <ScalarProperty Name="sFieldName" ColumnName="sFieldName" />
+                <ScalarProperty Name="sFieldNameAsValue" ColumnName="sFieldNameAsValue" />
+                <ScalarProperty Name="sFieldMapping" ColumnName="sFieldMapping" />
+                <ScalarProperty Name="sMappingTable" ColumnName="sMappingTable" />
+                <ScalarProperty Name="sMappingColumn" ColumnName="sMappingColumn" />
+                <ScalarProperty Name="sColumnDataType" ColumnName="sColumnDataType" />
+                <ScalarProperty Name="dtCreationDate" ColumnName="dtCreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCompanyBatchWithholdings">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompanyBatchWithholding">
+              <MappingFragment StoreEntitySet="tblCompanyBatchWithholdings">
+                <ScalarProperty Name="strGLContributionPayable" ColumnName="strGLContributionPayable" />
+                <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+                <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+                <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+                <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+                <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+                <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+                <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCompanyBatchWithholdings_ManualEntry">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompanyBatchWithholdings_ManualEntry">
+              <MappingFragment StoreEntitySet="tblCompanyBatchWithholdings_ManualEntry">
+                <ScalarProperty Name="strGLContributionPayable" ColumnName="strGLContributionPayable" />
+                <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+                <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+                <ScalarProperty Name="strNote" ColumnName="strNote" />
+                <ScalarProperty Name="intSupervisorID" ColumnName="intSupervisorID" />
+                <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+                <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+                <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+                <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCompanySchedulesProcesseds">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompanySchedulesProcessed">
+              <MappingFragment StoreEntitySet="tblCompanySchedulesProcessed">
+                <ScalarProperty Name="intPayWeekNumber" ColumnName="intPayWeekNumber" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+                <ScalarProperty Name="intPayrollScheduleID" ColumnName="intPayrollScheduleID" />
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserBatchWithholdings">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchWithholding">
+              <MappingFragment StoreEntitySet="tblUserBatchWithholdings">
+                <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+                <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+                <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+                <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+                <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+                <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+                <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserBatchWithholdings_ManualEntry">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchWithholdings_ManualEntry">
+              <MappingFragment StoreEntitySet="tblUserBatchWithholdings_ManualEntry">
+                <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+                <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+                <ScalarProperty Name="strNote" ColumnName="strNote" />
+                <ScalarProperty Name="intSupervisorID" ColumnName="intSupervisorID" />
+                <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+                <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+                <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+                <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserBatchCompensations">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchCompensation">
+              <MappingFragment StoreEntitySet="tblUserBatchCompensations">
+                <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+                <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+                <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+                <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+                <ScalarProperty Name="decPay" ColumnName="decPay" />
+                <ScalarProperty Name="decHours" ColumnName="decHours" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+                <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserBatchCompensations_ManualEntry">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchCompensations_ManualEntry">
+              <MappingFragment StoreEntitySet="tblUserBatchCompensations_ManualEntry">
+                <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+                <ScalarProperty Name="strNote" ColumnName="strNote" />
+                <ScalarProperty Name="intSupervisorID" ColumnName="intSupervisorID" />
+                <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+                <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+                <ScalarProperty Name="decPay" ColumnName="decPay" />
+                <ScalarProperty Name="decHours" ColumnName="decHours" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+                <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewPay_UserRecord">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.viewPay_UserRecord">
+              <MappingFragment StoreEntitySet="viewPay_UserRecord">
+                <ScalarProperty Name="SecondLastName" ColumnName="SecondLastName" />
+                <ScalarProperty Name="FirstLastName" ColumnName="FirstLastName" />
+                <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="dTerminationDate" ColumnName="dTerminationDate" />
+                <ScalarProperty Name="strPositionName" ColumnName="strPositionName" />
+                <ScalarProperty Name="intPositionID" ColumnName="intPositionID" />
+                <ScalarProperty Name="strEIN" ColumnName="strEIN" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="dblBaseCompensationRate" ColumnName="dblBaseCompensationRate" />
+                <ScalarProperty Name="sFullPartTimeCode" ColumnName="sFullPartTimeCode" />
+                <ScalarProperty Name="sRegTempCode" ColumnName="sRegTempCode" />
+                <ScalarProperty Name="dblHourlyRate" ColumnName="dblHourlyRate" />
+                <ScalarProperty Name="dOriginalHiredDate" ColumnName="dOriginalHiredDate" />
+                <ScalarProperty Name="dBirthDate" ColumnName="dBirthDate" />
+                <ScalarProperty Name="sMaritalStatus" ColumnName="sMaritalStatus" />
+                <ScalarProperty Name="sSex" ColumnName="sSex" />
+                <ScalarProperty Name="sHomePhoneHum" ColumnName="sHomePhoneHum" />
+                <ScalarProperty Name="sHomeZipCode" ColumnName="sHomeZipCode" />
+                <ScalarProperty Name="sHomeState" ColumnName="sHomeState" />
+                <ScalarProperty Name="sHomeCity" ColumnName="sHomeCity" />
+                <ScalarProperty Name="sHomeAddressLine2" ColumnName="sHomeAddressLine2" />
+                <ScalarProperty Name="sHomeAddressLine1" ColumnName="sHomeAddressLine1" />
+                <ScalarProperty Name="sSSN" ColumnName="sSSN" />
+                <ScalarProperty Name="dCompanySeniorityDate" ColumnName="dCompanySeniorityDate" />
+                <ScalarProperty Name="nScheduleID" ColumnName="nScheduleID" />
+                <ScalarProperty Name="nPayrollRuleID" ColumnName="nPayrollRuleID" />
+                <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+                <ScalarProperty Name="nEmployeeType" ColumnName="nEmployeeType" />
+                <ScalarProperty Name="nGroupID" ColumnName="nGroupID" />
+                <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+                <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+                <ScalarProperty Name="sScheduleName" ColumnName="sScheduleName" />
+                <ScalarProperty Name="sPayrollRuleName" ColumnName="sPayrollRuleName" />
+                <ScalarProperty Name="sEmployeeTypeName" ColumnName="sEmployeeTypeName" />
+                <ScalarProperty Name="sJobTitleName" ColumnName="sJobTitleName" />
+                <ScalarProperty Name="sDeptName" ColumnName="sDeptName" />
+                <ScalarProperty Name="sCompanyName" ColumnName="sCompanyName" />
+                <ScalarProperty Name="sNotes" ColumnName="sNotes" />
+                <ScalarProperty Name="nStatus" ColumnName="nStatus" />
+                <ScalarProperty Name="idno" ColumnName="idno" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="strStatusName" ColumnName="strStatusName" />
+                <ScalarProperty Name="intPayrollUserStatus" ColumnName="intPayrollUserStatus" />
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spPay_Create_CompanyBatch" FunctionName="TAWinImportDataContext.Store.spPay_Create_CompanyBatch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TAWinImportDataContext.spPay_Create_CompanyBatch_Result">
+                <ScalarProperty Name="ErrorNumber" ColumnName="ErrorNumber" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tblUserBatches">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatch">
+              <MappingFragment StoreEntitySet="tblUserBatch">
+                <ScalarProperty Name="intPayMethodType" ColumnName="intPayMethodType" />
+                <ScalarProperty Name="intEmployeeTypeID" ColumnName="intEmployeeTypeID" />
+                <ScalarProperty Name="intSubdepartmentID" ColumnName="intSubdepartmentID" />
+                <ScalarProperty Name="intDepartmentID" ColumnName="intDepartmentID" />
+                <ScalarProperty Name="intCompanyID" ColumnName="intCompanyID" />
+                <ScalarProperty Name="dtEndDatePeriod" ColumnName="dtEndDatePeriod" />
+                <ScalarProperty Name="dtStartDatePeriod" ColumnName="dtStartDatePeriod" />
+                <ScalarProperty Name="intUserBatchStatus" ColumnName="intUserBatchStatus" />
+                <ScalarProperty Name="intPayWeekNum" ColumnName="intPayWeekNum" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spPay_Compute_UserBatch" FunctionName="TAWinImportDataContext.Store.spPay_Compute_UserBatch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TAWinImportDataContext.spPay_Compute_UserBatch_Result">
+                <ScalarProperty Name="ErrorNumber" ColumnName="ErrorNumber" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tblCompensationItems">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompensationItem">
+              <MappingFragment StoreEntitySet="tblCompensationItems">
+                <ScalarProperty Name="boolFICASSCCExempt" ColumnName="boolFICASSCCExempt" />
+                <ScalarProperty Name="boolCovidCompensation" ColumnName="boolCovidCompensation" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="intImportType" ColumnName="intImportType" />
+                <ScalarProperty Name="boolEnabled" ColumnName="boolEnabled" />
+                <ScalarProperty Name="intComputationType" ColumnName="intComputationType" />
+                <ScalarProperty Name="intCompensationType" ColumnName="intCompensationType" />
+                <ScalarProperty Name="strDescription" ColumnName="strDescription" />
+                <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblWithholdingsItems">
+            <EntityTypeMapping TypeName="TAWinImportDataContext.tblWithholdingsItem">
+              <MappingFragment StoreEntitySet="tblWithholdingsItems">
+                <ScalarProperty Name="strGLContributionPayable" ColumnName="strGLContributionPayable" />
+                <ScalarProperty Name="boolCompanyContribution" ColumnName="boolCompanyContribution" />
+                <ScalarProperty Name="boolUserWithholding" ColumnName="boolUserWithholding" />
+                <ScalarProperty Name="boolIs401kPlan" ColumnName="boolIs401kPlan" />
+                <ScalarProperty Name="boolIsLoan" ColumnName="boolIsLoan" />
+                <ScalarProperty Name="strGLAccount_Contributions" ColumnName="strGLAccount_Contributions" />
+                <ScalarProperty Name="strContributionsName" ColumnName="strContributionsName" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="intWithholdingsTaxType" ColumnName="intWithholdingsTaxType" />
+                <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+                <ScalarProperty Name="decMinimumSalaryLimit" ColumnName="decMinimumSalaryLimit" />
+                <ScalarProperty Name="decMaximumSalaryLimit" ColumnName="decMaximumSalaryLimit" />
+                <ScalarProperty Name="decCompanyAmount" ColumnName="decCompanyAmount" />
+                <ScalarProperty Name="decCompanyPercent" ColumnName="decCompanyPercent" />
+                <ScalarProperty Name="decEmployeeAmount" ColumnName="decEmployeeAmount" />
+                <ScalarProperty Name="decEmployeePercent" ColumnName="decEmployeePercent" />
+                <ScalarProperty Name="intComputationType" ColumnName="intComputationType" />
+                <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+                <ScalarProperty Name="strDescription" ColumnName="strDescription" />
+                <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

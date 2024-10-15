@@ -1,0 +1,162 @@
+﻿@model IEnumerable<TimeAide.Web.Models.UserInformation>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Users</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">User Management</li>
+                <li class="breadcrumb-item active">User</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="employeeIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+        <div class="col-auto float-right ml-auto">
+            @*@Html.ActionLink("Create New User", "Create")*@
+            <!-- <a href="/UserInformation/Create" class="btn add-btn"><i class="fa fa-plus"></i> Add New User</a>-->
+
+            <a href="" data-toggle="modal" data-target="#employeeCreateEdit_modal" class="btn add-btn"><i class="fa fa-plus"></i> Add New User</a>
+            <div class="view-icons">
+                <a id="btnGridView" href="/UserInformation/Index/1" class="grid-view btn btn-link " title="Grid View"><i class="fa fa-th"></i></a>
+                <a  id="btnListView" href="javascript:void(0)" class="list-view btn btn-link active" title="List View"><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+        <div class="table-responsive">
+            <table class="table table-striped custom-table table-nowrap mb-0" id="tblUser">
+                <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+                <thead>
+                    <tr>
+                        <th>Action</th>
+
+                        <th>
+
+                            <!--UserID-->
+                            EmployeeID
+                        </th>
+                        <th>Status</th>
+                        @*<th>
+
+
+                                SystemID
+                            </th>*@
+
+                        <th>
+
+                            FirstName
+                        </th>
+
+                        <th>
+                            LastName
+                        </th>
+                        <th>
+
+                            Company
+                        </th>
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            SubDepartment
+                        </th>
+                        <th>
+                            EmployeeType
+                        </th>
+                        <th>
+                            Position
+                        </th>
+
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    var lastName = (item.FirstLastName ?? "") + " " + (item.SecondLastName ?? "");
+                    var empStatusBgClass = "bg-inverse-danger";
+                    if (item.EmployeeStatusId == 1)
+                    {
+                        empStatusBgClass = "bg-inverse-success";
+                    }
+
+                    else if (item.EmployeeStatusId == 2)
+                    {
+                        empStatusBgClass = "bg-inverse-warning";
+                    }
+
+
+                    <tr>
+                        <td class="text-left">
+
+                            <div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                    <a class="dropdown-item" href="/UserInformation/Details/@item.Id"><i class="fa fa-eye m-r-5"></i> Detail</a>
+                                    <!-- <a class="dropdown-item" href="/UserInformation/Delete/@item.Id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>-->
+                                    <!--<a class="dropdown-item" href="/UserContactInformation/Create/@item.Id"><i class="fa fa-trash-o m-r-5"></i> Address</a>-->
+
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <a href="/UserInformation/Details/@item.Id" title="View Detail"> @Html.DisplayFor(modelItem => item.EmployeeId)</a>
+                        </td>
+                        <td>
+                            <span class="badge @empStatusBgClass">@item.EmployeeStatus.EmployeeStatusName</span>
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.SystemId)
+                            </td>*@
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+
+                        <td>
+                            @lastName
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Company.CompanyName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubDepartment.SubDepartmentName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeType.EmployeeTypeName)
+                        </td>
+                        <td>
+                            @* @Html.DisplayFor(modelItem => item.SupervisoryLevel.SupervisoryLevelName)*@
+                            @Html.DisplayFor(modelItem => item.Position.PositionName)
+
+
+                        </td>
+
+
+
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+  </div>
+
+@Html.Partial("_EmployeeCreateEdit")
+<script src="~/Scripts/UserInformation/userMain-js.js"></script>

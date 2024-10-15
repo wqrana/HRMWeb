@@ -1,0 +1,138 @@
+﻿
+<div id="employeeCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @*<div class="modal-header">
+            <h5 class="modal-title">Add User</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>*@
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Add- Employee</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                @*<div class="card">
+                    <div class="card-body pb-0">*@
+
+                        <div class="alert" style="display:none;" id="employeeCreateEditAlert">
+                            <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                            <strong>Alert!</strong><span class="ml-1"></span>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Employee ID: <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        <input id="emp_empid" data-maxlength="9" onkeypress="this.value=this.value.slice(0,this.dataset.maxlength-1)" class="form-control" type="number">
+                                    </div>
+                                    <label class="col-md-3 col-form-label">SSN: <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        <input id="emp_SSN" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label id="First_Name" class="col-md-3 col-form-label">First Name: <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        <input id="emp_firstName"  maxlength="20" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                                    </div>
+                                    <label class="col-md-3 col-form-label">Initial: <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        <input id="emp_middleName" maxlength="2" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label id="1st_LastName" class="col-md-3 col-form-label">1st LastName: <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        <input id="emp_firstLastName" maxlength="20" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                                    </div>
+                                    <label id="2nd_LastName" class="col-md-3 col-form-label">2nd LastName: <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        <input id="emp_secondLastName" minlength="3" maxlength="20" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                @*<div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Company: <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("CompanyId", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                </div>*@
+                            </div>
+
+
+                            @*
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Employee ID <span class="text-danger">*</span></label>
+                                    <input id="emp_empid" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>SSN</label>
+                                    <input id="emp_SSN" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>First Name <span class="text-danger">*</span></label>
+                                    <input id="emp_firstName" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Initial<span class="text-danger"></span></label>
+                                    <input id="emp_middleName" class="form-control" type="text">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>1st LastName<span class="text-danger">*</span></label>
+                                    <input id="emp_firstLastName" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>2nd LastName<span class="text-danger">*</span></label>
+                                    <input id="emp_secondLastName" class="form-control" type="text">
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Company<span class="text-danger">*</span></label>
+                                    @Html.DropDownList("CompanyId", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+
+                        </div>
+                            *@
+                        </div>
+
+                        <div class="submit-section mt-1">
+
+                            <button id="btnSaveEmployee" class="btn btn-primary submit-btn">Save</button>
+                            <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+@*</div>
+</div>*@
+

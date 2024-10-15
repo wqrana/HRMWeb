@@ -1,0 +1,274 @@
+﻿@model TimeAide.Web.ViewModel.EmployeePrivilegeViewModel
+<div class="form-horizontal" style="padding:10px;width:100%">
+    @Html.HiddenFor(model => model.UserInformationId)
+    <input id="UserContactInformationId_" name="UserContactInformationId_" type="hidden" value="@Model.Id">
+    <div class="col-md-12 row" style="padding:0px">
+        <div class="col-md-6" style="padding:0px">
+            <div class="panel panel-default" style="margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="col-md-12 row">
+                        <div class="col-md-8">
+                            Supervised Employees
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a a href="javascript:;" data-toggle="modal" id="anchorEmploymentPrivilege" onclick="fnAddSupervisedUsers(@Model.UserInformationId);" class="dropdown-item" data-id="@ViewBag.UserInformationId"><i class="fa fa-plus m-r-5"></i>Edit</a>
+                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowSupervisedEmployeesChangeHistory(@Model.UserInformationId,'SupervisorUserId')" class="dropdown-item" data-id="@Model.UserInformationId"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div id="divSupervisedEmployees">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="padding:0px">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="col-md-12 row">
+                        <div class="col-md-6">
+                            Supervisors
+                        </div>
+                        <div class="col-md-6 pr-0">
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a a href="javascript:;" data-toggle="modal" id="anchorEmploymentPrivilege" onclick="fnAddSupervisers(@Model.UserInformationId);" class="dropdown-item" data-id="@ViewBag.UserInformationId"><i class="fa fa-plus m-r-5"></i>Edit</a>
+                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowSupervisedEmployeesChangeHistory(@Model.UserInformationId,'EmployeeUserId')" class="dropdown-item" data-id="@Model.UserInformationId"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div id="divEmployeeSupervisers">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        LoadSupervisedEmployees(@Model.UserInformationId);
+        LoadEmployeeSupervises(@Model.UserInformationId);
+        LoadEmployeeNotification(@Model.UserInformationId);
+        $("table").on('click', ".selectProperty, .selectedProperty", function () {
+            if ($(this).hasClass('selectProperty'))
+                var newTd = 'selectedProperty', newTbl = 'selectedPropsTable';
+            else
+                var newTd = 'selectProperty', newTbl = 'searchTable';
+            $(this).prop('checked', false).attr('class', newTd);
+            var tr = $(this).closest('tr');
+            $('table.' + newTbl).find("tbody").append(tr.clone());
+            tr.remove();
+        });
+    });
+
+    function fnAddSupervisedUser(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/UserInformation/AddSupervisor',
+            contentType: "application/json; charset=utf-8",
+            data: { "userId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function createEditAppraisalTemplateGoal(templateId) {
+        debugger;
+        alertID = "#appraisalTemplateIndexPageAlert"
+        templateId = templateId == 0 ? $("#SelectedTemplateId").val() : templateId;
+        if (templateId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeNotificationRole/CreateEdit',
+                data: { "id": templateId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#AppraisalTemplateGoalCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Template for Add/Edit Goal(s)");
+        }
+    }
+
+    function fnAddSuperviserNotifications(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeNotificationRole/CreateEdit',
+            contentType: "application/json; charset=utf-8",
+            data: { "userId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnAddSupervisers(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/CreateEdit',
+            contentType: "application/json; charset=utf-8",
+            data: { "userId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnAddSupervisedUsers(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/CreateEditSupervisedEmplyees',
+            contentType: "application/json; charset=utf-8",
+            data: { "userId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function LoadEmployeeSupervises(id) {
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/IndexEmployeeSupervisers',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": $('#UserInformationId').val() },
+            datatype: "html",
+            success: function (html) {
+                $('#divEmployeeSupervisers').empty()
+                $('#divEmployeeSupervisers').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function LoadSupervisedEmployees(id) {
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/IndexSupervisedEmployees',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": $('#UserInformationId').val() },
+            datatype: "html",
+            success: function (html) {
+                $('#divSupervisedEmployees').empty()
+                $('#divSupervisedEmployees').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function LoadEmployeeNotification(id) {
+
+    }
+    function ShowSupervisedEmployeesChangeHistory(recordId,columnName) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/SupervisedEmployeesChangeHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "refrenceId": recordId, "columnName": columnName },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                //$('#myModal').modal(options);
+                //$('#myModal').css({ 'width': '70%' });
+                //$('#myModal').css({ 'max-width': '70%' });
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    $(function () {
+
+    });
+</script>

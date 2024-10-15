@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TimeAide.Web.Models.CompanyEmployeeTab>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Form.FormName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeGroupDescription)
+        </th>
+        <th>
+           Employee Group Type
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Form.FormName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmployeeGroupDescription)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.Company.CompanyName)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

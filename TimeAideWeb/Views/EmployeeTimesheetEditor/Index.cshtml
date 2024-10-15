@@ -1,0 +1,760 @@
+﻿
+@{
+    ViewBag.Title = "Timesheet Editor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />*@
+<!-- Page Header -->
+<style>
+    .showSection {
+        display: block;
+    }
+
+    .hideSection {
+        display: none;
+    }
+</style>
+@{
+    var isEmpReview = (new TimeAide.Services.ApplicationConfigurationService()).EmployeeTimeSheetApproval;
+    var isSupvApproval = (new TimeAide.Services.ApplicationConfigurationService()).SupervisorTimeSheetApproval;
+    var showhideEmpRvwFilter = isEmpReview == 1 ? "showSection" : "hideSection";
+    var showhideSuprAprFilter = isSupvApproval == 1 ? "showSection" : "hideSection";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Timesheet Editor</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Attendance</li>
+                <li class="breadcrumb-item active">Timesheet Editor</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="applicantIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row filter-row pl-2">
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-2">
+            <input id="txtDTStartDate" type="datetime" class="form-control floating" value="@DateTime.Today">
+            <label class="focus-label">From Date</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-2">
+            <input id="txtDTEndDate" type="datetime" class="form-control floating" value="@DateTime.Today">
+            <label class="focus-label">To Date</label>
+        </div>
+    </div>
+
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-2">
+            <input id="EmployeeId" type="text" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus mb-2">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-2">
+            @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("SubDepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">SubDepartment</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("EmployeeTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Employee Type</label>
+        </div>
+    </div>
+
+    <div class="col-sm-2 col-md-2 pl-0 pr-0 @showhideEmpRvwFilter">
+        <div class="form-group form-focus select-focus">
+            <select class="select floating" id="intUserReviewedId">
+                <option value="-1">All</option>
+                <option value="0">Unreviewed</option>
+                <option value="1">Reviewed</option>
+            </select>
+            <label class="focus-label">Employee Review</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0 @showhideSuprAprFilter">
+        <div class="form-group form-focus select-focus">
+            <select class="select floating" id="nReviewStatusId">
+                <option value="-1">All</option>
+                <option value="0">Unapproved</option>
+                <option value="2">Approved</option>
+            </select>
+            <label class="focus-label">Supervisor Approval</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("ReportTypeId", null, null, new { id = "ddlReportType", @class = "select floating" })
+            <label class="focus-label">Report Type</label>
+        </div>
+    </div>
+    <div class="col-sm-1 col-md-1 pl-0 pr-0">
+        <a href="javascript: getEmployeeTimesheet();" class="btn btn-success btn-block"> Select </a>
+
+    </div>
+</div>
+<hr class="m-0" />
+<!--<div class="row filter-row">
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("SubDepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">SubDepartment</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("EmployeeTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Employee Type</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("ReportTypeId", null, null, new { id = "ddlReportType", @class = "select floating" })
+            <label class="focus-label">Report Type</label>
+        </div>
+    </div>
+    <div class="col-sm-1 col-md-1 pl-0 pr-0">-->
+@*@if (ViewBag.HasCompanyId)
+    {*@
+<!--<a href="javascript: getEmployeeTimesheet();" class="btn btn-success btn-block"> Select </a>-->
+@*}
+    else
+    {
+        <div class="alert-danger"> Unauthorized Access</div>
+    }*@
+<!--</div>
+</div>-->
+<div class="row pb-0 mb-0">
+    <div class="col-sm-10">
+    </div>
+    <div class="col-sm-2 pr-0">
+        <div class="col-auto float-right ml-auto pr-0">
+            <div class="btn-group btn-group-sm pb-1">
+                @if (ViewBag.HasCompanyId)
+                {
+                    <button class="btn btn-white" onclick="javascript:runLocalReport(0)"><i class="fa fa-print fa-lg"></i> Print</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div style="padding:1px; padding-top:0px;">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div id="divLoadingTimeSheetReportWeekList" class="align-content-md-center">
+                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+            </div>
+            <div class="panel panel-default" style="width:100%;margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Timesheet
+                    @*<div class="pull-right dropdown-action" style="height:20px;" id="contactInfoMenu">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                <a a href="javascript:AddEditContactInfo();" class="dropdown-item"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+                            </div>
+                        </div>*@
+                </div>
+                <div class="panel-body">
+                    <div id="divTimeSheet" style="max-height:450px; overflow-y:auto">
+                        Fetch Timesheet
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row mb-0">
+            <div class="col-8" style="padding-left:0px">
+                <div id="divLoadingTimeSheetDetail" class="align-content-md-center">
+                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                </div>
+                <div class="panel panel-default" style="width:100%;margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Timesheet Detail
+                    </div>
+                    <div class="panel-body">
+                        <div id="divTimeSheetDetail">
+                            No Timesheet Selected for selected week
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4" style="padding-left:0px">
+                <div id="divLoadingDailyCompensation" class="align-content-md-center">
+                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                </div>
+                <div class="panel panel-default" style="width:100%;margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Daily Compensation(<span id="spEffectiveDate"></span>)
+                    </div>
+                    <div class="panel-body">
+                        <div id="divDailyCompensation">
+                            Click on "Punch Date" to view Daily Compensation
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var alertID = null;
+    $(document).ready(function () {
+        debugger;
+        $("#divLoadingTimeSheetReportWeekList").hide();
+        $("#divLoadingTimeSheetDetail").hide();
+        $("#divLoadingDailyCompensation").hide();
+        $('#pickDateTime').datetimepicker({
+            format: "DD/MM/YYYY hh:mm A"
+        });
+        $('#DepartmentId').change(function (e) {
+            debugger;
+            var departmentId = $(this).val();
+            LoadSubDepartmentDropdown(departmentId, '#SubDepartmentId', null);
+        })
+    });
+
+    function LoadSubDepartmentDropdown(departmentId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/SubDepartment/SupervisorSubDepartmentByDepartment',
+            data: { 'departmentId': departmentId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> All </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+    function getEmployeeTimesheet() {
+
+        debugger;
+        var filterObject = new Object();
+        filterObject.DTStartDate = $('#txtDTStartDate').val();
+        filterObject.DTEndDate = $('#txtDTEndDate').val();
+        filterObject.e_id = $('#EmployeeId').val();
+        filterObject.e_name = $('#EmployeeName').val();
+        filterObject.nDept = $('#DepartmentId').val();
+        filterObject.nJobTitleID = $('#SubDepartmentId').val();
+        filterObject.nEmployeeType = $('#EmployeeTypeId').val();
+        filterObject.intUserReviewed = $('#intUserReviewedId').val();
+        filterObject.nReviewStatus = $('#nReviewStatusId').val();
+
+        var sDate = new Date(moment(filterObject.DTStartDate).format("YYYY-MM-DD"));
+        var eDate = new Date(moment(filterObject.DTEndDate).format("YYYY-MM-DD"));
+        if (eDate < sDate) {
+            showAlertAutoHide("", "Error", "To Date should be greater or equal to From Date.");
+            return;
+        }
+        $("#divLoadingTimeSheetReportWeekList").show();
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeTimesheetEditor/Timesheet',
+            data: JSON.stringify(filterObject),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divTimeSheet").html(data);
+                $("#divTimeSheetDetail").text("No Timesheet Selected");
+                $("#divLoadingTimeSheetReportWeekList").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    function getSelectedTSDetail() {
+        var selectedTSD = [];
+        $('input[name="SelectedTSDetail"]').each(function () {
+            debugger;
+            var isSelectetTSD = $(this).is(":checked");
+            if (isSelectetTSD) {
+                var val = $(this).attr("id");
+                selectedTSD.push(val);
+            }
+
+        });
+        return selectedTSD;
+    }
+    function editPunchDate() {
+        var selectedId = '';
+        var selectedRecords = getSelectedTSDetail()
+        if (selectedRecords.length > 1) {
+
+            showAlertAutoHide("", 'Error', "Edit can only work for single selection.")
+            return;
+        }
+
+        selectedId = selectedRecords[0];
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/EditPunchDate',
+            data: { "timesheetDetailId": selectedId },
+            success: function (data) {
+                debugger;
+                $("#divEditPunchDate").html(data);
+                $("#timesheetPunchDateEditor_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function getEditPunchDateDetail(timesheetDetailId) {
+        $("#divLoadingEditPunchDetail").show();
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/AjaxEditPunchDateDetail',
+            data: { "timesheetDetailId": timesheetDetailId },
+            success: function (data) {
+                debugger;
+                $("#divEditPunchDetail").html(data);
+                $("#divLoadingEditPunchDetail").hide();
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function addTransaction(openType) {
+        debugger;
+        console.log(openType);
+        var selectedIds = '';
+        var selectedRecords = getSelectedTSDetail()
+        if (selectedRecords.length > 0) {
+            selectedIds = selectedRecords.join(",");
+            console.log(selectedIds);
+        }
+        else {
+            console.log("no selection of item");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/AddTransaction',
+            data: { "timesheetDetailIds": selectedIds, "openType": openType },
+            success: function (data) {
+                debugger;
+                $("#divAddTransction").html(data);
+                $("#timesheetAddTransaction_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function deleteTransaction(transId, openType) {
+        debugger;
+        var selectedIds = '';
+        var selectedRecords = getSelectedTSDetail();
+        if (selectedRecords.length > 0) {
+            selectedIds = selectedRecords.join(",");
+            console.log(selectedIds);
+        }
+        else {
+            console.log("no selection of item");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/DeleteTransaction',
+            data: { "timesheetDetailIds": selectedIds, "transId": transId, "openType": openType },
+            success: function (data) {
+                debugger;
+                $("#divAddTransction").html(data);
+                $("#timesheetDeleteTransaction_modal").modal("show");
+            },
+            error: function () {
+            }
+        });
+    }
+    function addPunches(openType) {
+        var selectedIds = '';
+        var selectedRecords = getSelectedTSDetail()
+        if (selectedRecords.length > 0) {
+            selectedIds = selectedRecords.join(",");
+            console.log(selectedIds);
+        }
+        else {
+            console.log("no selection of item");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/AddPunches',
+            data: { "timesheetDetailIds": selectedIds, "openType": openType },
+            success: function (data) {
+                debugger;
+                $("#divAddTransction").html(data);
+                $("#timesheetAddPunches_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function deletePunches(punchId, openType) {
+        var selectedIds = '';
+        var selectedRecords = getSelectedTSDetail()
+        if (selectedRecords.length > 0) {
+            selectedIds = selectedRecords.join(",");
+            console.log(selectedIds);
+        }
+        else {
+            console.log("no selection of item");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/deletePunches',
+            data: { "timesheetDetailIds": selectedIds, "openType": openType, "deletePunchId": punchId },
+            success: function (data) {
+                debugger;
+                $("#divAddTransction").html(data);
+                $("#timesheetDeletePunches_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function confirmDeletePunches(punchIds, nWeekId, note, openType) {
+        debugger;
+        //Fields validation
+        var isValidated = true;
+        var message = "";
+
+        if (punchIds == "") {
+            showAlertAutoHide("", 'Error', "Please select the Punch(es).");
+            return;
+        }
+        else if (note == "") {
+            showAlertAutoHide("", 'Error', "Note field is required.");
+            return;
+        }
+        if (isValidated) {
+            // ajax call for saving data
+            disabledSubmitAction(true);
+            console.log("before calling" + punchIds);
+            $.ajax({
+                type: "POST",
+                url: "/EmployeeTimeSheetEditor/ConfirmDeletePunches",
+                data: { "ids": punchIds, "nWeekId": nWeekId, "note": note },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    console.log(data);
+                    if (data.status == "Success") {
+                        $("#timesheetDeletePunches_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        //refreshTimesheet(data.nWeekId);
+                        if (openType == 'EPDate') {
+                            var selectedRecords = getSelectedTSDetail();
+                            getEditPunchDateDetail(selectedRecords[0]);
+                        }
+                        else {
+                            refreshTimesheet(nWeekId);
+                        }
+                    }
+                    else {
+                        disabledSubmitAction(false);
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+
+                }
+                ,
+                error: function (request, status, error) {
+                    debugger;
+                    console.log(error);
+                    disabledSubmitAction(false);
+                    showAlertAutoHide("", "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function confirmDeleteTransaction(transIds, noteList, openType) {
+        debugger;
+        //Fields validation
+        var isValidated = true;
+        var message = "";
+
+
+        if (transIds == "") {
+            showAlertAutoHide("", 'Error', "Please select the transaction(s).");
+            return;
+        }
+        var indexOfMissingVal = noteList.indexOf("");
+        if (indexOfMissingVal >= 0) {
+            showAlertAutoHide("", 'Error', "Note is required for every selected transaction.");
+            return;
+        }
+
+        if (isValidated) {
+            // ajax call for saving data
+            //$("#divRefreshingDetail").show();
+            disabledSubmitAction(true);
+            console.log("before calling" + transIds);
+            $.ajax({
+                type: "POST",
+                url: "/EmployeeTimeSheetEditor/ConfirmDeleteTransaction",
+                data: { "ids": transIds, "notes": noteList },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    console.log(data);
+                    if (data.status == "Success") {
+                        /// $("#divRefreshingDetail").hide();
+                        $("#timesheetDeleteTransaction_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        //refreshTimesheet(data.nWeekId);
+                        if (openType == 'EPDate') {
+                            var selectedRecords = getSelectedTSDetail();
+                            getEditPunchDateDetail(selectedRecords[0]);
+                        }
+                        else {
+                            refreshTimesheet(data.nWeekId);
+                        }
+                    }
+                    else {
+                        disabledSubmitAction(false);
+                        showAlertAutoHide("", data.status, data.message);
+                        //$("#divRefreshingDetail").hide();
+                    }
+
+                }
+                ,
+                error: function (request, status, error) {
+                    debugger;
+                    console.log(error);
+                    disabledSubmitAction(false);
+                    showAlertAutoHide("", "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function saveTransactionData(dataObj, openType) {
+        debugger;
+
+        //Fields validation
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.TransType.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.TimeOffDayHours.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.TransNote.trim().length > 0 ? 1 : 0;
+            if (isRequiredValidated != 3) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+            if (!isValidated) {
+                showAlertAutoHide("", 'Error', message);
+                return;
+            }
+
+        }
+        if (isValidated) {
+            // ajax call for saving data
+            //$("#divRefreshingDetail").show();
+            disabledSubmitAction(true);
+            $.ajax({
+                type: "POST",
+                url: "/EmployeeTimeSheetEditor/SaveTransaction",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    console.log(data);
+                    if (data.status == "Success") {
+                        /// $("#divRefreshingDetail").hide();
+                        $("#timesheetAddTransaction_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        if (openType == 'EPDate') {
+
+                            getEditPunchDateDetail(dataObj.ReferenceIds);
+                        }
+                        else {
+                            refreshTimesheet(data.nWeekId);
+                        }
+                        //getEmployeeTimesheet();
+                        //console.log(data.nWeekId);
+                        //getTimeSheetDetail(data.nWeekId);
+                    }
+                    else {
+                        disabledSubmitAction(false);
+                        showAlertAutoHide("", data.status, data.message);
+                        //$("#divRefreshingDetail").hide();
+                    }
+
+                }
+                ,
+                error: function (request, status, error) {
+                    disabledSubmitAction(false);
+                    showAlertAutoHide("", "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function savePunchesData(dataObj, openType) {
+
+        disabledSubmitAction(true);
+        $.ajax({
+            type: "POST",
+            url: "/EmployeeTimeSheetEditor/SavePunches",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                console.log(data);
+                if (data.status == "Success") {
+                    $("#timesheetAddPunches_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    //refreshTimesheet(data.nWeekId);
+                    if (openType == 'EPDate') {
+
+                        getEditPunchDateDetail(dataObj.ReferenceIds);
+                    }
+                    else {
+                        refreshTimesheet(data.nWeekId);
+                    }
+                }
+                else {
+                    disabledSubmitAction(false);
+                    showAlertAutoHide("", data.status, data.message);
+                }
+
+            }
+            ,
+            error: function (request, status, error) {
+                disabledSubmitAction(false);
+                showAlertAutoHide("", "Error", error);
+                return false;
+            }
+        });
+    }
+    function getTimeSheetDetail(nWeekID) {
+        $("#divLoadingTimeSheetDetail").show();
+        debugger;
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/TimesheetDetail',
+            data: { "nWeekID": nWeekID },
+            success: function (data) {
+                debugger;
+                $("#divTimeSheetDetail").html(data);
+                $("#divLoadingTimeSheetDetail").hide();
+                $('html, body').animate({
+                    scrollTop: ($('#divTimeSheetDetail').offset().top)
+                }, 500);
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function getDailyCompensation(e_id, DTPunchDate) {
+        $("#divLoadingDailyCompensation").show();
+        debugger;
+        var effectiveDate = moment(DTPunchDate).format('MM/DD/YYYY');;
+
+        $("#spEffectiveDate").text(effectiveDate);
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheet/DailyCompensation',
+            data: { "e_id": e_id, "DTPunchDate": DTPunchDate },
+            success: function (data) {
+                debugger;
+                $("#divDailyCompensation").html(data);
+                $("#divLoadingDailyCompensation").hide();
+                //$('html, body').animate({
+                //    scrollTop: ($('#divDailyCompensation').offset().top)
+                //}, 500);
+            },
+            error: function () {
+            }
+        });
+    }
+    function refreshTimesheet(nWeekId) {
+        debugger;
+        $("#divDailyCompensation").html('');
+        $("#divTimeSheetDetail").html('');
+        getEmployeeTimesheet();
+        setTimeout(function () {
+            getTimeSheetDetail(nWeekId);
+        }, 1000);
+    }
+    function runLocalReport(tpwId) {
+        debugger;
+        var dataObj = new Object();
+        dataObj.ReportId = 29; // give report id
+        dataObj.CriteriaType = 2; // 2 is used to run local report
+        dataObj.AttendanceSchId = tpwId;
+        //dataObj.ScheduleDate = $('#ScheduleDate').val();
+        dataObj.EmployeeSelectionIds = tpwId == 0 ? $('#SelectedReportWeekIds').val() : tpwId;
+        $.ajax({
+            type: "POST",
+            url: "/Reports/AdhocReportPopup",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divAdhocReportPopup").html(data);
+                // setTimeout(function () { $('#divLoadingReport').hide(); }, 3000);
+                $("#AdhocReportPopup_modal").modal('show');
+            },
+            error: function (request, status, error) {
+                alert('Error in in runing  report data');
+                return false;
+            }
+        });
+    }
+</script>

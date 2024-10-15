@@ -1,0 +1,140 @@
+﻿@model IEnumerable<TimeAide.Web.Models.WorkflowTriggerRequestDetail>
+
+@{
+    Layout = "~/Views/Shared/_LayoutMasterData.cshtml";
+}
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">@ViewBag.LabelPlural</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Master Data</li>
+                <li class="breadcrumb-item active">@ViewBag.Label</li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div class="form-horizontal" style="padding:10px">
+    <div class="form-group row">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexList">
+                <thead>
+                    <tr>
+                        <th>
+                            Change Request By
+                        </th>
+                        <th>
+                            Created Since
+                        </th>
+                        <th>
+                            Total Workflow Levels
+                        </th>
+                        <th>
+                            Current Level
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.WorkflowTriggerRequest.ChangeRequestAddress.UserInformation.ShortFullName)
+                            </td>
+                            <td>
+                                @if (item.WorkflowActionTypeId == 6)
+                                {
+                                    <span>closed</span>
+                                }
+                                else
+                                {
+                                    <span>Html.DisplayFor(modelItem => item.WorkflowTriggerRequest.CreatedSince)</span>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.WorkflowTriggerRequest.WorkflowTrigger.Workflow.WorkflowLevel.Count)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.WorkflowTriggerRequest.WorkflowTriggerRequestDetail.Count)
+                            </td>
+                            <td>
+                                <a href="/ChangeRequestAddress/ApproveMailingChangeRequestAddress?Id=@item.WorkflowTriggerRequest.ChangeRequestAddressId">
+                                    View Request
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<hr />
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#IndexCountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#IndexStateId', null);
+        })
+    });
+
+    function LoadStateDropdown(contryId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/State/AjaxGetCountryState',
+            data: { 'countryId': contryId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+
+
+</script>

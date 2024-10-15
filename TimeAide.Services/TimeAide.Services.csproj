@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E7888B9C-AE51-4FDA-A99F-B6895667954A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TimeAide.Services</RootNamespace>
+    <AssemblyName>TimeAide.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationConfigurationService.cs" />
+    <Compile Include="CustomFieldService.cs" />
+    <Compile Include="DocumentService.cs" />
+    <Compile Include="CompanyWithholdingCompensationExclusionService.cs" />
+    <Compile Include="CompanyContributionCompensationExclusionService.cs" />
+    <Compile Include="CompanyWithholdingService.cs" />
+    <Compile Include="CompanyCompensationService.cs" />
+    <Compile Include="EmployeeContributionService.cs" />
+    <Compile Include="EmployeeWithholdingService.cs" />
+    <Compile Include="EmployeeCompensationService.cs" />
+    <Compile Include="SecurityServices.cs" />
+    <Compile Include="SignalRService.cs" />
+    <Compile Include="SubDepartmentService.cs" />
+    <Compile Include="CompanyService .cs" />
+    <Compile Include="NotificationLogService.cs" />
+    <Compile Include="PayInformationHistoryService.cs" />
+    <Compile Include="EmploymentService.cs" />
+    <Compile Include="EmploymentHistoryService.cs" />
+    <Compile Include="Helpers\UtilityHelper.cs" />
+    <Compile Include="ModuleService.cs" />
+    <Compile Include="EmployeeGroupService.cs" />
+    <Compile Include="ClientService.cs" />
+    <Compile Include="ChatConversationService.cs" />
+    <Compile Include="RoleService.cs" />
+    <Compile Include="NotificationScheduleService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleFormPrivilegeService.cs" />
+    <Compile Include="Helpers\SecurityHelper.cs" />
+    <Compile Include="ChangeRequestService.cs" />
+    <Compile Include="SupervisorHelper.cs" />
+    <Compile Include="UserInformationService.cs" />
+    <Compile Include="UserSessionLogEventService.cs" />
+    <Compile Include="WorkflowService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeAide.Common\TimeAide.Common.csproj">
+      <Project>{06ffcf32-d708-4f53-b904-cfceda4a0476}</Project>
+      <Name>TimeAide.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAide.Data\TimeAide.Data.csproj">
+      <Project>{1b4fc183-a874-4966-aeb2-1a5293f97030}</Project>
+      <Name>TimeAide.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAide.Models\TimeAide.Models.csproj">
+      <Project>{1034bebb-392c-43b7-9202-26cd020f6371}</Project>
+      <Name>TimeAide.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAide.Repositories\TimeAide.Repositories.csproj">
+      <Project>{aca46a98-560c-4fa3-8e67-6a6a76c09a7b}</Project>
+      <Name>TimeAide.Repositories</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

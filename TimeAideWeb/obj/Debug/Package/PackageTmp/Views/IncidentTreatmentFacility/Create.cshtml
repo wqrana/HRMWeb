@@ -1,0 +1,101 @@
+﻿@model TimeAide.Web.Models.IncidentTreatmentFacility
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.TreatmentFacilityName, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.TreatmentFacilityName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TreatmentFacilityName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.TreatmentFacilityAddress, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.TreatmentFacilityAddress, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TreatmentFacilityAddress, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.State.StateName, "State", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-9">
+            @Html.DropDownList("StateId", null, "Please select", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.City.CityName, "City", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownList("CityId", null, "Please select", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-1">
+            @Html.LabelFor(model => model.ZipCode, "Zip", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+
+</div>
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('#ZipCode').mask('99999?-9999');
+        $('#StateId').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#CityId', null);
+        })
+    });
+    function LoadCityDropdown(stateId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/City/AjaxGetStateCity',
+            data: { 'StateId': stateId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+</script>

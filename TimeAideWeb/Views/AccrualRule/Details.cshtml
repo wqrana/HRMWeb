@@ -1,0 +1,286 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.AccrualRule
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Accrual Rule
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                               @if (Model.Id > 0)
+                               {
+                                <a href="javascript:createEditAccrualRule(@Model.Id);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                               }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label " >Name:</label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @*  @Html.HiddenFor(m=>m.Id, new { @id="SelectedTemplateId"})*@
+                                @Html.Hidden("SelectedAccrualRuleId", Model.Id)
+                                @Html.DisplayFor(m => m.AccrualRuleName)
+                            </div>
+                            <label class="col-md-1 col-form-label" style="margin-left:0px">Description:</label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(m => m.AccrualRuleDescription)
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0" style="margin-left:0px">Ref. Type:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @{
+                                    var referenceType = Model.ReferenceTypeId == null ? "" : DataHelper.AccuralReferenceType[Model.ReferenceTypeId ?? 0];
+                                }
+                                @Html.DisplayFor(m => referenceType)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label pr-0" >Beginning Of:</label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @*  @Html.HiddenFor(m=>m.Id, new { @id="SelectedTemplateId"})*@
+                                @Html.DisplayFor(m => m.BeginningOfYearDate)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0" style="margin-left:0px">Accrual Period:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @{
+                                    var periodType = Model.AccrualPeriodTypeId == null ? "" : DataHelper.AccuralPeriodType[Model.AccrualPeriodTypeId ?? 0];
+                                }
+                                @Html.DisplayFor(m => periodType)
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0" style="margin-left:0px">Accrual Type:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.AccrualType.AccrualTypeName)
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label pr-0" style="margin-left:0px">Unavail. Code:</label>
+                            <div class="col-md-3 text-muted mt-2">
+
+                                @Html.DisplayFor(m => m.AccrualTypeUnavailable)
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">Accu. Type:</label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @{
+                                    var accumulationType = Model.AccumulationTypeId == null ? "" : DataHelper.AccuralAccumulationType[Model.AccumulationTypeId ?? 0];
+                                }
+                                @Html.DisplayFor(m => accumulationType)
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0" style="margin-left:0px">Multiplier:</label>
+                            <div class="col-md-2 text-muted mt-2">
+
+                                @Html.DisplayFor(m => m.AccumulationMultiplier)
+                            </div>                           
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0" style="margin-left:0px">Use Years Work:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.UseYearsWorked)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">All-Companies:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @{
+                                    Model.IsAllCompanies = !Model.CompanyId.HasValue;
+                                }
+                                @Html.DisplayFor(m => m.IsAllCompanies)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            </div>
+        <div class="form-group row">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Years-Worked Tier(s)
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                @if (Model.UseYearsWorked == true)
+                                {
+                                <a id="yearWorkTier" href="javascript:createEditAccrualRuleTier(@Model.Id,0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divYearsWorkedTier" style="min-height:100px; max-height:200px; overflow-y:auto">
+                           
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            @*<div class="col-md-4 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Min. Hours-worked Tier(s)
+                        <div class="pull-right dropdown-action" style="height:20px;">
+
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                @if (Model.AccumulationTypeId != 1)
+                                {
+                                    //if AccumulationType is hour multipler then disabled
+                                <a id="minHoursAddTier" href="javascript:void(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divMinHoursWorkedTier" style="min-height:100px; max-height:250px; overflow-y:auto">
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>*@
+          
+        </div>
+        </div>
+ </div>
+<script>
+    $(document).ready(function () {
+        getAccrualRuleTierList(@Model.Id);
+    });
+    function getAccrualRuleTierList(accrualRuleId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/AccrualRuleTierList',
+            data: { "id": accrualRuleId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divYearsWorkedTier").html(data);
+               
+            },
+            error: function () {
+                alert("Error Loading ajax getAccrualRuleTierList");
+            }
+        });
+    }
+    function createEditAccrualRuleTier(id,action) {
+        debugger;
+        var ActionMethod = action == 0 ? "AccrualRuleTierCreate" : "AccrualRuleTierEdit";        
+
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/' + ActionMethod,
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#acrualRuleTierCreateEdit_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveAccrualRuleTierData(dataObj) {
+        debugger;
+        if (dataObj != null) {
+
+            $.ajax({
+                type: "POST",
+                url: "/AccrualRule/CreateEditTier",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#acrualRuleTierCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);
+                        getAccrualRuleDetail(data.accrualRuleId);
+                        //getAccrualRuleList();
+                    }
+                    else {
+                        showAlertAutoHide('', data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+    
+    function getAccrualRuleTierDeleteData(id) {
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/DeleteTier',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#accrualRuleTierDelete_modal").modal("show");
+               
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function deleteAccrualRuleTier(id) {
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/AccrualRule/ConfirmDeleteTier",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#accrualRuleTierDelete_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);                        
+                        getAccrualRuleDetail(data.accrualRuleId);
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide("", "Error", error);
+                    return false;
+                }
+            });
+        }
+    
+    }
+    function getAccrualRuleTierDetail(id) {
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/TierDetail',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#acrualRuleTierDetail_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+</script>
+

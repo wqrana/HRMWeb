@@ -1,0 +1,135 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Department>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentName)
+        </th>
+        <th>
+            Description
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.USECFSEAssignment)
+        </th>
+        <th>
+            CFSE Code
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CFSECompanyPercent)
+        </th>
+        <th>
+            Job Cert. Signee
+        </th>
+        <th>
+            Job Cert. Template
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentDescription)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.USECFSEAssignment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CFSECode.CFSECodeDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CFSECompanyPercent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobCertificationSignee.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobCertificationTemplate.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<script>
+    function LoadJobCertificationSignee(IsAllCmp, targetElement, selectedValue) {
+        var model = {
+        }
+        debugger
+
+        $.ajax({
+            url: '/JobCertificationSignee/AjaxGetJobCertificationSignee',
+            data: { IsAllCompanies: IsAllCmp },
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+    function LoadJobCertificationTemplate(IsAllCmp, targetElement, selectedValue) {
+        var model = {
+        }
+        debugger
+
+        $.ajax({
+            url: '/JobCertificationTemplate/AjaxGetJobCertificationTemplate',
+            data: { IsAllCompanies: IsAllCmp },
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+</script>

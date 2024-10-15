@@ -1,0 +1,130 @@
+﻿@model TimeAide.Models.ViewModel.TimesheetEditorTransactionViewModel
+@{
+       var selectedTSDIds = ViewBag.selectedIds;
+       var openType = ViewBag.openType;
+
+}
+<style>
+    .child-modal-trans {
+        z-index: 1200;
+    }
+</style>
+<div id="timesheetDeleteTransaction_modal" class="modal custom-modal child-modal-trans">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content" style="border:solid 1px">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Transaction</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="welcome-box mb-2">
+                                <div class="welcome-det">
+                                    <h4>@Html.DisplayFor(m => m.e_name)</h4>
+                                    <p><span class="">EmployeeId:</span>@Html.DisplayFor(m => m.e_id)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12 p-0">
+                            <div class="panel panel-default" style="margin-left:5px">
+                                <div class="panel-heading" style="padding-left:10px">
+                                    Transaction Detail
+                                </div>
+                                <div class="panel-body">
+                                    @*<div id="divTransactionAlert" class="alert alert-danger mb-1" role="alert">
+
+                                    </div>*@
+                                    <div id="divTransactionDates">
+                                        <div id="" style="max-height:350px; overflow-y:auto">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Date </th>
+                                                            <th>Trans. Type</th>
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td><input class="" type="hidden" id="@Model.tppID" name="selectedTrans" /></td>
+                                                            <td>@Html.DisplayFor(m => m.DTPunchDate)</td>
+                                                            <td>@Html.DisplayFor(m => m.sType)</td>
+                                                            @{
+                                                                var transVal = "";
+                                                                if (Model.nIsMoneyTrans == 1) { transVal = $"${Model.HoursWorked}"; }
+                                                                else { transVal = $"{Model.HoursWorked} Hrs"; }
+
+                                                            }
+                                                            <td>@transVal</td>
+
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Note: <span class="text-danger">*</span></label>
+                                <div class="col-md-10">
+                                    <textarea rows="2" class="form-control" id="deleteTransNote"></textarea>
+                                </div>
+                            </div>
+                        </div>           
+                    </div>
+                    <div class="submit-section mt-2">
+                        <div id="" class="align-content-md-start submit-in-processing" style="display:none;">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                        </div>
+                        <button id="btnDeleteTransaction" class="btn btn-danger submit-btn btn-sm">Delete</button>
+                        <button id="btnCancel" class="btn btn-primary  submit-btn btn-sm" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+       // $("#divTransactionAlert").hide();
+
+        $("#btnDeleteTransaction").click(function () {
+            debugger;
+            var selectedTrans = [];
+            var selectedTransNote = [];
+            $('input[name="selectedTrans"]').each(function () {
+                debugger;
+                var val = $(this).attr("id");
+                selectedTrans.push(val);
+                transdelNote = $("#deleteTransNote").val();
+                selectedTransNote.push(transdelNote);
+            });       
+          
+            var transIds= selectedTrans.join(",");
+            confirmDeleteTransaction(transIds, selectedTransNote,'@openType');
+        });
+       
+    });
+
+
+    
+</script>
+
+
+
+

@@ -1,0 +1,62 @@
+﻿@model TimeAide.Web.Models.EmployeeFutureSchedule
+<div id="webFutureScheduleAddEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Future Schedule - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            @Html.HiddenFor(m=>m.Id, new { @id="FutureScheduleId"})
+                            <label class="col-md-2 col-form-label pr-0">
+                                Start Date
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(m => m.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-1">
+                                Schedule
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-4 ">
+                                @Html.DropDownList("BaseScheduleId", null, "Please select", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">
+                               Note
+                            </label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(m => m.Note, new { htmlAttributes = new { @class = "form-control",@id="FutureScheduleNote" } })
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveFutureSchedule" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#StartDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#btnSaveFutureSchedule").click(function () {
+            saveFutureSchedule();
+        });
+    });
+</script>

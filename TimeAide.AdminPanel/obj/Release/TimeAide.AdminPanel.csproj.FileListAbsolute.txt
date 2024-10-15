@@ -1,0 +1,402 @@
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\0-ASPNet Schema\ASPNETSchema.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\ApplicationConfiguration.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\ChangeRequestStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\ClosingNotificationType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\EmailType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\EmployeeGroupType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\IncidentType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\NotificationType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\OSHACaseClassification.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\OSHAInjuryClassification.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\WorkflowActionType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\WorkflowLevelType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\DocumentRequiredBy.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\WorkflowTriggerType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\AppraisalTemplate.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\CFSECode.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\City.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\CobraPaymentStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\Country.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\Department.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\DependentStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\EmployeeGroup.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\EmployeeGroupType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\SenderEmailConfiguration.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\WorkflowActionType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\WorkflowTriggerType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\Disability.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\EmployeeType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\EmploymentStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\WorkflowLevelType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\Ethnicity.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\Gender.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\ClosingNotificationType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\JobCode.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\RatingLevel.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\State.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\EmailType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\SubDepartment.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\VeteranStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\2-Functions\fn_calculateSeviceInYear.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\2-Functions\fn_NotificationItemsCalendar.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\2-Functions\fn_NotificationItemsSchedule.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\2-Functions\fn_splitIntIds.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\2-Functions\fn_SupervisedEmployees.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_UpdateSignalROnlineChatUsers.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_ApplicantInformation.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_ApplicantInformationById.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_CreateDefaultExpirationNotificationLog.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_CreateNotificationLog.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeActionReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeBenefitReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeCredentialReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_GetUserInformationByWorkflowLevelGroupId.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeCurrHiringReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeCustomFieldReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeDentalInsuranceReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeDependentReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeEducationReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeEmploymentReports.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeGeneralBirthdateReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeGeneralBirthdayReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeGeneralReports.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeHealthInsuranceReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeOSHAReports.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeePayInfoReports.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeePerformanceReviewReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_rpt_EmployeeTrainingReport.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_SetupUserAsSuperAdmin.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_UserDashboardNotificationForecast.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_UserDashboardNotificationForecastDetail.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_userDashboardNotificationLog.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_GetEmployeeSupervisors.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_UserInformation.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\3-StoredProcedures\sp_UserInformationById.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\Form.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\Module.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\Privilege.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\EmployeeGroup.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\Role.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\EmployeeGroupType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\RoleType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\4-UserLogin\sp_ExecuteSetupUserAsSuperAdmin.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\1-vw_UserInformation.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\2-vw_rpt_EmployeeHiringHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\3-vw_rpt_EmployeePayInfoHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\4-vw_rpt_EmployeeContactInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\DateCalendar.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vNotificationScheduleDetail.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_EmploymentHistoryCurrent.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeActionInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeBenefitInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeCredentialInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeCustomFieldInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeDentalInsuranceInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeDependentInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeEducationInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeEmergencyContact.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeEmploymentHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeGeneralRptMain.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeHealthInsuranceInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeIncidentOSHA.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeePerformanceReviewInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\5-Views\vw_rpt_EmployeeTrainingInfo.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\ActionTaken.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\ActionType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\AppraisalGoal.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\AppraisalRatingScale.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\AppraisalRatingScaleDetail.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\AppraisalSkill.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\AppraisalTemplateGoal.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\AppraisalTemplateSkill.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Benefit.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\CredentialType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\City.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\CobraStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Company.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Credential.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\CustomField.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Degree.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Department.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Document.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\EEOCategory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\EmployeeType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\EmploymentStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\EmploymentType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Ethnicity.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\IncidentArea.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\IncidentBodyPart.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\IncidentInjuryDescription.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\IncidentInjurySource.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\IncidentTreatmentFacility.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\IncidentType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\InsuranceCoverage.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\InsuranceStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\InsuranceType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Location.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\MaritalStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PayFrequency.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PayScale.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PayScaleLevel.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PayType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PerformanceDescription.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PerformanceResult.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Position.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PositionCredential.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\PositionTraining.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\RateFrequency.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Relationship.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\SubDepartment.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\TerminationEligibility.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\TerminationReason.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\TerminationType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\Training.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\VeteranStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\1-Master Data\WCClassCode.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\2-EmployeeInformation\UserInformation.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\2-EmployeeInformation\UserInformationContact.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\2-EmployeeInformation\UserInformationEmergencyContact.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\DentalInsuranceCobraHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAction.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisal.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisalDocument.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisalGoal.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeAppraisalSkill.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeBenefitEnlisted.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeBenefitHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeCredential.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeCustomField.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeDentalInsurance.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeDependent.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeDocument.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeEducation.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeHealthInsurance.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeIncident_.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeePerformance.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeTraining.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmployeeVeteranStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\SupervisorInformation.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\Employment.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\EmploymentHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\HealthInsuranceCobraHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\3-EmployeeTabs\PayInformationHistory.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\4-Workflow\NotificationMessage.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\4-Workflow\Workflow.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\4-Workflow\WorkflowTrigger.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\6-Migration Scripts\4-Workflow\WorkflowLevel.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\CobraStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\Disability.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\Ethnicity.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\Gender.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\InsuranceStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\InsuranceType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\MaritalStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\OSHAInjuryClassification.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\TerminationEligibility.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\7-DefaultValuesForEmptySource\VeteranStatus.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\8-CompanyWizeDataChange\Update Department With Company Id.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\8-CompanyWizeDataChange\Update EmployeeType With Company Id.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\8-CompanyWizeDataChange\Update EmploymentType With Company Id.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\8-CompanyWizeDataChange\Update Location With Company Id.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\8-CompanyWizeDataChange\Update Position With Company Id.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\8-CompanyWizeDataChange\Update SubDepartment With Company Id.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.AdminPanel.exe.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.AdminPanel.exe
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.AdminPanel.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\EntityFramework.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\EntityFramework.SqlServer.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.AdminConsole.exe
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Common.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Data.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Models.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Services.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.Identity.Core.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.Mvc.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.WebPages.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.WebPages.Razor.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.Razor.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Web.Infrastructure.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.WebPages.Deployment.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Common.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Data.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Data.dll.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Models.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Services.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Services.dll.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.AdminConsole.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.AdminConsole.exe.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\EntityFramework.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\EntityFramework.SqlServer.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.Identity.Core.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.Mvc.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.WebPages.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.WebPages.Razor.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.Razor.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.WebPages.Deployment.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.csproj.AssemblyReference.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.csproj.SuggestedBindingRedirects.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\ApplicationStyles.baml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\DataMigrationWindow.g.cs
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\DocumentMigrationWindow.g.cs
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\InputDialogSample .g.cs
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\MainMenuWindow.g.cs
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\App.g.cs
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel_Content.g.cs
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel_MarkupCompile.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel_MarkupCompile.lref
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\App.baml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\DataMigrationWindow.baml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\DocumentMigrationWindow.baml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\InputDialogSample .baml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\MainMenuWindow.baml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.g.resources
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.Properties.Resources.resources
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.csproj.GenerateResource.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.csproj.CoreCompileInputs.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.csproj.CopyComplete
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.exe
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\obj\Release\TimeAide.AdminPanel.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\NLog.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\NLog.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\NLog.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Views\ChangeRequestAddress\ApproveMailingChangeRequestAddress.cshtml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\NLog.xsd
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ApplicationInsights.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\csc.exe
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\csc.exe.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\csc.rsp
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\csi.exe
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\csi.exe.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\csi.rsp
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.CodeAnalysis.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.CSharp.Core.targets
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.Managed.Core.targets
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.Managed.EditorConfig.targets
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\Microsoft.VisualBasic.Core.targets
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Buffers.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Collections.Immutable.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Memory.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Numerics.Vectors.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Reflection.Metadata.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Runtime.CompilerServices.Unsafe.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Text.Encoding.CodePages.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\System.Threading.Tasks.Extensions.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\vbc.exe
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\vbc.exe.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\vbc.rsp
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\VBCSCompiler.exe
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\roslyn\VBCSCompiler.exe.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\ApplicantInformation\applicantAction-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\ApplicantInformation\applicantApplication-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\ApplicantInformation\applicantCustomField-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\ApplicantInformation\applicantDocument-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\ApplicantInformation\applicantEducation-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\ApplicantInformation\applicantEmployment-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\ApplicantInformation\applicantInterview-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\Client\clientMain-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userAction-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userAppaisal-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userBenefit-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userContact-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userContactAddresses-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userContactNumbersAndEmails-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userDentalInsurance-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userDependent-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userEducation-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userHealthInsurance-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userIncident-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userPerformance-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userTraining-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userDetail-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\UserInformation\userMain-js.js
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Reports\AttendanceMainScheduleRpt.rdlc
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Reports\EmployeePayStubRpt.rdlc
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Reports\EmployeeTimesheetRpt.rdlc
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Reports\SelfServiceScheduleRpt.rdlc
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\CompensationAccrualType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\SickAccrualType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\WithholdingTaxType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\WitholdingPrePostType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\WitholdingComputationType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\VacationAccrualType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\AccrualType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\ProcessCode.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\CompensationComputationType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\CompensationImportType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\CompensationType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValuesGlobal\GLAccountType.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Scripts\1-DefaultValues\PeriodEntry.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Web.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.SignalR.Core.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.Optimization.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.Identity.Owin.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Owin.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Reports.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.ReportViewer.WebForms.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.Cookies.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.Google.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Host.SystemWeb.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Newtonsoft.Json.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\WebGrease.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.OAuth.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.ReportViewer.Common.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Antlr3.Runtime.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.ReportViewer.DataVisualization.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.SqlServer.Types.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Web.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Web.dll.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.SignalR.Core.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\System.Web.Optimization.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.AspNet.Identity.Owin.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Reports.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\TimeAide.Reports.dll.config
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.Cookies.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.Google.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Host.SystemWeb.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Newtonsoft.Json.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Microsoft.Owin.Security.OAuth.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\Antlr3.Runtime.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\de\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\es\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\fr\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\it\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ja\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ko\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\pt\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ru\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\zh-CHS\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\zh-CHT\Microsoft.ReportViewer.WebForms.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\de\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\es\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\fr\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\it\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ja\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ko\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\pt\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ru\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\zh-CHS\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\zh-CHT\Microsoft.ReportViewer.Common.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\de\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\es\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\fr\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\it\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ja\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ko\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\pt\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\ru\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\zh-CHS\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.AdminPanel\bin\Release\zh-CHT\Microsoft.ReportViewer.DataVisualization.resources.dll

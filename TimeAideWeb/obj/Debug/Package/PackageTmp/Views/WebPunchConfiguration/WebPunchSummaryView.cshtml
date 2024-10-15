@@ -1,0 +1,79 @@
+﻿@model TimeAide.Web.ViewModel.WebPunchViewModel
+<div class="statistics">
+    <div class="row">
+        <div class="col-md-6 col-6 text-center" style="font-size:70%">
+            @if (Model.tPunchData != null)
+            {
+                <div class="card recent-activity" style="border: 0 !important; box-shadow:unset;">
+                    <div class="card-body" style="height:100px">
+                        <h5 class="card-title">Today Activity</h5>
+                        <ul class="res-activity-list" style="height: unset; overflow: auto">
+                            @{int punhIndex = 1; }
+                            @foreach (TimeAide.Data.tPunchData each in Model.tPunchData)
+                            {
+                                <li>
+                                    @if (punhIndex % 2 == 1)
+                                    {
+                                        <span class="mb-0">In at</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="mb-0">Out at</span>
+                                    }
+                                    <span class="res-activity-time">
+                                        <i class="fa fa-clock-o"></i>
+                                        @if (each.DTPunchDateTime.HasValue)
+                                        {
+                                            <span>
+                                                @string.Format("{0:hh:mm tt}", each.DTPunchDateTime.Value)
+                                            </span>
+                                        }
+                                    </span>
+                                </li>
+                                punhIndex++;
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="col-md-6 col-6 text-center">
+            <div class="punch-info">
+                <div class="punch-hours">
+                    @if (Model.tPunchDate != null)
+                    {
+                        <span>@(Model.tPunchDate.dblREGULAR ?? 0) hrs</span>
+                    }
+                </div>
+            </div>
+            <div class="stats-box">
+                <p>Reg Hrs</p>
+                @if (Model.tPunchDate != null)
+                {
+                    <h6>@Model.tPunchDate.dblREGULAR hrs</h6>
+                }
+            </div>
+            <div class="stats-box">
+                <p>Overtime</p>
+                @if (Model.tPunchDate != null)
+                {
+                    <h6>@Model.tPunchDate.dblOTHERS hrs</h6>
+                }
+            </div>
+            <div class="punch-btn-section">
+                <button type="button" class="btn btn-primary punch-btn" style="font-size:80%" onclick="confirmPunch();">Punch Clock</button>
+                <input type="hidden" id="hdnLongitude" value="" />
+                <input type="hidden" id="hdnLatitude" value="" />
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+

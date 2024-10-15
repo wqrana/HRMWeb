@@ -1,0 +1,277 @@
+﻿@model TimeAide.Web.Models.ApplicantApplication
+<div style="padding:5px; padding-top:0px;">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="panel panel-default mb-0" style="width:100%;margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    General Information
+                    <div class="pull-right dropdown-action" style="height:20px;" id="generalInfoMenu">
+
+                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:editApplicantApplication();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    @Html.Hidden("ApplicantApplicationDetailId",Model.Id)
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Application Date:
+                        </label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @Html.DisplayFor(model => model.DateApplied)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Applied Position:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @Html.DisplayFor(model => model.Position.PositionName)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Reference Type:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @Html.DisplayFor(model => model.ApplicantReferenceType.ReferenceTypeName)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Reference Source:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.DisplayFor(model => model.ApplicantReferenceSource.ReferenceSourceName)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Employment Type:
+                        </label>
+                        <div class="col-md-4 text-muted mt-2">
+                           
+                            @Html.DisplayFor(model => model.SelectedEmploymentTypeId)
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Expected Income:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            $ @Html.DisplayFor(model => model.Rate) -  @Html.DisplayFor(model => model.RateFrequency.RateFrequencyName)
+                        </div>
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            Location(s):
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.DisplayFor(model => model.SelectedLocationNames)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Available to Start:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @Html.DisplayFor(model => model.DateAvailable)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">
+                            Willing to work overtime?
+                        </label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @{ var isOvertime = "";
+                                if (Model.IsOvertime != null)
+                                {
+                                    isOvertime = Model.IsOvertime ?? false ? "Yes" : "No";
+                                }
+                                @isOvertime
+                            }
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">
+                            Applied for a job with us before?
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @{ var isWorkedBefore = "";
+                                var whenDated = " (When: " + Html.DisplayFor(m=>m.WorkedBeforeDate)+")" ;
+                                if (Model.IsWorkedBefore != null)
+                                {
+                                    isWorkedBefore = Model.IsWorkedBefore ?? false ? "Yes" + whenDated : "No";
+                                }
+                                @isWorkedBefore
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" style="margin-left:10px">
+                            Any Relatives employed with us?
+                        </label>
+                        <div class="col-md-4 text-muted mt-2">
+                            @{ var isAnyRelative = "";
+                                var relativeName = " (Name: " + Html.DisplayFor(m => m.RelativeName)+")";
+                                if (Model.IsRelativeInCompany != null)
+                                {
+                                    isAnyRelative = Model.IsRelativeInCompany ?? false ? "Yes" + relativeName : "No";
+                                }
+                                 @isAnyRelative
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row mb-0">
+            <div class="panel panel-default mb-0" style="width:100%;margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Availability Information
+                    <div class="pull-right dropdown-action" style="height:20px;" id="availInfoMenu">
+
+                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:editApplicantApplicationShift();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table table-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.CheckBox("IsMondayShift", Model.IsMondayShift ?? false, new { @disabled = "disabled",@id= "IsMondayShiftChk" })
+                                        Monday
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsTuesdayShift", Model.IsTuesdayShift ?? false, new { @disabled = "disabled", @id = "IsTuesdayShiftChk" })
+                                        Tuesday
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsWednesdayShift", Model.IsWednesdayShift ?? false, new { @disabled = "disabled", @id = "IsWednesdayShiftChk" })
+                                        Wednesday
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsThursdayShift", Model.IsThursdayShift ?? false, new { @disabled = "disabled", @id = "IsWednesdayShiftChk" })
+                                        Thursday
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsFridayShift", Model.IsFridayShift ?? false, new { @disabled = "disabled", @id = "IsFridayShiftChk" })
+                                        Friday
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsSaturdayShift", Model.IsSaturdayShift ?? false, new { @disabled = "disabled", @id = "IsSaturdayShiftChk" })
+                                        Saturday
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsSundayShift", Model.IsSundayShift ?? false, new { @disabled = "disabled", @id = "IsSundayShiftChk" })
+                                        Sunday
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tr>
+                                <td>
+                                   @* @string.Format("{0} - {1}", "", "")*@
+                                    @if (Model.IsMondayShift ?? false == true)
+                                    {
+                                        if (Model.MondayStartShift != null && Model.MondayEndShift != null)
+                                        {
+                                            var mondayShift = string.Format("{0} - {1}", (Model.MondayStartShift ?? DateTime.Now).ToString("h:mm tt"), (Model.MondayEndShift ?? DateTime.Now).ToString("h:mm tt"));
+                                            @mondayShift
+                                        }
+                                    }
+
+                                </td>
+
+                                <td>
+                                    @*@string.Format("{0} - {1}", "", "")*@
+                                    @if (Model.IsTuesdayShift ?? false == true)
+                                    {
+                                        if (Model.TuesdayStartShift != null && Model.TuesdayEndShift != null)
+                                        {
+                                            var tuesdayShift = string.Format("{0} - {1}", (Model.TuesdayStartShift ?? DateTime.Now).ToString("h:mm tt"), (Model.TuesdayEndShift ?? DateTime.Now).ToString("h:mm tt"));
+                                            @tuesdayShift
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @*@string.Format("{0} - {1}", "", "")*@
+                                    @if (Model.IsWednesdayShift ?? false == true)
+                                    {
+                                        if (Model.WednesdayStartShift != null && Model.WednesdayEndShift != null)
+                                        {
+                                            var wedShift = string.Format("{0} - {1}", (Model.WednesdayStartShift ?? DateTime.Now).ToString("h:mm tt"), (Model.WednesdayEndShift ?? DateTime.Now).ToString("h:mm tt"));
+                                            @wedShift
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @*@string.Format("{0} - {1}", "", "")*@
+                                    @if (Model.IsThursdayShift ?? false == true)
+                                    {
+                                        if (Model.ThursdayStartShift != null && Model.ThursdayEndShift != null)
+                                        {
+                                            var shift = string.Format("{0} - {1}", (Model.ThursdayStartShift ?? DateTime.Now).ToString("h:mm tt"), (Model.ThursdayEndShift ?? DateTime.Now).ToString("h:mm tt"));
+                                            @shift
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @* @string.Format("{0} - {1}", "", "")*@
+                                    @if (Model.IsFridayShift ?? false == true)
+                                    {
+                                        if (Model.FridayStartShift != null && Model.FridayEndShift != null)
+                                        {
+                                            var shift = string.Format("{0} - {1}", (Model.FridayStartShift ?? DateTime.Now).ToString("h:mm tt"), (Model.FridayEndShift ?? DateTime.Now).ToString("h:mm tt"));
+                                            @shift
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                   @* @string.Format("{0} - {1}", "", "")*@
+                                    @if (Model.IsSaturdayShift ?? false == true)
+                                    {
+                                        if (Model.SaturdayStartShift != null && Model.SaturdayEndShift != null)
+                                        {
+                                            var shift = string.Format("{0} - {1}", (Model.SaturdayStartShift ?? DateTime.Now).ToString("h:mm tt"), (Model.SaturdayEndShift ?? DateTime.Now).ToString("h:mm tt"));
+                                            @shift
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @*@string.Format("{0} - {1}", "", "")*@
+                                    @if (Model.IsSundayShift ?? false == true)
+                                    {
+                                        if (Model.SundayStartShift != null && Model.SundayEndShift != null)
+                                        {
+                                            var shift = string.Format("{0} - {1}", (Model.SundayStartShift ?? DateTime.Now).ToString("h:mm tt"), (Model.SundayEndShift ?? DateTime.Now).ToString("h:mm tt"));
+                                            @shift
+                                        }
+                                    }
+
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger
+        var userInfoId = $("#UserInformationId").val();
+        if (userInfoId != "") {
+            $("#generalInfoMenu").hide();
+            $("#availInfoMenu").hide();
+        }
+
+
+    });
+
+</script>

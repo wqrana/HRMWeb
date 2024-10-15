@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1B4FC183-A874-4966-AEB2-1A5293F97030}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TimeAide.Data</RootNamespace>
+    <AssemblyName>TimeAide.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseEntityExtensions.cs" />
+    <Compile Include="DataHelper.cs" />
+    <Compile Include="fnPay_tblUserCompensationsYTD_Result.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnPay_tblUserWithholdingsYTD_Result.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IdentityModels.cs" />
+    <Compile Include="spSS_CompensationBalances_Result.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spSS_TransDefTimeOff_Result.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tAccrualType.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tAuditInfo.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblCompanyPayrollInformation.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSS_TimeOffRequest.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSS_TransdefTimeOffDocument.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSS_TransdefTimeOffRequest.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblTAEDetail.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblTAESignature.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tCompany.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tDept.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tEmployeeType.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimeAideModelUser.cs" />
+    <Compile Include="TimeAideModelOnModelCreating.cs" />
+    <Compile Include="TimeAideModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeAideWindow.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeAideWindow.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimeAideWindow.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimeAideWindow.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeAideWindow.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeAideWindowContext.cs" />
+    <Compile Include="tJobTitle.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tPunchData.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tPunchData_.cs" />
+    <Compile Include="tPunchDate.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tPunchPair.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tPunchPair_.cs" />
+    <Compile Include="tReportWeek.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tReportWeek_.cs" />
+    <Compile Include="tSchedModDailyDetail.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tSchedModPeriodSumm.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tSchedule.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tScheduleDayInfo.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tTransDef.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tuser.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="viewPay_UserBatchStatus.cs">
+      <DependentUpon>TimeAideWindow.tt</DependentUpon>
+    </Compile>
+    <Compile Include="viewUserCompensationDaily.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <EntityDeploy Include="TimeAideWindow.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TimeAideWindow.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="TimeAideWindow.edmx.diagram">
+      <DependentUpon>TimeAideWindow.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TimeAideWindow.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TimeAideWindow.edmx</DependentUpon>
+      <LastGenOutput>TimeAideWindow.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="TimeAideWindow.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TimeAideWindow.edmx</DependentUpon>
+      <LastGenOutput>TimeAideWindow.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeAide.Common\TimeAide.Common.csproj">
+      <Project>{06ffcf32-d708-4f53-b904-cfceda4a0476}</Project>
+      <Name>TimeAide.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeAide.Models\TimeAide.Models.csproj">
+      <Project>{1034bebb-392c-43b7-9202-26cd020f6371}</Project>
+      <Name>TimeAide.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

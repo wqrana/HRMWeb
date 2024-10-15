@@ -1,0 +1,45 @@
+﻿@model TimeAide.Web.Models.CustomField
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomFieldName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomFieldName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomFieldDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomFieldDescription)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IsExpirable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsExpirable)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            Notification Schedule
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NotificationSchedule.NotificationScheduleName)
+        </dd>
+    </dl>
+
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

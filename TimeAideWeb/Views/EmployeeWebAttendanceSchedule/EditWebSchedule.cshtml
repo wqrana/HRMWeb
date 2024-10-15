@@ -1,0 +1,145 @@
+﻿@model TimeAide.Web.Models.EmployeeAttendenceSchedule
+
+<div id="editSchedule_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit- Web Schedule Note</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id)
+                       
+                        <div class="form-group row">
+                            <label class="col-md-2 pr-0 col-form-label">EmployeeID: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 pr-0 col-form-label">Pay Period: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.nPayWeekNum, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+
+                            </div>
+                           
+                        </div>
+
+                        <div class="form-group row">
+                            
+                            <label class="col-md-2 col-form-label pr-0">Start Date: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                
+                                @{ var dStartDate = (@Model.dStartDate ?? DateTime.Today).ToString("dd/MM/yyyy");
+
+                                }
+                                @Html.TextBox("dStartDate", dStartDate, new { @class = "form-control text-box single-line", disabled = "disabled" })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">End Date: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @*@Html.EditorFor(model => model.dEndDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })*@
+                                @{ var dEndDate = (@Model.dEndDate ?? DateTime.Today).ToString("dd/MM/yyyy");
+
+                                }
+                                @Html.TextBox("dEndDate", dEndDate, new { @class = "form-control text-box single-line", disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Note: <span class="text-danger"></span></label>
+                            <div class="col-md-10">                                
+                                @Html.TextAreaFor(m => m.sNote, new {
+                                       rows = "2", style = "resize:none;max-width:600px;", @class = "form-control", @maxlength="50"
+                                       })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveSchedule" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {      
+
+        $("#btnSaveSchedule").click(function () {
+             saveSchedule();
+        });
+    });
+    
+   
+    function saveSchedule() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.Id = $('#Id').val(); 
+
+        dataObject.sNote = $("#sNote").val();
+       
+
+        $.ajax({
+            url: "/EmployeeWebAttendanceSchedule/EditWebAttendenceSchedule",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data.retData);
+                    showAlertAutoHide("", data.status, data.message);
+                    $("#editSchedule_modal").modal("hide");
+                    refreshScheduleData(data.retData);
+                   
+                    //window.location.reload();
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+
+    }
+    
+
+    function refreshScheduleData(dataObj) {
+        debugger;
+        var table = $('#tblSchedule').DataTable();
+        var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+            return table.cell(rowIdx, 0).data() == dataObj.Id ? true : false;
+        });
+
+        table.cell(selectedRow[0], 9).data(dataObj.sNote);
+
+    }
+   
+</script>
+
+
+

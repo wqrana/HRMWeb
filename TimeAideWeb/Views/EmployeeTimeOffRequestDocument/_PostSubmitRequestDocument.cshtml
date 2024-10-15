@@ -1,0 +1,139 @@
+﻿<div id="timeOffRequestDocument_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Time-Off Request Document(s)</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0 pb-2">
+                <div id="divTimeOffRequestDocument">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divTimeOffRequestDocumentUpADownLoad">
+
+</div>
+<script>
+    function getTimeOffRequestDocument(id, openType) {
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeOffRequestDocument/GetTimeOffRequestDocument',
+            data: { "id": id },
+            success: function (data) {
+                debugger;
+                $("#divTimeOffRequestDocument").html(data);
+                if (openType != "Refresh") {
+                    $("#timeOffRequestDocument_modal").modal("show");
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+    function openUploadDocumentPopup(id) {
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeOffRequestDocument/EditUploadDocumentFiles',
+            data: { "id": id },
+            success: function (data) {
+                debugger;
+                $("#divTimeOffRequestDocumentUpADownLoad").html(data);
+
+                $("#uploadTimeOffDocument_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function saveTimeOffDocumentFileData(dataObj) {
+        debugger;
+
+        var formData = new FormData();
+        formData.append('model.EmployeeTimeOffDocumentId', dataObj.Id);
+        formData.append('model.DocumentName', dataObj.DocumentName);
+        formData.append('model.DocumentType', dataObj.DocumentType);
+        formData.append('model.SubmissionType', dataObj.SubmissionType);
+        formData.append('model.Status', dataObj.Status);
+
+        formData.append('model.DocumentFile1Name', dataObj.DocumentFile1Name);
+        formData.append('model.DocumentFile1', dataObj.DocumentFile1);
+        formData.append('model.DocumentFile1Action', dataObj.DocFile1Action);
+
+        formData.append('model.DocumentFile2Name', dataObj.DocumentFile2Name);
+        formData.append('model.DocumentFile2', dataObj.DocumentFile2);
+        formData.append('model.DocumentFile2Action', dataObj.DocFile2Action);
+
+        formData.append('model.DocumentFile3Name', dataObj.DocumentFile3Name);
+        formData.append('model.DocumentFile3', dataObj.DocumentFile3);
+        formData.append('model.DocumentFile3Action', dataObj.DocFile3Action);
+
+        if (formData != null) {
+            $.ajax({
+                url: "/EmployeeTimeOffRequestDocument/EditTimeOffRequestDocument",
+                type: 'POST',
+                dataType: "json",
+                contentType: "multipart/form-data",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    debugger;
+                    if (result.status == "Success") {
+                        showAlertAutoHide("", result.status, result.message);
+                        $("#uploadTimeOffDocument_modal").modal("hide");
+                        getTimeOffRequestDocument(dataObj.RequestId, "Refresh");
+                    }
+                    else {
+                        showAlertAutoHide("", result.status, result.message);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.status);
+                }
+            });
+        }
+    }
+    function openDownloadDocumentPopup(id) {
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeOffRequestDocument/DownloadDocumentFiles',
+            data: { "id": id },
+            success: function (data) {
+                debugger;
+                $("#divTimeOffRequestDocumentUpADownLoad").html(data);
+
+                $("#downloadTimeOffDocument_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function downloadDocumentFile(id, fileSeq) {
+        debugger;
+        window.location.href = "/EmployeeTimeOffRequestDocument/DownloadDocumentFile?id=" + id + "&fileSeq=" + fileSeq;
+
+    }
+    function getTimeOffRequestCancellation(id) {
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeOffRequest/CancelTimeOffRequest',
+            data: { "id": id },
+            success: function (data) {
+                debugger;
+                $("#divTimeOffRequest").html(data);
+                $("#timeOffRequestCancel_modal").modal("show");
+            },
+            error: function () {
+            }
+        });
+    }
+</script>

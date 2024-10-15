@@ -1,0 +1,37 @@
+﻿@model TimeAide.Web.Models.State
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StateName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StateName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StateCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StateCode)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StateDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StateDescription)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Country.CountryName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country.CountryName)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

@@ -1,0 +1,128 @@
+﻿@model TimeAide.Web.Models.UserContactInformation
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px;width:100%">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(model => model.UserInformationId)
+        <input id="UserContactInformationId" name="UserContactInformationId" type="hidden" value="@Model.Id">
+        @*<div style="font-size: 90%;">*@
+        @Html.HiddenFor(m => m.HomeAddress1)
+        @Html.HiddenFor(m => m.HomeAddress2)
+        @Html.HiddenFor(m => m.HomeCityId)
+        @Html.HiddenFor(m => m.HomeStateId)
+        @Html.HiddenFor(m => m.HomeCountryId, new { @id = "ddlCountryId_Home" })
+        @Html.HiddenFor(m => m.HomeZipCode)
+        @*<div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+
+            <div class="panel panel-default" style="width:100%;margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Mailing Address  @Html.CheckBoxFor(m => m.IsSameHomeAddress, htmlAttributes: new { onchange = "IsSameHomeAddressChange()" }) <span style="font-size:70%"> Make same as Home Address</span></div>
+                <div class="panel-body">*@
+        <div class="panel-heading" style="padding-left:10px">
+            Mailing Address  @Html.CheckBoxFor(m => m.IsSameHomeAddress, htmlAttributes: new { onchange = "IsSameHomeAddressChange()" }) <span style="font-size:70%"> Make same as Home Address</span>
+            <div>
+                @Html.ValidationMessage("PopupMessage1", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Address 1
+            </label>
+            <div class="col-lg text-muted mt-2" style="width:100% !important">
+                @Html.EditorFor(model => model.MailingAddress1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MailingAddress1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Address 2
+            </label>
+            <div class="col-lg text-muted mt-2" style="width:100% !important">
+                @Html.EditorFor(model => model.MailingAddress2, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MailingAddress2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Country
+            </label>
+            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("ddlCountryId_Mailing", null, Model.MailingCountryId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.MailingCountryId, "", new { @class = "text-danger" })
+            </div>
+
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                State
+            </label>
+            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.State>("ddlStateId_Mailing", null, Model.MailingStateId, Model.MailingCountryId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.MailingStateId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                City
+            </label>
+            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.City>("ddlCityId_Mailing", null, Model.MailingCityId, Model.MailingStateId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.MailingCityId, "", new { @class = "text-danger" })
+            </div>
+
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Zip Code
+            </label>
+            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                @Html.EditorFor(model => model.MailingZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MailingZipCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*</div>
+                </div>
+            </div>*@
+
+        <div class="submit-section">
+            <button type="button" id="btnSaveMailingAddress" class="btn btn-primary submit-btn">Save</button>
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+
+    </div>
+}
+
+<style>
+    .modal-xl {
+        min-width: 80% !important;
+        margin: 0 auto;
+    }
+
+        .modal-xl .modal-content {
+            /*min-height: 75vh !important;*/
+            margin: 0 auto;
+        }
+</style>
+@*<script src="~/Scripts/UserInformation/userContactAddresses-js.js?version=1.0"></script>*@
+<script>
+    $(document).ready(function () {
+     /*   $('#ddlCityId_Mailing').select2();*/
+        $('#MailingZipCode').mask('99999-9999', { autoclear: false }).on('blur', function () {
+            ValidateZipCode('MailingZipCode', 'MailingZipCode');
+        });
+        $('#ddlCountryId_Mailing').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#ddlStateId_Mailing', null);
+            LoadCityDropdown(null, '#ddlCityId_Mailing', null);
+        });
+        $('#ddlStateId_Mailing').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#ddlCityId_Mailing', null);
+        });
+        $("#btnSaveMailingAddress").click(function () {
+            debugger;
+            btnSaveMailingAddress();
+        });
+    });
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+

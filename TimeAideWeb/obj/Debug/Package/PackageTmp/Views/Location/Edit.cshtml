@@ -1,0 +1,91 @@
+﻿@model TimeAide.Web.Models.Location
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(m=>m.Id)
+        <div class="form-group row">
+            <div class="col-md-2">
+                @*@Html.LabelFor(model => model.LocationName, htmlAttributes: new { @class = "control-label" })*@
+                <label class="col-form-label">Location: <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LocationName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.LocationDescription, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LocationDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LocationDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.LocationCountry.CountryName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-4">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("LocationCountryId", null, Model.LocationCountryId, htmlAttributes: new { @class = "form-control" }))
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.LocationState.StateName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-4">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.State>("LocationStateId", null, Model.LocationStateId, Model.LocationCountryId, htmlAttributes: new { @class = "form-control" }))
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.LocationCity.CityName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-4">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.City>("LocationCityId", null, Model.LocationCityId, Model.LocationStateId, htmlAttributes: new { @class = "form-control" }))
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}
+<script src="~/Scripts/UserInformation/userContactAddresses-js.js?version=1.0"></script>
+<script>
+    $(document).ready(function () {
+        $('#ZipCode').mask("99999?-9999");
+
+
+        $('#CountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#StateId', null);
+            LoadCityDropdown(null, '#CityId', null);
+        });
+
+        $('#StateId').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#CityId', null);
+        });
+
+    });
+</script>
+

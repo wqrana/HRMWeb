@@ -1,0 +1,245 @@
+﻿@{
+    ViewBag.Title = "Base Schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header mb-2">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Base Schedule</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Setting</li>
+                <li class="breadcrumb-item active">Attendance Web</li>
+                <li class="breadcrumb-item active">Base Schedule</li>
+            </ul>
+
+            <div class="col-auto float-right ml-auto">
+                @*@Html.ActionLink("Create New User", "Create")*@
+                @if ((bool)(ViewBag.AllowAdd ?? false))
+                {
+                    <a href="javascript:createEditBaseSchedule(0);" class="btn add-btn">+ Add @ViewBag.Label</a>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="divBaseScheduleDetail">
+</div>
+<div id="divBaseScheduleList">
+
+</div>
+
+<div id="divCreateEditDelPopUp">
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+       getBaseScheduleDetail(0);
+       getBaseScheduleList();
+    });
+    function getBaseScheduleList() {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/BaseSchedule/IndexByBaseSchedule',
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divBaseScheduleList").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAccrualRuleList");
+            }
+        });
+    }
+    function getBaseScheduleDetail(baseScheduleId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/BaseSchedule/Details',
+            data: { "id": baseScheduleId },
+
+            success: function (data) {
+                 debugger;
+                //console.log(data);
+                $("#divBaseScheduleDetail").html(data);
+                $('html, body').animate({
+                    scrollTop: ($('#divBaseScheduleDetail').offset().top)
+                }, 500);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAccrualRuleDetail");
+            }
+        });
+    }
+
+    function createEditBaseSchedule(baseScheduleId) {
+        debugger;
+        var ActionMethod = baseScheduleId == 0 ? "Create" : "Edit";
+        $.ajax({
+            type: "get",
+            url: '/BaseSchedule/' + ActionMethod,
+            data: { "id": baseScheduleId },
+
+            success: function (data) {
+                 debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#baseScheduleCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveBaseScheduleData(dataObj) {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";        
+
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.Name.trim().length > 0 ? 1 : 0;
+           
+            if (isRequiredValidated != 1) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/BaseSchedule/CreateEdit",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#baseScheduleCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);
+                        getBaseScheduleDetail(0);
+                        getBaseScheduleList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+    function ajaxDayInfoShiftHours(dataObj,day) {
+        debugger;
+      
+            $.ajax({
+                type: "POST",
+                url: "/BaseSchedule/AjaxDayInfoHours",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    $("#ShiftHrs_" + day).val(data.ShiftHours);
+                    setScehduleTotalHours();
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in ajaxDayInfo parent alert data');
+                    //return false;
+                }
+            });       
+    }
+    function setScehduleTotalHours() {
+        debugger;
+        var totalSchHrs = 0.0;
+        $('input[id*=Is_]').each(function () {
+            debugger;
+            var id = $(this).attr("id");
+            var day = id.substring(id.indexOf("_") + 1, id.length)
+            var sts = $(this).is(":checked");
+            if (sts) {
+                var shiftHrs = $("#ShiftHrs_" + day).val();
+                totalSchHrs += Number(shiftHrs);
+            }
+
+        });
+        //totalSchHrs = Math.round(totalSchHrs, 2);
+        $("#TotalScheduleHours").val(totalSchHrs);
+    }
+    function getBaseScheduleDeleteData(baseScheduleId) {
+        debugger;
+        if (baseScheduleId != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/BaseSchedule/Delete',
+                data: { "id": baseScheduleId },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#baseScheduleDelete_modal").modal("show");
+                    
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteBaseSchedule(baseScheduleId) {
+        debugger;
+
+        if (baseScheduleId != '') {
+            $.ajax({
+                type: "Post",
+                url: "/BaseSchedule/ConfirmDelete",
+                data: { "id": baseScheduleId },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#baseScheduleDelete_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        location.reload(true);
+                        
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide("", "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+
+
+
+    //End
+</script>
+

@@ -1,0 +1,233 @@
+﻿@model TimeAide.Web.Models.EmployeeWithholding
+@Html.Partial("_CreatePageTitleView")
+@Html.HiddenFor(model => model.UserInformationId)
+
+@foreach (var each in (ViewBag.CompanyWithholdings as Dictionary<int, bool>))
+{
+    <input id="hdnCompanyWithholding_@each.Key"
+           name="hdnCompanyWithholding_@each.Key"
+           type="hidden"
+           value="@each.Value.ToString()" />
+}
+<div class="form-horizontal" style="padding:10px">
+    <div class="form-group row">
+        <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label">
+                    Withholding:<span class='text-danger'>*</span>
+                </label>
+                <div class="col-md-6">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.CompanyWithholding>("CompanyWithholdingId", null, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.CompanyWithholdingId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "col-md-4 col-form-label" })
+                <div class="col-md-6">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Enabled)
+                        @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label">
+                    Start Date:<span class='text-danger'>*</span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label">
+                    End Date:
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.MoneyAmount, htmlAttributes: new { @class = "col-md-4 col-form-label" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.MoneyAmount, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MoneyAmount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label">
+                    Period Entry:<span class='text-danger'>*</span>
+                </label>
+                <div class="col-md-6">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.PeriodEntry>("PeriodEntryId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.PeriodEntryId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.GLAccountId, "WH Expense GL", htmlAttributes: new { @class = "col-md-4 col-form-label" })
+                <div class="col-md-6">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.GLAccount>("GLAccountId", null, null, false, 2, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.GLAccountId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Employee Withholdings/Deductions</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.EmployeeWithholdingPercentage, "Deduct %:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.EmployeeWithholdingPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithholdingPercentage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.EmployeeWithholdingAmount, "Deduct Amount($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.EmployeeWithholdingAmount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithholdingAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Compensation Limits</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.MaximumSalaryLimit, "Compensation Top($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MaximumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MaximumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.MinimumSalaryLimit, "Compensation Min($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MinimumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MinimumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Company Withholdings/Deductions</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.MaximumSalaryLimit, "Deduct %:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MaximumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MaximumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.MinimumSalaryLimit, "Deduct Amount($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MinimumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MinimumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="divEmployeeLoan">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Employee Loan/Advance</div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.CompanyWithholding.CompanyWithholdingLoan.LoanDescription, "Loan Desc:", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DisplayFor(model => model.CompanyWithholding.CompanyWithholdingLoan.LoanDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CompanyWithholding.CompanyWithholdingLoan.LoanDescription, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.LoanAmount, "Loan Amount", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7">
+                                @Html.EditorFor(model => model.LoanAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LoanAmount, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.LoanNumber, "Loan Number", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7">
+                                @Html.EditorFor(model => model.LoanNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LoanNumber, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.RemainingBalance, "Remaining Balance", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7">
+                                @Html.EditorFor(model => model.RemainingBalance, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.RemainingBalance, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="submit-section">
+        <button type="button" class="btn btn-primary submit-btn" id="btnAddEmployeeWithholding">Save</button>
+        <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+<style>
+    #myModaldialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 65% !important;
+        width: 65% !important;
+        top: -25px !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+
+        $("#divEmployeeLoan").hide();
+    });
+    $("#CompanyWithholdingId").change(function () {
+        //var id = $("#CompanyWithholdingId")(":selected").attr("id");
+        hdnCompanyWithholding_1
+        if ($("#hdnCompanyWithholding_" + $(this).val()).val() == 'False') {
+
+            $("#divEmployeeLoan").hide();
+        }
+        else { $("#divEmployeeLoan").show();}
+    });
+</script>
+@Scripts.Render("~/bundles/jqueryval")

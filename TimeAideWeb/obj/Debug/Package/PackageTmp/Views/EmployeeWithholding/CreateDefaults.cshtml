@@ -1,0 +1,202 @@
+﻿@using TimeAide.Web.Models;
+@{
+    List<CompanyWithholding> companyWithholdingList = (List<CompanyWithholding>)ViewBag.CompanyWithholdingList;
+}
+
+<div class="mt-2 p-1">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Employee Default Withholdings</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <hr>
+</div>
+<div class="modal-body pt-0">
+    @foreach (var item in companyWithholdingList)
+    {
+        <div class="form-group row">
+            <div class="col-md-1 mt-2">
+                <input id="companyCompensationId_@item.Id" name="compensationDefault" type="checkbox" />
+            </div>
+            <label class="col-md-4 col-form-label pl-0" id="lblCompensationName_@item.Id">@item.WithHoldingName </label>
+        </div>
+        <div id="divCompensationDetail_@item.Id" style="display:none;">
+            <div class="panel panel-default" style="margin-left:5px">
+                <div class="panel-heading" style="padding-left:0px">@item.WithHoldingName</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label mt-2 pr-0">Start Date:<span class="text-danger">*</span></label>
+                        <div class="col-md-4 mt-2">
+                            <input type="datetime" id="StartDate_@item.Id" class="form-control" />
+                        </div>
+                        <label class="col-md-2 col-form-label mt-2 pr-0">End Date:</label>
+                        <div class="col-md-4 mt-2">
+                            <input type="datetime" id="EndDate_@item.Id" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label mt-2 pr-0" style="margin-left:0px">Money Amount:<span class="text-danger">*</span></label>
+                        <div class="col-md-4 mt-2">
+                            <input type="text" id="MoneyAmount_@item.Id" class="form-control" />
+
+                        </div>
+                        <label class="col-md-2 col-form-label mt-2 pr-0"> Period Entry:</label>
+                        <div class="col-md-4 mt-2">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationPeriodEntry>("PeriodEntryId_"+@item.Id, null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    <div class="submit-section mt-1">
+        <button id="btnSaveDefaultCompensation" class="btn btn-primary submit-btn">Save</button>
+        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+    </div>
+
+</div>
+
+<script>
+    // var selectedTypes = [];
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $("input[name=compensationDefault]").change(function () {
+            debugger;
+            var compensationId = getElementTypeId(this);
+            var state = $(this).is(":checked");
+            if (state) {
+                $("#divCompensationDetail_" + compensationId).show();
+            }
+            else {
+                $("#divCompensationDetail_" + compensationId).hide();
+            }
+        });
+        $("#btnSaveDefaultCompensation").click(function () {
+            debugger;
+            var isValidated = true;
+            var selectedCompensationList = [];
+            var selectedTypes = getSelectedCompensations();
+            if (selectedTypes.length == 0) {
+                showAlertAutoHide("", "Error", "Please select the default compensation.");
+                isValidated = false;
+                return;
+            }
+            selectedTypes.forEach(function (typeId) {
+                debugger;
+                var validatedRecord = validateCompensations(typeId);
+                if (validatedRecord == false) {
+                    var typeName = $("#lblCompensationName_" + typeId).text();
+                    var message = "Missing required field(s) for the selected compensation(" + typeName + ")";
+                    showAlertAutoHide("", "Error", message);
+                    isValidated = false;
+                    return;
+                }
+                else {
+                    selectedCompensationList.push(validatedRecord);
+                }
+            });
+            if (isValidated) {
+                debugger
+                selectedCompensationList.forEach(function (item) {
+                    saveCompensationDefaults(item);
+                });
+                refreshEmployeeWithholdings();
+                $("#myModal").modal("hide");
+            }
+        });
+    });
+    function getElementTypeId(element) {
+        var id = $(element).attr("id");
+        var compensationId = id.substring(id.indexOf("_") + 1, id.length);
+        return compensationId;
+    }
+    function getSelectedCompensations() {
+        debugger;
+        var selectedTypes = [];
+        $("input[name='compensationDefault']").each(function () {
+            debugger;
+            if ($(this).is(":checked")) {
+                var compensationId = getElementTypeId(this);
+                selectedTypes.push(compensationId);
+            }
+        });
+        return selectedTypes;
+    }
+    function validateCompensations(id) {
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var dataObj = new Object();
+        dataObj.UserInformationId = $("#userID").val();
+        dataObj.CompanyWithholdingId = id;
+        dataObj.StartDate = $('#StartDate_' + id).val();
+        dataObj.EndDate = $('#EndDate_' + id).val();
+        dataObj.MoneyAmount = $('#MoneyAmount_' + id).val();
+        dataObj.PeriodEntryId = $('#PeriodEntryId_' + id).val();
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.CompanyWithholdingId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.StartDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.MoneyAmount.trim().length > 0 ? 1 : 0;
+
+
+            if (isRequiredValidated != 3) {
+                isValidated = false;
+                return isValidated;
+            }
+        }
+        return dataObj;
+    }
+    function saveCompensationDefaults(compensationData) {
+        debugger;
+        var alertID = "#";
+        var userId = $("#userID").val();
+
+        // ajax call for saving data
+        $.ajax({
+            type: "POST",
+            url: "/EmployeeWithholding/CreateDefaults",
+            data: JSON.stringify(compensationData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+                    $("#myModal").modal("hide");
+                    showAlertAutoHide("#", data.status, data.message);
+                    //location.reload(true);
+                    refreshEmployeeWithholdings();
+                }
+                else {
+                    showAlertAutoHide(alertID, data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                alert('Error in CreateDefaultAccrualRule action call');
+                return false;
+            }
+        });
+    }
+</script>
+<style>
+    #myModaldialog {
+        width: 60%;
+        max-width: 60% !important;
+        /*width: 500px;
+        max-width: 700px;*/
+    }
+
+    #divDdlPopupdialog {
+        width: 50%;
+        max-width: 50% !important;
+        /*width: 500px;
+        max-width: 700px;*/
+    }
+</style>
+
+

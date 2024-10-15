@@ -1,0 +1,155 @@
+﻿@using TimeAide.Web.ViewModel;
+@using TimeAide.Services.Helpers;
+@model IEnumerable<TimeAide.Web.Models.NotificationLogEmail>
+
+
+<div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+    <h4 style="display: inline;">Workflow Notification Emails</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<!-- Button trigger modal -->
+<div class="row">
+    <div class="col-md-12">
+        @{
+            DateTime notificationDate = DateTime.Now;
+            var nottificationMsg = "";
+            var notificationLog = Model.FirstOrDefault().NotificationLog;
+            if (notificationLog.NotificationTypeId == 13)
+            {
+                notificationDate = notificationLog.CreatedDate;
+                nottificationMsg = notificationLog.EmailBlast.EmailTemplate.EmailBody;
+            }
+            else
+            {
+                notificationDate = notificationLog.NotificationScheduleDetail.CreatedDate;
+                nottificationMsg = notificationLog.NotificationScheduleDetail.NotificationMessage.Message;
+            }
+
+        }
+        Notification Date: @notificationDate.ToString("dd-MMM-yyyy  hh:mm")
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float:right">
+            View Email Template
+        </button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                <h5 class="modal-title" id="exampleModalLabel">Email Template</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Raw(nottificationMsg)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div id="workflowNotification" class="pro-overview tab-pane fade show active">
+    <div class="row">
+        <div class="col-md-12 d-flex">
+            <div class="card profile-box flex-fill">
+                <div class="card-body pt-1">
+                    <div class="form-group row">
+                        <div class="table-responsive">
+                            <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexExpirationNotificationEmails">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th>
+                                            Is Read By User
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderByDescending(x => x.Id))
+                                    {
+                                        //foreach (var each in item.)
+                                        {
+                                            foreach (var eachEmail in item.ToAddressList)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => eachEmail)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.NotificationLog != null && item.NotificationLog.NotificationLogMessageReadBy.Count() > 0 && item.NotificationLog.NotificationLogMessageReadBy.Where(x => x.ReadBy != null && x.ReadBy.UserContactInformations.Count() > 0 && !string.IsNullOrEmpty(x.ReadBy.UserContactInformations.FirstOrDefault().NotificationEmail) && x.ReadBy.UserContactInformations.FirstOrDefault().NotificationEmail.ToLower() == eachEmail.ToLower()).Count() > 0)
+                                                        {
+                                                            <span> Yes</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span> No</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-dialog {
+        width: 60%;
+        max-width: 60% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var dtable = $('#tblIndexExpirationNotificationEmails').dataTable({
+            paging: false,
+            searching: false,
+            ordering: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+    });
+</script>

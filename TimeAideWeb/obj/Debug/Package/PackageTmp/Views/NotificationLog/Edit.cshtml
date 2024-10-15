@@ -1,0 +1,100 @@
+﻿@model TimeAide.Web.Models.NotificationMessage
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.NotificationMessageName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.NotificationMessageName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificationMessageName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.NotificationMessageDescription, "Description", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.NotificationMessageDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificationMessageDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Message, "Message", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.Message, 10, 50, new { htmlAttributes = new { @class = "notes", @style = "width:100% !important;" } })
+                @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                Add any of the field to the email body.
+            </div>
+            <div class="col-md-8">
+                <ul style="float: left;list-style: none;padding-inline-start: 0;">
+                    <li class="draggable">[FirstName]</li>
+                    <li class="draggable">[MiddleInitial]</li>
+                    <li class="draggable">[FirstLastName]</li>
+                    <li class="draggable">[SecondLastName]</li>
+                    <li class="draggable">[ShortFullName]</li>
+                    <li class="draggable">[DaysBefore]</li>
+                    <li class="draggable">[RecordName]</li>
+                </ul>
+            </div>
+        </div>
+
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}
+
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.richtext-editor').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['']],
+                ['insert', ['link']],
+                ['view', []],
+            ],
+
+            height: 200, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            //  disableDragAndDrop: true
+
+        });
+        $('div.note-popover').css("display", "none");
+        setTimeout(function () {
+            debugger;
+            $('.richtext-editor').summernote('fontName', 'Arial');
+            $('.richtext-editor').summernote('fontSizeUnit', 'pt');
+            $('.richtext-editor').summernote('fontSize', 14);
+            $('.richtext-editor').summernote('justifyLeft');
+
+
+        }, 500);
+    });
+
+    $(".draggable").click(function () {
+        debugger
+        $('.richtext-editor').summernote('editor.insertText', $(this).html());
+    });
+</script>

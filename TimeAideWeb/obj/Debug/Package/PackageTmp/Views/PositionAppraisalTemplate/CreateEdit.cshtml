@@ -1,0 +1,85 @@
+﻿
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Content/multi-select.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.multi-select.js"></script>
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="PositionAppraisalTemplateCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-mg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Position Appraisal Template(s) - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="positionAppraisalTemplateCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+
+                        <div class="form-group row">
+                            <label class="offset-md-1 col-md-5">Available List </label>
+                            <label class="col-md-4">Position Template(s)</label>
+                            <div class="offset-md-1 col-md-10 mt-2">
+
+                                @Html.DropDownList("PositionAppraisalTemplateList",
+                                    new MultiSelectList(ViewBag.AppraisalTemplateItemList,
+                                    "Value", "Text", ViewBag.SelectedPositionAppraisalTemplates),
+                               new
+                               {
+                                   multiple = "multiple",
+                                   id = "PositionAppraisalTemplateList",
+                                   name = "AppraisalTemplateList[]"
+                               })
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSavePositionAppraisalTemplates" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#PositionAppraisalTemplateList').multiSelect({ keepOrder: false });
+
+        $("#btnSavePositionAppraisalTemplates").click(function () {
+            debugger;
+            var selectedTemplateStr = '';
+            var selectedAppraisalTemplateList = $('#PositionAppraisalTemplateList').val();
+            if (selectedAppraisalTemplateList.length > 0) {
+                selectedTemplateStr = selectedAppraisalTemplateList.length > 1 ? selectedAppraisalTemplateList.join(',') : selectedAppraisalTemplateList[0];
+            }
+            savePositionAppraisalTemplateData(selectedTemplateStr);
+        })
+
+
+    });
+
+</script>
+
+
+
+

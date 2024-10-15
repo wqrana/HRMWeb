@@ -1,0 +1,31 @@
+﻿@model TimeAide.Web.Models.EmployeeStatus
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.EmployeeStatusName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.EmployeeStatusName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmployeeStatusName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.EmployeeStatusDescription, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.EmployeeStatusDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmployeeStatusDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}
+

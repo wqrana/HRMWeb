@@ -1,0 +1,340 @@
+﻿@model TimeAide.Web.Models.PayScale
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal" style="padding:10px">
+        @Html.AntiForgeryToken()
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.PayScaleName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PayScaleName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PayScaleName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.RateFrequencyId, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.RateFrequency>("RateFrequencyId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.RateFrequency, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="submit-section">
+            <input type="hidden" id="popupTargetDdl" />
+            <button type="button" onclick="fnAddPayScale('@ViewBag.FormName');" class="btn btn-primary submit-btn">Save</button>
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+            @*<button onclick="$(this).closest('.modal').modal('hide'); return false;">Cancel</button>*@
+        </div>
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script type="text/javascript">
+            function fnAddPayScale(controller) {
+                var model = {
+                }
+                debugger
+                $('input, select, textarea').each(
+                    function (index) {
+                        var input = $(this);
+                        model[input.attr('name')] = input.val();
+                    }
+                );
+                debugger
+                $('input[type=checkbox]').each(
+                    function (index) {
+                        var input = $(this);
+                        //alert(input.is(":checked"));
+                        model[input.attr('name')] = (input.is(":checked"));
+                    }
+                );
+
+
+                var orderArr = [];
+                orderArr.length = 0;
+                var index = 0;
+                debugger
+                // loop over each table row (tr)
+                $("#tblPayScaleLevel tr").each(function () {
+
+                    if (index > 0) {
+                        var currentRow = $(this);
+                        var col2_value = currentRow.find("td:eq(1)").text();
+                        var obj = {};
+                        obj.PayScaleLevelRate = col2_value;
+                        orderArr.push(obj);
+                    }
+                    index++;
+                });
+
+                model.PayScaleLevel = orderArr;
+                //alert($('.IsExpirable').is(":checked"));
+                //alert(JSON.stringify(model));
+                debugger
+                var actionMethod = "";
+                if (model.Id == null || (typeof (model.Id) === "undefined") || model.Id == 0) { actionMethod = "Create" }
+                else { actionMethod = "Edit" }
+                if ($('#divDdlPopup').is(':visible')) {
+                    model.Id = undefined;
+                    $.ajax({
+                        type: 'post',
+                        url: '/' + controller + '/Create',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "json",
+                        success: function (data) {
+                            debugger
+                            //alert(JSON.stringify(data))
+
+                            var id = $("#popupTargetDdl").val();
+                            //alert(id);
+
+                            if (id == null || (typeof (id) === "undefined") || id == '') {
+                                id = controller + 'Id';
+                            }
+
+                            var nameField = controller + 'Name';
+                            if (controller == 'WCClassCode') {
+                                nameField = "ClassName";
+                            }
+
+                            //$('#btnWithDdl').parent().parent().find('select').html()
+                            $('#' + id + '').append('<option value=' + data.Id + '>' + data['' + nameField + ''] + '</option>');
+                            $('#' + id + ' option[value=\'' + data.Id + '\']').prop('selected', 'selected');
+                            $('#divDdlPopup').modal('hide');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+                            debugger
+
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        type: 'post',
+                        url: '/' + controller + '/' + actionMethod,
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            location.reload(true);
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                }
+            }
+        </script>
+        <style>
+
+            .popup {
+                position: relative;
+                /*display: inline-block;*/
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+
+           .popup .popuptext {
+                visibility: hidden;
+                /*width: 160px;*/
+                background-color: #555;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 8px 0;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 35%;
+                margin-left: -80px;
+            }
+
+
+            .popup .popuptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #555 transparent transparent transparent;
+            }
+
+
+                .popup .show {
+                    visibility: visible;
+                    -webkit-animation: fadeIn 1s;
+                    animation: fadeIn 1s;
+                }
+        </style>
+
+        <style type="text/css">
+            .panel {
+                margin-bottom: 20px !important;
+                background-color: #ffffff !important;
+                border: 1px solid transparent !important;
+                border-color: #ddd !important;
+                border-radius: 4px !important;
+                -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+            }
+
+            .panel-heading {
+                color: #31708f;
+                background-color: #d9edf7;
+                border-color: #bce8f1;
+            }
+
+            .tblLevel {
+                counter-reset: rowNumber;
+            }
+
+                .tblLevel tr:not(.fble_htr) {
+                }
+
+                    .tblLevel tr:not(.fble_htr) td:first-child::before {
+                        display: table-cell;
+                        counter-increment: rowNumber;
+                        content: counter(rowNumber) ".";
+                        padding-right: 0.3em;
+                        text-align: right;
+                    }
+        </style>
+        <script>
+            function myFunction() {
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+            }
+            $(document).ready(function () {
+                var tables = $('#tblPayScaleLevel').dataTable(
+                    {
+                        "bInfo": false
+                        , "bLengthChange": false
+                        , "bFilter": false
+                        , "bPaginate": false
+                        , "bSort": false
+                        , "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
+                        , "searching": false
+                    });
+                $(this).find(".dataTables_empty").parents('tbody').empty();
+                $("#btnAddPayLevelRate").click(function () {
+                    $('span[data-valmsg-for="txtPayLevelRateAmount"]').text("");
+                    var name = $("#txtPayLevelRateAmount").val();
+                    debugger
+                    if (name.length == 0)
+                    {
+                        //$('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                        $('span[data-valmsg-for="txtPayLevelRateAmount"]').text("Amount required.");
+                        return false;
+                    }
+                    if (!$.isNumeric(name)) {
+                        //$('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                        $('span[data-valmsg-for="txtPayLevelRateAmount"]').text("Amount must be numeric.");
+                        return false;
+                    }
+                    
+                    var markup = "<tr><td></td><td>" + name + "</td><td></td><td></td></tr>";
+                    $("#tblPayScaleLevel").append(markup);
+                    debugger
+                    //tables.table(1).order([2, 'asc']).draw();
+                    $("#txtPayLevelRateAmount").val('');
+                    //myTable.fnSort( [ [columnNumber,'desc'] ] )
+                    sortTableRows(1);
+
+                    //$('#tblPayScaleLevel tr').each(function () {
+                    //    var customerId = $(this).find("td").eq(1).html();
+                    //});
+
+                    var previous_value = 0;
+                    var index = 0;
+                    $("#tblPayScaleLevel tr").each(function () {
+                        var currentRow = $(this);
+
+                        var col2_value = currentRow.find("td:eq(1)").text();
+                        debugger
+                        if (index > 1) {
+                            currentRow.find("td:eq(2)").text(col2_value - previous_value);
+                        }
+                        previous_value = col2_value;
+                        index++;
+                    });
+
+                    var popup = document.getElementById("myPopup");
+                    popup.classList.toggle("show");
+
+                });
+
+                // Find and remove selected table rows
+                $(".delete-row").click(function () {
+                    $("table tbody").find('input[name="record"]').each(function () {
+                        if ($(this).is(":checked")) {
+                            $(this).parents("tr").remove();
+                        }
+                    });
+                });
+
+
+                function sortTableRows(n) {
+                    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                    table = document.getElementById("tblPayScaleLevel");
+                    switching = true;
+                    dir = "asc";
+                    while (switching) {
+                        switching = false;
+                        rows = table.getElementsByTagName("TR");
+                        for (i = 1; i < (rows.length - 1); i++) {
+                            shouldSwitch = false;
+                            x = rows[i].getElementsByTagName("TD")[n];
+                            y = rows[i + 1].getElementsByTagName("TD")[n];
+                            if (dir == "asc") {
+                                if (parseInt(x.innerHTML.toLowerCase()) > parseInt(y.innerHTML.toLowerCase())) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            } else if (dir == "desc") {
+                                if (parseInt(x.innerHTML.toLowerCase()) < parseInt(y.innerHTML.toLowerCase())) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (shouldSwitch) {
+                            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                            switching = true;
+                            switchcount++;
+                        } else {
+                            //if (switchcount == 0 && dir == "asc") {
+                            //    dir = "desc";
+                            //    switching = true;
+                            //}
+                        }
+                    }
+                }
+                function sortTableCols(n) {
+                    alert("This should sort cols by row #" + n + " values");
+                }
+            });
+        </script>
+    </div>
+}

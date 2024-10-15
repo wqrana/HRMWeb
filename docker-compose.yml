@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  timeaide.api:
+    image: ${DOCKER_REGISTRY-}timeaideapi
+    build:
+      context: .\TimeAide.API
+      dockerfile: Dockerfile

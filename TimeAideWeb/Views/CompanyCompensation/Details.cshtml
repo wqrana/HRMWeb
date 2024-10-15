@@ -1,0 +1,316 @@
+﻿@model TimeAide.Web.Models.CompanyCompensation
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        <div class="col-md-6">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CompensationName, "Compensation Name", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.CompensationName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.CompensationTypeId, "Compensation Type", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-8">
+                    @if (Model.CompensationType != null)
+                    {
+                        @Html.DisplayFor(model => model.CompensationType.CompensationTypeName, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.ComputationTypeId, "Computation Type", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-8">
+                    @if (Model.ComputationType != null)
+                    {
+                        @Html.DisplayFor(model => model.ComputationType.CompensationComputationTypeName, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.IsEnabled, "Is Enabled", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.DisplayFor(model => model.IsEnabled)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.ImportTypeId, "Import Type", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-8">
+                    @if (Model.ImportType != null)
+                    {
+                        @Html.DisplayFor(model => model.ImportType.CompensationImportTypeName, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.GLAccountId, "GL Account", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @if (Model.GLAccount != null)
+                    {
+                        @Html.DisplayFor(model => model.GLAccount.GLAccountName, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.IsCovidCompensation, "Is Covid Compensation", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.DisplayFor(model => model.IsCovidCompensation)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.IsFICASSCCExempt, "Is FICASSCC Exempt", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.DisplayFor(model => model.IsFICASSCCExempt)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.ReportOrder, "Report Order", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.ReportOrder, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.GLLookupField, "GL Lookup Field", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.GLLookupField, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="col-md-12 row">
+                        <div class="col-md-8">
+                            Transactions
+                        </div>
+                        <div class="col-md-4 pr-0">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div id="divSupervisedEmployees">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="col-md-12 row">
+                        <div class="col-md-8">
+                            PR Pay Export
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body" style="padding-left: 5px;">
+                    <div class="table-responsive" style="padding-left:2px">
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Wages, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.Wages)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Commissions, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.Commissions)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Allowances, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.Allowances)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Tips, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.Tips)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Income401K, "Income 401K", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.Income401K)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.OtherRetirement, "Other Retirement", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.OtherRetirement)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Cafeteria, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.Cafeteria)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.Reimbursements, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.Reimbursements)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CODA401K, "CODA 401K", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.CODA401K)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.ExemptSalaries, "Exempt Salaries", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.ExemptSalaries)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome1, "Custom Income 1", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.CustomIncome1)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome2, "Custom Income 2", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.CustomIncome2)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome3, "Custom Income 3", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.CustomIncome3)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome4, "Custom Income 4", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.CustomIncome4)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.CustomIncome5, "Custom Income 5", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.CustomIncome5)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable1, "NonTaxable 1", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.NonTaxable1)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable2, "NonTaxable 2", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.NonTaxable2)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable3, "NonTaxable 3", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.NonTaxable3)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable4, "NonTaxable 4", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.NonTaxable4)
+                                </div>
+                            </div>
+                            @Html.LabelFor(model => model.CompanyCompensationPRPayExport.NonTaxable5, "NonTaxable 5", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.DisplayFor(model => model.CompanyCompensationPRPayExport.NonTaxable5)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>
+<style>
+    #myModaldialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 65% !important;
+        width: 65% !important;
+        top: -25px !important;
+    }
+
+    .form-control {
+        height: unset
+    }
+
+    .form-group {
+        margin-bottom: .5rem;
+    }
+
+    .form-control {
+        line-height: 1.0;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadCompanyCompensation(@Model.Id);
+    });
+    function LoadCompanyCompensation(id) {
+        $.ajax({
+            type: "GET",
+            url: '/CompensationTransaction/IndexCompensationTransaction',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": id },
+            datatype: "html",
+            success: function (html) {
+                $('#divSupervisedEmployees').empty()
+                $('#divSupervisedEmployees').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+</script>

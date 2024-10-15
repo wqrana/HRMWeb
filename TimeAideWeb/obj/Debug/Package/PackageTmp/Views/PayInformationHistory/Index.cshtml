@@ -1,0 +1,546 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PayInformationHistory>
+<h4 class="pull-left"> Pay Information History</h4>
+
+@*<div class="form-group row" style="margin:0px">
+        <div class="col-md-12 row">
+            <div class="col-md-6">
+                <h3 class="card-title pull-left">
+                    Pay Information History
+                </h3>
+            </div>
+        </div>
+    </div>*@
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblPayInformationHistory">
+        <thead>
+            <tr>
+                <th>
+                    Employment Period
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    Pay Scale
+                </th>
+                <th>
+                    Pay Type
+                </th>
+                <th>
+                    Base Rate
+                </th>
+                <th>
+                    Hourly Rate
+                </th>
+                <th>
+                    Comm. Rate
+                </th>
+                <th>
+                    Pay Freq.
+                </th>
+                <th>
+                    Period Hours
+                </th>
+                <th>
+                    Period Base Pay
+                </th>
+                <th>
+                    Yearly Base Pay
+                </th>
+                <th>
+                    Yearly Comm. Pay
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Change Reason
+                </th>
+                <th>
+                    Authorizer
+                </th>
+                <th>
+                    Approved Date
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employment.EmploymentRange)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayScale.PayScaleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayType.PayTypeName)
+                </td>
+                <td>
+                    <span id=""> @Html.DisplayFor(modelItem => item.RateAmount)</span>
+                    <span style="font-size:11px">@Html.DisplayFor(modelItem => item.RateFrequency.RateFrequencyName)</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HourlyRate)
+                </td>
+
+                <td>
+                    <span id=""> @Html.DisplayFor(modelItem => item.CommRateAmount)</span>
+                    <span style="font-size:11px">@Html.DisplayFor(modelItem => item.CommRateFrequency.RateFrequencyName)</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayFrequency.PayFrequencyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PeriodHours)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PeriodGrossPay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.YearlyGrossPay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.YearlyCommBasePay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChangeReason)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SelectedAuthorizByName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovedDate)
+                </td>
+                <td>
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a a href="javascript:;" data-toggle="modal" onclick="fnDetailPayInformationHistory(@item.Id);" id="anchorPayInformationHistory" class="dropdown-item" data-id="@item.Id"><i class="fa fa-eye m-r-5"></i> Details</a>
+                            @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                            {
+                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                            }
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+@section Scripts {
+    <style type="text/css">
+        td, th {
+            padding: 0 !important;
+        }
+    </style>
+}
+<script>
+    function getHourlyBaseRate() {
+
+        var rateFreqId = $('#RateFrequencyId').val();
+        var rateAmount = $("#RateAmount").val();
+        debugger;
+        if (rateFreqId > 0) {
+            $.ajax({
+                type: "GET",
+                url: '/PayInformationHistory/GetHourlyBaseRate',
+                data: { "rateFrequencyId": rateFreqId, "rateAmount": rateAmount },
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    $("#HourlyRate").val(data);
+                    ajaxPayCalculation();
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            $("#HourlyRate").val(0);
+        }
+    }
+    function getPayPeriodHours() {
+        var payFreqId = $('#PayFrequencyId').val();
+
+        debugger;
+        if (payFreqId > 0) {
+            $.ajax({
+                type: "GET",
+                url: '/PayInformationHistory/GetPayPeriodHours',
+                data: { "payFrequencyId": payFreqId },
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    $("#PeriodHours").val(data);
+                    ajaxPayCalculation();
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            $("#PeriodHours").val(0);
+            ajaxPayCalculation();
+        }
+    }
+    function ajaxPayCalculation() {
+        var datafieldsObject = new Object();
+        datafieldsObject.PayFrequencyId = $("#PayFrequencyId").val();
+        datafieldsObject.RateFrequencyId = $("#RateFrequencyId").val();
+        datafieldsObject.CommRateFrequencyId = $("#CommRateFrequencyId").val();
+        datafieldsObject.RateAmount = $("#RateAmount").val();
+        datafieldsObject.CommRateAmount = $("#CommRateAmount").val();
+        datafieldsObject.PeriodHours = $("#PeriodHours").val();
+        $.ajax({
+            type: "POST",
+            url: "/PayInformationHistory/AjaxPayCalculation",
+            data: JSON.stringify(datafieldsObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data.payInfo);
+                    $('#PeriodGrossPay').val(data.payInfo.PeriodGrossPay);
+                    $('#YearlyGrossPay').val(data.payInfo.YearlyGrossPay);
+                    $('#YearlyCommBasePay').val(data.payInfo.YearlyCommBasePay);
+                    $('#YearlyBaseNCommPay').val(data.payInfo.YearlyBaseNCommPay);
+
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                debugger;
+                displayErrorMessage('Error in deleting parent alert data');
+                return false;
+            }
+        });
+    }
+    function fnAddPayInfor(id) {
+        debugger;
+       
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/PayInformationHistory/AddByUser',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                //$("#myModaldialog").removeClass("modal-md");
+                $('#myModal').modal('show');
+
+                $("#btnAddPayInformationHistory").click(function (e) {
+                    debugger;
+                    $(".loading").show();
+                    var model = {
+                        UserInformationId: $('#UserInformationId').val(),
+                        Id: $('#PayInformationHistoryId').val(),
+                        StartDate: $('#StartDate').val(),
+                        RateAmount: $('#RateAmount').val(),
+                        CommRateAmount: $("#CommRateAmount").val(),
+                        RateFrequencyId: $('#RateFrequencyId  :selected').val(),
+                        CommRateFrequencyId: $("#CommRateFrequencyId").val(),
+                        PayTypeId: $('#PayTypeId  :selected').val(),
+
+                        SubDepartmentId: $('#SubDepartmentId  :selected').val(),
+                        PayFrequencyId: $('#PayFrequencyId  :selected').val(),
+                        PeriodHours: $("#PeriodHours").val(),
+                        PositionId: $('#PositionId  :selected').val(),
+                        EEOCategoryId: $('#EEOCategoryId  :selected').val(),
+                        WCClassCodeId: $('#WCClassCodeId  :selected').val(),
+                        PayScaleId: $('#PayScaleId  :selected').val(),
+                        PeriodGrossPay: $('#PeriodGrossPay').val(),
+                        YearlyGrossPay: $('#YearlyGrossPay').val(),
+                        YearlyCommBasePay: $('#YearlyCommBasePay').val(),
+                        YearlyBaseNCommPay: $('#YearlyBaseNCommPay').val()
+                    }
+                    //e.preventDefault();
+                    $.ajax({
+                        type: 'post',
+                        url: '/PayInformationHistory/AddByUser',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divPayInformationHistoryIndex').html(html);
+
+                            fnMostRecentPayInfo(id);
+
+                            $('#myModal').modal('hide');
+                            $(".loading").hide();
+                        },
+                        error: function (xhr, status, error) {
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                            $(".loading").hide();
+                        }
+                    });
+                });
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnDeletePayInformationHistory(id) {
+        debugger;
+        //var $buttonClicked = $(this);
+        // var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/PayInformationHistory/Delete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            //data: id,
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnDeletePayInformationHistory").click(function (e) {
+                    var model = {
+                        Id: $('#PayInformationHistoryId').val(),
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/PayInformationHistory/Delete',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divPayInformationHistoryIndex').html(html);
+                            fnMostRecentPayInfo($('#UserInformationId').val());
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (jqXHR, exception) {
+                            debugger;
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+
+    function fnEditPayInformationHistory(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        debugger
+        $.ajax({
+            type: "GET",
+            url: '/PayInformationHistory/Edit',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            //data: id,
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnEditPayInformationHistory").click(function (e) {
+                    debugger
+                    var model = {
+                        UserInformationId: $('#UserInformationId').val(),
+                        Id: $('#PayInformationHistoryId').val(),
+                        StartDate: $('#StartDate').val(),
+                        RateAmount: $('#RateAmount').val(),
+                        CommRateAmount: $("#CommRateAmount").val(),
+                        RateFrequencyId: $('#RateFrequencyId  :selected').val(),
+                        CommRateFrequencyId: $("#CommRateFrequencyId").val(),
+                        PayTypeId: $('#PayTypeId  :selected').val(),
+
+                        SubDepartmentId: $('#SubDepartmentId  :selected').val(),
+                        PayFrequencyId: $('#PayFrequencyId  :selected').val(),
+                        PeriodHours: $("#PeriodHours").val(),
+                        PositionId: $('#PositionId  :selected').val(),
+                        EEOCategoryId: $('#EEOCategoryId  :selected').val(),
+                        WCClassCodeId: $('#WCClassCodeId  :selected').val(),
+                        PayScaleId: $('#PayScaleId  :selected').val(),
+                        PeriodGrossPay: $('#PeriodGrossPay').val(),
+                        YearlyGrossPay: $('#YearlyGrossPay').val(),
+                        YearlyCommBasePay: $('#YearlyCommBasePay').val(),
+                        YearlyBaseNCommPay: $('#YearlyBaseNCommPay').val()
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/PayInformationHistory/Edit',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divPayInformationHistoryIndex').html(html);
+                            fnMostRecentPayInfo($('#UserInformationId').val());
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (xhr, status, error) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnClosePayInformationHistory(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        debugger
+        $.ajax({
+            type: "GET",
+            url: '/PayInformationHistory/Close',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            //data: id,
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnClosePayInformationHistory").click(function (e) {
+
+                    var model = {
+                        UserInformationId: $('#UserInformationId').val(),
+                        Id: $('#PayInformationHistoryId').val(),
+                        EndDate: $('#EndDate').val(),
+                        ApprovedDate: $('#ApprovedDate_').val(),
+                        AuthorizeById: $('#SelectedAuthorizById').val(),
+                        ChangeReason: $('#ChangeReason').val(),
+                        EmploymentId: $('#PayInfoEmploymentId').val()
+                    }
+                    debugger
+                    var selectedAuthorizByIdList = [];
+                    var selectedAuthorizByIdStr = "";
+                    $('#SelectedAuthorizById option:selected').each(function () {
+                        selectedAuthorizByIdList.push($(this).val());
+                    });
+                    if (selectedAuthorizByIdList.length > 0) {
+                        selectedAuthorizByIdStr = selectedAuthorizByIdList.join(",");
+                    }
+                    model.SelectedAuthorizById = selectedAuthorizByIdStr;
+
+                    debugger
+                    $.ajax({
+                        type: 'post',
+                        url: '/PayInformationHistory/Close',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divPayInformationHistoryIndex').html(html);
+                            fnMostRecentPayInfo($('#UserInformationId').val());
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (xhr, status, error) {
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnDetailPayInformationHistory(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/PayInformationHistory/Details',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                $('#divMostRecentRecordPayInformationHistory').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnMostRecentPayInfo(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/PayInformationHistory/MostRecentRecord',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                $('#divMostRecentRecordPayInformationHistory').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+</script>

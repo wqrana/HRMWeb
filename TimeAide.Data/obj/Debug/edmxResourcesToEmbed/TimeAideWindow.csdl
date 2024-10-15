@@ -1,0 +1,757 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TIMEAIDE_7_PSICOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tCompany">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nPayRuleID" Type="Int32" />
+    <Property Name="nSchedID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tSchedModDailyDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nUserID" Type="Int32" />
+    <Property Name="sUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="sNote" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dPunchDate" Type="DateTime" Precision="3" />
+    <Property Name="dPunchIn1" Type="DateTime" Precision="3" />
+    <Property Name="dPunchOut1" Type="DateTime" Precision="3" />
+    <Property Name="dPunchIn2" Type="DateTime" Precision="3" />
+    <Property Name="dPunchOut2" Type="DateTime" Precision="3" />
+    <Property Name="dPunchIn3" Type="DateTime" Precision="3" />
+    <Property Name="dPunchOut3" Type="DateTime" Precision="3" />
+    <Property Name="dPunchIn4" Type="DateTime" Precision="3" />
+    <Property Name="dPunchOut4" Type="DateTime" Precision="3" />
+    <Property Name="nWorkDayType" Type="Int32" />
+    <Property Name="dblDayHours" Type="Double" />
+    <Property Name="nSupervisorID" Type="Int32" />
+    <Property Name="dModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="nPunchNum" Type="Int32" />
+    <Property Name="nPayWeekNum" Type="Int32" />
+    <Property Name="nJobCodeID" Type="Int32" />
+    <Property Name="nSchedModPeriodSumm" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tSchedModPeriodSumm">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nUserID" Type="Int32" />
+    <Property Name="sUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="sNote" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dStartDate" Type="DateTime" Precision="3" />
+    <Property Name="dEndDate" Type="DateTime" Precision="3" />
+    <Property Name="dblPeriodHours" Type="Double" />
+    <Property Name="nSupervisorID" Type="Int32" />
+    <Property Name="dModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="nPayPeriodType" Type="Int32" />
+    <Property Name="nPayWeekNum" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tSchedule">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="sDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nPunchNum" Type="Int32" />
+    <Property Name="nPunchCode" Type="Int32" />
+    <Property Name="bSunday" Type="Boolean" />
+    <Property Name="bMonday" Type="Boolean" />
+    <Property Name="bTuesday" Type="Boolean" />
+    <Property Name="bWednesday" Type="Boolean" />
+    <Property Name="bThursday" Type="Boolean" />
+    <Property Name="bFriday" Type="Boolean" />
+    <Property Name="bSaturday" Type="Boolean" />
+    <Property Name="nCompanyID" Type="Int32" />
+    <Property Name="nShiftDiff" Type="Int32" />
+    <Property Name="sShiftDiffName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="sShiftDiffCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nShiftDiffCount" Type="Int32" />
+    <Property Name="dShiftDiffStart" Type="DateTime" Precision="0" />
+    <Property Name="dShiftDiffEnd" Type="DateTime" Precision="0" />
+    <Property Name="sShiftDiffName2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="sShiftDiffCode2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="dShiftDiffStart2" Type="DateTime" Precision="0" />
+    <Property Name="dShiftDiffEnd2" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="tScheduleDayInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nSchedID" Type="Int32" />
+    <Property Name="nDayofWeek" Type="Int32" />
+    <Property Name="bRight" Type="Boolean" />
+    <Property Name="bOvernight" Type="Boolean" />
+    <Property Name="dIn1Hr" Type="DateTime" Precision="0" />
+    <Property Name="dOut1Hr" Type="DateTime" Precision="0" />
+    <Property Name="dIn2Hr" Type="DateTime" Precision="0" />
+    <Property Name="dOut2Hr" Type="DateTime" Precision="0" />
+    <Property Name="dIn3Hr" Type="DateTime" Precision="0" />
+    <Property Name="dOut3Hr" Type="DateTime" Precision="0" />
+    <Property Name="dIn4Hr" Type="DateTime" Precision="0" />
+    <Property Name="dOut4Hr" Type="DateTime" Precision="0" />
+    <Property Name="nJobCodeID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tuser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="reg_date" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="datelimit" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+    <Property Name="idno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="badmin" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="padmin" Type="Int32" />
+    <Property Name="company" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="dept" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="group_id" Type="Int16" />
+    <Property Name="cantgate" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="timegate" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="validtype" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="pwd" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+    <Property Name="cancard" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cardnum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="identify" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="seculevel" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="fpdata" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="fpimage" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="fpname" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="face" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="voice" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="antipass_state" Type="Int32" />
+    <Property Name="antipass_lasttime" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+    <Property Name="nCompanyID" Type="Int32" />
+    <Property Name="nDeptID" Type="Int32" />
+    <Property Name="nJobTitleID" Type="Int32" />
+    <Property Name="nGroupID" Type="Int32" />
+    <Property Name="nEmployeeType" Type="Int32" />
+    <Property Name="nStatus" Type="Int32" />
+    <Property Name="sNotes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="objPhoto" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="nPunchClockID" Type="Int32" />
+    <Property Name="nPayrollRuleID" Type="Int32" />
+    <Property Name="nScheduleID" Type="Int32" />
+    <Property Name="nSupervisorType" Type="Int32" />
+    <Property Name="sPwd" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nCompanyRest" Type="Int32" />
+    <Property Name="nDeptRest" Type="Int32" />
+    <Property Name="nCatRest" Type="Int32" />
+    <Property Name="bEmpRecordsView" Type="Boolean" />
+    <Property Name="bEmpRecordsEdit" Type="Boolean" />
+    <Property Name="bEmpReportsView" Type="Boolean" />
+    <Property Name="bPunchMaintView" Type="Boolean" />
+    <Property Name="bPunchMaintEdit" Type="Boolean" />
+    <Property Name="bPunchSuperView" Type="Boolean" />
+    <Property Name="bReptPeriod" Type="Boolean" />
+    <Property Name="bReptHistorical" Type="Boolean" />
+    <Property Name="bReptAudit" Type="Boolean" />
+    <Property Name="bExportPayroll" Type="Boolean" />
+    <Property Name="bPayRuleView" Type="Boolean" />
+    <Property Name="bPayRuleEdit" Type="Boolean" />
+    <Property Name="bSchedView" Type="Boolean" />
+    <Property Name="bSchedEdit" Type="Boolean" />
+    <Property Name="bCompanySettings" Type="Boolean" />
+    <Property Name="bMonitor" Type="Boolean" />
+    <Property Name="bEmployeeImport" Type="Boolean" />
+    <Property Name="bRestrictClock" Type="Boolean" />
+    <Property Name="nRestrickClock" Type="Int32" />
+    <Property Name="nSupervisorViewOptions" Type="Int32" />
+    <Property Name="bHoursLostView" Type="Boolean" />
+    <Property Name="bHoursLostEdit" Type="Boolean" />
+    <Property Name="nSickRule" Type="Int32" />
+    <Property Name="nVacationRule" Type="Int32" />
+    <Property Name="nEmployeeTypeRest" Type="Int32" />
+    <Property Name="sPwdHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="intPositionID" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleInitial" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="FirstLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="SecondLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="ShortFullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Comments" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AutoShortFullName" Type="Int32" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityContainer Name="TimeAideWindowContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tCompanies" EntityType="Self.tCompany" />
+    <EntitySet Name="tSchedModDailyDetails" EntityType="Self.tSchedModDailyDetail" />
+    <EntitySet Name="tSchedModPeriodSumms" EntityType="Self.tSchedModPeriodSumm" />
+    <EntitySet Name="tSchedules" EntityType="Self.tSchedule" />
+    <EntitySet Name="tScheduleDayInfoes" EntityType="Self.tScheduleDayInfo" />
+    <EntitySet Name="tusers" EntityType="Self.tuser" />
+    <EntitySet Name="tAccrualTypes" EntityType="TIMEAIDE_7_PSICOModel.tAccrualType" />
+    <FunctionImport Name="spSS_CompensationBalances" ReturnType="Collection(TIMEAIDE_7_PSICOModel.spSS_CompensationBalances_Result)">
+      <Parameter Name="UserID" Mode="In" Type="Int32" />
+      <Parameter Name="AccrualType" Mode="In" Type="String" />
+      <Parameter Name="SearchDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <EntitySet Name="tPunchDates" EntityType="TIMEAIDE_7_PSICOModel.tPunchDate" />
+    <EntitySet Name="tReportWeeks" EntityType="TIMEAIDE_7_PSICOModel.tReportWeek" />
+    <EntitySet Name="viewPay_UserBatchStatus" EntityType="TIMEAIDE_7_PSICOModel.viewPay_UserBatchStatus" />
+    <FunctionImport Name="fnPay_tblUserCompensationsYTD" IsComposable="true" ReturnType="Collection(TIMEAIDE_7_PSICOModel.fnPay_tblUserCompensationsYTD_Result)">
+      <Parameter Name="BATCHID" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="fnPay_tblUserWithholdingsYTD" IsComposable="true" ReturnType="Collection(TIMEAIDE_7_PSICOModel.fnPay_tblUserWithholdingsYTD_Result)">
+      <Parameter Name="BATCHID" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="tblCompanyPayrollInformations" EntityType="TIMEAIDE_7_PSICOModel.tblCompanyPayrollInformation" />
+    <EntitySet Name="tJobTitle" EntityType="TIMEAIDE_7_PSICOModel.tJobTitle" />
+    <EntitySet Name="tEmployeeType" EntityType="TIMEAIDE_7_PSICOModel.tEmployeeType" />
+    <EntitySet Name="tblSS_TransdefTimeOffRequest" EntityType="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffRequest" />
+    <EntitySet Name="tTransDef" EntityType="TIMEAIDE_7_PSICOModel.tTransDef" />
+    <EntitySet Name="tblSS_TimeOffRequest" EntityType="TIMEAIDE_7_PSICOModel.tblSS_TimeOffRequest" />
+    <FunctionImport Name="spSS_UpdateTimeOffRequestFromWeb">
+      <Parameter Name="TimeOffRequestID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="tPunchData" EntityType="TIMEAIDE_7_PSICOModel.tPunchData" />
+    <FunctionImport Name="spSS_TransDefTimeOff" ReturnType="Collection(TIMEAIDE_7_PSICOModel.spSS_TransDefTimeOff_Result)" />
+    <EntitySet Name="tblSS_TransdefTimeOffDocument" EntityType="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffDocument" />
+    <EntitySet Name="tDept" EntityType="TIMEAIDE_7_PSICOModel.tDept" />
+    <EntitySet Name="tblBatch" EntityType="TIMEAIDE_7_PSICOModel.tblBatch" />
+    <EntitySet Name="tblUserBatch" EntityType="TIMEAIDE_7_PSICOModel.tblUserBatch" />
+    <EntitySet Name="tblUserBatchCompensations" EntityType="TIMEAIDE_7_PSICOModel.tblUserBatchCompensations" />
+    <EntitySet Name="tblUserBatchStatus" EntityType="TIMEAIDE_7_PSICOModel.tblUserBatchStatus" />
+    <EntitySet Name="tblUserBatchTransactions" EntityType="TIMEAIDE_7_PSICOModel.tblUserBatchTransactions" />
+    <EntitySet Name="tblUserBatchWithholdings" EntityType="TIMEAIDE_7_PSICOModel.tblUserBatchWithholdings" />
+    <EntitySet Name="tblUserCompanyPayroll" EntityType="TIMEAIDE_7_PSICOModel.tblUserCompanyPayroll" />
+    <EntitySet Name="tblUserPayChecks" EntityType="TIMEAIDE_7_PSICOModel.tblUserPayChecks" />
+  </EntityContainer>
+  <EntityType Name="tAccrualType">
+    <Key>
+      <PropertyRef Name="sAccrualCodeID" />
+    </Key>
+    <Property Name="sAccrualCodeID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="sAccrualTypeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intAccrualType" Type="Int32" />
+  </EntityType>
+  <ComplexType Name="spSS_CompensationBalances_Result">
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="String" Name="AccrualType" Nullable="false" MaxLength="30" />
+    <Property Type="Decimal" Name="Balance" Nullable="true" Precision="18" Scale="5" />
+    <Property Type="DateTime" Name="SearchDate" Nullable="true" />
+    <Property Type="Decimal" Name="RemainingBalance" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="tPunchDate">
+    <Key>
+      <PropertyRef Name="tpdID" />
+    </Key>
+    <Property Name="tpdID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="e_id" Type="Int32" Nullable="false" />
+    <Property Name="e_idno" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+    <Property Name="e_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="e_group" Type="Int16" />
+    <Property Name="nSchedID" Type="Int32" />
+    <Property Name="DayID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="DTPunchDate" Type="DateTime" Precision="0" />
+    <Property Name="dblPunchHrs" Type="Double" />
+    <Property Name="sType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="b_Processed" Type="Boolean" />
+    <Property Name="sPunchSummary" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="sExceptions" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sDaySchedule" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sHoursSummary" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="bLocked" Type="Boolean" />
+    <Property Name="dblREGULAR" Type="Double" />
+    <Property Name="dblONEHALF" Type="Double" />
+    <Property Name="dblDOUBLE" Type="Double" />
+    <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nCompanyID" Type="Int32" />
+    <Property Name="nDeptID" Type="Int32" />
+    <Property Name="nEmployeeTypeID" Type="Int32" />
+    <Property Name="dblMEAL" Type="Double" />
+    <Property Name="dblOTHERS" Type="Double" />
+    <Property Name="nAbsentStatus" Type="Int32" />
+    <Property Name="nJobTitleID" Type="Int32" />
+    <Property Name="nWeekID" Type="Int64" />
+    <Property Name="intPayrollLock" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tReportWeek">
+    <Key>
+      <PropertyRef Name="tpwID" />
+    </Key>
+    <Property Name="tpwID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="e_id" Type="Int32" />
+    <Property Name="e_idno" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+    <Property Name="e_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nPayRuleID" Type="Int32" />
+    <Property Name="sPayRuleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nPayWeekNum" Type="Int32" />
+    <Property Name="DTStartDate" Type="DateTime" Precision="0" />
+    <Property Name="DTEndDate" Type="DateTime" Precision="0" />
+    <Property Name="dblREGULAR" Type="Double" />
+    <Property Name="dblONEHALF" Type="Double" />
+    <Property Name="dblDOUBLE" Type="Double" />
+    <Property Name="sHoursSummary" Type="String" MaxLength="175" FixedLength="false" Unicode="true" />
+    <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nDept" Type="Int32" />
+    <Property Name="sDeptName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nCompID" Type="Int32" />
+    <Property Name="sCompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nEmployeeType" Type="Int32" />
+    <Property Name="sEmployeeTypeName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nJobTitleID" Type="Int32" />
+    <Property Name="sJobTitleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nScheduleID" Type="Int32" />
+    <Property Name="sScheduleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nPayPeriod" Type="Int32" />
+    <Property Name="nReviewStatus" Type="Int32" />
+    <Property Name="nReviewSupervisorID" Type="Int32" />
+    <Property Name="sSupervisorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nWeekID" Type="Int64" />
+    <Property Name="dblMEAL" Type="Double" />
+    <Property Name="dblOTHERS" Type="Double" />
+    <Property Name="nLocked" Type="Int32" />
+    <Property Name="intUserReviewed" Type="Int32" Nullable="false" />
+    <Property Name="intUserReviewedID" Type="Int32" />
+    <Property Name="strUserReviewedName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtUserReviewDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tJobTitle">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nDeptID" Type="Int32" />
+    <Property Name="boolUSECFSEAssignment" Type="Boolean" Nullable="false" />
+    <Property Name="strCFSECode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decCFSECompanyPercent" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+  </EntityType>
+  <EntityType Name="tEmployeeType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nCompanyID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="viewPay_UserBatchStatus">
+    <Key>
+      <PropertyRef Name="strBatchID" />
+      <PropertyRef Name="strCompanyName" />
+      <PropertyRef Name="strBatchDescription" />
+      <PropertyRef Name="dtBatchCreated" />
+      <PropertyRef Name="intCreatedByID" />
+      <PropertyRef Name="strCreateByName" />
+      <PropertyRef Name="dtBatchUpdates" />
+      <PropertyRef Name="intBatchStatus" />
+      <PropertyRef Name="dtPayDate" />
+      <PropertyRef Name="intPayWeekNum" />
+      <PropertyRef Name="intUserID" />
+      <PropertyRef Name="dtStartDatePeriod" />
+      <PropertyRef Name="dtEndDatePeriod" />
+      <PropertyRef Name="strBatchTypeName" />
+      <PropertyRef Name="intPayMethodType" />
+      <PropertyRef Name="intBatchType" />
+      <PropertyRef Name="intTemplateID" />
+      <PropertyRef Name="intUserBatchStatus" />
+    </Key>
+    <Property Name="strBatchID" Type="Guid" Nullable="false" />
+    <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strBatchDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtBatchCreated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intCreatedByID" Type="Int32" Nullable="false" />
+    <Property Name="strCreateByName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtBatchUpdates" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intBatchStatus" Type="Int32" Nullable="false" />
+    <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="decBatchCompensationAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="decBatchDeductionAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="strStatusDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decBatchTransactionHoursAmount" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="intPayWeekNum" Type="Int32" Nullable="false" />
+    <Property Name="strUserBatchStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intUserID" Type="Int32" Nullable="false" />
+    <Property Name="strUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sHomeAddressLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sHomeAddressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decBatchUserCompensations" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="decBatchUserWithholdings" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="decBatchNetPay" Type="Decimal" Precision="19" Scale="2" />
+    <Property Name="dtStartDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="dtEndDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intCompanyID" Type="Int32" />
+    <Property Name="intDepartmentID" Type="Int32" />
+    <Property Name="intSubdepartmentID" Type="Int32" />
+    <Property Name="intEmployeeTypeID" Type="Int32" />
+    <Property Name="strCompany" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="strDepartment" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="strSubdepartment" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="strEmployeeType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="sSSN" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="strBatchTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intPayMethodType" Type="Int32" Nullable="false" />
+    <Property Name="strPayMethodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intBatchType" Type="Int32" Nullable="false" />
+    <Property Name="intTemplateID" Type="Int32" Nullable="false" />
+    <Property Name="intUserBatchStatus" Type="Int32" Nullable="false" />
+    <Property Name="intDirectDepositCount" Type="Int32" />
+    <Property Name="intCheckCount" Type="Int32" />
+    <Property Name="ClosedByUserID" Type="Int32" />
+    <Property Name="ClosedDateTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <ComplexType Name="fnPay_tblUserCompensationsYTD_Result">
+    <Property Type="String" Name="strBatchID" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="intUserID" Nullable="true" />
+    <Property Type="String" Name="strCompensationName" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="decHours" Nullable="true" Precision="18" Scale="5" />
+    <Property Type="Decimal" Name="decPay" Nullable="true" Precision="18" Scale="5" />
+    <Property Type="String" Name="strGLAccount" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="decPayYTD" Nullable="true" Precision="18" Scale="5" />
+    <Property Type="Int32" Name="intReportOrder" Nullable="true" />
+    <Property Type="Decimal" Name="decPayRate" Nullable="true" Precision="18" Scale="5" />
+  </ComplexType>
+  <ComplexType Name="fnPay_tblUserWithholdingsYTD_Result">
+    <Property Type="String" Name="strBatchID" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="intUserID" Nullable="true" />
+    <Property Type="String" Name="strWithHoldingsName" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="decWithholdingsAmount" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="decBatchEffectivePay" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="strGLAccount" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="decWithholdingsYTD" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Int32" Name="intReportOrder" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="tblCompanyPayrollInformation">
+    <Key>
+      <PropertyRef Name="strCompanyName" />
+    </Key>
+    <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strAddress1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strAddress2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strFax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="strWebSite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollAddress1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollAddress2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strEIN" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollFax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollContactTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollContactPhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strPayrollEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtCompanyStartDate" Type="DateTime" Precision="0" />
+    <Property Name="strSICCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strNAICSCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strSeguroChoferilAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strDepartamentoDelTrabajoAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decDepartamentoDelTrabajoRate" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+  </EntityType>
+  <EntityType Name="tblSS_TransdefTimeOffRequest">
+    <Key>
+      <PropertyRef Name="strTransName" />
+    </Key>
+    <Property Name="strTransName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intTimeOffRequest" Type="Int32" Nullable="false" />
+    <Property Name="intWorkFlowID" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tTransDef">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nTCode" Type="Int32" />
+    <Property Name="sTDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="pCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nIsAbsent" Type="Int32" />
+    <Property Name="nAttendaceCategory" Type="Int32" />
+    <Property Name="sAttendanceCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nParentCode" Type="Int32" />
+    <Property Name="sParentCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nAccrualType" Type="Int32" />
+    <Property Name="sAccrualType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sAccrualImportName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nAttendanceRevision" Type="Int32" />
+    <Property Name="nTardinessRevision" Type="Int32" />
+    <Property Name="nCountsForVacationAccrual" Type="Int32" />
+    <Property Name="nCountsForSickAccrual" Type="Int32" />
+    <Property Name="dblPayRateMultiplier" Type="Double" />
+    <Property Name="dblAdditionalPayAmount" Type="Double" />
+    <Property Name="nCountForCompensationAccruals" Type="Int32" />
+    <Property Name="sCountForCompensationAccruals" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nIsMoneyTrans" Type="Int32" />
+    <Property Name="nIsMoneyAmountFixed" Type="Int32" />
+    <Property Name="decMoneyAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="nAttendanceRevLetter" Type="Int32" />
+    <Property Name="nTardinessRevLetter" Type="Int32" />
+    <Property Name="nCompforCompensationAccrual" Type="Int32" />
+    <Property Name="sCompforCompensationAccrual" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decPayRateMultiplier" Type="Decimal" Precision="16" Scale="2" />
+    <Property Name="decPayRateOffset" Type="Decimal" Precision="16" Scale="2" />
+    <Property Name="nPayRateTransaction" Type="Int32" />
+    <Property Name="boolUseSickInFamily" Type="Boolean" Nullable="false" />
+    <Property Name="decMinimumAccrualTypeBalance" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="decMaximumYearlyTaken" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="boolUseForTimesheetEditor" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblSS_TimeOffRequest">
+    <Key>
+      <PropertyRef Name="intTORUniqueID" />
+    </Key>
+    <Property Name="intTORUniqueID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="intUserID" Type="Int32" />
+    <Property Name="strTransType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="bitSingleDay" Type="Boolean" />
+    <Property Name="dtStartDate" Type="DateTime" Precision="0" />
+    <Property Name="dtEndDate" Type="DateTime" Precision="0" />
+    <Property Name="dtDayStart" Type="DateTime" Precision="3" />
+    <Property Name="decDayHours" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="strRequestNote" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="intTORStatusID" Type="Int32" />
+    <Property Name="dtTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tPunchData">
+    <Key>
+      <PropertyRef Name="tpdID" />
+    </Key>
+    <Property Name="tpdID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DTPunchDate" Type="DateTime" Precision="0" />
+    <Property Name="DTPunchDateTime" Type="DateTime" Precision="0" />
+    <Property Name="g_id" Type="Int32" />
+    <Property Name="e_id" Type="Int32" />
+    <Property Name="e_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="e_idno" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="e_group" Type="Int16" />
+    <Property Name="e_user" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="e_mode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="e_type" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="e_result" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="b_Processed" Type="Boolean" />
+    <Property Name="b_Modified" Type="Boolean" />
+    <Property Name="nAdminID" Type="Int32" />
+    <Property Name="sModType" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="nJobCodeID" Type="Int32" />
+    <Property Name="sNote" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="nPunchType" Type="Int32" />
+    <Property Name="intTerminalType" Type="Int32" />
+    <Property Name="DTPunchdate_Original" Type="DateTime" Precision="0" />
+    <Property Name="DTPunchDateTime_Original" Type="DateTime" Precision="0" />
+    <Property Name="DTPunchDateTime_Rounded" Type="DateTime" Precision="3" />
+  </EntityType>
+  <ComplexType Name="spSS_TransDefTimeOff_Result">
+    <Property Type="Int32" Name="TransId" Nullable="false" />
+    <Property Type="String" Name="TransName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="AccrualType" Nullable="true" MaxLength="30" />
+    <Property Type="Int32" Name="IsTimeOffTrans" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="tblSS_TransdefTimeOffDocument">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="intTransId" Type="Int32" Nullable="false" />
+    <Property Name="sDocumentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intDocumentType" Type="Int32" />
+    <Property Name="intSubmissionType" Type="Int32" />
+    <Property Name="intTimeOffDays" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tDept">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nCompanyID" Type="Int32" />
+    <Property Name="boolUSECFSEAssignment" Type="Boolean" Nullable="false" />
+    <Property Name="strCFSECode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decCFSECompanyPercent" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+  </EntityType>
+  <EntityType Name="tblBatch">
+    <Key>
+      <PropertyRef Name="strBatchID" />
+    </Key>
+    <Property Name="strBatchID" Type="Guid" Nullable="false" />
+    <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strBatchDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtBatchCreated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intCreatedByID" Type="Int32" Nullable="false" />
+    <Property Name="strCreateByName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtBatchUpdates" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intBatchStatus" Type="Int32" Nullable="false" />
+    <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="intBatchType" Type="Int32" Nullable="false" />
+    <Property Name="intTemplateID" Type="Int32" Nullable="false" />
+    <Property Name="ClosedByUserID" Type="Int32" />
+    <Property Name="ClosedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="intPaymentStatusId" Type="Int32" />
+    <Property Name="strPaymentStatusByName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="dtPaymentStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="varPaymentConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strPaymentConfirmationRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="varCompanyPayrollSummary" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strPayrollSummaryRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="intFederalTaxDepositScheduleId" Type="Int32" />
+    <Property Name="intFederalTaxDepositStatusId" Type="Int32" />
+    <Property Name="decFederalTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="dtFederalTaxDepositDate" Type="DateTime" Precision="3" />
+    <Property Name="strFederalTaxEFTPSNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtFederalTaxStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="strFederalTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="varFederalTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strFederalTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intHaciendaTaxDepositScheduleId" Type="Int32" />
+    <Property Name="intHaciendaTaxDepositStatusId" Type="Int32" />
+    <Property Name="decHaciendaTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="dtHaciendaTaxDepositDate" Type="DateTime" Precision="3" />
+    <Property Name="strHaciendaTaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtHaciendaTaxStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="strHaciendaTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="varHaciendaTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strHaciendaTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intFUTATaxDepositScheduleId" Type="Int32" />
+    <Property Name="intFUTATaxDepositStatusId" Type="Int32" />
+    <Property Name="decFUTATaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="dtFUTATaxDepositDate" Type="DateTime" Precision="3" />
+    <Property Name="strFUTATaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtFUTATaxStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="strFUTATaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="varFUTATaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strFUTATaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intACHSentCount" Type="Int32" Nullable="false" />
+    <Property Name="ACHFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblUserBatch">
+    <Key>
+      <PropertyRef Name="intUserID" />
+      <PropertyRef Name="strBatchID" />
+    </Key>
+    <Property Name="intUserID" Type="Int32" Nullable="false" />
+    <Property Name="strBatchID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intPayWeekNum" Type="Int32" Nullable="false" />
+    <Property Name="intUserBatchStatus" Type="Int32" Nullable="false" />
+    <Property Name="dtStartDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="dtEndDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intCompanyID" Type="Int32" />
+    <Property Name="intDepartmentID" Type="Int32" />
+    <Property Name="intSubdepartmentID" Type="Int32" />
+    <Property Name="intEmployeeTypeID" Type="Int32" />
+    <Property Name="intPayMethodType" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUserBatchCompensations">
+    <Key>
+      <PropertyRef Name="strBatchID" />
+      <PropertyRef Name="intUserID" />
+      <PropertyRef Name="intSequenceNumber" />
+    </Key>
+    <Property Name="strBatchID" Type="Guid" Nullable="false" />
+    <Property Name="intUserID" Type="Int32" Nullable="false" />
+    <Property Name="strCompensationName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decPayRate" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+    <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="decHours" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+    <Property Name="decPay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="intEditType" Type="Int32" Nullable="false" />
+    <Property Name="intUBMESequence" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUserBatchStatus">
+    <Key>
+      <PropertyRef Name="intUserBatchStatus" />
+    </Key>
+    <Property Name="intUserBatchStatus" Type="Int32" Nullable="false" />
+    <Property Name="strUserBatchStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblUserBatchTransactions">
+    <Key>
+      <PropertyRef Name="intSequence" />
+    </Key>
+    <Property Name="intSequence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="strBatchID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intUserID" Type="Int32" Nullable="false" />
+    <Property Name="dtPunchDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="strTransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decHours" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+    <Property Name="decMoneyValue" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+    <Property Name="decPayRate" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+    <Property Name="intJobCode" Type="Int32" Nullable="false" />
+    <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="tblUserBatchWithholdings">
+    <Key>
+      <PropertyRef Name="strBatchID" />
+      <PropertyRef Name="intUserID" />
+      <PropertyRef Name="intSequenceNumber" />
+    </Key>
+    <Property Name="strBatchID" Type="Guid" Nullable="false" />
+    <Property Name="intUserID" Type="Int32" Nullable="false" />
+    <Property Name="strWithHoldingsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="decBatchEffectivePay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="decWithholdingsAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="intPrePostTaxDeduction" Type="Int32" Nullable="false" />
+    <Property Name="strGLAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="boolDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="dtTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intSequenceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="intEditType" Type="Int32" Nullable="false" />
+    <Property Name="intUBMESequence" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUserCompanyPayroll">
+    <Key>
+      <PropertyRef Name="intUserID" />
+    </Key>
+    <Property Name="intUserID" Type="Int32" Nullable="false" />
+    <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intPayrollUserStatus" Type="Int32" Nullable="false" />
+    <Property Name="intPayMethodType" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUserPayChecks">
+    <Key>
+      <PropertyRef Name="strBatchID" />
+      <PropertyRef Name="intUserID" />
+      <PropertyRef Name="dtPayDate" />
+      <PropertyRef Name="intSequenceNum" />
+    </Key>
+    <Property Name="strBatchID" Type="Guid" Nullable="false" />
+    <Property Name="intUserID" Type="Int32" Nullable="false" />
+    <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intSequenceNum" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="decCheckAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="intPayCheckStatus" Type="Int32" Nullable="false" />
+    <Property Name="intCheckNumber" Type="Int32" Nullable="false" />
+    <Property Name="intPayMethodType" Type="Int32" Nullable="false" />
+    <Property Name="intAccountType" Type="Int32" Nullable="false" />
+    <Property Name="strBankAccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strBankRoutingNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strBankName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="decDepositPercent" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+    <Property Name="decDepositAmount" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+  </EntityType>
+</Schema>

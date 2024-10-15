@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.EmployeeDocument
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeader")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Document.DocumentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Document.DocumentName)
+        </dd>
+    </dl>
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentNote)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentNote)
+        </dd>
+    </dl>
+    
+
+    @*//@using (Html.BeginForm())*@
+    
+        <div class="submit-section" style="text-align:center">
+            <button class="btn btn-danger submit-btn m-r-10" id="btnDeleteEmploymentDocument">Delete</button>
+            <button type="submit" class="btn btn-danger submit-btn m-r-10" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+    
+</div>

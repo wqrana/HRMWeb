@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TimeAide.Web.Models.UserInformationRole>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.Label("Role")
+        </th>
+        <th>
+            @Html.Label("User")
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role.RoleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserInformation.FullName)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

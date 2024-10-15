@@ -1,0 +1,379 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.BaseSchedule
+
+
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+
+    .ui-timepicker-container {
+        z-index: 3500 !important;
+    }
+</style>
+<div id="baseScheduleCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Base Schedule - Create</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                       
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label">
+                                Name:<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-1 col-form-label">
+                                Description:
+                            </label>
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label">
+                                Punch:
+                            </label>
+                            <div class="col-md-2">
+                                <select id="NoOfPunch" class="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Total Schedule Hrs:
+                            </label>
+                            <div class="col-md-2">
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.TotalScheduleHours, new { htmlAttributes = new { @class = "form-control",@disabled="disabled" } })
+                                    <div class="input-group-append">
+                                        <a href="javascript:setScehduleTotalHours();" class="fa fa-refresh pt-3 pl-3 pr-3" title="re-calculate the schedule total hours"></a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <label class="col-md-2 col-form-label">All-Companies:</label>
+                            <div class="col-md-1 mt-2">
+                                @{
+                                    var IsAllCompanies = true;
+                                }
+                                @Html.CheckBoxFor(model => IsAllCompanies, new { id = "IsAllCompaniesAE" })
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <div class="card-group">
+                                @foreach (var weekDay in DataHelper.BaseScheduleDayOfWeek)
+                                {
+
+                                    <div class="card">
+                                        <div class="card-header pl-1 pr-1">
+                                            <input type="checkbox" id="Is_@weekDay.Value" />
+                                            <input type="hidden" id="DOW_@weekDay.Value" value="@weekDay.Key" />
+                                            <span id="span_@weekDay.Value" class="">@weekDay.Value</span>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">Punch</span>
+                                                </div>
+                                                <select id="NoOfPunch_@weekDay.Value" class="form-control No-Of-Punch">
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="card-body  pl-0 pr-0 pt-1 pb-1">
+                                            <div class="punch-range-@weekDay.Value">
+                                                <div class="input-group" style="height:44px;">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text pr-4" id="basic-addon1">In 1</span>
+                                                    </div>
+
+                                                    <input type="text" value="@((new DateTime()).ToString("h:mm tt"))" id="TimeIn1_@weekDay.Value" class="form-control text-box single-line" />
+
+                                                </div>
+                                                <div class="input-group" style="height:44px;">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">Out 1</span>
+                                                    </div>
+
+                                                    <input type="text" value="@((new DateTime()).ToString("h:mm tt"))" id="TimeOut1_@weekDay.Value" class="form-control text-box single-line" />
+
+                                                </div>
+                                                <div class="input-group" style="height:44px;">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text pr-4" id="basic-addon1">In 2 </span>
+                                                    </div>
+
+                                                    <input type="text" value="@((new DateTime()).ToString("h:mm tt"))" id="TimeIn2_@weekDay.Value" class="form-control text-box single-line" />
+
+                                                </div>
+                                                <div class="input-group" style="height:44px;">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">Out 2</span>
+                                                    </div>
+
+                                                    <input type="text" value="@((new DateTime()).ToString("h:mm tt"))" id="TimeOut2_@weekDay.Value" class="form-control text-box single-line" />
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-primary" id="basic-addon1">Hrs</span>
+                                                    </div>
+                                                    <input type="text" value="" id="ShiftHrs_@weekDay.Value" class="form-control text-box single-line bg-primary" disabled />
+                                                    <div class="input-group-append">                                                        
+                                                        <a href="javascript:setDayShiftHours('@weekDay.Value');" class="fa fa-refresh pt-3 pl-3 pr-3" title="re-calculate the shift hours"></a>
+                                                    </div>
+                                                </div>
+                                                <a href="javascript:copyToAllDays('@weekDay.Value');" class="btn btn-success mt-1" style="width:100%;">Copy All</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnSaveBaseSchedule" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+        setDefaultDaysSetting();
+        $('#Is_Sunday,#Is_Monday,#Is_Tuesday,#Is_Wednesday,#Is_Thursday,#Is_Friday,#Is_Saturday').change(function () {
+            debugger;
+            var id = $(this).attr("id");
+            var day = id.substring(id.indexOf("_") + 1, id.length)
+            setWorkingDaysFont(day);
+            setDayShiftHours(day);
+        });
+        $("#NoOfPunch").change(function () {
+            debugger;
+            var punch = $(this).val();
+            $("select[id*=NoOfPunch_]").each(function () {
+                debugger;
+                var id = $(this).attr("id");
+                var day = id.substring(id.indexOf("_") + 1, id.length)
+                $(this).val(punch);
+                dayPunchSetting(day, punch);
+            });
+        });
+        $(".No-Of-Punch").change(function () {
+            debugger;
+            var id = $(this).attr("id");
+            var day = id.substring(id.indexOf("_") + 1, id.length);
+            var punch = $(this).val();
+            dayPunchSetting(day, punch);
+        })
+       
+        $('input[id*=TimeIn],input[id*=TimeOut]').each(function () {
+            debugger;
+            $(this).timepicker({
+                timeFormat: 'h:mm p',
+                interval: 30,
+                //minTime: '10',
+                //maxTime: '6:00pm',
+                //defaultTime: '11',
+                //startTime: '10:00',
+                dynamic: false,
+                //dropdown: true,
+                //scrollbar: true
+            });
+
+        });
+
+
+        $("#btnSaveBaseSchedule").click(function () {
+            debugger;
+            var dataObj = new Object();
+            var daysInfo = [];
+            dataObj.Id = 0;
+            dataObj.Name = $("#Name").val();
+            dataObj.Description = $("#Description").val();
+            dataObj.NoOfPunch = $("#NoOfPunch").val();
+            dataObj.IsAllCompanies = $("#IsAllCompaniesAE").is(":checked");
+            dataObj.IsSunday = $("#Is_Sunday").is(":checked");
+            daysInfo.push(getDayInfoData('Sunday', $("#DOW_Sunday").val()));
+            dataObj.IsMonday = $("#Is_Monday").is(":checked");
+            daysInfo.push(getDayInfoData('Monday', $("#DOW_Monday").val()));
+            dataObj.IsTuesday = $("#Is_Tuesday").is(":checked");
+            daysInfo.push(getDayInfoData('Tuesday', $("#DOW_Tuesday").val()));
+            dataObj.IsWednesday = $("#Is_Wednesday").is(":checked");
+            daysInfo.push(getDayInfoData('Wednesday', $("#DOW_Wednesday").val()));
+            dataObj.IsThursday = $("#Is_Thursday").is(":checked");
+            daysInfo.push(getDayInfoData('Thursday', $("#DOW_Thursday").val()));
+            dataObj.IsFriday = $("#Is_Friday").is(":checked");
+            daysInfo.push(getDayInfoData('Friday', $("#DOW_Friday").val()));
+            dataObj.IsSaturday = $("#Is_Saturday").is(":checked");
+            daysInfo.push(getDayInfoData('Saturday', $("#DOW_Saturday").val()));
+               
+            dataObj.BaseScheduleDaysInfo = daysInfo;
+            //if (dataObj.Name == "") {
+            //    showAlertAutoHide("", "Error", "Missing required field(s).");
+            //    return;
+            //}
+
+            saveBaseScheduleData(dataObj);
+        })
+      
+
+    });
+    function getDayInfoData(day,id) {
+        var dayInfo = {
+            DayOfWeek: id,
+            NoOfPunch: $("#NoOfPunch_" + day).val(),
+            TimeIn1: $("#TimeIn1_" + day).val(),
+            TimeOut1: $("#TimeOut1_" + day).val(),
+            TimeIn2: $("#TimeIn2_" + day).val(),
+            TimeOut2: $("#TimeOut2_" + day).val()
+        };
+        return dayInfo;
+    }
+    function copyToAllDays(day) {
+        debugger;
+        var scrTimeIn1 = "#TimeIn1_" + day;
+        var scrTimeOut1 = "#TimeOut1_" + day;
+        var scrTimeIn2 = "#TimeIn2_" + day;
+        var scrTimeOut2 = "#TimeOut2_" + day;
+        var scrShiftHrs = "#ShiftHrs_" + day;
+        var punch = $("#NoOfPunch_"+day).val();
+       // setDayShiftHours(day);
+        $('input[id*=Is_]').each(function () {
+            debugger;
+            var id = $(this).attr("id");
+            if (id != "Is_"+day) {
+                var sts = $("#Is_" + day).is(":checked");
+                $(this).prop("checked", sts);
+                var dayTarget = id.substring(id.indexOf("_") + 1, id.length)
+                setWorkingDaysFont(dayTarget);
+            }
+        });
+
+        $('input[id*=TimeIn1_]').each(function () {
+            if ($(this).attr("id") != scrTimeIn1) {
+                $(this).val($(scrTimeIn1).val());
+            }            
+        });
+        $('input[id*=TimeOut1_]').each(function () {
+            if ($(this).attr("id") != scrTimeOut1) {
+                $(this).val($(scrTimeOut1).val());
+            }
+        });
+        $('input[id*=TimeIn2_]').each(function () {
+            if ($(this).attr("id") != scrTimeIn2) {
+                $(this).val($(scrTimeIn2).val());
+            }
+        });
+        $('input[id*=TimeOut2_]').each(function () {
+            if ($(this).attr("id") != scrTimeOut2) {
+                $(this).val($(scrTimeOut2).val());
+            }
+        });
+        $('input[id*=ShiftHrs_]').each(function () {
+            if ("#" + $(this).attr("id") != scrShiftHrs) {
+                $(this).val($(scrShiftHrs).val());
+            }
+        });
+
+        $("select[id*=NoOfPunch_]").each(function () {
+            debugger;
+            var id = $(this).attr("id");
+            if (id != "NoOfPunch_" + day) {
+                var day = id.substring(id.indexOf("_") + 1, id.length)
+                $(this).val(punch);
+                dayPunchSetting(day, punch);
+            }
+        });
+    }
+    function dayPunchSetting(day, punch) {
+        var timeIn1 = "#TimeIn1_" + day;
+        var timeOut1 = "#TimeOut1_" + day;
+        var timeIn2 = "#TimeIn2_" + day;
+        var timeOut2 = "#TimeOut2_" + day;
+        switch (punch) {
+            case "1":
+                $(timeOut1).hide();
+                $(timeIn2).hide();
+                $(timeOut2).hide();
+                break;
+            case "2":
+                $(timeOut1).show();
+                $(timeIn2).hide();
+                $(timeOut2).hide();
+                break;
+            case "4":
+                $(timeOut1).show();
+                $(timeIn2).show();
+                $(timeOut2).show();
+                break;
+
+        }
+        setDayShiftHours(day);
+    }
+    function setDefaultDaysSetting() {
+        $("select[id*=NoOfPunch_]").each(function () {
+            debugger;
+            var id = $(this).attr("id");
+            var day = id.substring(id.indexOf("_") + 1, id.length)
+            var punch = $(this).val();
+            dayPunchSetting(day, punch);
+        });
+    }
+    function setDayShiftHours(day) {
+        debugger;
+       var dayInfoData= getDayInfoData(day, 0);
+        ajaxDayInfoShiftHours(dayInfoData, day);
+    }
+    function setWorkingDaysFont(day) {
+        debugger;
+
+        var working = $("#Is_" + day).is(":checked");
+        if (working) {
+            $("#span_" + day).addClass("text-blue font-weight-bold");
+        }
+        else {
+            $("#span_" + day).removeClass("text-blue font-weight-bold");
+        }
+
+    }
+</script>
+
+
+
+

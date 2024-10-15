@@ -1,0 +1,85 @@
+﻿@model TimeAide.Web.Models.City
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.CityName, "City Name", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CityName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CityName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.CityCode, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CityCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CityCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.State.Country.CountryName, "Country", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("CountryId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.State.CountryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.State.StateName, "State", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.State>("StateId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.Partial("_CreatePageFooterView")
+
+    </div>
+}
+
+
+<script>
+    $(document).ready(function () {
+        debugger
+        $('#CountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#StateId', null);
+        })
+    });
+
+    function LoadStateDropdown(contryId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/State/AjaxGetCountryState',
+            data: { 'countryId': contryId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+</script>

@@ -1,0 +1,128 @@
+﻿@model TimeAide.Web.Models.Employment
+@Html.Partial("_CreatePageTitleView")
+@Html.HiddenFor(model => model.UserInformationId)
+<input id="EmploymentId" name="EmploymentId" type="hidden" value="@Model.Id">
+<div class="form-horizontal" style="padding:10px">
+    <div class="form-group row" style="padding-top:10px">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Hire Date:<span class="text-danger">*</span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.OriginalHireDate, new { htmlAttributes = new { @class = "form-control", onblur = "CalculateYearsInService()" } })
+            @Html.ValidationMessageFor(model => model.OriginalHireDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Re-Hire Date:<span class="text-danger">*</span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.EffectiveHireDate, new { htmlAttributes = new { @class = "form-control", onblur = "CalculateYearsInService()" } })
+            @Html.ValidationMessageFor(model => model.EffectiveHireDate, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Probation Start:
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.ProbationStartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProbationStartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Probation End:
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.ProbationEndDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProbationEndDate, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+        </label>
+        <div class="col-md-6">
+            <div class="radio-toolbar" style="display:inline">
+                <input type="radio" id="radio3" name="radioProbationEndDate" value="3" onchange="OnProbationEndDateChange('90');">
+                <label for="radio3">3</label>
+
+                <input type="radio" id="radio6" name="radioProbationEndDate" value="6" onchange="OnProbationEndDateChange('180');">
+                <label for="radio6">6</label>
+
+                <input type="radio" id="radio9" name="radioProbationEndDate" value="9" onchange="OnProbationEndDateChange('270');">
+                <label for="radio9">9</label>
+
+                <input type="radio" id="radio12" name="radioProbationEndDate" value="12" onchange="OnProbationEndDateChange('360');">
+                <label for="radio12">12</label>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Hiring Status:
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.EmploymentStatus>("EmploymentStatusId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.EmploymentStatusId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Years in Service:
+        </label>
+        <div class="col-md-6">
+            Use Hire Date @Html.CheckBoxFor(model => model.UseHireDateforYearsInService, new { id = "UseHireforYearsInService", onclick = "CalculateYearsInService()" })
+            <div id="lbllYearsinService">
+                @Html.DisplayFor(model => model.YearsinService, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.UploadedDocumentFile, "Contract:", htmlAttributes: new { @class = "control-label col-md-2" })
+        </label>
+        <div class="col-md-6">
+            <input class="form-control" type="file" id="uploadContractFile" accept=".doc,.docx,.pdf,.jpg,.png" style="width:95%;margin-left:20px">
+            @if (!String.IsNullOrEmpty(Model.DocumentName))
+            {
+                <a target="_blank" href='@Url.Content(Model.DocumentPath)'>
+                    @Model.DocumentPath.Split('/').Last()
+                </a>
+            }
+        </div>
+    </div>
+    <div class="submit-section">
+        <button type="button" class="btn btn-primary submit-btn" id="btnAddEmploymentInformation">Save</button>
+        <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+    });
+
+    function CalculateYearsInService() {
+        debugger
+        var dt1 = new Date();
+        var dt2 = new Date();
+        if ($('#UseHireforYearsInService').is(":checked")) {
+            dt2 = new Date($("#OriginalHireDate").val());
+        }
+        else {
+            dt2 = new Date($("#EffectiveHireDate").val());
+        }
+        var diff = (dt1.getTime() - dt2.getTime()) / 1000;
+        diff /= (60 * 60 * 24);
+        var years = parseInt(diff / 365);
+        diff = parseInt(diff % 365);
+        $("#lbllYearsinService").html(years + " years and " + diff + " days.");
+    }
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+

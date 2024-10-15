@@ -1,0 +1,79 @@
+﻿
+@model TimeAide.Web.Models.ApplicantInterviewQuestion
+
+@Html.HiddenFor(m => m.ApplicantAnswerTypeId)
+<div class="col-md-2">Criteria:</div>
+@if (Model.ApplicantAnswerTypeId == 1)
+{    
+    <div class="col-md-2 pr-0">
+        <input type="text" id="FilterOpertor" value="contains" class="form-control" disabled />
+    </div>
+    <div class="col-md-4 pl-1">
+        <select id="FilterValue" class="form-control">
+            <option value="">Please Select</option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+    </div>
+
+}
+@if (Model.ApplicantAnswerTypeId == 2)
+{  
+    <div class="col-md-2 pr-0">
+        <input type="text" id="FilterOpertor" class="form-control" value="contains" disabled />
+    </div>
+    <div class="col-md-8 pl-1">
+
+        @Html.ListBox("FilterValue", (IEnumerable<SelectListItem>)ViewBag.FilterValue, new { @class = "form-control" })
+    </div>
+
+
+}
+@if (Model.ApplicantAnswerTypeId == 3)
+{   
+    <div class="col-md-2 pr-0">
+        <input type="text" id="FilterOpertor" class="form-control" value="contains" disabled />
+    </div>
+    <div class="col-md-8 pl-1">
+        @Html.DropDownList("FilterValue", null, "Please Select", new { @class = "form-control" })
+    </div>
+
+}
+@if (Model.ApplicantAnswerTypeId == 4)
+{
+    <div class="col-md-3 pr-0">
+        <select id="FilterOpertor" class="form-control">            
+            <option>is</option>
+            <option>is after</option>
+            <option>is before</option>
+        </select>
+    </div>
+    <div class="col-md-7">
+        <input type="datetime" id="FilterValue" class="form-control" />
+    </div>
+
+}
+@if (Model.ApplicantAnswerTypeId == 5)
+{
+    <div class="col-md-2 pr-0">
+        <input type="text" id="FilterOpertor" class="form-control" value="contains" disabled />
+    </div>
+    <div class="col-md-8">
+        <input type="text" id="FilterValue" class="form-control" />
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+        var typeId = $("#ApplicantAnswerTypeId").val();
+        if (typeId == 2) {
+            $('#FilterValue').select2();
+            $(".select2-container").css("width", "100%");
+        }
+        else if (typeId == 4) {
+
+            $('#FilterValue').datetimepicker({ format: 'MM/DD/YYYY' });
+        }
+    })
+</script>

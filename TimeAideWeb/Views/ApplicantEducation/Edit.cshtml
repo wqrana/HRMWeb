@@ -1,0 +1,121 @@
+﻿@model TimeAide.Web.Models.ApplicantEducation
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="applicantEducationCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Education - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="applicantEducationCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.Hidden("ApplicantEducationId", Model.Id)
+                        @Html.HiddenFor(model => model.ApplicantInformationId)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Degree: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    @Html.DropDownList("DegreeId", null, "Please select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-3 col-form-label">Date Completed: <span class="text-danger">*</span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.DateCompleted, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Institution: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.InstitutionName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Title: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Notes: </label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnSaveApplicantEducation" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var autoCompleteSrc = "/ApplicantEducation/AjaxGetAutoCompleteData";
+        $("#DateCompleted").datetimepicker({ format: 'MM/DD/YYYY' });
+
+        $("#btnSaveApplicantEducation").click(function () {
+            saveApplicantEducationData();
+        });
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        }); 
+        
+
+        $("#InstitutionName").autocomplete({
+            source: function (request, response) {
+                var field = "InstitutionName";
+                autoCompleteAjaxSetting(request, response, autoCompleteSrc, field)
+               
+            },
+            minLength: 2
+
+        });
+        $("#Title").autocomplete({
+            source: function (request, response) {
+                var field = "Title";
+                autoCompleteAjaxSetting(request, response, autoCompleteSrc, field)
+            },
+            minLength: 2
+
+        });
+    });
+</script>
+
+

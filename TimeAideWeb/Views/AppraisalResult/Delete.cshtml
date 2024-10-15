@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.AppraisalResult
+
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ResultName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResultName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ResultDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResultDescription)
+        </dd>
+
+    </dl>
+    
+</div>
+@Html.Partial("_DeleteViewFooter")

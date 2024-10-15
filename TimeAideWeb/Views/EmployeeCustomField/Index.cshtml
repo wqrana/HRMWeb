@@ -1,0 +1,391 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeCustomField>
+@*@Html.Partial("_CreatePageTitleView")*@
+<div style="font-size: 90%;">
+    <div class="form-group row" style="margin:0px">
+        <div class="panel panel-default" style="width:100%;">
+            <div class="panel-heading" style="padding-left:10px">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        Custom Field
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeeCustomFieldsIndex">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.CustomField.CustomFieldName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CustomFieldValue)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CustomFieldNote)
+                            </th>
+                            <th>
+                                Type
+                            </th>
+                            <th>
+                                Equipment Status
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExpirationDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IssuanceDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ReturnDate)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.CustomField.FieldDisplayOrder)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomField.CustomFieldName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomFieldValue)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomFieldNote)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomField.CustomFieldType.CustomFieldTypeName)
+                            </td>
+                            <td>
+                                @if ((item.CustomField.CustomFieldTypeId ?? 0) == (int)TimeAide.Web.Models.CustomFieldTypes.Equipment)
+                                {
+                                    if (item.IssuanceDate.HasValue && !item.ReturnDate.HasValue)
+                                    {
+                                        <span>Issued</span>
+                                    }
+                                    else if (item.IssuanceDate.HasValue && item.ReturnDate.HasValue)
+                                    {
+                                        <span>Returned</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Un-issued</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExpirationDate)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IssuanceDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReturnDate)
+                            </td>
+                            <td>
+                                @if ((ViewBag.AllowAdd || ViewBag.AllowEdit))
+                                {
+                                    <div class="pull-right dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                            @*<a a href="javascript:;" data-toggle="modal" onclick="fnDetailEmploymentHistory(@item.Id);" id="anchorDetailEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-eye m-r-5"></i> Details</a>*@
+                                            @{
+                                                string caption = "";
+                                                if ((item.CustomField.CustomFieldTypeId ?? 0) == (int)TimeAide.Web.Models.CustomFieldTypes.Equipment)
+                                                {
+                                                    if (item.Id != 0 && item.IssuanceDate.HasValue && !item.ReturnDate.HasValue)
+                                                    {
+                                                        caption = "Return";
+                                                    }
+                                                    else if (item.Id != 0 && item.IssuanceDate.HasValue && item.ReturnDate.HasValue)
+                                                    {
+                                                        caption = "Edit";
+                                                    }
+                                                    else
+                                                    {
+                                                        caption = "Issue";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    caption = "Edit";
+                                                }
+                                            }
+                                            @if (item.Id == 0)
+                                            {
+                                                <a a href="javascript:;" data-toggle="modal" onclick="fnAddEmployeeCustomField(@item.UserInformationId,@item.CustomFieldId);" id="anchorEditEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> @caption</a>
+                                            }
+                                            else
+                                            {
+
+                                                <a a href="javascript:;" data-toggle="modal" onclick="fnEditEmployeeCustomField(@item.Id);" id="anchorEditEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> @caption</a>
+                                            }
+                                            @if (item.Id != 0)
+                                            {
+                                                <a a href="javascript:;" data-toggle="modal" onclick="fnDeleteEmployeeCustomField(@item.Id);" id="anchorDeleteEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                            }
+                                                @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                            {
+                                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var indexColumns = $("#tblEmployeeCustomFieldsIndex > thead > tr:first > th").length;
+        //alert(indexColumns);
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns - 2; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        //alert(exportColumns);
+
+        debugger
+        var fileNameAndTitle = 'Employee Custom Field - Checklist';
+        var fileTitle = $('#ShortFullNameSpan').text();
+        var index = 0;
+        var tblEmployeeCustomFieldsIndex = $('#tblEmployeeCustomFieldsIndex').DataTable({
+            searching: true,
+            sDom: '<"top"i>rt<"bottom"flp><"clear">',
+            /*"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],*/
+            "bLengthChange": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+
+                    extend: 'excelHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'collection',
+                    className:'btn-primary custom-filter',
+                    text: 'All Types',
+                    buttons: [
+                        {
+                            text: 'All Types', action: function (e, dt, node, config) {
+                                tblEmployeeCustomFieldsIndex
+                                    .columns(3)
+                                    .search('')
+                                    .draw();
+                                tblEmployeeCustomFieldsIndex.button(4).text("All Types");
+                            }
+                        },
+                        {
+                            text: 'Regular', action: function (e, dt, node, config) {
+                                tblEmployeeCustomFieldsIndex
+                                    .columns(3)
+                                    .search("Regular")
+                                    .draw();
+                                tblEmployeeCustomFieldsIndex.button(4).text("Regular");
+                            }
+                        },
+                        {
+                            text: 'Equipment', action: function (e, dt, node, config) {
+                                tblEmployeeCustomFieldsIndex
+                                    .columns(3)
+                                    .search("Equipment")
+                                    .draw();
+                                tblEmployeeCustomFieldsIndex.button(4).text("Equipment");
+                            }
+                        },
+                    ],
+                    dropup: true,
+                    autoClose: true,
+                }
+                //{
+                //    extend: 'pageLength',
+                //    className: 'btn-primary',
+                //},
+            ],
+
+        });
+        /*$('div.toolbar').html('<b>Custom tool bar! Text/images etc.</b>');*/
+    });
+</script>
+<script>
+    function fnDeleteEmployeeCustomField(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCustomField/Delete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnDeleteEmployeeCustomField").click(function (e) {
+                    var model = {
+                        Id: id,
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmployeeCustomField/Delete',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divEmployeeCustomField').html(html);
+                            //fnMostRecentEmploymentHistory($('#UserInformationId').val());
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (jqXHR, exception) {
+                            alert("Error - Dynamic content load failed.");
+                            alert('Uncaught Error.\n' + jqXHR.responseText);
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnAddEmployeeCustomField(UserInformationId, CustomFieldId) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCustomField/AddEmployeeCustomField',
+            contentType: "application/json; charset=utf-8",
+            data: { "UserInformationId": UserInformationId, "CustomFieldId": CustomFieldId },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnEditEmployeeCustomField(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCustomField/Edit',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>
+
+<style type="text/css">
+    .panel {
+        margin-bottom: 20px !important;
+        background-color: #ffffff !important;
+        border: 1px solid transparent !important;
+        border-color: #ddd !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .panel-heading {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+
+    .btn-group .dropdown-menu {
+        position: relative !important;
+        margin-top: 3px !important;
+        width: auto !important;
+    }
+    .dt-button-collection {
+        width: auto !important;
+    }
+    .custom-filter {
+        margin-left: 30px;
+        width: auto;
+    }
+</style>

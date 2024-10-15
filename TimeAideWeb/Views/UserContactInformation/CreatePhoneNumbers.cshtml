@@ -1,0 +1,103 @@
+﻿@model TimeAide.Web.Models.UserContactInformation
+<div class="form-horizontal" style="padding:10px;width:100%">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.HiddenFor(model => model.UserInformationId)
+    <input id="UserContactInformationId" name="UserContactInformationId" type="hidden" value="@Model.Id">
+    @*<div style="font-size: 90%;">*@
+    @*<div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="panel panel-default" style="width:100%;margin-left:10px">
+            <div class="panel-heading" style="padding-left:10px">Phone(s)</div>
+            <div class="panel-body">*@
+    <div>
+        @Html.ValidationMessage("PopupMessage1", "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.HomeNumber, "Home:", htmlAttributes: new { @class = "control-label" })
+        </label>
+        <div class="col-md-3 text-muted mt-2">
+            @Html.EditorFor(model => model.HomeNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.HomeNumber, "", new { @class = "text-danger" })
+        </div>
+
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Mobile:
+        </label>
+        <div class="col-md-3 text-muted mt-2">
+            @Html.EditorFor(model => model.CelNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CelNumber, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Fax:
+        </label>
+        <div class="col-md-3 text-muted mt-2">
+            @Html.EditorFor(model => model.FaxNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FaxNumber, "", new { @class = "text-danger" })
+        </div>
+
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Other:
+        </label>
+        <div class="col-md-3 text-muted mt-2">
+            @Html.EditorFor(model => model.OtherNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.OtherNumber, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Work:
+        </label>
+        <div class="col-md-3 text-muted mt-2">
+            @Html.EditorFor(model => model.WorkNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.WorkNumber, "", new { @class = "text-danger" })
+        </div>
+
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Work Ext.:
+        </label>
+        <div class="col-md-3 text-muted mt-2">
+            @Html.EditorFor(model => model.WorkExtension, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.WorkExtension, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    @*</div>
+            </div>
+        </div>*@
+
+    <div class="submit-section">
+        <button type="button" id="btnSavePhoneNumbers" class="btn btn-primary submit-btn">Save</button>
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+@*<script src="~/Scripts/UserInformation/userContactNumbersAndEmails-js.js?version=1.0"></script>*@
+<script>
+    $(document).ready(function () {
+        $('#HomeNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('HomeNumber', 'Home');
+        });
+        $('#CelNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('CelNumber', 'Mobile');
+        });
+        $('#FaxNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('FaxNumber', 'Fax');
+        });
+        $('#OtherNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('OtherNumber', 'Other')
+        });
+        $('#WorkNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('WorkNumber', 'Work')
+        });
+
+        $("#btnSavePhoneNumbers").click(function () {
+            debugger;
+            btnSavePhoneNumbers();
+
+        })
+    });
+</script>
+@Scripts.Render("~/bundles/jqueryval")

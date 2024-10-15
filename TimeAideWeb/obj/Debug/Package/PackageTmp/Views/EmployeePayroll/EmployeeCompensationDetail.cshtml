@@ -1,0 +1,109 @@
+﻿<style>
+
+   
+</style>
+<div id="employeeCompensationDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border border-secondary">
+            <div class="mt-2 p-2 mt-0">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Compensation(s) Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body p-2">               
+               
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default" style="width:100%; margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Earnings and Compensations
+                                <div class="pull-right dropdown-action" style="height:20px;">
+                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a id="" href="javascript:getEmployeeCompensationCreateEdit();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height:150px;max-height:150px; overflow-y:auto">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Compensation</th>
+                                                    <th>Hrs.</th>
+                                                    <th>Pay Amt.</th>
+                                                    <th>GLAccount </th>
+                                                    <th>Entry Type </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="5%">
+                                                        <div class="pull-right dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                                <a href="javascript:getEmployeeCompensationCreateEdit();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                                <a href="javascript:void();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit GL</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-pencil"></span></a></td>
+                                                    <td>Vacations</td>
+                                                    <td>8.00</td>
+                                                    <td>104.50</td>
+                                                    <td>74699</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="submit-section pb-2 mt-0">
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divCreateEditCompensation"></div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+    function getEmployeeCompensationCreateEdit(id) {
+        // $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayroll/EmployeeCompensationCreateEdit',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divCreateEditCompensation").html(data);
+                $("#employeeCompensationCreateEdit_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+</script>
+
+

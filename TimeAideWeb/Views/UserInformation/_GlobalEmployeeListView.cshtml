@@ -1,0 +1,462 @@
+﻿
+@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+
+
+
+@*@Scripts.Render("~/bundles/bootstrap-theme")*@
+
+@{ 
+    Layout = null;
+}
+
+<div class="form-horizontal" style="padding:20px">
+
+    @Html.Partial("_CreatePageTitleView")
+
+ 
+
+
+    <div class="row">
+
+       
+        <div class="col-md-12">
+
+            <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+
+
+                <div class="table-responsive">
+
+                    <div class="row filter-row">
+
+                        <div class="col-md-3 pr-0">
+                           
+
+                                <label style="margin-bottom: 1px; margin-top: 15px " for="selectEmployeestatusFilter">Employee Status:</label>
+                                <select style="margin-bottom: 15px; width: 100%; height: 30px" class=" form-select" id="selectEmployeestatusFilter" aria-label="Employee Status">
+                                    <option value="0">All</option>
+                                    <option selected value="1">Active</option>
+                                    <option value="3">Closed</option>
+                                    <option value="4">Company Transfer</option>
+                                    <option value="2">Inactive</option>
+
+
+                                </select>
+
+
+
+                           
+                        </div>
+                        <div class=" col-md-3 pr-0">
+                         
+
+                                <label style=" margin-bottom: 1px; margin-top: 15px " for="selectEmployeestatusFilter">Company Name:</label>
+
+                                @Html.DropDownList("CompanyId", null, "All", new { @class = "select floating searchableDDL", @style = "margin-bottom: 15px; width: 100%; height: 30px" })
+
+
+
+
+
+                        </div>
+
+
+                        <div class="col-md-3 pr-0">
+                           
+                        </div>
+                        <div class="col-md-3 hideFilter" id="ResetFilterButtonDiv">
+                            <a style=" margin-top: 20px; width: 100%" href="#" id="ResetFilterButton" class="btn btn-danger btn-block"> Reset Filter(s) </a>
+                        </div>
+
+
+                    </div>
+
+                       
+
+
+
+                    
+
+
+
+                        <table class="table table-striped custom-table table-nowrap mb-0" id="GlobelEmployeeListtble">
+
+
+
+
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>
+                                        EmployeeID
+                                    </th>
+                                    <th>View</th>
+                                    <th>Status</th>
+
+
+                                    <th>
+
+                                        FirstName
+                                    </th>
+
+                                    <th>
+                                        LastName
+                                    </th>
+                                    <th>
+
+                                        Company
+                                    </th>
+                                    <th>
+                                        Department
+                                    </th>
+                                    <th>
+                                        SubDepartment
+                                    </th>
+                                    <th>
+                                        EmployeeType
+                                    </th>
+                                    <th>
+                                        Position
+                                    </th>
+                                    <th>
+                                        Login Email
+                                    </th>
+                                    <th>
+                                        Role
+                                    </th>
+                                    <th>
+                                        Employee Groups
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+
+
+
+
+                        </table>
+
+
+                    </div>
+
+
+                </div>
+
+            <div class="submit-section">
+
+                <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Close</button>
+            </div>
+        </div>  
+    </div>
+
+
+
+
+</div>
+
+<script>
+
+
+
+
+    $(document).ready(function () {
+        debugger;
+
+
+    
+
+        var data_loadEmployeeList = {
+            "EmployeeStatusId": '1'
+        }
+
+        $('#GlobelEmployeeListtble').on('processing.dt', function (e, settings, processing) {
+
+            debugger
+
+
+
+            $("#GlobelEmployeeListtble_filter :input").attr("disabled", "disabled");
+            $("#GlobelEmployeeListtble_filter :input").attr('placeholder', 'Please Wait...');
+
+
+
+
+
+        });
+
+
+        Load_GlobelEmployeeListtble(data_loadEmployeeList);
+
+        function Load_GlobelEmployeeListtble(Load_data) {
+
+
+            $('#GlobelEmployeeListtble').dataTable({
+                "searching": true,
+                scrollX: true,
+               /*"dom": 'lfrtip',*/
+                "dom": '<"pull-left"f>r<"pull-right"l>tip',
+               /* "dom": '<"pull-right"f>ltip',*/
+                /*dom: '<"toolbar">frtip',*/
+                scroller: {
+                    loadingIndicator: true
+                },
+                initComplete: function () {
+                    debugger
+                    $("#GlobelEmployeeListtble_filter :input").removeAttr("disabled");
+                    $("#GlobelEmployeeListtble_filter :input").removeAttr('placeholder');
+                },
+                "processing": true,
+                "language": {
+                   
+                    loadingRecords: '<i style="margin-left:-820px;" class="fa fa-spinner fa-spin fa-3x fa-fw"></i>',
+                    //emptyTable: '<h4 class="block text-center"><i class="fa fa-exclamation-triangle" style="color: #C49F47;"></i> {{ __("no_record_found") }}</h4>',
+                    //// shown when no matching row found in filtering...
+                    zeroRecords: '<h4 class="block text-center"><i class="fa fa-exclamation-triangle" style="margin-left:-1350px;  color: #C49F47;"></i> No matching records found</h4>',
+
+                    search:'<label  style="margin-left:-145px;margin-bottom: 1px; margin-top: 0px" >Search:</label>'
+                },
+                "serverSide": false,
+
+                "ajax": {
+                    url: '/UserInformation/GetGlobelEmployeeList',
+                    type: 'Get',
+                    data: Load_data,
+                    contentType: 'application/json'
+
+
+                },
+
+                "columns": [
+
+
+                    {
+                        data: null,
+                        title: 'Action',
+                        render: function (data, type, item) {
+                            return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a><div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);"><a class="dropdown-item" href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/Details/' + data.EncryptedId + '\'  ); return false;"><i class="fa fa-eye m-r-5"></i> Record</a><a class="dropdown-item" href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/EmployeeProfile/' + data.EncryptedId + '\'  ); return false;"><i class="fa fa-user-circle m-r-5"></i> Profile</a><a class="dropdown-item" href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserDashboard/MyDashboard/' + data.EncryptedId + '\'  ); return false;"><i class="la la-user m-r-5"></i> Self Service</a></div></div>'
+                        },
+                        className: 'text-left'
+
+
+                    },
+                    {
+
+                        data: null,
+                        title: 'EmployeeId',
+                        render: function (data, type, item) {
+                            return ' <a href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/Details/' + data.EncryptedId + '\'  ); return false;" title="View Record"> ' + data.EmployeeId + '</a>'
+                        }
+
+                    },
+                    {
+
+                        data: null,
+                        title: 'View',
+                        render: function (data, type, item) {
+                            return '<a href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/Details/' + data.EncryptedId + '\'  ); return false;" title="Edit Record">Edit</a> |<a href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\'/UserInformation/EmployeeProfile/' + data.EncryptedId + '\'); return false;" title="View Profile"> Profile</a>'
+                        }
+
+                    },
+
+                    {
+
+                        data: null,
+                        title: 'Status',
+                        render: function (data, type, item) {
+                            return ' <span class="badge ' + data.EmpStatusBgClass + '">' + data.EmployeeStatusName + '</span>'
+                        }
+
+
+                    },
+                    {
+
+                        data: 'FirstName'
+                    },
+                    {
+
+                        data: 'LastName'
+
+
+                    },
+                    {
+
+                        data: 'CompanyName'
+
+
+                    },
+                    {
+
+                        data: 'DepartmentName'
+
+
+                    },
+                    {
+
+                        data: "SubDepartmentName"
+
+
+                    },
+                    {
+
+                        data: 'EmployeeTypeName'
+
+
+                    },
+
+                    {
+
+                        data: 'PositionName'
+
+
+                    },
+                    {
+
+                        data: 'LoginEmail'
+
+
+                    },
+
+                    {
+
+                        data: 'UserRole'
+
+
+                    },
+
+                    {
+
+                        data: 'EmployeeGroups'
+
+
+                    }
+
+
+
+
+
+
+                ]
+
+            });
+        }
+
+
+
+        
+
+        $(document).on('change', '#selectEmployeestatusFilter', function () {
+            debugger
+            var val = $(this).val();
+            var CompanyId = $('#CompanyId').val();
+
+
+            var data = {
+                "EmployeeStatusId": val,
+                "CompanyId": CompanyId
+            }
+
+            $('#GlobelEmployeeListtble').DataTable().destroy();
+           
+            if (data != null) {
+                Load_GlobelEmployeeListtble(data);
+            } else {
+                load_GlobelEmployeeListtble();
+            }
+            $("#ResetFilterButtonDiv").removeClass("hideFilter").addClass("showFilter");
+
+        });
+
+        $(document).on('change', '#CompanyId', function () {
+            debugger
+            var val = $(this).val();
+            var employeestatusid = $('#selectEmployeestatusFilter').val();
+            
+
+
+            var data = {
+                "EmployeeStatusId": employeestatusid,
+                "CompanyId": val
+            }
+
+            $('#GlobelEmployeeListtble').DataTable().destroy();
+          
+            if (data != null) {
+                Load_GlobelEmployeeListtble(data);
+            } else {
+                load_GlobelEmployeeListtble();
+            }
+            $("#ResetFilterButtonDiv").removeClass("hideFilter").addClass("showFilter");
+        });
+
+        $(document).on('click', '#ResetFilterButton' , function () {
+            $('#selectEmployeestatusFilter').val('1');
+            $('#CompanyId').val("");
+            
+            $('#GlobelEmployeeListtble').DataTable().destroy();
+        
+            Load_GlobelEmployeeListtble(data_loadEmployeeList);
+            $("#ResetFilterButtonDiv").removeClass("showFilter").addClass("hideFilter");
+
+
+        });
+ 
+
+    });
+
+
+
+</script>
+<style>
+    .dataTables_wrapper .dataTables_filter {
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal-dialog {
+        width: 70%;
+        max-width: 70% !important;
+    }
+
+    .submit-btn {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .toolbar {
+        float: left;
+    }
+
+    .showFilter {
+        display: block;
+    }
+
+    .hideFilter {
+        display: none;
+    }
+
+    .example {
+        /* position: fixed;*/
+        /* center the div */
+        right: 0;
+        left: 0;
+        margin-right: auto;
+        margin-left: 5px;
+        /* give it dimensions */
+        /*  min-height: 1em;*/
+        width: 200px;
+        /* just for example presentation */
+        /*top: 40mm;*/
+    }
+
+/*    div.dataTables_wrapper {
+        width: 1000px;
+        margin: 0 auto;
+    }*/
+        div.dataTables_wrapper div.dataTables_filter input {
+            width: 200px; 
+           
+            
+        }
+      
+</style>

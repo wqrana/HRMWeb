@@ -1,0 +1,133 @@
+﻿@model TimeAide.Web.ViewModel.UserSessionLogViewModel
+@{
+}
+
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblUserSessionList">
+        <thead>
+            <tr>
+                <th>
+                    Emp. Id
+                </th>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    IP Address
+                </th>
+                <th>
+                    Browser Information
+                </th>
+                @*<th>
+                        Device Information
+                    </th>*@
+                <th>
+                    Login Date/Time
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserSessionLog)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserInformation.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserInformation.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IPAddress)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.BrowserInformation)*@
+                        @*<a href="/UserInformation/Details/@item.Id" title="View Record"> @Html.DisplayFor(modelItem => item.EmployeeId)</a>*@
+                        @*<a href="" title="Browser Information"> Browser Information</a>*@
+                        <a href="javascript:void(0);" title="Browser Information" id="anchorBrowserInformation" data-id="@item.BrowserInformation">Browser Information</a>
+
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.DeviceInformation)
+                        </td>*@
+                    <td>
+                        @item.CreatedDate
+                    </td>
+                    <td>
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                @if ((bool)(ViewBag.AllowView ?? false))
+                                {
+                                    <a href="javascript:void(0);" id="anchorSessionDetail" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Session Detail</a>
+                                    @*<a href="javascript:void(0);" onclick="javascript:getSessionDetail(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Session Detail</a>*@
+                                    @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        @*@Html.Partial("_IndexPageFooterView")*@
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Bootstrap date-picker for datetime field
+        $('#tblUserSessionList').dataTable({
+            "searching": true
+        });
+    });
+
+    $('*[id*=anchorSessionDetail]').click(function () {
+        debugger;
+        var $buttonClicked = $(this);
+        var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/UserSessionLog/SessionDetail',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    });
+    $('*[id*=anchorBrowserInformation]').click(function () {
+        debugger;
+        var $buttonClicked = $(this);
+        var id = $buttonClicked.attr('data-id');
+        //alert(id);
+        var obj = JSON.parse(id);
+        //alert(obj);
+        $("#tblBrowserInformation > tbody").empty();
+        //$('#tblBrowserInformation > tbody:last-child').append('<tr><th>Browser Property'</td><th>Browser Property Name</th></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>Type</th><td>' + obj.SupportsJavaScriptVersion + '</td><th>Name</th><td>' + obj.Name + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>Version</th><td>' + obj.Version + '</td><th>MajorVersion</th><td>' + obj.MajorVersion + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>MinorVersion</th><td>' + obj.MinorVersion + '</td><th>Platform</th><td>' + obj.Platform + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>IsBeta</th><td>' + obj.IsBeta + '</td><th>IsCrawler</th><td>' + obj.IsCrawler + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>IsAOL</th><td>' + obj.IsAOL + '</td><th>IsWin16</th><td>' + obj.IsWin16 + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>IsWin32</th><td>' + obj.IsWin32 + '</td><th>SupportsFrames</th><td>' + obj.SupportsFrames + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>SupportsTables</th><td>' + obj.SupportsTables + '</td><th>SupportsCookies</th><td>' + obj.SupportsCookies + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>SupportsVBScript</th><td>' + obj.SupportsVBScript + '</td><th>SupportsJavaScript</th><td>' + obj.SupportsJavaScript + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>SupportsJavaApplets</th><td>' + obj.SupportsJavaApplets + '</td><th>SupportsActiveXControls</th><td>' + obj.SupportsActiveXControls + '</td></tr>');
+        $('#tblBrowserInformation > tbody:last-child').append('<tr><th>Supports JavaScript Version</th><td>' + obj.SupportsJavaScriptVersion + '</td></tr>');
+        $('#browser_information_modal').modal('show');
+    });
+</script>
+
+
+
+

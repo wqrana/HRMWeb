@@ -1,0 +1,9 @@
+﻿Generated model file: TimeAideWindow.edmx.
+Loading metadata from the database took 00:00:00.7124690.
+Generating the model took 00:00:01.4177190.
+Generated model file: TimeAideWindow.edmx.
+Loading metadata from the database took 00:00:00.6334658.
+Generating the model took 00:00:01.3231973.
+Generated model file: TimeAideWindow.edmx.
+Loading metadata from the database took 00:00:00.5547012.
+Generating the model took 00:00:01.2116083.

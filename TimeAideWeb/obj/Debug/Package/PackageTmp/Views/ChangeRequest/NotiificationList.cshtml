@@ -1,0 +1,451 @@
+﻿@using TimeAide.Web.ViewModel;
+@using TimeAide.Services.Helpers;
+@model NotificationViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutMasterData.cshtml";
+}
+@Html.Hidden("IsActiveNotificationDetail", "1")
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">@ViewBag.LabelPlural</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Master Data</li>
+                <li class="breadcrumb-item active">@ViewBag.Label</li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div class="card tab-box">
+    <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+            <ul class="nav nav-tabs nav-tabs-bottom">
+                @if ((SecurityHelper.IsSuperAdmin || SecurityHelper.IsAvailable("ShowAllWorkflowNotifications")))
+                {
+                    <li class="nav-item" id="workflowNotificationTab" onclick="workflowNotificationTabTabClicked()"><a href="#workflowNotification" data-toggle="tab" class="nav-link active">Workflow Notification</a></li>
+                }
+                @if ((SecurityHelper.IsSuperAdmin || SecurityHelper.IsAvailable("ShowAllExpirationNotification")))
+                {
+                    <li class="nav-item" id="expirationNotificationTab" onclick="expirationNotificationTabClicked()"><a href="#expirationNotification" data-toggle="tab" class="nav-link">Expiration Notification</a></li>
+                }
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+<div class="row filter-row">
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="StartDate" class="form-control floating">
+            <label class="focus-label">Start Date</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EndDate" class="form-control floating">
+            <label class="focus-label">End Date</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeId" type="number" class="form-control floating">
+            <label class="focus-label">Employee Id</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3" pr-0 id="divWorkflowTriggerTypeId">
+        <div class="form-group form-focus select-focus  mb-1">
+            @Html.DropDownList("WorkflowTriggerTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Request Type</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0" id="divNotificationTypeId">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("NotificationTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Request Type</label>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 pr-1" id="divWorkflowStatus">
+        <div class="form-group form-focus select-focus">
+            @Html.ListBox("WorkflowStatusId", (SelectList)ViewBag.WorkflowStatusId,new { @class = "form-control select floating" })
+            <label class="focus-label"></label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0" id="divNotificationStatus">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("NotificationStatusId", null, "All", new { @class = "select floating" })
+            <label class="focus-label"> Status</label>
+        </div>
+    </div>
+    
+    <div class="col-sm-4 col-md-2 pr-0">
+        <a href="javascript:retrieveNotificationListMain();" class="btn btn-success btn-block">Apply Filter</a>
+    </div>
+
+    <div class="col-sm-4 col-md-1 pr-0 hideFilter" id="divResetFilter">
+        <a href="javascript:resetUserFilterList();" class="btn btn-danger btn-block">Reset</a>
+    </div>
+</div>
+<hr class="m-1" />
+<!--<div class="row filter-row" style="margin-left: inherit;">
+
+    <div class="form-group form-focus select-focus mb-1">
+        <input id="StartDate" class="form-control floating">
+        <label class="focus-label">Start Date</label>
+    </div>
+    <div class="form-group form-focus select-focus mb-1">
+        <input id="EndDate" class="form-control floating">
+        <label class="focus-label">End Date</label>
+    </div>
+    <div class="form-group form-focus select-focus mb-1">
+        <input id="EmployeeId" type="number" class="form-control floating">
+        <label class="focus-label">Employee Id</label>
+    </div>
+    <div class="form-group form-focus select-focus mb-1">
+        <input id="EmployeeName" type="text" class="form-control floating">
+        <label class="focus-label">Employee Name</label>
+    </div>
+    <div class="form-group form-focus select-focus mb-1" style="width:250px" id="divWorkflowTriggerTypeId">
+        @Html.DropDownList("WorkflowTriggerTypeId", null, "All", new { @class = "select floating" })
+        <label class="focus-label">Request Type</label>
+    </div>
+    <div class="form-group form-focus select-focus mb-1" style="width:200px" id="divNotificationTypeId">
+        @Html.DropDownList("NotificationTypeId", null, "All", new { @class = "select floating" })
+        <label class="focus-label">Request Type</label>
+    </div>
+    @*<div style="width:290px;margin-left: 0px" id="divWorkflowStatus">
+            <div class="row" style="margin-left:0px">
+                <label class="focus-label" style="font-size:75%;margin-left:0px;margin-right:10px">Status</label>
+                @Html.ListBox("WorkflowStatusId", (SelectList)ViewBag.WorkflowStatusId, new { @class = "form-control" })
+            </div>
+        </div>*@
+
+    <div class="form-group form-focus select-focus mb-1" style="width:150px;">
+        <a href="javascript:retrieveNotificationListMain();" class="btn btn-success btn-block">Apply Filter</a>
+    </div>
+    <div class="hideFilter" id="divResetFilter" style="margin-left:10px">
+        <a href="javascript:resetUserFilterList();" class="btn btn-danger btn-block">Reset</a>
+    </div>
+</div>
+<div class="row filter-row" style="margin-left: inherit;">
+    <div style="width:590px;margin-left: 0px" id="divWorkflowStatus">
+        <div class="row" style="margin-left:0px">
+            <label class="focus-label" style="width:190px; padding-left:20px; padding-right: 20px; height: 36px; color: #888; background: white; margin-left: 0px; margin-right: 10px; opacity: 1; font-weight: 300; top: -20px; font-size: 12px; z-index: 1; ">Status</label>
+            @Html.ListBox("WorkflowStatusId", (SelectList)ViewBag.WorkflowStatusId, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group form-focus select-focus mb-1" style="width: 490px" id="divNotificationStatus">
+        @Html.DropDownList("NotificationStatusId", null, "All", new { @class = "select floating" })
+        <label class="focus-label">Status</label>
+    </div>
+</div>
+    -->
+<div id="divLoadingUsers" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div class="tab-content pt-0" id="divNotifications">
+</div>
+<input id="hdnSelectedTab" type="hidden" value="WorkflowNotification" />
+<hr />
+
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+
+<style>
+
+   /* .select2-container {
+        width: 65% !important;
+    }*/
+
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        /*$('.searchableDDL').select2();*/
+        $(".searchableDDL").each(function () {
+            $(this).val("");
+            $(this).select2('destroy');
+            $(this).select2();
+            $(".select2-container").css("width", "100%");
+           
+        });
+        var filterObject = new Object();
+        filterObject.StartDate = '@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.StartDate';
+        filterObject.EndDate = '@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.EndDate';
+        filterObject.EmployeeId ='@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.EmployeeId';
+        filterObject.EmployeeName = '@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.EmployeeName';
+        filterObject.WorkflowTriggerTypeId = '@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.WorkflowTriggerTypeId';
+        filterObject.NotificationTypeId = '@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.NotificationTypeId';
+        if ('@ViewBag.IsViewActive' == 'True') {
+            filterObject.WorkflowStatusId = '1';
+            filterObject.SelectedWorkflowStatusId = '1';
+            filterObject.NotificationStatusId = '1';
+            $('#WorkflowStatusId').val("1");
+            $('#NotificationStatusId').val("1");
+        }
+        $('#StartDate').val('@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.StartDate');
+        $('#EndDate').val('@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.EndDate');
+        $('#EmployeeId').val('@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.EmployeeId');
+        $('#EmployeeName').val('@TimeAide.Common.Helpers.SessionHelper.NotificationFilterViewModel.EmployeeName');
+        retrieveNotificationList(filterObject);
+        $("#divNotificationTypeId").hide();
+        $("#divNotificationStatus").hide();
+        $("#divWorkflowTriggerTypeId").show();
+        $("#divWorkflowStatus").show();
+
+        var indexColumns = $("#tblIndexExpirationNotification > thead > tr:first > th").length;
+        //alert(indexColumns);
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns - 1; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+            exportColumns += "]";
+            //alert(exportColumns);
+            debugger
+        $('#tblIndexExpirationNotification').DataTable({
+            searching: true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                    columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                    columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                    columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                    columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+        $('#WorkflowStatusId').select2({ placeholder: "All Workflow Status" });
+        /*$('#WorkflowStatusId1').select2({ placeholder: "Status" });*/
+        $('select').selectpicker();
+
+    });
+
+    function ReadNotification(id) {
+        //debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/NotificationLog/ReadNotification',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function retrieveNotificationListMain(filterObject) {
+        debugger;
+        var filterObject = new Object();
+        filterObject.StartDate = $('#StartDate').val();
+        filterObject.EndDate = $('#EndDate').val();
+        filterObject.EmployeeId = $('#EmployeeId').val();
+        filterObject.EmployeeName = $('#EmployeeName').val();
+        filterObject.WorkflowTriggerTypeId = $('#WorkflowTriggerTypeId').val();
+        filterObject.NotificationTypeId = $('#NotificationTypeId').val();
+
+        filterObject.WorkflowStatusId = $('#WorkflowStatusId').val();
+
+        var selectedCompanyIdList = [];
+        var selectedCompanyIdStr = "";
+        $('#WorkflowStatusId option:selected').each(function () {
+            selectedCompanyIdList.push($(this).val());
+        });
+        if (selectedCompanyIdList.length > 0) {
+            selectedCompanyIdStr = selectedCompanyIdList.join(",");
+        }
+        filterObject.SelectedWorkflowStatusId = selectedCompanyIdStr,
+        filterObject.NotificationStatusId = $('#NotificationStatusId').val();
+        filterObject.SelectedTab = $('#hdnSelectedTab').val();
+        retrieveNotificationList(filterObject);
+    }
+    function retrieveNotificationList(filterObject) {
+
+        $("#divLoadingUsers").show();
+        debugger
+        $.ajax({
+            type: "POST",
+            url: '/ChangeRequest/Notifications',
+            data: JSON.stringify(filterObject),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#divNotifications").html(data);
+                setupDataTable('tblIndexExpirationNotification');
+                setupDataTable('tblIndexWorkflowNotification');
+                $("#divLoadingUsers").hide();
+                debugger
+                if ($('#hdnSelectedTab').val() == 'ExpirationNotification') {
+                    //$('.nav-tabs a[href="#expirationNotificationTab"]').tab('show');
+                    //pro-overview tab-pane
+                    $("#workflowNotification").removeClass('pro-overview tab-pane fade show active');
+                    $("#workflowNotification").addClass('pro-overview tab-pane fade');
+
+                    $('#expirationNotification').addClass('pro-overview tab-pane fade show active');
+                }
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+                $("#divLoadingUsers").hide();
+            }
+        });
+    }
+    function expirationNotificationTabClicked() {
+        $("#divNotificationTypeId").show();
+        $("#divNotificationStatus").show();
+        $("#divWorkflowTriggerTypeId").hide();
+        $("#divWorkflowStatus").hide();
+        $("#hdnSelectedTab").val("ExpirationNotification");
+    }
+    function workflowNotificationTabTabClicked() {
+        $("#divNotificationTypeId").hide();
+        $("#divNotificationStatus").hide();
+        $("#divWorkflowTriggerTypeId").show();
+        $("#divWorkflowStatus").show();
+        $("#hdnSelectedTab").val("WorkflowNotification");
+    }
+    function setupDataTable(tableName) {
+        var indexColumns = $('#' + tableName +' > thead > tr:first > th').length;
+        //alert(indexColumns);
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns - 1; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        //alert(exportColumns);
+
+        debugger
+        $('#' + tableName+'').DataTable({
+            searching: true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+    }
+    function resetUserFilterList() {
+        $('#StartDate').val('');
+        $('#EndDate').val('');
+        $('#EmployeeId').val('');
+        $('#EmployeeName').val('');
+
+        retrieveNotificationListMain();
+    }
+</script>

@@ -1,0 +1,114 @@
+﻿@model TimeAide.Web.Models.CompensationItem
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CompensationItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompensationType.CompensationTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompensationType.CompensationTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompensationName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompensationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ComputationTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ComputationTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsEnabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsEnabled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImportTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImportTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GLAccount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GLAccount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCovidCompensation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCovidCompensation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFICASSCCExempt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFICASSCCExempt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportOrder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportOrder)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GLLookupField)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GLLookupField)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CompensationItemId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

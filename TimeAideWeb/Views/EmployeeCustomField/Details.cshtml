@@ -1,0 +1,58 @@
+﻿@model TimeAide.Web.Models.EmployeeCustomField
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EmployeeDocument</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Document.DocumentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Document.DocumentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserInformation.IdNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInformation.IdNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentPath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentPath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentNote)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentNote)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeDocumentId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

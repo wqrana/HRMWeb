@@ -1,0 +1,207 @@
+﻿@model TimeAide.Web.Models.UserInformation
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Edit</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">User</li>
+                <li class="breadcrumb-item active">Edit</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IdNumber, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.IdNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.IdNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SystemId, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.SystemId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SystemId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 row">
+                    
+                        @Html.LabelFor(model => model.CompanyID, "Company", htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.Company>("CompanyId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+                   
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MiddleInitial, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.MiddleInitial, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MiddleInitial, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FirstLastName, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.FirstLastName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FirstLastName, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SecondLastName, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.SecondLastName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SecondLastName, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ShortFullName, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.ShortFullName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShortFullName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 row">
+                    
+                        @Html.LabelFor(model => model.GenderId, "Gender", htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.Gender>("GenderId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
+
+                   
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SubDepartment.SubDepartmentName, htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.SubDepartment>("SubDepartmentId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.SubDepartmentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 row">
+                    
+                        @Html.LabelFor(model => model.Department.DepartmentName, htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.Department>("DepartmentId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+
+                   
+                </div>
+                <div class="col-md-4 row">
+                    
+                        @Html.LabelFor(model => model.SupervisoryLevelId, "Supervisory Level", htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.SupervisoryLevel>("SupervisoryLevelId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.SupervisoryLevelId, "", new { @class = "text-danger" })
+
+                   
+                </div>
+                <div class="col-md-4 row">
+                    
+                        @Html.LabelFor(model => model.EmploymentStatusId, "Employment Status", htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.EmploymentStatus>("EmploymentStatusId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.EmploymentStatusId, "", new { @class = "text-danger" })
+                    
+                </div>
+               
+                <div class="col-md-4 row">
+                    
+                        @Html.LabelFor(model => model.DefaultJobCodeId, "Default Job Code", htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.JobCode>("DefaultJobCodeId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.DefaultJobCodeId, "", new { @class = "text-danger" })
+                  
+                </div>
+                <div class="col-md-4 row">
+                    
+                        @Html.LabelFor(model => model.EmployeeTypeID, "Employee Type", htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.EmployeeType>("EmployeeTypeID", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.EmployeeTypeID, "", new { @class = "text-danger" })
+
+                   
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeNote, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.EmployeeNote, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EmployeeNote, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="col-md-4  row">
+                    
+                        @Html.LabelFor(model => model.MaritalStatusId, htmlAttributes: new { @class = "control-label" })
+
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.MaritalStatus>("MaritalStatusId", null, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.MaritalStatusId, "", new { @class = "text-danger" })
+
+                   
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SSNEnd, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.SSNEnd, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SSNEnd, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.imgPhoto, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.imgPhoto, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.imgPhoto, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="submit-section">
+                <button class="btn btn-primary submit-btn m-r-10">Save</button>
+            </div>
+        }
+    </div>
+</div>
+<div>
+    <!-- @Html.ActionLink("Back to List", "Index")-->
+    <a href="/UserInformation/Index"><i class="fa fa-arrow-left"></i> Back to List</a>
+
+</div>

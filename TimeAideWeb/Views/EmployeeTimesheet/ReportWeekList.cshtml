@@ -1,0 +1,465 @@
+﻿@model IEnumerable<TimeAide.Data.tReportWeek>
+@Html.Hidden("SelectedReportWeekIds", (string)ViewBag.SelectedReportWeekIds)
+@{
+    var isEmpReview = (new TimeAide.Services.ApplicationConfigurationService()).EmployeeTimeSheetApproval;
+    var isSupvApproval = (new TimeAide.Services.ApplicationConfigurationService()).SupervisorTimeSheetApproval;
+}
+
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblReportWeek">
+
+        <thead>
+            <tr>
+                <td style="display:none"></td>
+                <th></th>
+                <th>Sys Id</th>
+                <th>Id Num</th>
+                <th>Name</th>
+                <th>Payweek</th>
+                <th>Start Date </th>
+                <th>End Date</th>
+                @if (isEmpReview == 1)
+                {
+                    <th>Emp. Review</th>
+                }
+                @if (isSupvApproval == 1)
+                {
+                    <th>Supv. Approval</th>
+                }
+                <th>Hours Summary</th>
+                <th>Reg</th>
+                <th>Half</th>
+                <th>Double</th>
+                <th>Meal</th>
+                <th>Others</th>
+                <th>Reg+Oth</th>
+                <th>Payroll Rule</th>
+                <th>Company</th>
+                <th>Dept</th>
+                <th>Job Title</th>
+                <th>Emp. Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="display:none">@item.nWeekID</td>
+                    <td class="text-left">
+
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                @*@if ((new TimeAide.Services.ApplicationConfigurationService()).SupervisorTimeSheetApproval == 1)
+                                    {
+                                        if ((item.nReviewSupervisorID ?? 0) == 0)
+                                        {
+                                            <a href="javascript: approveTimesheet(@item.e_id,@item.nWeekID);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Approve</a>
+                                        }
+                                    }*@
+                                @*<a class="dropdown-item"><i class="fa fa-print m-r-5"></i> Print</a>
+                                    <a class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Approve</a>*@
+                                <a class="dropdown-item" href="javascript:runLocalReport(@item.tpwID)"><i class="fa fa-print m-r-5"></i> Print</a>
+                                <a class="dropdown-item" href="javascript:ShowChangeHistory(@item.e_id,@item.nWeekID,'TimesheetApproval')"><i class="fa fa-eye m-r-5"> </i> View History</a>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <a href="javascript: getTimeSheetDetail(@item.nWeekID);" title="View Detail" id="btnViewDetail"> @Html.DisplayFor(modelItem => item.e_id)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.e_id)
+                        <input type="hidden" value="@item.nWeekID" id="hdnnWeekID" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.e_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nPayWeekNum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DTStartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DTEndDate)
+                    </td>
+                    @if (isEmpReview == 1)
+                    {
+                        <td>
+                            @if (item.intUserReviewed != 1)
+                            {
+                                <i class="fa fa-dot-circle-o text-danger"></i>
+                                <span>Unreviewed</span>
+                            }
+                            else if (item.intUserReviewed == 1)
+                            {
+                                <i class="fa fa-dot-circle-o text-purple"></i>
+                                <span>Reviewed</span>
+                            }
+                        </td>
+                    }
+                    @if (isSupvApproval == 1)
+                    {
+                        <td>
+
+                            <a class="btn btn-white btn-sm btn-rounded btnApproval" href="javascript:showApproveTimesheet(@item.e_id,@item.nWeekID,@item.nReviewStatus,'@item.e_name',@item.nPayWeekNum,@item.intUserReviewed);">
+
+                                @if ((item.nReviewStatus ?? 0) != 2)
+                                {
+                                    <i class="fa fa-dot-circle-o text-danger"></i>
+                                    <span>Unapproved </span>
+                                }
+                                @*else if ((item.nReviewStatus ?? 0) == 1)
+                                    {
+                                        <i class="fa fa-dot-circle-o text-purple"></i>
+                                        <span>Reviewed</span>
+                                    }*@
+                                else if ((item.nReviewStatus ?? 0) == 2)
+                                {
+                                    <i class="fa fa-dot-circle-o text-success"></i>
+                                    <span>Approved</span>
+                                }
+                            </a>
+
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sHoursSummary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblREGULAR)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblONEHALF)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblDOUBLE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblMEAL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblOTHERS)
+                    </td>
+                    <td>
+                        @(item.dblREGULAR + item.dblOTHERS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sPayRuleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sCompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sDeptName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sJobTitleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sEmployeeTypeName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="approveTimesheet_modal" class="modal">
+    <div class="modal-dialog" style="max-width:40%">
+        <div class="modal-content" style="padding:10px">
+            <div class="modal-header alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;padding:10px">
+                <h4 class="modal-title">Approve timesheet</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-md-8 font-weight-bold">
+                        User Name:<span class="pl-2 font-weight-normal font-italic" id="spanTimesheetUserName"></span>
+                    </div>
+                    <div class="col-md-4 font-weight-bold">
+                        Pay Week:<span class="pl-2 font-weight-normal font-italic" id="spanTimesheetPayWeek"></span>
+                    </div>
+                </div>
+                @{ var showHideCss = isEmpReview == 1 ? "showSection" : "hideSection";}
+                <div class="form-group row @showHideCss">
+                    <div class="col-md-6 font-weight-bold">
+                        Employee Review:<span class="pl-2 font-weight-normal font-italic" id="spanTimesheetEmpReview"></span>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group row">
+                    <fieldset>
+                        <label class="pl-3">Supervisor Approval:</label>
+                        <label>
+                            <input id="rbUnreviewed" type="radio" name="rbApproveTimesheet" value="0" />
+                            <span>Unapproved</span>
+                        </label>
+                        @*<label>
+                                <input id="rbReviewed" type="radio" name="rbApproveTimesheet" value="1" />
+                                <span>Reviewed</span>
+                            </label>*@
+                        <label>
+                            <input id="rbApproved" type="radio" name="rbApproveTimesheet" value="2" />
+                            <span>Approved</span>
+                        </label>
+                    </fieldset>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">
+                        Notes:
+                    </label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <textarea id="SupervisorNotes" name="SupervisorNotes" rows="5" cols="50" class="form-control"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" id="hdnUserId" />
+                <input type="hidden" id="hdnWeekID" />
+                <div class="submit-section">
+                    <button type="button" onclick="approveTimesheetPopup();" class="btn btn-primary submit-btn">Save</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary submit-btn">Close</button>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">
+                        Notes History:
+                    </label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <div style="min-height:100px; overflow-y:auto;" id="PreviousSupervisorNotes" name="PreviousSupervisorNotes" class="form-control"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    tbody tr.selected {
+        color: white;
+        background-color: #28a745 !important; /* Not working */
+    }
+</style>
+<style>
+    /* pretty radio */
+    label > input[type="radio"] {
+        display: none;
+    }
+
+        label > input[type="radio"] + *::before {
+            content: "";
+            display: inline-block;
+            vertical-align: bottom;
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.3rem;
+            border-radius: 50%;
+            border-style: solid;
+            border-width: 0.1rem;
+            border-color: gray;
+        }
+
+        label > input[type="radio"]#rbUnreviewed:checked + * {
+            color: #f62d51;
+        }
+
+        label > input[type="radio"]#rbReviewed:checked + * {
+            color: #7460ee;
+        }
+
+        label > input[type="radio"]#rbApproved:checked + * {
+            color: #55ce63;
+        }
+
+        label > input[type="radio"]#rbUnreviewed:checked + *::before {
+            background: radial-gradient(#f62d51 0%, #f62d51 40%, transparent 50%, transparent);
+            border-color: #f62d51;
+        }
+
+        label > input[type="radio"]#rbReviewed:checked + *::before {
+            background: radial-gradient(#7460ee 0%, #7460ee 40%, transparent 50%, transparent);
+            border-color: #7460ee;
+        }
+
+        label > input[type="radio"]#rbApproved:checked + *::before {
+            background: radial-gradient(#55ce63 0%, #55ce63 40%, transparent 50%, transparent);
+            border-color: #55ce63;
+        }
+    /* basic layout */
+    fieldset {
+        /*margin: 20px;
+        max-width: 400px;*/
+    }
+
+    label > input[type="radio"] + * {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var tableReportWeek = $('#tblReportWeek').dataTable({
+            "searching": true,
+            "paging": true,
+            "pageLength": 5
+        });
+        var table = $('#tblReportWeek').DataTable();
+        $('#tblReportWeek tbody').on('click', 'td:not(:nth-child(3))', function () {
+            debugger
+            var tr = $(this).closest('tr');
+            var approvalClick = $(this).children().hasClass("btnApproval");
+            // if (approvalClick) return;
+
+            if (tr.hasClass('selected')) {
+
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                var hdnnWeekID = tr.find("td:eq(0)").text();
+                getTimeSheetDetail(hdnnWeekID);
+                tr.addClass('selected');
+            }
+        });
+    });
+
+    function approveTimesheet(userId, nWeekID) {
+        var model = {
+            e_id: userId,
+            nWeekID: nWeekID
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Payslip/ApproveTimesheetBySupervisor',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            success: function (html) {
+                debugger
+                toastr.success("Timesheet approved successfully!", "Success");
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                toastr.error("There was in error during approving timesheet!", "Error");
+            }
+        });
+    }
+
+    function showApproveTimesheet(userId, nWeekID, nReviewStatus, userName, payWeekNum, userReviewStatus) {
+        debugger
+        var model = { "refrenceId": nWeekID, "userId": userId };
+        $('#hdnUserId').val(userId);
+        $('#hdnWeekID').val(nWeekID);
+        $("#spanTimesheetUserName").text(userName);
+        $("#spanTimesheetPayWeek").text(payWeekNum);
+        var userReviewStsName = "";
+        var userReviewCss = "empCls";
+        if (userReviewStatus == 1) {
+            userReviewStsName = "Reviewed";
+            $("#spanTimesheetEmpReview").removeClass("text-danger").addClass("text-purple");
+        }
+        else {
+            userReviewStsName = "Unreviewed"
+            $("#spanTimesheetEmpReview").removeClass("text-purple").addClass("text-danger");
+        };
+        $("#spanTimesheetEmpReview").text(userReviewStsName);
+
+        $('input[name=rbApproveTimesheet]').removeAttr("checked");
+        var setSuprAprStatusVal = nReviewStatus != 2 ? "0" : "2";
+        $('input[name=rbApproveTimesheet][value=' + setSuprAprStatusVal + ']').attr('checked', true);
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimesheet/SupervisorNotes',
+            contentType: "application/json; charset=utf-8",
+            data: model,
+            datatype: "json",
+            success: function (data) {
+                debugger
+                $('#PreviousSupervisorNotes').html(data);
+                $('#approveTimesheet_modal').modal('show');
+            }
+            ,
+            error: function (request, status, error) {
+                toastr.error("There was in error !", "Error");
+                return false;
+            }
+        });
+
+
+    }
+
+    function approveTimesheetPopup() {
+        debugger
+        var nReviewStatus = 0;
+        var nReviewStatus = $("input[name='rbApproveTimesheet']:checked").val();
+        //if (reviewSupervisorID == 'Unreviewed')
+        //    nReviewSupervisorID = 0;
+        //else if (reviewSupervisorID == 'Reviewed')
+        //    nReviewSupervisorID = 1;
+        //else if (reviewSupervisorID == 'Approved')
+        //    nReviewSupervisorID = 2;
+
+        var userId = $('#hdnUserId').val();
+        var nWeekID = $('#hdnWeekID').val();
+        var SupervisorNotes = $('#SupervisorNotes').val();
+
+        debugger;
+        if (nReviewStatus == 0 && (SupervisorNotes.length == 0 || SupervisorNotes == '')) {
+            toastr.error("Notes are mantatory when timesheet is Unapproved.");
+            return;
+        }
+
+        var model = {
+            e_id: userId,
+            nWeekID: nWeekID,
+            nReviewStatus: nReviewStatus,
+            Notes: SupervisorNotes
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Payslip/ApproveTimesheetBySupervisor',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            success: function (html) {
+                debugger
+                toastr.success("Timesheet approved successfully!", "Success");
+                getEmployeeTimesheet();
+                $('#approveTimesheet_modal').modal('hide');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                toastr.error("There was in error during approving timesheet!", "Error");
+            }
+        });
+    }
+
+    function ShowChangeHistory(userId, nWeekID, formName) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimesheet/ChangeHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "refrenceId": nWeekID, "userId": userId },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                //$('#myModal').modal(options);
+                //$('#myModal').css({ 'width': '70%' });
+                //$('#myModal').css({ 'max-width': '70%' });
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>
+

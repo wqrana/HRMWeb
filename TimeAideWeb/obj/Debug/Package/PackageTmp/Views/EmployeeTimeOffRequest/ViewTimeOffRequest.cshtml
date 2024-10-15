@@ -1,0 +1,221 @@
+﻿@model TimeAide.Web.Models.EmployeeTimeOffRequest
+@Html.HiddenFor(m => m.AccrualType)
+@Html.HiddenFor(m => m.RemainingTime)
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center" style="text-align:center;margin-left:0px;margin-right:0px;">
+        <div class="col-md-12" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+            <h3 class="page-title">Time-Off Request</h3>
+        </div>
+
+    </div>
+</div>
+<!-- /Page Header -->
+<div class="row">
+    <div class="col-md-12 d-flex">
+
+        <div class="card flex-fill mb-2">
+
+            <div class="card-header" style="padding:15px;padding-bottom:0px;">
+                <h3 class="card-title mb-1" id="">
+                    Time-Off Request
+                    @{ var requestStatus = Model.ChangeRequestStatusId;
+                        var badgeCSS = "text-primary";
+                        if (requestStatus >= 3)
+                        {
+                            badgeCSS = "text-danger";
+                        }
+                        else if (requestStatus == 2)
+                        {
+                            badgeCSS = "text-success";
+                        }}
+                    <span class="pt-2 @badgeCSS" style="font-size:90%;">(@Model.ChangeRequestStatus.ChangeRequestStatusName)</span>
+                </h3>
+                <div class="row pb-0">
+                    <div class="col-lg-12">
+                        <ul class="list-unstyled">
+                            <li><h4 class="mb-0"> @Html.DisplayFor(m => m.UserInformation.ShortFullName)</h4></li>
+                            <li>Employee ID: @Html.DisplayFor(m => m.UserInformation.EmployeeId)</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pb-0">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label pr-0">Type: <span class="text-danger"></span></label>
+                    <div class="col-md-3 text-muted mt-2">
+                        @Html.DisplayFor(m => m.TransType)
+                    </div>
+                    <label class="col-md-2 col-form-label pr-0">From: <span class="text-danger"></span></label>
+                    <div class="col-md-2 text-muted mt-2">
+                        @Html.DisplayFor(m => m.StartDate)
+                    </div>
+                    <label class="col-md-1 col-form-label pr-0">To: <span class="text-danger"></span></label>
+                    <div class="col-md-2 text-muted mt-2">
+                        @Html.DisplayFor(m => m.EndDate)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">License: <span class="text-danger"></span></label>
+                    <div class="col-md-3  text-muted mt-2">
+                        @Html.DisplayFor(m => m.AccrualType)
+                    </div>
+                    <label class="col-md-2 col-form-label pr-0">Available Bal.: <span class="text-danger"></span></label>
+                    <div class="col-md-2  text-muted mt-2">
+                        @{ var balanceStr = Model.AccrualType == "NO" ? "N/A" : Model.Balance.ToString() + " Hrs"; }
+                        @balanceStr
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label pr-0">Hour(s) in Day: <span class="text-danger"></span></label>
+                    <div class="col-md-3 text-muted mt-2">
+                        @Html.DisplayFor(m => m.DayHours)
+                    </div>
+                    <label class="col-md-2 col-form-label pr-0">Work-Day(s): <span class="text-danger"></span></label>
+                    <div class="col-md-2 text-muted mt-2">
+                        @Html.DisplayFor(m => m.WorkingDays)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label pr-0">Requested Time(Hrs): <span class="text-danger"></span></label>
+                    <div class="col-md-3 text-muted mt-2">
+
+                        @Html.DisplayFor(m => m.RequestedTime)
+                    </div>
+                    <label class="col-md-2 col-form-label pr-0">Remaining Time(Hrs): <span class="text-danger"></span></label>
+                    @{ var CSSTextAlert = "";
+                        if (Model.AccrualType != "NO" && Model.RequestedTime < 0)
+                        {
+                            CSSTextAlert = "text-danger";
+                        }
+                    }
+                    <div class="col-md-2 text-muted mt-2 @CSSTextAlert">
+                        @{ var remainingTimeStr = Model.AccrualType == "NO" ? "N/A" : String.Format("{0:0.00}", Model.RemainingTime); }
+                        @Html.DisplayFor(m => remainingTimeStr)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Reason: <span class="text-danger"></span></label>
+                    <div class="col-md-9 text-muted mt-2">
+                        @Html.DisplayFor(m => m.RequestNote)
+                    </div>
+                </div>
+                @*<div class="form-group row">
+                    <label class="col-md-2 col-form-label">Remarks: <span class="text-danger">*</span></label>
+                    <div class="col-md-9 pr-0">
+
+                        @if (Model.CanTakeAction == true)
+                        {
+                            <textarea rows="2" class="form-control" id="ChangeRequestRemarks"></textarea>
+                        }
+                        else
+                        {
+                            <textarea rows="2" class="form-control" id="ChangeRequestRemarks" disabled="disabled"></textarea>
+                        }
+                    </div>
+                </div>*@
+            </div>
+            <div class="card-footer" style="text-align:center;">
+                @*@if (ViewBag.CanTakeAction == true)*@
+                @if (Model.CanTakeAction == true)
+                {
+                    @*<button id="btnApproveTimeOffRequest" class="btn btn-success submit-btn" onclick="javascript:saveTimeOffRequestAction(2)">Approve</button>
+                    <button id="btnDeclineTimeOffRequest" class="btn btn-danger  submit-btn" onclick="javascript:saveTimeOffRequestAction(3)">Decline</button>*@
+                }
+                @*@if (ViewBag.CanTakeAction == false)*@
+                @if (Model.CanTakeAction == false)
+                {
+                    <div class="">
+                        @{
+                            var statementTxt = "not authorize or an appropriate action has already been taken!";
+                            switch (Model.ChangeRequestStatusId)
+                            {
+                                case 2:
+                                    statementTxt = "an approved action has already been taken";
+                                    break;
+                                case 3:
+                                    statementTxt = "a declined action has already been taken";
+                                    break;
+                            }
+                            statementTxt = "View only mode, " + statementTxt;
+                            if (Model.CanRequiredDocument == true)
+                            {
+                                statementTxt = "Time-Off mandatory/conditional mandatory document(s) are not yet submitted. Time-off request can't be approved.";
+                            }
+                        }
+                        <h4 class="text-center text-danger">
+                            @statementTxt
+                        </h4>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="submit-section" style="margin-bottom:20px">
+    <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if ('@ViewBag.MarkAsRead' != 'null' && '@ViewBag.MarkAsRead' == 'True') {
+            RefreshBellIconCount('');
+        }
+
+    });
+    function saveTimeOffRequestAction(actionId) {
+        debugger;
+
+        var dataObject = new Object();
+        dataObject.Id = @Model.Id;
+        dataObject.ChangeRequestStatusId = actionId;
+        dataObject.ChangeRequestRemarks = $('#ChangeRequestRemarks').val();
+        if ($("#AccrualType").val() != "NO" && $("#RequestedTime").val()< 0 && actionId == 2) {
+            showAlertAutoHide("", "Error", "Request can't be approved, requested time is more than the current available balance.");
+            return;
+        }
+        if (dataObject.ChangeRequestRemarks == "") {
+            showAlertAutoHide("", "Error", "Please Enter the Remarks.");
+            return;
+        }
+        $.ajax({
+            url: "/EmployeeTimeOffRequest/ApproveTimeOffRequest",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data);
+                    showAlertAutoHide("", data.status, data.message);
+                    window.location = "/UserDashboard/MyDashboard";
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                    if (data.canApprove == false) {
+                        $("#btnApproveTimeOffRequest").attr('disabled', 'disabled');
+                    }
+
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+</script>
+<style>
+    #myModaldialog {
+        width: 60%;
+        max-width: 60% !important;
+        /*width: 500px;
+        max-width: 700px;*/
+    }
+</style>

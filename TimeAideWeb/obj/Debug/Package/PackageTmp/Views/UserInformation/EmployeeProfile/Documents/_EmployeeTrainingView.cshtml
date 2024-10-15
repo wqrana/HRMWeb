@@ -1,0 +1,57 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<div class="card-body">
+    <h3 class="card-title">Trainings</h3>
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0">
+            <thead>
+                <tr>
+                    <th>
+                        Training
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Date Completed
+                    </th>
+                    <th>
+                        Expiry Date
+                    </th>
+                    <th>
+                        Notes
+                    </th>
+                    @*<th>
+                            Document Name
+                        </th>*@
+                </tr>
+            </thead>
+            @foreach (var item in Model.EmployeeTraining)
+            {
+                <tr>
+                    <td>
+                        @if (item.Training != null)
+                        {
+                            <span>  @Html.DisplayFor(modelItem => item.Training.TrainingName)</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrainingType.TrainingTypeName)
+                    </td>
+                    <td>
+                        @String.Format("{0:MM/dd/yyyy}", item.TrainingDate)
+                    </td>
+                    <td>
+                        @String.Format("{0:MM/dd/yyyy}", item.ExpiryDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.DocName)
+                        </td>*@
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TimeAide.Web.Models.SupervisoryLevel>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SupervisoryLevelName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SupervisoryLevelDescription)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.Id)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.SupervisoryLevelName)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupervisoryLevelDescription)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

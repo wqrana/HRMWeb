@@ -1,0 +1,127 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@{
+   
+
+    var notificationList = TimeAide.Services.WorkflowService.GetNewWorkFlowNotifications();
+    var closingNotificationList = TimeAide.Services.WorkflowService.GetNewWorkFlowClosingNotifications(true);
+    var notificationLogList = TimeAide.Services.NotificationScheduleServiceManager.GetNotificationList(SessionHelper.LoginEmail, true);
+}
+<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+    <i class="fa fa-bell-o"></i>
+    @{
+        int workflowCount = 0;
+        if (notificationList != null && notificationList.Count > 0)
+        {
+            workflowCount = @notificationList.Count;
+        }
+        int workflowCount1 = 0;
+        if (notificationLogList != null && notificationLogList.Count > 0)
+        {
+            workflowCount1 = notificationLogList.Count;
+        }
+
+        if (closingNotificationList != null && closingNotificationList.Count > 0)
+        {
+            workflowCount1 += closingNotificationList.Count;
+        }
+
+    }
+    @if (workflowCount1 + workflowCount > 0)
+    {
+        <span class="badge badge-pill">
+            @(workflowCount1 + workflowCount)
+        </span>
+    }
+    else
+    {
+        <span>
+        </span>
+    }
+
+</a>
+<div class="dropdown-menu notifications">
+    <div class="topnav-dropdown-header">
+        <span class="notification-title">Notifications</span>
+        @*<a href="javascript:void(0)" class="clear-noti"> Clear All </a>*@
+    </div>
+    <div class="noti-content">
+        <input type="hidden" id="hdnSelectedNotificationId" />
+        <ul class="notification-list" id="ulNotifications">
+            @foreach (var eachNotification in notificationList)
+            {
+                <li class="notification-message" id='li_@eachNotification.WorkflowTriggerRequestDetailId'>
+                    <a href="javascript:ChangeRequestApproval('li_@eachNotification.WorkflowTriggerRequestDetailId','@TimeAide.Services.WorkflowService.GetNewChangeRequestApprovalUrl(eachNotification,true,false)')">
+                        @*<a href="javascript:ChangeRequestApproval('@TimeAide.Services.WorkflowService.GetChangeRequestApprovalUrl(eachNotification,true)')">*@
+                        <div class="media">
+                            <span class="avatar" style="background: #428bca !important ">P</span>
+                            <div class="media-body">
+                                <p class="noti-details"><span class="noti-title">@eachNotification.ShortFullName</span> Change Request for <span class="noti-title">@eachNotification.RequestType</span></p>
+                                <p class="noti-time"><span class="notification-time">@eachNotification.CreatedSince</span></p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+            @foreach (var eachNotification in closingNotificationList)
+            {
+                <li class="notification-message" id='li_@eachNotification.WorkflowTriggerRequestDetailId'>
+                    <a href="javascript:ChangeRequestView('li_@eachNotification.WorkflowTriggerRequestDetailId','@TimeAide.Services.WorkflowService.GetNewChangeRequestApprovalUrl(eachNotification,false,false)')">
+                        <div class="media">
+
+                            @if (eachNotification.ActionType != null)
+                            {
+                                if (eachNotification.ActionType == "A")
+                                {<span class="avatar" style="background: #468847 !important">@eachNotification.ActionType</span> }
+                             else if (eachNotification.ActionType == "D")
+                            {<span class="avatar" style="background: #e63c3c !important">@eachNotification.ActionType</span>}
+                            else if (eachNotification.ActionType == "C")
+                          {<span class="avatar" style="background: #FF3131 !important ">@eachNotification.ActionType</span>}
+                            }
+                            <div class="media-body">
+                                <p class="noti-details"><span class="noti-title">@eachNotification.ShortFullName </span> Change Request closed for <span class="noti-title">@eachNotification.RequestType</span></p>
+                                <p class="noti-time"><span class="notification-time">@eachNotification.CreatedSince</span></p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+            @foreach (var eachNotificationLog in notificationLogList)
+            {
+                <li class="notification-message" id='li_e_@eachNotificationLog.Id'>
+                    <a href="javascript:ReadNotification('li_e_@eachNotificationLog.Id',@eachNotificationLog.Id)">
+                        <div class="media">
+
+                            @if (eachNotificationLog.NotificationTypeId == 13)
+                            {
+                                <span class="avatar" style="background: #c08f53 !important ">EB</span>
+                            }
+                            else
+                            {
+                                <span class="avatar" style="background: #c09853 !important ">I</span>
+                            }
+                            <div class="media-body">
+                                <p class="noti-details"><span class="noti-title">@eachNotificationLog.UserInformationName </span> @eachNotificationLog.RecordName <span class="noti-title">@eachNotificationLog.NotificationType.NotificationTypeName</span></p>
+
+                                @if (eachNotificationLog.NotificationTypeId == 13)
+                                {
+                                    <p class="noti-time"><span class="notification-time">Email is sent on @eachNotificationLog.CreatedDate</span></p>
+                                }
+                                else
+                                {
+                                    <p class="noti-time"><span class="notification-time">Will expire in @eachNotificationLog.ExpiringDays</span></p>
+                                }
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="topnav-dropdown-footer">
+        @if (SecurityHelper.IsSuperAdmin || SecurityHelper.IsAvailable("ShowAllWorkflowNotifications") || SecurityHelper.IsAvailable("ShowAllExpirationNotification"))
+        {
+            <a href="/ChangeRequest/NotiificationListActive">View all Notifications</a>
+        }
+    </div>
+</div>

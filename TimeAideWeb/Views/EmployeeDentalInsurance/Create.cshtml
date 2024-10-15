@@ -1,0 +1,163 @@
+﻿@model TimeAide.Web.Models.EmployeeDentalInsurance
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="employeeDentalInsuranceCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Dental Insurance - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeDentalInsuranceCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Dental Insurance</div>
+                            <div class="panel-body">
+                                @Html.Hidden("EmployeeDentalInsuranceId", Model == null ? 0 : Model.Id)
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Status:<span class="text-danger">*</span></label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.DropDownList("InsuranceStatusId", null, "Please select", new { @class = "form-control", id= "DentalInsuranceStatusId" })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2">Start Date:<span class="text-danger">*</span></label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.InsuranceStartDate, new { htmlAttributes = new { @class = "form-control", id= "DentalInsuranceStartDate" } })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2">Expiry Date:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.InsuranceExpiryDate, new { htmlAttributes = new { @class = "form-control", id= "DentalInsuranceExpiryDate" } })
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">Contract ID:<span class="text-danger">*</span></label>
+                                    <div class="col-md-2">
+
+                                        @Html.EditorFor(model => model.GroupId, new { htmlAttributes = new { @class = "form-control", id= "DentalInsuranceGroupId" } })
+                                    </div>
+                                    <label class="col-md-2 col-form-label">Type:<span class="text-danger">*</span></label>
+                                    <div class="col-md-2">
+                                        @Html.DropDownList("InsuranceTypeId", null, "Please select", new { @class = "form-control", id= "DentalInsuranceTypeId" })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label">Coverage:<span class="text-danger">*</span></label>
+                                    <div class="col-md-2">
+                                        @Html.DropDownList("InsuranceCoverageId", null, "Please select", new { @class = "form-control", id = "DentalInsuranceCoverageId" })
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Contributions</div>
+                            <div class="panel-body">
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Employee:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.EmployeeContribution, new { htmlAttributes = new { @class = "form-control", id = "DentalInsuranceEmployeeContribution" } })
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2">Company:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.CompanyContribution, new { htmlAttributes = new { @class = "form-control",id = "DentalInsuranceCompanyContribution" } })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2">Other:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.OtherContribution, new { htmlAttributes = new { @class = "form-control", id = "DentalInsuranceOtherContribution" } })
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label" style="margin-left:0px">Total:</label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.TotalContribution, new { htmlAttributes = new { @class = "form-control", id = "DentalInsuranceTotalContribution" } })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label">PCORI fee:</label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.PCORIFee, new { htmlAttributes = new { @class = "form-control", id = "DentalInsurancePCORIFee" } })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Ley Cobra</div>
+                            <div class="panel-body">
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Status:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.DropDownList("CobraStatusId", null, "Please select", new { @class = "form-control", id = "DentalInsuranceCobraStatusId" })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2">Start Date:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.LeyCobraStartDate, new { htmlAttributes = new { @class = "form-control", id = "DentalInsuranceLeyCobraStartDate" } })
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2">Expiry Date:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.LeyCobraExpiryDate, new { htmlAttributes = new { @class = "form-control", id = "DentalInsuranceLeyCobraExpiryDate" } })
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Insurance Premium:</label>
+                                    <div class="col-md-2 mt-2">
+                                        @Html.EditorFor(model => model.InsurancePremium, new { htmlAttributes = new { @class = "form-control", id = "DentalInsuranceInsurancePremium" } })
+
+                                    </div>
+                                 </div>
+
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEmployeeDentalInsurance" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+
+        $("#btnSaveEmployeeDentalInsurance").click(function () {
+            saveUserDentalInsuranceData();
+        })
+      
+    });
+
+</script>
+

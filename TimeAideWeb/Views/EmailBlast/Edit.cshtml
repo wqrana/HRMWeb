@@ -1,0 +1,373 @@
+﻿@model TimeAide.Web.Models.EmailBlast
+
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @if (ViewBag.EditType == "Edit")
+    {
+        <input type="hidden" value="@Model.Id" id="hdnEmailBlastId" />
+    }
+    <div id="divMainArea">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-left:10px">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                Email Template
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a a href="javascript:;" data-toggle="modal" onclick="OpenEmailTemplate(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i>Create Template</a>
+                                        <a a href="javascript:;" data-toggle="modal" onclick="OpenEmailTemplate(@Model.EmailTemplateId);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i>Edit Template</a>
+                                        <a a href="javascript:;" data-toggle="modal" onclick="ClearTemplate();" class="dropdown-item" data-id=""><i class="fa fa-recycle m-r-5"></i>Clear Template</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding-top:20px">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    Subject
+                                </div>
+                                <div class="col-md-9" id="divEmailSubject">@Model.EmailTemplate.EmailSubject.Trim()</div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    Email Body
+                                </div>
+                                <div class="col-md-9" style="border:1px" id="divEmailBody">@Html.Raw(Model.EmailTemplate.EmailBody)</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="emailTemplateId" value="@Model.EmailTemplateId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-left:10px">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                Employee Selection
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a a href="javascript:;" data-toggle="modal" onclick="fnAddSupervisedUsers(1);" class="dropdown-item" data-id=""><i class="fa fa-pencil m-r-5"></i>Select Employees</a>
+                                        <a a href="javascript:;" data-toggle="modal" onclick="ClearSelectedEmployees();" class="dropdown-item" data-id=""><i class="fa fa-recycle m-r-5"></i>Clear Selected Employees</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding-top:20px">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmailBlastEmployees">
+                                    <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Emp Id</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>EmployeeType</th>
+                                            <th>Position</th>
+                                            <th>Notification Email</th>
+                                            <th>Role</th>
+                                            <th>
+                                                Employee Groups
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="tbodyTblUser">
+                                        @if (ViewBag.EditType != "UseTemplates")
+                                        {
+                                            foreach (var item in Model.EmailBlastDetail)
+                                            {
+                                                <tr>
+                                                    <td><input id="hdnUSerInformationId " name="hdnUSerInformationId" type="hidden" value="@item.UserInformation.Id"></td>
+                                                    <td>@item.UserInformation.EmployeeId</td>
+                                                    <td>@item.UserInformation.ShortFullName</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>@item.UserInformation.ActiveUserContactInformation.NotificationEmail</td>
+                                                    <td></td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+
+        </div>
+
+        <div class="submit-section">
+            <button type="button" id="btnSendEmailBlast" onclick="OnSendEmailBlastClicked(false);" class="btn btn-primary submit-btn">Send Email</button>
+            <button type="button" id="btnSaveAsDraft" onclick="OnSendEmailBlastClicked(true);" class="btn btn-primary submit-btn">Save as Draft</button>
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    <div id="divReportArea" style="display:none">
+    </div>
+</div>
+
+<div id='EmailBlastTemplte_modal' class='modal'>
+    <div id='myModaldialog' class="modal-dialog">
+        <div class="modal-content">
+            <div id='EmailBlastTemplteContent'></div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+
+<style type="text/css">
+    .panel {
+        margin-bottom: 20px !important;
+        background-color: #ffffff !important;
+        border: 1px solid transparent !important;
+        border-color: #ddd !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .panel-heading {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+</style>
+<style>
+    .modal-dialog {
+        width: 100%;
+        max-width: 100% !important;
+    }
+</style>
+
+<script>
+    var table;
+    $(document).ready(function () {
+        table = $('#tblEmailBlastEmployees').dataTable({
+            "searching": true,
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": [0],
+
+                }
+            ]
+        });
+    });
+    function OnSendEmailBlastClicked(isSaveAsDraft) {
+        var dataArray = [];
+        $("#btnSendEmailBlast").attr("disabled", "disabled");
+        debugger
+        $('#tblEmailBlastEmployees tbody tr').each((index, tr) => {
+            $(tr).children('td').each((index_td, td) => {
+                debugger
+                if (index_td == 0) {
+                    debugger
+                    $(td).find("input[type=hidden]").each(function () {
+                        debugger
+                        dataArray.push(this.value)
+                    });
+
+                }
+            });
+
+        });
+        if (dataArray == null || dataArray.length == 0) {
+            debugger
+            $("#btnSendEmailBlast").removeAttr("disabled");
+            toastr.error("Please select atleast one record to send email.", "Error!");
+            return;
+        }
+
+        var selectedIdsStr = "";
+        if (dataArray.length > 0) {
+            selectedIdsStr = dataArray.join(",");
+        }
+
+        var emailTemplateId = $('#emailTemplateId').val();
+        var emailBody = $('#divEmailBody').html();
+        var emailSubject = $('#divEmailSubject').text();
+        var emailBlast = {
+            "EmailTemplateId": emailTemplateId,
+            "IsSavedAsDraft": isSaveAsDraft,
+            "UserInformationIds": selectedIdsStr,
+            "EmailTemplate": { "EmailBody": emailBody, "EmailSubject": emailSubject }
+        };
+        sendEmailBlast(emailBlast);
+    }
+    function sendEmailBlast(emailBlast) {
+        debugger;
+        $.ajax({
+            type: "post",
+            contentType: 'application/json; charset=utf-8',
+            url: '/EmailBlast/Create',
+            data: JSON.stringify(emailBlast),
+            datatype: "json",
+            success: function (data) {
+                debugger;
+
+                if (data == 'Error') {
+            
+                    toastr.error('There was an error while sending email.', "error!");
+                    $("#btnSendEmailBlast").removeAttr("disabled");
+                    return;
+                }
+                $('#myModal').modal('hide');
+                toastr.success("email sent to selected employees", "Success!");
+                $("#btnSendEmailBlast").removeAttr("disabled");
+                location.reload(true);
+
+            },
+            error: function (data) {
+                debugger
+                toastr.error("There was an error in sending emails to selected employees", "Error!");
+                $("#btnSendEmailBlast").removeAttr("disabled");
+            }
+        });
+    }
+    function fnAddSupervisedUsers(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/SelectEmailBlastEmplyees',
+            contentType: "application/json; charset=utf-8",
+            data: { "userId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#EmailBlastTemplteContent').html(data);
+                $('#EmailBlastTemplte_modal').modal(options);
+                $('#EmailBlastTemplte_modal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function saveemployeeSupervisorData(selectedSupervisorStr) {
+        debugger;
+        alertID = "#employeeSupervisorCreateEditAlert"
+        var positionId = $("#SelectedEmployeeSupervisorId").val();
+        if (positionId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/EmployeeSupervisor/SelectEmailBlastEmplyees',
+                data: {
+                    "id": positionId,
+                    "selectedSupervisorIds": selectedSupervisorStr
+                },
+
+                success: function (data) {
+                    $("#EmailBlastTemplte_modal").modal("hide");
+                    debugger;
+                    fnClickAddRow(data, 'tbodyTblUser', 'tblEmailBlastEmployees');
+
+                    if (data.status == "Success") {
+                        //$("#myModal").modal("hide");
+                        //LoadSupervisedEmployees(positionId);
+                        //toastr.success('Changes updated successfully.', "Success!");
+                    }
+                },
+                error: function () {
+                    //alert("error in saveemployeeSupervisorData");
+                    toastr.error("There was an error in uploading information", "Error!");
+                }
+            });
+        }
+    }
+    function fnClickAddRow(data, tbodyTblUser, tblBulkUser) {
+        jQuery.each(data, function (index, item) {
+            $('#' + tblBulkUser + '').dataTable().fnAddData([
+                '<input  id="hdnUSerInformationId " name="hdnUSerInformationId" type="hidden" value="' + item.Id + '">',
+                item.EmployeeId,
+                item.ShortFullName,
+                item.DepartmentName,
+                item.EmployeeTypeName,
+                item.PositionName,
+                //AddLoginEmailDropdown(item.ListOfEmails, item.LoginEmail),
+                item.NotificationEmail,
+                item.UserRole,
+                item.EmployeeGroups
+            ]);
+        });
+    }
+    function OpenEmailTemplate(id) {
+        debugger;
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var model = {};
+        if (id > 0) {
+            model = { "Id": id, "EmailBody": $('#divEmailBody').text().trim(), "EmailSubject": $('#divEmailSubject').text().trim() };
+        }
+        else {
+            model = { "Id": 0, "EmailBody": '', "EmailSubject":'' };
+        }
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmailTemplate/EmailBlastTemplte',
+            contentType: "application/json; charset=utf-8",
+            /*data: { "Id": id },*/
+            data: model,
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#EmailBlastTemplteContent').html(data);
+                $('#EmailBlastTemplte_modal').modal(options);
+                $('#EmailBlastTemplte_modal').modal('show');
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function ClearTemplate() {
+        debugger;
+        $('#divEmailBody').html('');
+        $('#divEmailSubject').html('');
+        $('#emailTemplateId').val('');
+
+    }
+    function ClearSelectedEmployees() {
+        debugger;
+        table.fnClearTable();
+        $("#tbodyTblUser").empty();
+    }
+</script>

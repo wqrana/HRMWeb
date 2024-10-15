@@ -1,0 +1,110 @@
+﻿@model TimeAide.Web.Models.EmployeeTraining
+@{
+    ViewBag.Label = "Employee Training";
+}
+<div id="employeeTrainingDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+            @*<div class="mt-2 p-1">
+                    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                        <h4 style="display: inline;">Education - Create</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <hr>
+                </div>*@
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeTrainingDeleteAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                @Html.HiddenFor(model => model.Id, new { id = "EmployeeTrainingDeleteId" })
+                @Html.HiddenFor(model => model.UserInformationId)
+                <div class="form-group row">
+                    <div class="panel panel-default" style="width:100%;margin-left:10px">
+                        <div class="panel-heading" style="padding-left:10px">Training Information</div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Training:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.Training.TrainingName)</span>
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Date Completed:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+
+
+                                    @if (Model != null)
+                                    {
+                                        @String.Format("{0:MM/dd/yyyy}", Model.TrainingDate);
+                                    }
+
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Type:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.TrainingType.TrainingTypeName)</span>
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Expiry Date:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    @if (Model != null)
+                                    {
+                                        @String.Format("{0:MM/dd/yyyy}", Model.ExpiryDate);
+                                    }
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Notes:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.Note)</span>
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Document Name:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id="">   @Html.DisplayFor(model => model.DocName)</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+
+
+                </div>
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteEmployeeTraining" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteEmployeeTraining").click(function () {
+            var id = $("#EmployeeTrainingDeleteId").val();
+            deleteUserTraining(id);
+        })
+
+    } );
+</script>
+

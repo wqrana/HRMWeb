@@ -1,0 +1,610 @@
+﻿@using TimeAide.Web.ViewModel;
+@using TimeAide.Web.Models;
+@model List<UserInformation>
+<div class="card tab-box">
+    <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+            <ul class="nav nav-tabs nav-tabs-bottom">
+                <li class="nav-item" id="pendingUsersTab" onclick="pendingUsersTabTabClicked()"><a href="#pendingUsers" data-toggle="tab" class="nav-link active">Pending Registration</a></li>
+                <li class="nav-item" id="registeredUsersCompletedTab" onclick="registeredUsersCompletedTabClicked()"><a href="#registeredUsersCompleted" data-toggle="tab" class="nav-link">Registered Users - Completed</a></li>
+                <li class="nav-item" id="registeredUsersManualTab" onclick="registeredUsersManualTabClicked()"><a href="#registeredUsersManual" data-toggle="tab" class="nav-link">Registered Users - Manual</a></li>
+                <li class="nav-item" id="registeredUsersManualTab" onclick="registeredUsersManualTabClicked()"><a href="#unregisteredWithEmail" data-toggle="tab" class="nav-link">Un-registered Users - With email</a></li>
+                <li class="nav-item" id="registeredUsersManualTab" onclick="registeredUsersManualTabClicked()"><a href="#unregisteredWithoutEmail" data-toggle="tab" class="nav-link">Un-registered Users - Without email</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tab-content pt-0">
+    <div id="pendingUsers" class="pro-overview tab-pane fade show active">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Pending Registration
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblPendingUsers">
+                                    <thead>
+                                        <tr>
+                                            <th>Emp Id</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>EmployeeType</th>
+                                            <th>Position</th>
+                                            <td>Login Email</td>
+                                            <th>Role</th>
+                                            <th>
+                                                Employee Groups
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyTblErrorUser">
+                                        @if (Model != null)
+                                        {
+                                            foreach (var each in (ViewBag.Pending as List<UserInformation>))
+                                            {
+                                                @AddRow(each)
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="registeredUsersCompleted" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Registered Users - Completed though email verification
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblRegisteredUsersCompleted" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Emp Id</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>EmployeeType</th>
+                                            <th>Position</th>
+                                            <td>Login Email</td>
+                                            <th>Role</th>
+                                            <th>
+                                                Employee Groups
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyTblErrorUser">
+                                        @if (Model != null)
+                                        {
+                                            foreach (var each in (ViewBag.RegistrationCompleted as List<UserInformation>))
+                                            {
+                                                @AddRow(each)
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="registeredUsersManual" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Registered Users - Manual
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblRegisteredUsersManual" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Emp Id</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>EmployeeType</th>
+                                            <th>Position</th>
+                                            <td>Login Email</td>
+                                            <th>Role</th>
+                                            <th>
+                                                Employee Groups
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyTblErrorUser">
+                                        @if (ViewBag.Registrations != null)
+                                        {
+                                            foreach (var each in (ViewBag.Registrations as List<UserInformation>))
+                                            {
+                                                @AddRow(each)
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="unregisteredWithEmail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Un-registered Users - With email
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblUnregisteredWithEmail" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Emp Id</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>EmployeeType</th>
+                                            <th>Position</th>
+                                            <td>Login Email</td>
+                                            <th>Role</th>
+                                            <th>
+                                                Employee Groups
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyTblErrorUser">
+                                        @if (ViewBag.UnregisteredWithEmail != null)
+                                        {
+                                            foreach (var each in (ViewBag.UnregisteredWithEmail as List<UserInformation>))
+                                            {
+                                                @AddRow(each)
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="unregisteredWithoutEmail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Un-registered Users - Without email
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblUnregisteredWithoutEmail" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Emp Id</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>EmployeeType</th>
+                                            <th>Position</th>
+                                            <td>Login Email</td>
+                                            <th>Role</th>
+                                            <th>
+                                                Employee Groups
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyTblErrorUser">
+                                        @if (Model != null)
+                                        {
+                                            foreach (var each in (ViewBag.UnregisteredWithoutEmail as List<UserInformation>))
+                                            {
+                                                @AddRow(each)
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@helper AddRow(UserInformation each)
+{
+    var activeEmployment = TimeAide.Services.EmploymentService.GetActiveEmployment(each.Id);
+    EmploymentHistory activeEmploymentHistory = null;
+    if (activeEmployment != null)
+    {
+        activeEmploymentHistory = TimeAide.Services.EmploymentHistoryService.GetActiveEmploymentHistory(each.Id, activeEmployment.Id);
+    }
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => each.EmployeeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => each.ShortFullName)
+        </td>
+        <td>
+            @if (activeEmploymentHistory != null && activeEmploymentHistory.Department != null)
+            {
+                <span>@activeEmploymentHistory.Department.DepartmentName</span>
+            }
+        </td>
+        <td>
+            @if (activeEmploymentHistory != null && activeEmploymentHistory.EmployeeType != null)
+            {
+                <span>@activeEmploymentHistory.EmployeeType.EmployeeTypeName</span>
+            }
+        </td>
+        <td>
+            @if (activeEmploymentHistory != null && activeEmploymentHistory.Position != null)
+            {
+                <span>@activeEmploymentHistory.Position.PositionName</span>
+            }
+        </td>
+        <td>
+            @if (each.ActiveUserContactInformation != null)
+            {
+                @Html.DisplayFor(modelItem => each.ActiveUserContactInformation.LoginEmail)
+            }
+        </td>
+        <td>
+            @if (each.UserInformationRole.Count > 0 && each.UserInformationRole.FirstOrDefault().Role != null)
+            {
+                @Html.DisplayFor(modelItem => each.UserInformationRole.FirstOrDefault().Role.RoleName)
+            }
+        </td>
+        <td>
+            @if (each.UserInformationRole.Count>0 && each.UserInformationRole.FirstOrDefault().Role != null)
+            {
+            <span>
+                @String.Join(",", each.UserEmployeeGroup.Where(w => w.DataEntryStatus == 1 && w.ClientId == TimeAide.Common.Helpers.SessionHelper.SelectedClientId && w.CompanyId == TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId).Select(c => c.EmployeeGroup.EmployeeGroupName.ToString()))
+            </span>
+            }
+        </td>
+    </tr>
+}
+<script>
+    $(document).ready(function () {
+        var indexColumns = $("#tblPendingUsers > thead > tr:first > th").length;
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns - 1; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        $('#tblPendingUsers').DataTable({
+            searching: false,
+            ordering: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Pending Users'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Pending Users'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Pending Users'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Pending Users'
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+        $('#tblRegisteredUsersCompleted').DataTable({
+            searching: false,
+            ordering: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Registered Users - Completed'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Registered Users - Completed'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Registered Users - Completed'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Registered Users - Completed'
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+        $('#tblRegisteredUsersManual').DataTable({
+            searching: false,
+            ordering: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Pending Users'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Registered Users - Manual'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Registered Users - Manual'
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+        $('#tblUnregisteredWithEmail').DataTable({
+            searching: false,
+            ordering: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - With email'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - With email'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - With email'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - With email'
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+        $('#tblUnregisteredWithoutEmail').DataTable({
+            searching: false,
+            ordering: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - Without email'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - Without email'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - Without email'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    },
+                    title: 'Un-registered Users - Without email'
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+
+    });
+    function BackToBulkEmails() {
+        $("#divMainArea").show();
+        $("#divReportArea").hide();
+    }
+    function pendingUsersTabTabClicked() {
+        //$("#divNotificationTypeId").show();
+        //$("#divNotificationStatus").show();
+        //$("#divWorkflowTriggerTypeId").hide();
+        //$("#divWorkflowStatus").hide();
+        //$("#hdnSelectedTab").val("ExpirationNotification");
+    }
+    function registeredUsersCompletedTabClicked() {
+        //$("#divNotificationTypeId").show();
+        //$("#divNotificationStatus").show();
+        //$("#divWorkflowTriggerTypeId").hide();
+        //$("#divWorkflowStatus").hide();
+        //$("#hdnSelectedTab").val("ExpirationNotification");
+    }
+    function registeredUsersManualTabClicked() {
+        //$("#divNotificationTypeId").show();
+        //$("#divNotificationStatus").show();
+        //$("#divWorkflowTriggerTypeId").hide();
+        //$("#divWorkflowStatus").hide();
+        //$("#hdnSelectedTab").val("ExpirationNotification");
+    }
+</script>
+

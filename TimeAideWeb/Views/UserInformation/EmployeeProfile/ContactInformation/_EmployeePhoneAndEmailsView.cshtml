@@ -1,0 +1,56 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.UserInformation
+
+<div class="card-body">
+    <h3 class="card-title">
+        Phone & Emails
+        @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.EmailsAndNumberPrivilege.AllowView)
+        {
+            <a href="#" class="edit-icon" data-toggle="modal" data-target="#employee_Contact_Number_modal"><i class="fa fa-pencil"></i></a>
+        }
+    </h3>
+    <div class="table-responsive">
+        <table class="table table-nowrap">
+            <thead>
+                <tr>
+                    <th>Email Type</th>
+                    <th>Email</th>
+                    <th>Contact Type</th>
+                    <th>Contact#</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ActiveUserContactInformation != null)
+                {
+                    <tr>
+                        <td>Personal</td>
+                        <td>@Model.ActiveUserContactInformation.PersonalEmail</td>
+                        <td>Mobile</td>
+                        <td>@TimeAide.Services.UserInformationService.GetFormattedNumber(Model.ActiveUserContactInformation.CelNumber)</td>
+                    </tr>
+                    <tr>
+                        <td>Work</td>
+                        <td>@Model.ActiveUserContactInformation.WorkEmail</td>
+                        <td>Work</td>
+                        <td>@Model.ActiveUserContactInformation.WorkNumberWithExtension</td>
+
+                    </tr>
+                    <tr>
+                        <td>Other</td>
+                        <td>@Model.ActiveUserContactInformation.OtherEmail</td>
+                        <td>Other</td>
+                        <td>@TimeAide.Services.UserInformationService.GetFormattedNumber(Model.ActiveUserContactInformation.OtherNumber)</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Home</td>
+                        <td>@TimeAide.Services.UserInformationService.GetFormattedNumber(Model.ActiveUserContactInformation.HomeNumber)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

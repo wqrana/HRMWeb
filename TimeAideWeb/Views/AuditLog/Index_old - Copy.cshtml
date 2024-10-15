@@ -1,0 +1,90 @@
+﻿@model TimeAide.Web.ViewModel.AuditLogViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutMasterData.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">@ViewBag.LabelPlural</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Settings / Application Access </li>
+                <li class="breadcrumb-item active">@ViewBag.Label</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeId" type="number" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2">
+        <a href="javascript:filterUserSessionLog();" class="btn btn-success btn-block"> Apply Filter </a>
+    </div>
+</div>
+<div class="row" id="divLayoutView">
+    @{
+        Html.RenderPartial("_AuditLogList");
+    }
+</div>
+<hr />
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+
+<script type="text/javascript">
+    function filterUserSessionLog() {
+        $("#divLoadingUsers").show();
+        debugger;
+        var filterObject = new Object();
+        filterObject.EmployeeId = $('#EmployeeId').val();
+        filterObject.FullName = $('#EmployeeName').val();
+        $.ajax({
+            type: "POST",
+            url: '/AuditLog/FilterAuditLog',
+            data: JSON.stringify(filterObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divLayoutView").html("");
+                $("#divLayoutView").html(data);
+                $("#divLoadingUsers").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+</script>
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+
+
+
+

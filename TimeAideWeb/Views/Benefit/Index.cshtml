@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Benefit>
+@Html.Partial("_IndexPageHeaderView")
+
+<thead>
+    <tr>
+        <th>Action</th>
+        <th >
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BenefitName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BenefitDescription)
+        </th>
+
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td width="7%">
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+        <td>
+            @* @Html.DisplayFor(modelItem => item.Id)*@
+            <a href="javascript:void(0);" id="anchorDetail" data-id="@item.Id">@item.Id</a>
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BenefitName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BenefitDescription)
+        </td>
+
+    </tr>
+    }
+</tbody>
+    @Html.Partial("_IndexPageFooterView")
+

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<TimeAide.Web.Models.UserInformation>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .grid-profile-img-wrap img {
+        border-radius: 50%;
+        height: 80px;
+        width: 80px;
+    }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Users</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">User Management</li>
+                <li class="breadcrumb-item active">User</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="employeeIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+        <div class="col-auto float-right ml-auto">
+            @*@Html.ActionLink("Create New User", "Create")*@
+            <!-- <a href="/UserInformation/Create" class="btn add-btn"><i class="fa fa-plus"></i> Add New User</a>-->
+
+            <a href="" data-toggle="modal" data-target="#employeeCreateEdit_modal" class="btn add-btn"><i class="fa fa-plus"></i> Add New User</a>
+            <div class="view-icons">
+                <a id="btnGridView" href="javascript:void(0)" class="grid-view btn btn-link active" title="Grid View"><i class="fa fa-th"></i></a>
+                <a id="btnListView" href="/UserInformation/Index" class="list-view btn btn-link" title="List View"><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search Filter -->
+<!-- Search Filter -->
+<div class="row filter-row">
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeId" type="text" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus">
+            <select class="select floating">
+                <option>All</option>
+
+            </select>
+            <label class="focus-label">Position</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            <select class="select floating">
+                <option>All</option>
+
+            </select>
+            <label class="focus-label">Employee Status</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2">
+        <a href="javascript:getUserList();" class="btn btn-success btn-block"> Search </a>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-8">
+
+    </div>
+    <label class="col-md-1 col-form-label pr-0">Filter:</label>
+    <div id="" class="col-md-3">
+        <input id="userFilter" type="search" class="form-control form-control-sm" placeholder="">
+    </div>
+</div>
+
+<div class="row staff-grid-row" id="divGridProfile">
+    @foreach (var item in Model)
+    {
+        var empStatusBgClass = "bg-inverse-danger";
+        if (item.EmployeeStatusId == 1)
+        {
+            empStatusBgClass = "bg-inverse-success";
+        }
+
+        else if (item.EmployeeStatusId == 2)
+        {
+            empStatusBgClass = "bg-inverse-warning";
+        }
+        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+            <div class="profile-widget">
+                <div class="grid-profile-img-wrap">
+                    <a href="/UserInformation/Details/@item.Id" class=""><img class="inline-block" src="@item.PictureFilePath" alt=""></a>
+                </div>
+                <div class="dropdown profile-action">
+                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="/UserInformation/Details/@item.Id"><i class="fa fa-eye m-r-5"></i> Detail</a>
+                    </div>
+                </div>
+                <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="/UserInformation/Details/@item.Id">@Html.DisplayFor(modelItem => item.ShortFullName)</a></h4>
+                @{ var positionName = item.PositionId == null ? "Not Available" : item.Position.PositionName;}
+                <div class="small text-muted">@positionName</div>
+                <div><span class="badge @empStatusBgClass">@item.EmployeeStatus.EmployeeStatusName</span></div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@Html.Partial("_EmployeeCreateEdit")
+<script src="~/Scripts/UserInformation/userMain-js.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#userFilter").on("keyup", function () {
+            var filterText = $(this).val().toLowerCase();
+            $("#divGridProfile > div").filter(function () {
+                debugger;
+                //var text = $(this).text().toLowerCase();
+                $(this).toggle($(this).text().toLowerCase().indexOf(filterText) > -1)
+            });
+        });
+    });
+</script>

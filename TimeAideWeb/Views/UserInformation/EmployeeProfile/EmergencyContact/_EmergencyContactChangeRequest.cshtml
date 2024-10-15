@@ -1,0 +1,158 @@
+﻿@model TimeAide.Web.Models.EmergencyContact
+<div class="modal-header alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;padding:10px">
+    <h4 class="modal-title">Emergency Contact</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form>
+        @Html.HiddenFor(model => model.Id, new { id = "EmergencyContactId" })
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            @if (Model.Id > 0)
+            {
+                <div class="panel panel-default" style="width:49%;">
+                    <div class="panel-heading" style="padding-left:10px">Old Emergency Contact</div>
+                    <div class="panel-body">
+                        <div class="form-group row" style="margin-left:0px;margin-top:10px">
+                            <div class="col-md-3">
+                                Relationship
+                            </div>
+                            <div class="col-md-9">
+                                @if (Model.Relationship != null)
+                                {
+                                    <span>
+                                        @Html.DisplayFor(model => model.Relationship.RelationshipName, new { htmlAttributes = new { @class = "form-control" } })
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Contact Name
+                            </div>
+                            <div class="col-md-9">
+                                @Html.DisplayFor(model => model.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Is Default
+                            </div>
+                            <div class="col-md-9">
+                                @Html.DisplayFor(model => model.IsDefault)
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Main Number
+                            </div>
+                            <div class="col-md-9">
+                                @Html.DisplayFor(model => model.MainNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px;margin-top:35px">
+                            <div class="col-md-3">
+                                Alternate Number
+                            </div>
+                            <div class="col-md-9">
+                                @Html.DisplayFor(model => model.AlternateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="panel panel-default" style="@ViewBag.EmergencyContactStyle">
+                <div class="panel-heading" style="padding-left:10px">@ViewBag.EmergencyContactTitle</div>
+                <div class="panel-body">
+                    <div class="form-group row" style="margin-left:0px;margin-top:10px">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.RelationshipId, "Relationship", htmlAttributes: new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                        </div>
+                        <div class="col-md-8">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.Relationship>("RelationshipId", null, Model.RelationshipId,false,null, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.RelationshipId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.ContactPersonName, "Contact Name", htmlAttributes: new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                        
+                        </div>
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactPersonName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.IsDefault, "Is Default", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-8">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.IsDefault)
+                                @Html.ValidationMessageFor(model => model.IsDefault, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.MainNumber, "Main Number", htmlAttributes: new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.MainNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MainNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:0px">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.AlternateNumber, "Alternate Number", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.AlternateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AlternateNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div>
+            @if (ViewBag.CanEmergencyContactWorkflowIntiated.Count > 0)
+            {
+                <div style="color:red">
+                    Change request can not be submitted due to following reasons:
+                </div>
+                foreach (var each in ViewBag.CanEmergencyContactWorkflowIntiated)
+                {
+                    <div style="color:red">
+                        @each
+                    </div>
+                }
+            }
+        </div>
+        <div class="submit-section" style="display: flex;align-items: center;justify-content: center;">
+            @if (ViewBag.CanEmergencyContactWorkflowIntiated.Count == 0)
+            {
+                <button id="btnSaveEmergencyContact" onclick="btnSaveEmergencyContactClick(@Model.Id)" class="btnSaveEmergencyContact btn btn-primary submit-btn" type="button">Submit</button>
+            }
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger
+        $('#MainNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('MainNumber', 'Home');
+        });
+        $('#AlternateNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('AlternateNumber', 'Home');
+        });
+    });
+</script>

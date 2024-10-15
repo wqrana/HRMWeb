@@ -1,0 +1,52 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeVeteranStatus>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @if ((bool)(ViewBag.AllowAdd ?? false))
+    {
+        @Html.ActionLink("Add", "Create")
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Employee
+        </th>
+        <th>
+           Veteran Status
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserInformation.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VeteranStatus.VeteranStatusName)
+        </td>
+        <td>
+            @if ((bool)(ViewBag.AllowEdit ?? false))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+            }
+            @if ((bool)(ViewBag.AllowView ?? false))
+            {
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+            }
+            @if ((bool)(ViewBag.AllowDelete ?? false))
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            }
+        </td>
+    </tr>
+}
+
+</table>

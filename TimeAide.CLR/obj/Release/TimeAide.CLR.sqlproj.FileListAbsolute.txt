@@ -1,0 +1,10 @@
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\bin\Release\TimeAide.CLR.dacpac
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\bin\Release\TimeAide.CLR.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\bin\Release\TimeAide.CLR.pdb
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\obj\Release\TimeAide.CLR.sqlproj.AssemblyReference.cache
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\obj\Release\Model.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\obj\Release\refactor.xml
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\obj\Release\postdeploy.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\obj\Release\predeploy.sql
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\obj\Release\TimeAide.CLR.dll
+D:\IdenTech-TimeAideWeb\DevOps\Repo\TimeAide.CLR\obj\Release\TimeAide.CLR.pdb

@@ -1,0 +1,197 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeTraining>
+@*<h4 class="pull-left"> Training List</h4>*@
+<div style="padding:10px;padding-top:0px;">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="panel panel-default" style="width:100%;margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Training(s) List
+                    <div class="pull-right dropdown-action" style="height:20px;">
+                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:createEditUserTraining(null,null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeeTrainings">
+                            <thead>
+                                <tr>
+                                   <th style="display:none"></th>
+                                    <th>
+                                        Training
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>Completed</th>
+                                    <th>
+                                        Date Completed
+                                    </th>
+                                    <th>
+                                        Expiry Date
+                                    </th>
+                                    <th>
+                                        Notes
+                                    </th>
+                                    <th>
+                                        Document Name
+                                    </th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="display:none">
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Training.TrainingName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TrainingType.TrainingTypeName)
+                                    </td>
+                                    <td>
+                                        @{ var IsCompleted = item.Id == 0 ? "No" : "Yes";}
+
+                                        @Html.DisplayFor(modelItem => IsCompleted)
+                                    </td>
+                                    <td>
+                                        @{var trainingDate = item.TrainingDate == DateTime.Parse("01/01/0001") ? "" : String.Format("{0:MM/dd/yyyy}", item.TrainingDate); }
+                                        @Html.DisplayFor(modelItem => trainingDate)
+                                    </td>
+                                    <td>
+                                        @String.Format("{0:MM/dd/yyyy}", item.ExpiryDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Note)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DocName)
+                                    </td>
+
+                                    <td width="5%">
+                                        @if ((ViewBag.AllowAdd || ViewBag.AllowEdit))
+                                        {
+                                            <div class="pull-right dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (item.Id == 0)
+                                                    {
+                                                        <a href="javascript:createEditUserTraining(null,@item.TrainingId);" class="dropdown-item" data-id=""><i class="fa fa-pencil m-r-5"></i> Submit</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="javascript:createEditUserTraining(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                                                        <!--<a href="javascript:getUserTrainingDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>-->
+                                                        <a href="javascript:getUserTrainingDocView(@item.Id)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                        <a href="javascript:downloadUserTrainingDoc(@item.Id)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+                                                        <a href="javascript:getUserTrainingDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                    }
+                                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false) && item.Id > 0)
+                                                    {
+                                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var indexColumns = $("#tblEmployeeTrainings > thead > tr:first > th").length;      
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns - 1; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";       
+
+        debugger
+        var fileNameAndTitle = 'Employee Trainings - Checklist';
+        var fileTitle = $('#ShortFullNameSpan').text();
+        var index = 0;
+        var tblEmployeeTrainings = $('#tblEmployeeTrainings').DataTable({
+            searching: true,
+            paging: true,
+            sDom: '<"top"i>rt<"bottom"flp><"clear">',           
+            "bLengthChange": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+
+                    extend: 'excelHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                   // orientation: 'Portrait',
+                    pageSize: 'LEGAL',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                }                
+            ],
+
+        });
+       
+    });
+</script>

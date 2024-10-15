@@ -1,0 +1,459 @@
+﻿@model TimeAide.Web.Models.CompanyContribution
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CompanyContributionPRPayExport.Id)
+    @Html.HiddenFor(model => model.CompanyContributionPRPayExport.CompanyContributionId)
+    @Html.HiddenFor(model => model.CompanyContribution401K.Id)
+    @Html.HiddenFor(model => model.CompanyContribution401K.CompanyContributionId)
+    <div class="form-group row">
+        <div class="col-md-6">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CompanyContributionName, "Contribution Name", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.CompanyContributionName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CompanyContributionName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.WitholdingComputationTypeId, "Contribution Type", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.WitholdingComputationType>("WitholdingComputationTypeId", null, Model.WitholdingComputationTypeId, false, null, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.WitholdingComputationTypeId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.WitholdingPrePostTypeId, "Pre/Post Tax Deduct", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.WitholdingPrePostType>("WitholdingPrePostTypeId", null, Model.WitholdingPrePostTypeId, false, null, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.WitholdingPrePostTypeId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.IsDeleted, "Is Deleted", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsDeleted)
+                        @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.GLContributionAccountId, "CC GL Expense/Debit", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.GLAccount>("GLContributionAccountId", null, Model.GLContributionAccountId, false,0, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.GLContributionAccountId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.GLAccountId, "CC GL Payable/Credit", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.GLAccount>("GLContributionPayableAccountId", null, Model.GLContributionPayableAccountId, false, 0, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.GLContributionPayableAccountId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Employee Contributions/Deductions</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.EmployeeContributionPercentage, "Deduct %:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.EmployeeContributionPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeContributionPercentage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.EmployeeContributionAmount, "Deduct Amount($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.EmployeeContributionAmount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeContributionAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Compensation Limits</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.MaximumSalaryLimit, "Compensation Top($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.MaximumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MaximumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.MinimumSalaryLimit, "Compensation Min($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.MinimumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MinimumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">@Html.EditorFor(model => model.Is401kPlan) 401K/ 1165(e) Plan Settings</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyContribution401K.PlanDescription, "Plan Desc:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyContribution401K.PlanDescription, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyContribution401K.PlanDescription, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyContribution401K.EmployerPercentageLimitType, "Employer % limit type", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyContribution401K.EmployerPercentageLimitType, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyContribution401K.EmployerPercentageLimitType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyContribution401K.EmployerMatchPercentage, "Employer Match %:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyContribution401K.EmployerMatchPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyContribution401K.EmployerMatchPercentage, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyContribution401K.EmployerPeriodMax, "Employer Period Max:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyContribution401K.EmployerPeriodMax, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyContribution401K.EmployerPeriodMax, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="col-md-6">
+
+            <div class="panel panel-default">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="col-md-12 row">
+                        <div class="col-md-8">
+                            Excluded Compensations
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a a href="javascript:;" data-toggle="modal" id="anchorEmploymentPrivilege" onclick="fnCompanyContribution(@Model.Id);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i>Edit</a>
+                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowSupervisedEmployeesChangeHistory(@Model.Id,'SupervisorUserId')" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div id="divSupervisedEmployees">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="col-md-12 row">
+                        <div class="col-md-8">
+                            PR Pay Export
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body" style="padding-left: 5px;">
+                    <div class="table-responsive" style="padding-left:2px">
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.CustomDeduction1, "Custom Deduction 1", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.CustomDeduction1)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.CustomDeduction1, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.CustomDeduction2, "Custom Deduction 2", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.CustomDeduction2)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.CustomDeduction2, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.CustomDeduction3, "Custom Deduction 3", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.CustomDeduction3)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.CustomDeduction3, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.CustomDeduction4, "Custom Deduction 4", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.CustomDeduction4)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.CustomDeduction4, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.CustomDeduction5, "Custom Deduction 5", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.CustomDeduction5)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.CustomDeduction5, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsFICA, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsFICA)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsFICA, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsMedicalInsurance, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsMedicalInsurance)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsMedicalInsurance, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsChauffeurInsurance, "CHOFERIL/ Chauffeur Insurance", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsChauffeurInsurance)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsChauffeurInsurance, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsHealthCoverageContribution, "Health Coverage Contribution", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsHealthCoverageContribution)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsHealthCoverageContribution, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsMoneySaving, "Money Saving", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsMoneySaving)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsMoneySaving, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsCoda401K, "401K/Coda", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsCoda401K)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsCoda401K, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsWithholding, "IsWithholding", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsWithholding)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsWithholding, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsSocialSecurity, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsSocialSecurity)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsSocialSecurity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsOtherDeduction, "Other Deduction", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsOtherDeduction)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsOtherDeduction, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsDisability, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsDisability)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsDisability, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.Charitable_Contribution, "Charitable Contribution", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.Charitable_Contribution)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.Charitable_Contribution, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsMedicarePlus, "Medicare Plus", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsMedicarePlus)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsMedicarePlus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyContributionPRPayExport.IsCodaExemptSalary, "Exempt Salary", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyContributionPRPayExport.IsCodaExemptSalary)
+                                    @Html.ValidationMessageFor(model => model.CompanyContributionPRPayExport.IsCodaExemptSalary, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+</div>
+    <div id='ExclusionModal' class='modal'>
+        <div id='ExclusionModaldialog' class="modal-dialog">
+            <div class="modal-content">
+                <div id='ExclusionModalContent'></div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    #myModaldialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 65% !important;
+        width: 65% !important;
+        top: -25px !important;
+    }
+
+    .form-control {
+        height: unset
+    }
+
+    .form-group {
+        margin-bottom: .5rem;
+    }
+
+    .form-control {
+        line-height: 1.0;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadCompensationExclusion(@Model.Id);
+    });
+    function LoadCompensationExclusion(id) {
+        $.ajax({
+            type: "GET",
+            url: '/CompanyContributionCompensationExclusion/IndexCompensationExclusion',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": id },
+            datatype: "html",
+            success: function (html) {
+                $('#divSupervisedEmployees').empty()
+                $('#divSupervisedEmployees').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnCompanyContribution(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/CompanyContributionCompensationExclusion/CreateEdit',
+            contentType: "application/json; charset=utf-8",
+            data: { "companyContributionId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#ExclusionModalContent').html(data);
+                $('#ExclusionModal').modal(options);
+                $('#ExclusionModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

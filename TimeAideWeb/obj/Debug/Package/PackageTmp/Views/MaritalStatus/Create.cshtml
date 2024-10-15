@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.MaritalStatus
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaritalStatusName, "Marital Status", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.MaritalStatusName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MaritalStatusName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaritalStatusDescription, "Description", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.MaritalStatusDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MaritalStatusDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}
+

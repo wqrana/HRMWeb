@@ -1,0 +1,598 @@
+﻿@using TimeAide.Models.ViewModel
+@model TimeAide.Models.ViewModel.TimeOffCalendarMonthViewModel
+@{
+    var renderStatus =(dynamic) ViewBag.RenderStatus;
+    var status = ViewBag.RenderStatus;
+    var message = ViewBag.RenderMessage;
+}
+
+@Html.Hidden("hdnSelectedMonthName", Model.DisplayName)
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+
+    .table-avatar {
+        align-items: center;
+        display: inline-flex;
+        font-size: inherit;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .div-calendar-holiday {
+        background-color: #efefef;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .div-calendar-timeoffday {
+        background-color: #9dbee9;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        color: white;
+    }
+
+    .div-calendar-today {
+        background-color: #eeffea;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .div-calendar-day {
+        background-color: #ebcccc00;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .div-other-day {
+        background-color: #f1f4f8;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        opacity: .8;
+    }
+
+    .span-day {
+        text-align: left;
+        color: #746d6d;
+        font-size: larger;
+        display: block;
+    }
+
+    .span-selected-day {
+        text-align: left;
+        color: white;
+        font-size: larger;
+        display: block;
+    }
+
+    .div-responsive {
+        width: 100%;
+        height: 520px;
+        overflow: auto;
+        border: 1px solid #777777;
+    }
+
+        .div-responsive table {
+            border-spacing: 0;
+        }
+
+        .div-responsive th {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 155px;
+            min-width: 155px;
+            position: sticky;
+            top: 0;
+            background: #e0e0e0;
+            color: #000000;
+            font-weight: bolder;
+            font-size: large;
+        }
+
+        .div-responsive td {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            border-bottom: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 155px;
+            min-width: 155px;
+            height: 80px;
+        }
+</style>
+<div class="div-responsive">
+    <table class="" id="tblTimeOffCalendar">
+        <thead>
+            <tr class="">
+                <th id="WeekDay-1">Sun</th>
+                <th id="WeekDay-2">Mon</th>
+                <th id="WeekDay-3">Tue</th>
+                <th id="WeekDay-4">Wed</th>
+                <th id="WeekDay-5">Thr</th>
+                <th id="WeekDay-6">Fri</th>
+                <th id="WeekDay-7">Sat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                IList<IList<TimeOffCalendarDayViewModel>> CalendarWeeksList = new List<IList<TimeOffCalendarDayViewModel>>();
+                for (int i = 0; i < 6; i++)
+                {
+                    var tempCalendarWeek = Model.CalendarMonthDays.Skip(i * 7).Take(7).ToList<TimeOffCalendarDayViewModel>();
+                    CalendarWeeksList.Add(tempCalendarWeek);
+
+                }
+
+            }
+
+            @foreach (var calendarWeek in CalendarWeeksList)
+            {
+                <tr>
+                    @foreach (var calendarDay in calendarWeek)
+                    {
+                        var dayTypeCls = calendarDay.IsCurrentMonthDay ? "div-calendar-day" : "div-other-day";
+                        dayTypeCls = calendarDay.IsToday ? "div-calendar-today" : dayTypeCls;
+                        dayTypeCls = calendarDay.IsSelected ? "div-calendar-timeoffday" : dayTypeCls;
+                        var dayDispalyCls = !calendarDay.IsHoliday && calendarDay.IsSelected ? "span-selected-day" : "span-day";
+                        dayTypeCls = calendarDay.IsHoliday ? "div-calendar-holiday" : dayTypeCls;
+                        var event1Name = "";
+                        var event1Value = "";
+                        var event1ValTextColor = "";
+                        var event1BgCls = "";
+                        if (!string.IsNullOrEmpty(calendarDay.Event1))
+                        {
+                            var event1Data = calendarDay.Event1.Split(',');
+                            event1Name = event1Data[0] + " Bal.:";
+                            event1Value = event1Data[1] + " Hrs";
+                            event1ValTextColor = event1Data[2] == "Success" ? "text-dark" : "text-danger";
+                            event1BgCls = "bg-gradient-warning";
+                        }
+                        <td>
+                            <div class="@dayTypeCls">
+                                <span class="@dayDispalyCls">@calendarDay.DisplayName</span>
+                                <p class="mb-1 @event1BgCls small"><span class="font-weight-bold text-dark pr-1">@event1Name</span><span class="@event1ValTextColor">@event1Value</span> </p>
+                                <p class="mb-1 small"> </p>
+                                <p class="mb-1 small"> </p>
+
+                            </div>
+                        </td>
+                    }
+                </tr>
+
+            }
+
+
+            @*
+                <tr id="Week-1">
+                    <td>
+                        <div class="div-other-day">
+                            <span class="span-day">Oct 29</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">30</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">31</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large" style="display:block;">Nov 1</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">2</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">3</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">4</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr id="Week-2">
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">5</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">6</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">7</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">8</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">9</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">10</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">11</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr id="Week-3">
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">12</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">13</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">14</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">15</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">16</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">17</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">18</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr id="Week-4">
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">19</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">20</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">21</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">22</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">23</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">24</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">25</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr id="Week-5">
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">26</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">27</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">28</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">29</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-calendar-day">
+                            <span class="float-left font-weight-normal large">30</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">Dec 1</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">2</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr id="Week-6">
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">3</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">4</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">5</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">6</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">7</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">8</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="div-other-day">
+                            <span class="float-left font-weight-normal large">9</span>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                            <p class="mb-1 small"> </p>
+                        </div>
+                    </td>
+
+                </tr>
+            *@
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#divCalendarAlert").hide();
+
+        $("#selectedMonthHeading").text($("#hdnSelectedMonthName").val());
+        $("#WorkDaysInRange").val(@ViewBag.WorkingDays);
+        debugger;
+        if ("@status" == "Error") {
+            debugger;
+            var errorMsg = "<b>Error!</b> " + "@message";
+            $("#divCalendarAlert").html(errorMsg);
+            $("#divCalendarAlert").show();
+            $("#btnApplyChanges").attr("disabled", true);
+        }
+        else {
+            $("#divCalendarAlert").hide();
+            $("#btnApplyChanges").removeAttr("disabled");
+        }
+    });
+</script>

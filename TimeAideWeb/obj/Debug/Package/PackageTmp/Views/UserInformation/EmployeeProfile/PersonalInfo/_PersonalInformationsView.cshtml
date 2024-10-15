@@ -1,0 +1,73 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<div class="card-body">
+    <h3 class="card-title" style="border-bottom: 1px;border-bottom: 1px solid #dee2e6;padding-bottom: 20px;">Personal Info</h3>
+    <ul class="personal-info">
+        <li>
+            <div class="title">SSN End</div>
+            @if (String.IsNullOrEmpty(Model.SSNEncrypted))
+            {
+                <div class="text">N/A</div>
+            }
+            else
+            {
+                <div class="text">@TimeAide.Services.UserInformationService.MaskSsn(Model.SSNEncrypted)</div>
+            }
+        </li>
+        <li>
+            <div class="title">Birth Place</div>
+            @if (String.IsNullOrEmpty(Model.BirthPlace))
+            {
+                <div class="text">N/A</div>
+            }
+            else
+            {
+                <div class="text">@Model.BirthPlace</div>
+            }
+        </li>
+        <li>
+            <div class="title">Tel</div>
+            @if (Model.ActiveUserContactInformation != null && !String.IsNullOrEmpty(Model.ActiveUserContactInformation.CelNumber))
+            {
+                <div class="text">@Model.ActiveUserContactInformation.CelNumber</div>
+            }
+            else
+            {
+                <div class="text">N/A</div>
+            }
+        </li>
+        <li>
+            <div class="title">Ethnicity</div>
+            @if (Model.Ethnicity != null)
+            {
+                <div class="text">@Model.Ethnicity.EthnicityName</div>
+            }
+            else
+            {
+                <div class="text">N/A</div>
+            }
+        </li>
+        <li>
+            <div class="title">Disability</div>
+            @if (Model.Disability != null)
+            {
+                <div class="text">@Model.Disability.DisabilityName</div>
+            }
+            else
+            {
+                <div class="text">N/A</div>
+            }
+        </li>
+        <li>
+            <div class="title">Marital status</div>
+            @if (Model.MaritalStatus != null)
+            {
+                <div class="text">@Model.MaritalStatus.MaritalStatusName</div>
+            }
+            else
+            {
+                <div class="text">N/A</div>
+            }
+        </li>
+    </ul>
+</div>
+

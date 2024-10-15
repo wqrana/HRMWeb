@@ -1,0 +1,204 @@
+﻿@model TimeAide.Web.Models.EmailBlast
+
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <div id="divMainArea">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-left:10px">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                Email Template
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding-top:20px">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    Subject
+                                </div>
+                                <div class="col-md-9" id="divEmailSubject">
+                                    @if (ViewBag.EditType != "UseEmployees")
+                                    {
+                                        <span>@Model.EmailTemplate.EmailSubject</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    Email Body
+                                </div>
+                                <div class="col-md-9" style="border:1px" id="divEmailBody">
+
+                                    @if (ViewBag.EditType != "UseEmployees")
+                                    {
+                                        <span>
+                                            @Html.Raw(Model.EmailTemplate.EmailBody)
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="emailTemplateId" value="-1" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-left:10px">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                Employee Selection
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmailBlastEmployeesDetail">
+                                    <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Emp Id</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>EmployeeType</th>
+                                            <th>Position</th>
+                                            <th>Notification Email</th>
+                                            <th>Role</th>
+                                            <th>
+                                                Employee Groups
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="tbodyTblUser">
+                                        @if (ViewBag.EditType != "UseTemplates")
+                                        {
+                                            foreach (var item in Model.EmailBlastDetail)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td>@item.UserInformation.EmployeeId</td>
+                                                    <td>@item.UserInformation.ShortFullName</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>@item.UserInformation.ActiveUserContactInformation.NotificationEmail</td>
+                                                    <td></td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="submit-section" style="margin-top:0px !important">
+            @if (ViewBag.IsSend != null && ViewBag.IsSend)
+            {
+                <button type="button" id="btnSendEmailBlast" onclick="fnSendEmailBlast(@Model.Id);" class="btn btn-primary submit-btn">Send Email</button>
+            }
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    <div id="divReportArea" style="display:none">
+    </div>
+</div>
+
+<div id='EmailBlastTemplte_modal' class='modal'>
+    <div id='myModaldialog' class="modal-dialog">
+        <div class="modal-content">
+            <div id='EmailBlastTemplteContent'></div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+
+<style type="text/css">
+    .panel {
+        margin-bottom: 20px !important;
+        background-color: #ffffff !important;
+        border: 1px solid transparent !important;
+        border-color: #ddd !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .panel-heading {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+</style>
+<style>
+    .modal-dialog {
+        width: 100%;
+        max-width: 100% !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        table = $('#tblEmailBlastEmployeesDetail').dataTable({
+            "searching": false,
+            "lengthChange": false,
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": [0],
+
+                }
+            ]
+        });
+    });
+    function fnSendEmailBlast(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "post",
+            contentType: 'application/json; charset=utf-8',
+            url: '/EmailBlast/SendEmailBlast',
+            data: JSON.stringify({ "emailBlastId": id }),
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                if (data == 'Error') {
+                    toastr.error('There was an error while sending email.', "error!");
+                    return;
+                }
+                toastr.success("email sent to selected employees", "Success!");
+                location.reload(true);
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,359 @@
+﻿@model TimeAide.Web.Models.PayrollRule
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+</style>
+<div id="payrollRuleCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Payroll Rule - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "PayrollRuleId" })
+
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label">Name: <span class="text-danger">*</span></label>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-1 col-form-label">Description: <span class="text-danger"></span></label>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">No of Punches: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("NoOfPunchVal", null, "Please select", new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-2 col-form-label">Pay Period Length: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("PayFrequencyId", null, "Please select", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Pay-week Start Date: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.PayweekStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Timesheet Start Date: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.TimesheetStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Schedule Type: <span class="text-danger"></span></label>
+                            <label class="col-md-1 col-form-label">Custom Schedule: <span class="text-danger"></span></label>
+                            <div class="col-md-1 pt-2">
+                                <input type="radio" id="IsCustomSchedule" name="scheduleType" value="CustomSchedule" checked />
+                            </div>
+                            <label class="col-md-1 col-form-label">Assign Worked: <span class="text-danger"></span></label>
+                            <div class="col-md-1 pt-2">
+                                <input type="radio" id="IsAssignedWork" name="scheduleType"  value="AssignedWork"/>
+                            </div>
+                            <div id="divScheduleType" class="col-md-6 hideField">
+                                <div class="row">
+                                    <label class="col-md-3 col-form-label">Daily Hrs: <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.AssignedDailyHour, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="col-md-3 col-form-label">Weekly Max: <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.ScheduledWeeklyHour, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">All Companies: <span class="text-danger"></span></label>
+                            
+                            <div class="col-md-8 pt-2">
+                                @Html.CheckBoxFor(model => model.IsAllCompanies, new { id = "IsAllCompaniesAE" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card tab-box">
+                    <div class="row user-tabs">
+                        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                            <ul class="nav nav-tabs nav-tabs-bottom">
+                                <li class="nav-item" id=""><a href="#payrollRule_breakAmealCE" onclick="" data-toggle="tab" class="nav-link active">Breaks &amp; Meal</a></li>
+                                <li class="nav-item" id=""><a href="#payrollRule_punchesAovertimeCE" onclick="" data-toggle="tab" class="nav-link">Punches &amp; Overtime</a></li>
+                                <li class="nav-item" id=""><a href="#payrollRule_hoursCompCE" onclick="" data-toggle="tab" class="nav-link">Hours Computation</a></li>
+                                <li class="nav-item" id=""><a href="#payrollRule_additionalSettingCE" onclick="" data-toggle="tab" class="nav-link">Additional Settings</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content pt-1">
+                    <div id="payrollRule_breakAmealCE" class="pro-overview tab-pane fade show active">
+
+                    </div>
+                    <!-- End-->
+                    <div id="payrollRule_punchesAovertimeCE" class="pro-overview tab-pane">
+                       
+                    </div>
+
+                    <div id="payrollRule_hoursCompCE" class="pro-overview tab-pane">
+                     
+                    </div>
+                    <div id="payrollRule_additionalSettingCE" class="pro-overview tab-pane">
+                        
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSavePayrollRule" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+        //Get create or edit BreakAMeal tab
+        createEditBreakAMealTab(@Model.Id);
+        createEditPunchesAOvertimeTab(@Model.Id);
+        createEditHoursComputationTab(@Model.Id);
+        createEditAdditionalSettingTab(@Model.Id);
+        $('input[name="scheduleType"]').change(function () {
+            debugger;
+           // var sts = $(this).is(":checked");
+            var scheduleType = $(this).val();
+            //var id = $(this).attr("id");
+            if (scheduleType =="AssignedWork") {
+                $('#divScheduleType').removeClass("hideField").addClass("showField");
+                //setBreakFieldsSetting("CustomSchedule", 0)
+                setBreakFieldsSetting();
+                setMealFieldsSetting();
+            }
+            else {
+                $('#divScheduleType').removeClass("showField").addClass("hideField");
+                //setBreakFieldsSetting("CustomSchedule",1)
+                setBreakFieldsSetting();
+                setMealFieldsSetting();
+            }
+        });
+        $("#btnSavePayrollRule").click(function () {
+            savePayrollRuleData();
+        });
+
+
+    });
+    
+    function setBreakFieldsSetting() {
+        //var IsCustomSch = $("#IsCustomSchedule").is(":checked");
+        var IsCustomSch = true;
+        var IsAllowBreak = $("#IsAllowBreakAE").is(":checked");
+        var IsShortBreakException = $("#IsShortBreakExceptionAE").is(":checked");
+        var IsLongBreakException = $("#IsLongBreakExceptionAE").is(":checked");
+        if (IsCustomSch) {
+            $('input[name="AllowBreakSection"]').removeAttr("disabled");
+            if (IsAllowBreak) {
+                $('input[name="BreakDetailFields"]').removeAttr("disabled");
+                $('select[name="BreakDetailFields"]').removeAttr("disabled");
+                if (!IsShortBreakException) {
+                    $('#ShortBreakExceptionMinute').prop("disabled", true);
+                }
+                else {
+                    $('#ShortBreakExceptionMinute').removeAttr("disabled");
+                }
+                if (!IsLongBreakException) {
+                    $('#LongBreakExceptionMinute').prop("disabled", true);
+                }
+                else {
+                    $('#LongBreakExceptionMinute').removeAttr("disabled");
+                }
+            }
+            else {
+                $('input[name="BreakDetailFields"]').prop("disabled", true);
+                $('select[name="BreakDetailFields"]').prop("disabled", true);
+            }
+        }
+        else {
+            $('input[name="AllowBreakSection"]').attr("disabled", true);
+            $('input[name="BreakDetailFields"]').prop("disabled", true);
+            $('select[name="BreakDetailFields"]').prop("disabled", true);
+        }
+
+    }
+    function setMealFieldsSetting() {
+        debugger;
+        //var IsCustomSch = $("#IsCustomSchedule").is(":checked");
+        var IsCustomSch = true;
+        if (IsCustomSch) {
+            $('input[name="MealDetailFields"]').removeAttr("disabled");
+            $('select[name="MealDetailFields"]').removeAttr("disabled");
+
+            var IsRoundMealToSchedule = $("#IsRoundMealToScheduleAE").is(":checked");
+            if (!IsRoundMealToSchedule) {
+                $('#MealEarlyRoundMinute').prop("disabled", true);
+                $('#MealLateRoundMinute').prop("disabled", true);
+            }
+            else {
+                $('#MealEarlyRoundMinute').removeAttr("disabled");
+                $('#MealLateRoundMinute').removeAttr("disabled");
+            }
+            var IsRoundToEndOfMealPeriod = $("#IsRoundToEndOfMealPeriodAE").is(":checked");
+
+            if (!IsRoundToEndOfMealPeriod) {
+                $('#IsRoundMealToQuarterAE').prop("disabled", true);
+            }
+            else {
+                $('#IsRoundMealToQuarterAE').removeAttr("disabled");
+            }
+
+            var IsEarlyInMealException = $("#IsEarlyInMealExceptionAE").is(":checked");
+            if (!IsEarlyInMealException) {
+                $('#EarlyInMealExceptionMinute').prop("disabled", true);
+            }
+            else {
+                $('#EarlyInMealExceptionMinute').removeAttr("disabled");
+            }
+            var IsLateInMealException = $("#IsLateInMealExceptionAE").is(":checked");
+
+            if (!IsLateInMealException) {
+                $('#LateInMealExceptionMinute').prop("disabled", true);
+            }
+            else {
+                $('#LateInMealExceptionMinute').removeAttr("disabled");
+            }
+            var IsEarlyOutMealException = $("#IsEarlyOutMealExceptionAE").is(":checked");
+
+            if (!IsEarlyOutMealException) {
+                $('#EarlyOutMealExceptionMinute').prop("disabled", true);
+            }
+            else {
+                $('#EarlyOutMealExceptionMinute').removeAttr("disabled");
+            }
+
+            var IsLateOutMealException = $("#IsLateOutMealExceptionAE").is(":checked");
+
+            if (!IsLateOutMealException) {
+                $('#LateOutMealExceptionMinute').prop("disabled", true);
+            }
+            else {
+                $('#LateOutMealExceptionMinute').removeAttr("disabled");
+            }
+
+            var IsLateOutMealException = $("#IsShortMealExceptionAE").is(":checked");
+
+            if (!IsLateOutMealException) {
+                $('#ShortMealExceptionMinute').prop("disabled", true);
+            }
+            else {
+                $('#ShortMealExceptionMinute').removeAttr("disabled");
+            }
+            var IsLongMealException = $("#IsLongMealExceptionAE").is(":checked");
+
+            if (!IsLongMealException) {
+                $('#LongMealExceptionMinute').prop("disabled", true);
+            }
+            else {
+                $('#LongMealExceptionMinute').removeAttr("disabled");
+            }
+            
+            var SecondaryMealWaiverVal = $("#SecondaryMealWaiverVal").val();
+
+            if (SecondaryMealWaiverVal == "" || SecondaryMealWaiverVal==0) {
+                $('#SecondMealWaiverHour').prop("disabled", true);
+            }
+            else {
+                $('#SecondMealWaiverHour').removeAttr("disabled");
+            }
+        }
+        else {
+
+            $('input[name="MealDetailFields"]').prop("disabled", true);
+            $('select[name="MealDetailFields"]').prop("disabled", true);
+        }
+    }
+    function setPunchesFieldsSetting() {
+        $('.punch-rounding').hide();
+        $('.sch-based-rounding').hide();
+        var roundMethod = $("#RoundingMethodTypeVal").val();
+        if (roundMethod == 1) {
+            $('.sch-based-rounding').show();
+        }
+        else {
+            $('.punch-rounding').show();            
+        }
+    }
+    function setOvertimeFieldsSetting() {
+        var IsNoOvertime = $("#IsNoOvertime").is(":checked");
+        if (IsNoOvertime) {
+            $('input[name="OvertimeCompParmFields"]').prop("disabled", true);
+            $('select[name="OvertimeCompParmFields"]').prop("disabled", true);
+        }
+        else {
+            $('input[name="OvertimeCompParmFields"]').removeAttr("disabled");
+            $('select[name="OvertimeCompParmFields"]').removeAttr("disabled");
+        }
+    }
+    function setAdditionalSettingFieldsSetting() {
+        var IsNoOvertime = $("#IsNoOvertime").is(":checked");
+        if (IsNoOvertime) {
+            $("#IsPaidMealAE").prop("disabled", true);
+            $('input[name="PaidMeal"]').prop("disabled", true);
+            $("#IsRoundToScheduleAE").prop("disabled", true);
+            $('input[name="DailyHoursRd"]').prop("disabled", true);
+        }
+        else {           
+            $("#IsPaidMealAE").removeAttr("disabled");
+            $('input[name="PaidMeal"]').removeAttr("disabled");
+            $("#IsRoundToScheduleAE").removeAttr("disabled");
+            $('input[name="DailyHoursRd"]').removeAttr("disabled");
+        }
+        var isPaidMeal = $("#IsPaidMealAE").is(":checked");
+        var isDeductMeal = $("#IsDeductMealAE").is(":checked");
+        var isDeductSecondaryMeal = $("#IsDeductSecondaryMealAE").is(":checked");
+        var isRoundToSchedule = $("#IsRoundToScheduleAE").is(":checked");
+        if (!isPaidMeal) {
+            $('input[name="PaidMeal"]').prop("disabled", true);
+        }
+        else {
+            $('input[name="PaidMeal"]').removeAttr("disabled");
+        }
+        if (!isDeductMeal) {
+            $('input[name="DeductMeal"]').prop("disabled", true);
+        }
+        else {
+            $('input[name="DeductMeal"]').removeAttr("disabled");
+        }
+        if (!isDeductSecondaryMeal) {
+            $('input[name="SecondaryMeal"]').prop("disabled", true);
+        }
+        else {
+            $('input[name="SecondaryMeal"]').removeAttr("disabled");
+        }
+        if (!isRoundToSchedule) {
+            $('input[name="DailyHoursRd"]').prop("disabled", true);
+        }
+        else {
+            $('input[name="DailyHoursRd"]').removeAttr("disabled");
+        }
+    }
+</script>
+
+

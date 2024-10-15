@@ -1,0 +1,192 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.PayrollRule
+<div class="row">
+    <div class="col-md-12 d-flex">
+        <div class="card profile-box flex-fill">
+            <div class="card-body">
+                <div style="padding:0px">
+                    <div style="font-size: 90%;">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default" style="margin-left:0px">
+                                    <div class="panel-heading" style="padding-left:10px">
+                                        Hours Computation
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label " style="margin-left:10px">
+                                                Hrs. Rounding Scheme:
+                                            </label>
+                                            <div class="col-md-3 mt-2 text-muted">                                               
+                                                @{
+                                                    var HourRoundingSchemeValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.HourRoundingSchemeField, Model.HourRoundingSchemeVal ?? 0);
+                                                }
+                                                @Html.DisplayFor(m => HourRoundingSchemeValText)
+                                            </div>
+                                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                                Late Rounding Scheme:
+                                            </label>
+                                            <div class="col-md-3 mt-2 text-muted mt-2">
+                                                
+                                                @{
+                                                    var LateRoundingSchemeValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.LateRoundingSchemeFIeld, Model.LateRoundingSchemeVal ?? 0);
+                                                }
+                                                @Html.DisplayFor(m => LateRoundingSchemeValText)
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default" style="margin-left:0px">
+                                            <div class="panel-heading" style="padding-left:5px">
+                                                Overtime/Meal Computation
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group row mb-0">
+                                                    <label class="col-md-7 col-form-label mt-2" style="margin-left:10px">
+                                                        Computation Detail
+                                                    </label>
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        Approved
+                                                    </label>
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        UnApproved
+                                                    </label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        Schedule:
+                                                    </label>
+                                                    <div class="col-md-5 mt-2 text-muted">
+                                                       
+                                                        @{
+                                                            var ScheduledOTLawTypeValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.ScheduledOTLawTypField, Model.ScheduledOTLawTypeVal ?? 0);
+                                                            var ScheduledOTAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.ScheduledOTAppTransId ?? 0);
+                                                            var ScheduledOTUnAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.ScheduledOTUnAppTransId ?? 0);
+                                                            }
+                                                        @Html.DisplayFor(m => ScheduledOTLawTypeValText)
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => ScheduledOTAppTransName)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">                                                        
+                                                        @Html.DisplayFor(m => ScheduledOTUnAppTransName)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        Daily Overtime:
+                                                    </label>
+                                                    <div class="col-md-5 mt-2 text-muted">
+                                                        @{
+                                                            var DailyOTCompValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.DailyOTCompField, Model.DailyOTCompVal ?? 0);
+                                                            var DailyOTAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.DailyOTAppTransId ?? 0);
+                                                            var DailyOTUnAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.DailyOTUnAppTransId ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => DailyOTCompValText)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => DailyOTAppTransName)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => DailyOTUnAppTransName)
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        24 Hours Overtime:
+                                                    </label>
+                                                    <div class="col-md-5 mt-2 text-muted">
+                                                        @{
+                                                            var T24HrsOTCompValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.T24HrsOTCompField, Model.T24HrsOTCompVal ?? 0);
+                                                            var T24HrsOTAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.T24HrsOTAppTransId ?? 0);
+                                                            var T24HrsOTUnAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.T24HrsOTUnAppTransId ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => T24HrsOTCompValText)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => T24HrsOTAppTransName)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => T24HrsOTUnAppTransName)
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        Weekly Overtime:
+                                                    </label>
+                                                    <div class="col-md-5 mt-2 text-muted">
+                                                        @{
+                                                            var WeeklyOTCompValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.WeeklyOTCompField, Model.WeeklyOTCompVal ?? 0);
+                                                            var WeeklyOTAppTranssName = DataHelper.GetPayrollRuleTransactionName(Model.WeeklyOTAppTransId ?? 0);
+                                                            var WeeklyOTUnAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.WeeklyOTUnAppTransId ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => WeeklyOTCompValText)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => WeeklyOTAppTranssName)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => WeeklyOTUnAppTransName)
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        Meal Penalty:
+                                                    </label>
+                                                    <div class="col-md-5 mt-2 text-muted">
+                                                        @{
+                                                            var MealPenaltyLawTypeValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.MealPenaltyLawTypeField, Model.MealPenaltyLawTypeVal ?? 0);
+                                                            var MealPenaltyAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.MealPenaltyAppTransId ?? 0);
+                                                            var MealPenaltyUnAppTransName = DataHelper.GetPayrollRuleTransactionName(Model.MealPenaltyUnAppTransId ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => MealPenaltyLawTypeValText)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => MealPenaltyAppTransName)
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2 text-muted">
+                                                        @Html.DisplayFor(m => MealPenaltyUnAppTransName)                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                        Seventh Day:
+                                                    </label>
+                                                    <div class="col-md-5 mt-2 text-muted">
+                                                        @{
+                                                            var SeventhDayComputationValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.SeventhDayComputationField, Model.SeventhDayComputationVal ?? 0);
+                                                           
+                                                        }
+                                                        @Html.DisplayFor(m => SeventhDayComputationValText)                                                        
+                                                    </div>
+                                                    <div class="col-md-2 mt-2">
+
+                                                    </div>
+                                                    <div class="col-md-2 mt-2">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

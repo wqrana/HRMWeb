@@ -1,0 +1,43 @@
+﻿<div id="webScheduleTypeEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Web Schedule Type - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group row">
+
+                            <label class="col-md-6 col-form-label" style="margin-left:10px">
+                                Rotating Schedules
+                            </label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.CheckBox("IsRotatingScheduleEdit", false)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveScheduleType" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnSaveScheduleType").click(function () {
+            saveScheduleTypeData();
+        });
+    });
+</script>

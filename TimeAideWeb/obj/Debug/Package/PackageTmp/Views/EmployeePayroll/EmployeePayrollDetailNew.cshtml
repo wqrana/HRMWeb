@@ -1,0 +1,387 @@
+﻿
+<style>
+
+    iframe {
+        /*width: 100%;*/
+        padding-left: 10px;
+        padding-top: 5px;
+        max-height: 600px;
+    }
+
+    .divAdhocReportView {
+        border: .5px #eaeaea solid;
+        min-height: 650px;
+        /* margin-left: 2%;*/
+    }
+
+    .profile-view1 .profile-basic1 {
+        margin-left: 0px;
+        padding-right: 0px;
+    }
+
+    .profile-basic1 {
+        margin-left: 0px;
+    }
+
+
+    .pagination {
+        display: inline-block;
+    }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+        }
+
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+    .pagination a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+            }
+</style>
+<div id="employeePayrollDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="mt-2 p-2 mt-0">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Payroll Preview</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="pagination pull-right">
+                    <a href="#" class="disabled">❮</a>
+                    <a href="#">❯</a>
+                </div>
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text">
+                                    <h3>
+                                        <span id="ShortFullNameSpan"> Tapia Taveras, Humberto</span>
+                                    </h3>
+                                    <div>
+                                        Employee ID:<span id="mainEmployeeIdSpan" class="text-muted ml-1">1223</span>
+                                    </div>
+                                    <div>
+                                        Payroll Status: <span class="badge bg-inverse-danger" id="userStatus">Closed</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text">
+                                    <div>
+                                        Payroll Type:<span id="" class="text-muted ml-1">Regular Payroll</span>
+                                    </div>
+                                    <div>
+                                        Pay Period:<span id="" class="text-muted ml-1">10/30/2022 - 11/12/2022</span>
+                                    </div>
+                                    <div>
+                                        Pay Date:<span id="" class="text-muted ml-1">11/18/2022</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                                <div class="col-md-2">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-group m-b-10">
+                            <div class="card pr-2">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="d-block font-weight-bolder  text-primary">Compensation(s)</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="mb-3">$1003.14</h3>
+
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="d-block font-weight-bolder  text-danger">Withholding(s)</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="mb-3">$(197.96)</h3>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="d-block font-weight-bolder text-success">Net Pay</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="mb-3">$805.15</h3>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="d-block font-weight-bolder text-warning">Contribution(s)</span>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="mb-3">$(20.00)</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-0">
+                    <div class="col-md-3 d-flex pr-0">
+                        <div class="card card-table flex-fill mb-2">
+                            <div class="card-header p-2">
+                                <span class="mb-0 pull-left text-muted">Compensation(s) Detail</span>
+                                <a href="javascript:getEmployeeCompensationDetail(1)" class="ml-2 fa fa-pencil" title="Edit Detail"></a>
+
+                            </div>
+                            <div class="card-body p-1">
+                                <div id="" style="min-height:150px; max-height:200px; overflow-y:auto">
+                                    <table class="table table-condensed table-sm  table-nowrap mb-0" id="">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>Vacations</td>
+                                                <td>3.14</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Regular Wages</td>
+                                                <td>100.00</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex pr-0">
+                        <div class="card card-table flex-fill mb-2">
+                            <div class="card-header p-2">
+                                <span class="mb-0 pull-left text-muted">Withholding(s) Detail</span>
+                                <a href="" class="ml-2 fa fa-pencil" title="Edit Detail"></a>
+
+                            </div>
+                            <div class="card-body p-1">
+                                <div id="" style="min-height:150px; max-height:200px; overflow-y:auto">
+                                    <table class="table table-condensed table-sm  table-nowrap mb-0" id="">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>FICA Med</td>
+                                                <td>(100.00)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>FICA SS</td>
+                                                <td>(96.45)</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex pr-0">
+                        <div class="card card-table flex-fill mb-2">
+                            <div class="card-header p-2">
+                                <span class="mb-0 pull-left text-muted">Pay Detail</span>
+                                <a href="javascript:getEmployeePayCheckDetail(1)" class="ml-2 fa fa-pencil" title="Edit Detail"></a>
+
+                            </div>
+                            <div class="card-body p-1">
+                                <div id="" style="min-height:150px; max-height:200px; overflow-y:auto">
+                                    <table class="table table-condensed table-sm  table-nowrap mb-0" id="">
+                                        <thead>
+                                            <tr>
+                                                <th>Pay Method</th>
+                                                <th>Pay Amt.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Direct Deposit</td>
+                                                <td>805.15</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex">
+                        <div class="card card-table flex-fill mb-2">
+                            <div class="card-header p-2">
+                                <span class="mb-0 pull-left text-muted">Contribution(s) Detail</span>
+                                <a href="" class="ml-2 fa fa-pencil" title="Edit Detail"></a>
+
+                            </div>
+                            <div class="card-body p-1">
+                                <div id="" style="min-height:150px; max-height:200px; overflow-y:auto">
+                                    <table class="table table-condensed table-sm  table-nowrap mb-0" id="">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>FICA Med</td>
+                                                <td>(1.51)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>FICA SS</td>
+                                                <td>(6.45)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>FUTA</td>
+                                                <td>(0.61)</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-group m-b-10">
+                            <div class="card pr-2">
+                                <div class="card-body pb-1">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="d-block font-weight-bolder  text-muted">YTD Compensation(s)</span>
+                                            @*<div class="pull-right d-inline-block"><a href="" class="ml-2 fa fa-eye " title="Edit Detail"></a></div>*@
+                                        </div>
+                                    </div>
+                                    <a href=""><h3 class="mb-3">$1003.14</h3></a>
+                                    @*      <p><a href="" class="ml-2 fa fa-eye " title="Edit Detail">View Detail</a></p>*@
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body  pb-1">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="d-block font-weight-bolder  text-muted">YTD Withholding(s)</span>
+                                            @*<a href="" class="ml-2 fa fa-eye pull-right" title="Edit Detail"></a>*@
+                                        </div>
+                                    </div>
+                                    <a href=""><h3 class="mb-3">$(197.96)</h3></a>
+                                    @* <p><a href="" class="ml-2 fa fa-eye " title="Edit Detail">View Detail</a></p>*@
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body  pb-1">
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="d-block font-weight-bolder text-muted">YTD Contribution(s)</span>
+                                            @*<a href="" class="ml-2 fa fa-eye pull-right" title="Edit Detail"></a>*@
+                                        </div>
+                                    </div>
+                                    <a href=""><h3 class="mb-3">$(20.00)</h3></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="submit-section pb-2 mt-0">
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divPayrollEditPopup"></div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+    function getEmployeePayCheckDetail(id) {
+        // $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayroll/EmployeePayCheckDetail',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayrollEditPopup").html(data);
+                $("#employeePayCheckDetail_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function getEmployeeCompensationDetail(id) {
+        // $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayroll/EmployeeCompensationDetail',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayrollEditPopup").html(data);
+                $("#employeeCompensationDetail_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+
+</script>
+

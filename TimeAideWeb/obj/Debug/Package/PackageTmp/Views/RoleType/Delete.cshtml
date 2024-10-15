@@ -1,0 +1,15 @@
+﻿@model TimeAide.Web.Models.RoleType
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            Role Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoleTypeName)
+        </dd>
+
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

@@ -1,0 +1,53 @@
+﻿
+<div id="notificationList_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">          
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;" id="NotificationTypeName">Notification(s) Current List</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body p-0 pb-1">
+                <div id="divLoadingNotificationList" class="align-content-md-start">
+                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="divDashboardNotificationsList" style="max-height:395px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap custom-table mb-0" id="tblNotification">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                EmployeeID
+                                            </th>
+                                            <th>
+                                                Employee Name
+                                            </th>
+                                            <th>Record Name</th>
+                                            <th>Record Type</th>
+                                            <th>Notification Date</th>
+                                            <th>Status</th>
+                                            <th>Expiry Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeAppraisalDocument>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0">
+        <thead>
+            <tr>
+                <th>
+                    Document Name
+                </th>
+                <th></th>
+
+            </tr>
+        </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.AppraisalDocumentName</td>
+
+                    <td width="10%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditEmployeeAppraisalDocument(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                <a href="javascript:getEmployeeAppraisalDocumentDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                <a href="javascript:downloadEmployeeAppraisalDocument(@item.Id)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+                                @if ((bool)(ViewBag.Allow
+                                    ?? false))
+                                {
+                                    <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                    @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                }
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        
+    </table>
+  </div>

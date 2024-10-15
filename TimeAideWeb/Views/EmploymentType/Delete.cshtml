@@ -1,0 +1,33 @@
+﻿@model TimeAide.Web.Models.EmploymentType
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmploymentTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmploymentTypeName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmploymentTypeDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmploymentTypeDescription)
+        </dd>
+
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

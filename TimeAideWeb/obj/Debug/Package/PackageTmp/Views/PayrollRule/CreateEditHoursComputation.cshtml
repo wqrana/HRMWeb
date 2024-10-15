@@ -1,0 +1,144 @@
+﻿<div class="row">
+    <div class="col-md-12 d-flex">
+        <div class="card profile-box flex-fill">
+            <div class="card-body">
+
+                <div id="divBreakAMealDetail">
+                    <div style="padding:0px">
+                        <div style="font-size: 90%;">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default" style="margin-left:0px">
+                                        <div class="panel-heading" style="padding-left:10px">
+                                            Hours Computation
+
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                    Hrs. Rounding Scheme:
+                                                </label>
+                                                <div class="col-md-3 mt-2">
+                                                    @Html.DropDownList("HourRoundingSchemeVal", null, "Please select", new { @class = "form-control" })
+                                                </div>
+                                                <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                    Late Rounding Scheme:
+                                                </label>
+                                                <div class="col-md-3 mt-2">
+                                                    @Html.DropDownList("LateRoundingSchemeVal", null, "Please select", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" style="margin-left:0px">
+                                                <div class="panel-heading" style="padding-left:5px">
+                                                    Overtime/Meal Computation
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group row mb-0">
+                                                        <label class="col-md-7 col-form-label mt-2" style="margin-left:10px">
+                                                            Computation Detail
+                                                        </label>
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            Approved
+                                                        </label>
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            UnApproved
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            Schedule:
+                                                        </label>
+                                                        <div class="col-md-5 mt-2">
+                                                            @Html.DropDownList("ScheduledOTLawTypeVal", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("ScheduledOTAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("ScheduledOTUnAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            Daily Overtime:
+                                                        </label>
+                                                        <div class="col-md-5 mt-2">
+                                                            @Html.DropDownList("DailyOTCompVal", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("DailyOTAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("DailyOTUnAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            24 Hours Overtime:
+                                                        </label>
+                                                        <div class="col-md-5 mt-2">
+                                                            @Html.DropDownList("T24HrsOTCompVal", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("T24HrsOTAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("T24HrsOTUnAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            Weekly Overtime:
+                                                        </label>
+                                                        <div class="col-md-5 mt-2">
+                                                            @Html.DropDownList("WeeklyOTCompVal", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("WeeklyOTAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("WeeklyOTUnAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            Meal Penalty:
+                                                        </label>
+                                                        <div class="col-md-5 mt-2">
+                                                            @Html.DropDownList("MealPenaltyLawTypeVal", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("MealPenaltyAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            @Html.DropDownList("MealPenaltyUnAppTransId", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:10px">
+                                                            Seventh Day:
+                                                        </label>
+                                                        <div class="col-md-5 mt-2">
+                                                            @Html.DropDownList("SeventhDayComputationVal", null, "Please select", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Pay Stub";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@*<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />*@
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Pay Stub</h3>
+
+        </div>
+
+    </div>
+</div>
+<div class="row filter-row">
+    <div class="col-sm-3 col-md-3">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("PayStubBatchId", null, "Please Select", new { @class = "select floating" })
+            <label class="focus-label">Pay Stub</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2">
+        <a href="javascript: getPayStubDetail();" class="btn btn-success btn-block"> View Pay-Stub </a>
+    </div>
+</div>
+@Html.Hidden("userId", (int)ViewBag.UserId)
+<div id="divLoadingPayStubDetail" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div id="divPayStubDetail">
+
+</div>
+<script>
+    $(document).ready(function () {
+        getPayStubDetail();
+
+    });
+
+    function getPayStubDetail() {
+        debugger;
+        var batchId = $("#PayStubBatchId").val();
+        var id = $("#userId").val();
+        $("#divLoadingPayStubDetail").show();
+        $.ajax({
+            type: "GET",
+            url: '/EmployeePayStub/PayStubDetail',
+            data: { "batchId": batchId, "id": id},           
+            success: function (data) {
+                debugger;
+                $("#divPayStubDetail").html(data);
+                $("#divLoadingPayStubDetail").hide();
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+    function runLocalReport() {
+        debugger;
+        var dataObj = new Object();
+        dataObj.ReportId = 30; // give report id
+        dataObj.CriteriaType = 2; // 2 is used to run local report
+        dataObj.AttendanceSchId = $("#intUserID").val();
+        //dataObj.ScheduleDate = $('#ScheduleDate').val();
+        dataObj.EmployeeSelectionIds = $("#strBatchID").val();
+        $.ajax({
+            type: "POST",
+            url: "/Reports/AdhocReportPopup",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divAdhocReportPopup").html(data);
+                // setTimeout(function () { $('#divLoadingReport').hide(); }, 3000);
+                $("#AdhocReportPopup_modal").modal('show');
+            },
+            error: function (request, status, error) {
+                alert('Error in in runing  report data');
+                return false;
+            }
+        });
+    }
+</script>

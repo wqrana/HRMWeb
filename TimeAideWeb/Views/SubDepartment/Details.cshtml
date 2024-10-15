@@ -1,0 +1,62 @@
+﻿@model TimeAide.Web.Models.SubDepartment
+<div style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Department.DepartmentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.DepartmentName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SubDepartmentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubDepartmentName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SubDepartmentDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubDepartmentDescription)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.USECFSEAssignment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USECFSEAssignment)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.Label("CFSE Code")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CFSECode.CFSECodeName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CFSECompanyPercent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CFSECompanyPercent)
+        </dd>
+    </dl>
+    
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

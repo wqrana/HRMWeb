@@ -1,0 +1,437 @@
+﻿
+@{
+    ViewBag.Title = "Schedule Calendar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+
+    .table-avatar {
+        align-items: center;
+        display: inline-flex;
+        font-size: inherit;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .div-punch-info {
+       background-color:aliceblue;
+       width:100%;
+       height:100%;
+       overflow:auto;
+    }
+   
+    .div-emp-info {
+        /*width: 200px;
+        height: 60px;*/
+    }
+    .div-responsive {
+        width: 100%;
+        height: 600px;
+        overflow: scroll;
+        border: 1px solid #777777;
+    }
+
+        .div-responsive table {
+            border-spacing: 0;
+        }
+
+        .div-responsive th {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 200px;
+            min-width: 200px;
+            position: sticky;
+            top: 0;
+            background: #727272;
+            color: #e0e0e0;
+            font-weight: bolder;
+            font-size: large;
+        }
+
+        .div-responsive td {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            border-bottom: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 200px;
+            min-width: 200px;
+            height: 85px;
+        }
+
+            .div-responsive th:nth-child(1),
+            .div-responsive td:nth-child(1) {
+                position: sticky;
+                left: 0;
+                width: 250px;
+                min-width: 250px;
+            }
+
+
+
+            .div-responsive td:nth-child(1) {
+                background: #dee2e6;
+            }
+
+        .div-responsive th:nth-child(1) {
+            z-index: 2;
+        }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Schedule</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Attendance</li>
+                <li class="breadcrumb-item active">Schedule Grid</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row filter-row">
+    <div class="col-sm-2 col-md-2 pr-0">
+        <div class="form-group form-focus">
+            <input id="ScheduleDate" type="datetime" class="form-control floating" value="@DateTime.Today">
+            <label class="focus-label">From/To Date</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeId" type="text" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("PositionId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Position</label>
+        </div>
+    </div>
+    <div class="col-sm-1 col-md-1 pl-0 pr-0">
+        <a href="javascript: getAttendanceScheduleList();" class="btn btn-success btn-block"> Search </a>
+    </div>
+
+</div>
+
+
+<div style="padding:5px; padding-top:0px;">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div id="divLoadingScheduleGrid" class="align-content-md-center">
+                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+            </div>
+            <div class="panel panel-default" style="width:100%;margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Schedule View
+
+                </div>
+                <div class="panel-body">
+                    <div id="divScheduleGridView" style="">
+                        <div class="div-responsive">
+                            <table class="" id="tblScheduleGrid">
+                                <thead>
+                                    <tr class="">
+                                        <th></th>
+                                        <th>Mon 5/1</th>
+                                        <th>Tue 5/2</th>
+                                        <th>Wed 5/3</th>
+                                        <th>Thr 5/4</th>
+                                        <th>Fri 5/5</th>
+                                        <th>Sat 5/6</th>
+                                        <th>Sun 5/7</th>
+                                        <th>Mon 5/8</th>
+                                        <th>Tue 5/9</th>
+                                        <th>Wed 5/10</th>
+                                        <th>Thr 5/11</th>
+                                        <th>Fri 5/12</th>
+                                        <th>Sat 5/13</th>
+                                        <th>Sun 5/14</th>
+                                        <th>Mon 5/15</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="div-emp-info">
+                                                <h2 class="table-avatar">
+                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                                    <a href="profile.html">John Doe</a>
+                                                </h2>
+                                                <p class="mb-1 pl-5 font-weight-normal font-italic">72 Hrs</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+                                               <span class="pull-right"><a href="javascript:void();" class="fa fa-pencil" style="font-size:xx-small;"></a></span>
+                                               <p class="mb-1 font-weight-bold small">Work Day</p>
+                                                <p class="mb-1 font-weight-normal small"><span>Punch#:(4)</span><span class="pl-2">Day Hrs:(9)</span></p>
+                                               <p class="mb-1 small"><span class="Punch-In-1">9:00 AM</span> - <span class="Punch-Out-1">12:00 PM</span></p>
+                                               <p class="mb-1 small"><span class="Punch-In-2">1:00 PM</span> - <span class="Punch-Out-2">5:00 PM</span></p>                                              
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="div-emp-info">
+                                                <h2 class="table-avatar">
+                                                    <a class="avatar avatar-xs" href="profile.html"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                                    <a href="profile.html">VAZQUEZ CUADRA, JOSHUA M</a>
+                                                </h2>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="div-punch-info">
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="divEditScheduleDetail">
+
+</div>
+@*<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>*@
+<script>
+    //JS for Applicant main page
+    var alertID = null;
+    $(document).ready(function () {
+        debugger;
+        //Default User List on list view
+        $("#divLoadingScheduleGrid").hide();
+
+        $('#pickDateTime').datetimepicker({
+            format: "DD/MM/YYYY hh:mm A"
+        });
+
+       
+
+
+    });
+
+    function getAttendanceScheduleList() {
+        $("#divLoadingScheduleList").show();
+        debugger;
+        var filterObject = new Object();
+
+        filterObject.ScheduleDate = $('#ScheduleDate').val();
+        filterObject.EmployeeId = $('#EmployeeId').val();
+        filterObject.EmployeeName = $('#EmployeeName').val();
+        filterObject.PositionId = $('#PositionId').val();
+        filterObject.DepartmentId = $('#DepartmentId').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeAttendanceSchedule/GetAttendanceSchedule',
+            data: JSON.stringify(filterObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divScheduleList").html(data);
+                $("#divScheduleDetail").text("No Schedule Selected");
+                $("#divLoadingScheduleList").hide();
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    // getAttendanceScheduleDetail
+
+    function getScheduleDetailEditData(schId, schDetailId, companyId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeAttendanceSchedule/EditAttendenceScheduleDetail',
+            data: { "schId": schId, "schDetailId": schDetailId, "companyId": companyId },
+            success: function (data) {
+                debugger;
+                $("#divEditScheduleDetail").html(data);
+                $("#editScheduleDetail_modal").modal("show");
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    //getScheduleEditData
+
+
+</script>

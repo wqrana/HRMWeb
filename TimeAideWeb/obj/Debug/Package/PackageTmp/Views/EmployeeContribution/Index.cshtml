@@ -1,0 +1,402 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeContribution>
+<div style="font-size: 90%;">
+    <div class="table-responsive">
+        <table class="table" id="tblEmployeeContributions">
+            <thead>
+                <tr>
+                    <th>
+                        Contribution
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Enabled)
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    <th>
+                        End
+                    </th>
+                    <th>
+                        Money Amount
+                    </th>
+
+                    <th>
+                        Period Entry
+                    </th>
+                    <th>
+                        CC GL Expense/Debit
+                    </th>
+                    <th>
+                        CC GL Payable/Credit
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyContribution.CompanyContributionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Enabled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MoneyAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodEntry.CompensationPeriodEntryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GLContributionAccount.GLAccountName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GLContributionPayableAccount.GLAccountName)
+                    </td>
+                    <td>
+                        @if ((ViewBag.AllowAdd || ViewBag.AllowEdit))
+                        {
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:EditEmployeeContribution(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a href="javascript:getEmployeeContributionDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                    <a href="javascript:getEmployeeContributionTimeline(@item.CompanyContributionId);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Contribution Timeline</a>
+                                    <a href="javascript:getEmployeeContributionDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblEmployeeContributions').DataTable({
+            /*searching: false,*/
+            sDom: '<"top"i>rt<"bottom"flp><"clear">',
+            /*"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],*/
+            "bLengthChange": false,
+            "pageLength": 5,
+            "bInfo": false
+        });
+    });
+    function createEditEmployeeContribution(employeeContributionId) {
+        debugger;
+        employeeContributionId = employeeContributionId == 0 ? $("#EmployeeContributionDetailId").val() : employeeContributionId;
+        var id = employeeContributionId == null ? $('#userID').val() : employeeContributionId;
+        var ActionMethod = employeeContributionId == null ? "Create" : "Edit";
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeContribution/AddByUser',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                    $("#btnAddEmployeeContribution").click(function (e) {
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            //Id: $('#EmploymentId').val(),
+                            HourlyRate: $('#HourlyRate').val(),
+                            MoneyAmount: $('#MoneyAmount').val(),
+                            StartDate: $('#StartDate').val(),
+                            EndDate: $('#EndDate').val(),
+                            CompanyContributionId: $('#CompanyContributionId').val(),
+                            GLContributionAccountId: $('#GLContributionAccountId').val(),
+                            GLContributionPayableAccountId: $('#GLContributionPayableAccountId').val(),
+                            GLLookupField: $('#GLLookupField').val(),
+                            Enabled: $('#Enabled').is(":checked"),
+                            PeriodEntryId: $('#PeriodEntryId').val()
+
+                        }
+
+                        //e.preventDefault();
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmployeeContribution/AddEmployeeContribution',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "json",
+                            success: function (html) {
+                                debugger
+                                $('#myModal').modal('hide');
+                                refreshEmployeeContributions();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+    }
+
+    function createEditEmployeeWithholding(employeeWithholdingId) {
+        debugger;
+        employeeWithholdingId = employeeWithholdingId == 0 ? $("#EmployeeContributionDetailId").val() : employeeWithholdingId;
+        var id = employeeWithholdingId == null ? $('#userID').val() : employeeWithholdingId;
+        var ActionMethod = employeeWithholdingId == null ? "Create" : "Edit";
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeWithholding/AddByUser',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                    $("#btnAddEmployeeWithholding").click(function (e) {
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            //Id: $('#EmploymentId').val(),
+                            HourlyRate: $('#HourlyRate').val(),
+                            MoneyAmount: $('#MoneyAmount').val(),
+                            StartDate: $('#StartDate').val(),
+                            EndDate: $('#EndDate').val(),
+                            CompanyContributionId: $('#CompanyContributionId').val(),
+                            GLAccountId: $('#GLAccountId').val(),
+                            GLLookupField: $('#GLLookupField').val(),
+                            Enabled: $('#Enabled').is(":checked"),
+                            PeriodEntryId: $('#PeriodEntryId').val()
+
+                        }
+
+                        //e.preventDefault();
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmployeeWithholding/AddEmployeeWithholding',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "json",
+                            success: function (html) {
+                                debugger
+                                $('#myModal').modal('hide');
+                                refreshEmployeeContributions();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+    }
+
+    function EditEmployeeContribution(employeeContributionId) {
+        debugger;
+        /*employeeContributionId = employeeContributionId == 0 ? $("#EmployeeContributionDetailId").val() : employeeContributionId;*/
+        var id = null ? $('#userID').val() : employeeContributionId;
+        var ActionMethod = employeeContributionId == null ? "Create" : "Edit";
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeContribution/Edit',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                    $("#btnAddEmployeeContribution").click(function (e) {
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            Id: employeeContributionId,
+                            //Id: $('#EmploymentId').val(),
+                            HourlyRate: $('#HourlyRate').val(),
+                            MoneyAmount: $('#MoneyAmount').val(),
+                            StartDate: $('#StartDate').val(),
+                            EndDate: $('#EndDate').val(),
+                            CompanyContributionId: $('#CompanyContributionId').val(),
+                            GLContributionAccountId: $('#GLContributionAccountId').val(),
+                            GLContributionPayableAccountId: $('#GLContributionPayableAccountId').val(),
+                            GLLookupField: $('#GLLookupField').val(),
+                            Enabled: $('#Enabled').is(":checked"),
+                            PeriodEntryId: $('#PeriodEntryId').val()
+
+                        }
+
+                        //e.preventDefault();
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmployeeContribution/Edit',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "json",
+                            success: function (html) {
+                                debugger
+                                $('#myModal').modal('hide');
+                                refreshEmployeeContributions();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+    }
+
+    function getEmployeeContributionDetail(employeeContributionId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeContribution/Details',
+            data: { "id": employeeContributionId },
+
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+    function getEmployeeContributionTimeline(employeeContributionId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeContribution/ContributionTimeline',
+            data: { "id": employeeContributionId },
+
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getEmployeeContributionDeleteData(id) {
+        if (id != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/EmployeeContribution/Delete',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+
+    function addEmployeeContributionDefaults() {
+        // divEmployeeLicensesCreateEdit
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeContribution/CreateDefaults',
+
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#myModalContent").html(data);
+                $("#myModal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function addEmployeeWithholdingDefaults() {
+        // divEmployeeLicensesCreateEdit
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeWithholding/CreateDefaults',
+
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#myModalContent").html(data);
+                $("#myModal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+</script>
+<style>
+    .paginate_button {
+        padding: unset !important
+    }
+
+    .bottom {
+        float: left
+    }
+
+    .dataTables_filter input {
+        display: inline !important;
+        width: unset !important;
+    }
+
+    .dataTables_filter {
+        margin-left: 20px;
+        margin-top: 5px;
+    }
+</style>

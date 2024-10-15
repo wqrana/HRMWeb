@@ -1,0 +1,843 @@
+﻿@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.UserInformation
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Content -->
+@*<div class="content container-fluid" style="padding-left: 5px;">*@
+@*@Html.HiddenFor(model => model.Id, htmlAttributes: new { id = "UserInformationId" })*@
+@Html.Hidden("UserInformationId", Model.Id)
+@Html.HiddenFor(model => model.ActiveUserContactInformation.Id, htmlAttributes: new { id = "ActiveUserContactInformationId" })
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">My Profile</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item active">Profile</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+@{Html.RenderPartial("EmployeeProfile/PersonalInfo/_PersonalInformationSummaryView", Model); }
+<div class="card tab-box">
+    <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+            <ul class="nav nav-tabs nav-tabs-bottom">
+                <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link active">Personal Info</a></li>
+                <li class="nav-item"><a href="#emp_employments" data-toggle="tab" class="nav-link">Employment</a></li>
+                <li class="nav-item"><a href="#emp_documents" data-toggle="tab" class="nav-link">Documents<small class="text-danger"></small></a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tab-content">
+    <!-- Profile Info Tab -->
+    <div id="emp_profile" class="pro-overview tab-pane fade show active">
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/PersonalInfo/_PersonalInformationsView", Model); }
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill" id="divEmergencyContactView">
+                    @{Html.RenderPartial("EmployeeProfile/EmergencyContact/_EmergencyContactView", Model); }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/PersonalInfo/_EmployeeEducationView", Model); }
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/EmployeeDependent/_EmployeeDependentView", Model); }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/ContactInformation/_EmployeeAddressesView", Model); }
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/ContactInformation/_EmployeePhoneAndEmailsView", Model); }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @*@{Html.RenderPartial("EmployeeProfile/PersonalInfo/_ChangeRequestAddressList", Model); }*@
+                    <div id="divChangeRequestHistoryIndex">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Profile Info Tab -->
+    <!-- emp_employments Tab -->
+    <div class="tab-pane fade" id="emp_employments">
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/EmploymentInfo/_EmploymentView", Model); }
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/EmploymentInfo/_EmploymentHistoryView", Model); }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/EmploymentInfo/_PayInformationView", Model); }
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /emp_employments Tab -->
+    <!-- emp_documents Tab -->
+    <div class="tab-pane fade" id="emp_documents">
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/Documents/_EmployeeCredentialView", Model); }
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/Documents/_EmployeeDocumentView", Model); }
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    @{Html.RenderPartial("EmployeeProfile/Documents/_EmployeeTrainingView", Model); }
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+                        <h3 class="card-title">Performance</h3>
+                        <div class="table-responsive">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /emp_documents Tab -->
+
+</div>
+@*</div>*@
+
+@{Html.RenderPartial("EmployeeProfile/PersonalInfo/_ChangeRequestPersonalInformationsView", Model); }
+@{Html.RenderPartial("EmployeeProfile/PersonalInfo/_ChangeRequestEmployeeDependentView", Model); }
+@{Html.RenderPartial("EmployeeProfile/ContactInformation/_ChangeRequestHomeAddressesView", Model); }
+@{Html.RenderPartial("EmployeeProfile/ContactInformation/_ChangeRequestMailingAddressesView", Model); }
+@{Html.RenderPartial("EmployeeProfile/ContactInformation/_ChangeRequestEmailsNumbersView", Model); }
+@*@{Html.RenderPartial("EmployeeProfile/EmergencyContact/_EmergencyContactChangeRequestView", Model); }*@
+@*@{Html.RenderPartial("EmployeeProfile/EmergencyContact/_EmergencyContactDeleteView", Model); }*@
+<div id="employee_dependent_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:1700px;">
+        <div class="modal-content" id='employee_dependent_modal_content' style="padding:10px">
+        </div>
+    </div>
+</div>
+<div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:1000px;">
+        <div class="modal-content" id='emergency_contact_modal_content' style="padding:10px">
+        </div>
+    </div>
+</div>
+
+@{Html.RenderPartial("EmployeeProfile/PersonalInfo/_ChangeRequestEducationView", Model); }
+<script src="~/Scripts/UserInformation/userContactNumbersAndEmails-js.js?version=1.0"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger
+       
+          
+       
+
+
+        $('#ActiveUserContactInformation_HomeNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('ActiveUserContactInformation_HomeNumber', 'Home');
+        });
+        $('#ActiveUserContactInformation_CelNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('ActiveUserContactInformation_CelNumber', 'Mobile');
+        });
+        $('#ActiveUserContactInformation_FaxNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('ActiveUserContactInformation_FaxNumber', 'Fax');
+        });
+        $('#ActiveUserContactInformation_OtherNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('ActiveUserContactInformation_OtherNumber', 'Other')
+        });
+        $('#ActiveUserContactInformation_WorkNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('ActiveUserContactInformation_WorkNumber', 'Work')
+        });
+        $('#MainNumber').mask('(999) 999-9999');
+        $('#AlternateNumber').mask('(999) 999-9999');
+        var tblCredentials = $('#tblCredentials').dataTable({
+            "searching": false,
+            "paging": true,
+            "pageLength": 5,
+            "createdRow": function (row, data, dataIndex) {
+                debugger
+                if (data[4] == 'Yes') {
+                    debugger
+                    $(row).css("background-color", "red");
+                }
+            }
+        });
+        var tblSelfServiceDocuments = $('#tblSelfServiceDocuments').dataTable({
+            "searching": false,
+            "paging": true,
+            "pageLength": 5,
+            "createdRow": function (row, data, dataIndex) {
+                debugger
+                if (data[3] == 'Yes') {
+                    debugger
+                    $(row).css("background-color", "red");
+                }
+            }
+        });
+        RefreshChangeRequestHistory();
+    });
+
+
+
+
+    function ValidateNumbers(controlName, display) {
+        debugger
+        if ($('#' + controlName + '').mask().length > 0 && $('#' + controlName + '').mask().length < 10) {
+            $('span[data-valmsg-for="' + controlName + '"]').text('Invalid format.');
+            return false;
+        }
+        else if ($('#' + controlName + '').mask().length == 0 || $('#' + controlName + '').mask().length == 10) {
+            $('span[data-valmsg-for="' + controlName + '"]').text('');
+            return true;
+        }
+    }
+    function btnSaveMailingAddressess(addressType) {
+        //if (ValidateNumbersAndEmailsFormats() == false) {
+        //    return false;
+        //}
+        debugger
+        var btnID = event.target.id;
+        DisabledRequestActionButton(true, btnID);
+        
+        var model = {
+        }
+
+        model['UserInformationId'] = $('#UserInformationId').val();
+        model['Id'] = $('#ActiveUserContactInformationId').val();
+        model[addressType + 'Address1'] = $('#ActiveUserContactInformation_' + addressType + 'Address1').val();
+        model[addressType + 'Address2'] = $('#ActiveUserContactInformation_' + addressType + 'Address2').val();
+        model[addressType + 'CityId'] = $('#ddlCityId_' + addressType).val();
+        model[addressType + 'StateId'] = $('#ddlStateId_' + addressType).val();
+        model[addressType + 'CountryId'] = $('#ddlCountryId_' + addressType).val();
+        model[addressType + 'ZipCode'] = $('#ActiveUserContactInformation_' + addressType + 'ZipCode').mask();
+        model['AddressType'] = addressType;
+
+        $.ajax({
+            type: 'post',
+            url: '/UserContactInformation/ChangeRequestAddresses',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                
+                //refreshContactInformation();
+                if (addressType == 'Home')
+                    $('#employee_home_addresse_modal').modal('hide');
+                else
+                    $('#employee_mailing_addresse_modal').modal('hide');
+                toastr.success('Change request submitted successfully.', "Success!");
+                DisabledRequestActionButton(false, btnID);
+                RefreshChangeRequestHistory();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+               
+                var responseText = jQuery.parseJSON(xhr.responseText);
+                var errorObject = jQuery.parseJSON(responseText.errors);
+                var popupmessage = "";
+                $.each(errorObject, function (idx, errorMessage) {
+                    if (errorMessage.Key.indexOf("PopupMessage") !== -1) {
+                        popupmessage += "\n" + errorMessage.Message;
+                    }
+                    else {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    }
+                });
+
+                if (popupmessage != "") {
+                    toastr.error(popupmessage, "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+                }
+
+                DisabledRequestActionButton(false, btnID);
+
+            }
+        });
+    }
+    function btnSaveNumbersAndEmails() {
+        //if (ValidateNumbersAndEmailsFormats() == false) {
+        //    return false;
+        //}
+        debugger
+        var btnID = event.target.id;
+        DisabledRequestActionButton(true, btnID);
+        var model = {
+
+            UserInformationId: $('#UserInformationId').val(),
+            Id: $('#ActiveUserContactInformationId').val(),
+            HomeNumber: $('#ActiveUserContactInformation_HomeNumber').mask(),
+            CelNumber: $('#ActiveUserContactInformation_CelNumber').mask(),
+            FaxNumber: $('#ActiveUserContactInformation_FaxNumber').mask(),
+            OtherNumber: $('#ActiveUserContactInformation_OtherNumber').mask(),
+            WorkEmail: $('#ActiveUserContactInformation_WorkEmail').val(),
+            PersonalEmail: $('#ActiveUserContactInformation_PersonalEmail').val(),
+            WorkNumber: $('#ActiveUserContactInformation_WorkNumber').mask(),
+            WorkExtension: $('#ActiveUserContactInformation_WorkExtension').val(),
+            OtherEmail: $('#ActiveUserContactInformation_OtherEmail').val(),
+
+        }
+        $.ajax({
+            type: 'post',
+            url: '/UserContactInformation/ChangeRequestEmailNumbers',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                //$('#divUserContactInformation').html(html);
+                refreshContactInformation();
+                $('#employee_Contact_Number_modal').modal('hide');
+                toastr.success('Change request submitted successfully.', "Success!");
+                DisabledRequestActionButton(false, btnID);
+                RefreshChangeRequestHistory();
+                
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+                $.each(errorObject, function (idx, errorMessage) {
+                    if (errorMessage.Key == 'MandatoryContact' || errorMessage.Key == 'PopupMessage1') {
+                        toastr.error(errorMessage.Message, "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+
+                    }
+                    else {
+                        $('span[data-valmsg-for="ActiveUserContactInformation.' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    }
+                });
+                DisabledRequestActionButton(false, btnID);
+            }
+        });
+    }
+
+    function btnEmergencyContactChangeRequest(id) {
+        debugger;
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmergencyContact/EmergencyContactChangeRequest',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#emergency_contact_modal_content').html(data);
+                $('#emergency_contact_modal').modal(options);
+                $('#emergency_contact_modal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function btnEmergencyContactChangeRequestDelete(id) {
+        debugger;
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmergencyContact/EmergencyContactChangeRequestDelete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#emergency_contact_modal_content').html(data);
+                $('#emergency_contact_modal').modal(options);
+                $('#emergency_contact_modal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function btnSaveEmergencyContactClick() {
+        debugger
+        var btnID = event.target.id;
+        DisabledRequestActionButton(true, btnID);
+        var model = {
+            Id: $('#EmergencyContactId').val(),
+            UserInformationId: $('#UserInformationId').val(),
+            ContactPersonName: $('#ContactPersonName').val(),
+            RelationshipId: $('#RelationshipId').val(),
+            RelationshipName: $('#RelationshipId  :selected').text(),
+            IsDefault: $('#IsDefault').val(),
+            MainNumber: $('#MainNumber').mask(),
+            AlternateNumber: $('#AlternateNumber').mask()
+        }
+        $.ajax({
+            type: 'post',
+            url: '/EmergencyContact/ChangeRequestEmergencyContact',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                //$('#divUserContactInformation').html(html);
+                //refreshContactInformation();
+                $('#emergency_contact_modal').modal('hide');
+                toastr.success('Change request submitted successfully.', "Success!");
+                DisabledRequestActionButton(false, btnID);
+                RefreshChangeRequestHistory();
+                
+            },
+            error: function (xhr, ajaxOptions, thrownError)
+            {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText);
+                var errorObject = jQuery.parseJSON(responseText.errors);
+                var popupmessage = "";
+                $.each(errorObject, function (idx, errorMessage) {
+                    if (errorMessage.Key.indexOf("PopupMessage") !== -1) {
+                        popupmessage += "\n" + errorMessage.Message;
+                    }
+                    else {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    }
+                });
+
+                if (popupmessage != "") {
+                    toastr.error(popupmessage, "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+                }
+           
+
+                DisabledRequestActionButton(false, btnID);
+               
+            }
+            
+        });
+    }
+
+    function btnDeleteEmergencyContactChageRequestClick() {
+        debugger
+        var btnID = event.target.id;
+        DisabledRequestActionButton(true, btnID);
+        var model = {
+            Id: $('#EmergencyContactId').val(),
+            UserInformationId: $('#UserInformationId').val(),
+            ReasonForDelete: $('#ReasonForDelete').val(),
+        }
+        $.ajax({
+            type: 'post',
+            url: '/EmergencyContact/ChangeRequestDeleteEmergencyContact',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                $('#emergency_contact_modal').modal('hide');
+                toastr.success('Change request submitted successfully.', "Success!");
+                DisabledRequestActionButton(false, btnID);
+                RefreshChangeRequestHistory();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText);
+                var errorObject = jQuery.parseJSON(responseText.errors);
+                var popupmessage = "";
+                $.each(errorObject, function (idx, errorMessage) {
+                    if (errorMessage.Key.indexOf("PopupMessage") !== -1) {
+                        popupmessage += "\n" + errorMessage.Message;
+                    }
+                    else {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    }
+                });
+
+                if (popupmessage != "") {
+                    toastr.error(popupmessage, "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+                }
+                DisabledRequestActionButton(false, btnID);
+            }
+        });
+    }
+
+    function btnEmployeeDependentChangeRequest(id) {
+        debugger;
+      
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDependent/EmployeeDependentChangeRequest',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                
+                $('#employee_dependent_modal_content').html(data);
+                $('#employee_dependent_modal').modal(options);
+                $('#employee_dependent_modal').modal('show');
+
+                $("#btnSaveEmployeeDependent").click(function (e) {
+                    debugger
+                    var btnID = event.target.id;
+                    DisabledRequestActionButton(true, btnID);
+                    var model = {
+                        Id: $('#EmployeeDependentId').val(),
+                        UserInformationId: $('#UserInformationId').val(),
+                        FirstName: $('#FirstName').val(),
+                        LastName: $('#LastName').val(),
+                        SSN: $('#SSN').mask(),
+                        BirthDate: $('#BirthDate').val(),
+                        GenderId: $('#GenderId').val(),
+                        RelationshipId: $('#RelationshipId').val(),
+                        DependentStatusId: $('#DependentStatusId').val(),
+                        IsFullTimeStudent: $('#IsFullTimeStudentAE').is(":checked"),
+                        SchoolAttending: $('#SchoolAttending').val(),
+                        IsHealthInsurance: $('#IsHealthInsuranceAE').is(":checked"),
+                        IsDentalInsurance: $('#IsDentalInsuranceAE').is(":checked"),
+                        IsTaxPurposes: $('#IsTaxPurposesAE').is(":checked")
+                    }
+                    if (Validate(model) == false) {
+                        debugger
+                        DisabledRequestActionButton(false, btnID);
+                        return;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmployeeDependent/ChangeRequestEmployeeDependent',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            //$('#divUserContactInformation').html(html);
+                            //refreshContactInformation();
+                            $('#employee_dependent_modal').modal('hide');
+                            toastr.success('Change request submitted successfully.', "Success!");
+                            RefreshChangeRequestHistory();
+                            DisabledRequestActionButton(false, btnID);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText);
+                            var errorObject = jQuery.parseJSON(responseText.errors);
+                            var popupmessage = "";
+                            $.each(errorObject, function (idx, errorMessage) {
+                                if (errorMessage.Key.indexOf("PopupMessage") !== -1) {
+                                    popupmessage += "\n" + errorMessage.Message;
+                                }
+                                else {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                }
+                            });
+
+                            if (popupmessage != "") {
+                                toastr.error(popupmessage, "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+                            }
+                            DisabledRequestActionButton(false, btnID);
+                        }
+                    });
+                });
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+               
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function Validate(dataObj) {
+        debugger
+        var isValid = true;
+        var message = "";
+        if (dataObj.FirstName.trim().length == 0) {
+            //toastr.error("First Name Required", "Error", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+            message += "First Name is required.";
+            isValid = false;
+        }
+        if (dataObj.GenderId.trim().length == 0) {
+            //toastr.error("Gender Required", "Error", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+            message += "<br>Gender is required.";
+            isValid = false;
+        }
+        if (dataObj.RelationshipId.trim().length == 0) {
+            //toastr.error("Relationship Required", "Error", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+            message += "<br>Relationship is required.";
+            isValid = false;
+        }
+        if (dataObj.SSN.trim().length > 0) {
+            debugger
+            dataObj.SSN = dataObj.SSN.replace("-", "").replace("-", "");
+            dataObj.SSN = dataObj.SSN.replace("/_/g", "");
+            if (dataObj.SSN.trim().length != 9) {
+                //toastr.error("SSN format is invalid", "Error", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+                message += "<br>Invalid SSN format.";
+                isValid = false;
+            }
+        }
+
+
+      
+        if (/^[a-zA-Z0-9- ]*$/.test(dataObj.SchoolAttending.trim()) == false) {
+
+            message += "<br>Your school attending contains illegal characters.";
+            isValid = false;
+            
+        }
+
+
+        if (/^[a-zA-Z0-9- ]*$/.test(dataObj.FirstName.trim()) == false) {
+
+            message += "<br>Your firstname contains illegal characters.";
+            isValid = false;
+
+        }
+
+        if (/^[a-zA-Z0-9- ]*$/.test(dataObj.LastName.trim()) == false) {
+
+            message += "<br>Your lastname contains illegal characters.";
+            isValid = false;
+
+        }
+
+
+        if (isValid == false) {
+            toastr.error(message, "Error", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+        }
+        return isValid;
+    }
+    function btnEmployeeDependentDeleteChangeRequest(id) {
+        debugger;
+     
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDependent/EmployeeDependentChangeRequestDelete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#employee_dependent_modal_content').html(data);
+                $('#employee_dependent_modal').modal(options);
+                $('#employee_dependent_modal').modal('show');
+               
+                $("#btnSaveEmployeeDependent").click(function (e) {
+                    debugger
+                    var btnID = event.target.id;
+                    DisabledRequestActionButton(true, btnID);
+                    var model = {
+                        Id: $('#EmployeeDependentId').val(),
+                        UserInformationId: $('#UserInformationId').val(),
+                        ReasonForDelete: $('#ReasonForDelete').val(),
+                        FirstName: $('#FirstName').val()
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmployeeDependent/EmployeeDependentChangeRequestDelete',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            //$('#divUserContactInformation').html(html);
+                            //refreshContactInformation();
+                            $('#employee_dependent_modal').modal('hide');
+
+                            toastr.success('Change request submitted successfully.', "Success!");
+                            DisabledRequestActionButton(false, btnID);
+                            RefreshChangeRequestHistory();
+                           
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText);
+                            var errorObject = jQuery.parseJSON(responseText.errors);
+                            var popupmessage = "";
+                            $.each(errorObject, function (idx, errorMessage) {
+                                if (errorMessage.Key.indexOf("PopupMessage") !== -1) {
+                                    popupmessage += "\n" + errorMessage.Message;
+                                }
+                                else {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                }
+                            });
+
+                            if (popupmessage != "") {
+                                toastr.error(popupmessage, "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+                            }
+                            DisabledRequestActionButton(false, btnID);
+                        }
+                    });
+                });
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+               
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function btnSaveEmployeeDependentClick() {
+        alert('Hiii new');
+    }
+
+    function ShowRequestDetail(id, actionMethod, controller) {
+        debugger;
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/' + controller + '/' + actionMethod,
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#emergency_contact_modal_content').html(data);
+                $('#emergency_contact_modal').modal(options);
+                $('#emergency_contact_modal').modal('show');
+
+                $("#btnEmergencyContactChangeRequestClick").click(function (e) {
+
+                    alert('Hi');
+                });
+            },
+            error: function (xhr, status, error) {
+                debugger
+                //var err = eval("(" + xhr.responseText + ")");
+                //alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function RefreshChangeRequestHistory() {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/UserInformation/GetChangeRequestHistoryIndex',
+            contentType: "application/json; charset=utf-8",
+            data: {
+                Id: $('#UserInformationId').val()
+            },
+            datatype: "html",
+            success: function (html) {
+                //debugger;
+                $("#divChangeRequestHistoryIndex").empty();
+                $('#divChangeRequestHistoryIndex').html(html);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>
+<style>
+    .delete-icon {
+        background-color: #eee;
+        border: 1px solid #e3e3e3;
+        border-radius: 24px;
+        color: #bbb;
+        float: right;
+        font-size: 12px;
+        line-height: 24px;
+        min-height: 26px;
+        text-align: center;
+        width: 26px;
+    }
+</style>
+<style>
+    .content.container-fluid {
+        padding-left: 10px;
+        padding-top: 20px;
+        padding-right: 5px;
+    }
+
+    .page-header {
+        margin-bottom: 1rem;
+    }
+
+    .col-md-6.d-flex {
+        padding-right: 0px;
+        padding-left: 15px;
+    }
+
+    .card {
+        margin-bottom: 10px
+    }
+
+    .tab-content {
+        padding-top: 0px;
+    }
+
+    .custom-modal .modal-body {
+        padding: 0px;
+    }
+</style>

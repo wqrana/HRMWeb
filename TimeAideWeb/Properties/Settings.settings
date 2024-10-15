@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TimeAide.Web.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TimeAide_Web_WebPunchSessionTokenService_wsGetSessionToken" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://tawqc.timeaide.com:9001/wsGetSessionToken.asmx</Value>
+    </Setting>
+    <Setting Name="TimeAide_Web_WebPunchLoginService_wsLogin" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://tawqc.timeaide.com:9001/wsLogin.asmx</Value>
+    </Setting>
+    <Setting Name="TimeAide_Web_WebPunchEmployeeLoginService_wsEmployeeLogin" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://tawqc.timeaide.com:9001/wsEmployeeLogin.asmx</Value>
+    </Setting>
+    <Setting Name="TimeAide_Web_WebPunchValidateEventService_wsValidateEvent" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://tawqc.timeaide.com:9001/wsValidateEvent.asmx</Value>
+    </Setting>
+    <Setting Name="TimeAide_Web_WebPunchComputeService2_wsComputeTimeSheet" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://tawqc.timeaide.com:9001/wsComputeTimeSheet.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

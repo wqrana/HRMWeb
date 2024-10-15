@@ -1,0 +1,38 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Applicant Error";
+   
+}
+
+<div id="applicantError_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-danger" style="text-align:center;">
+                    <h4 style="display: inline;">Alert</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="error-box">
+                    <h3 class="text-danger"><i class="fa fa-warning"></i>Error processing request. Please contact your system administrator!</h3>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#applicantError_modal').modal("show");
+
+    });
+</script>

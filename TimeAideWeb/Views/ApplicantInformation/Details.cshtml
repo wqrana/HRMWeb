@@ -1,0 +1,1137 @@
+﻿@using TimeAide.Services.Helpers;
+@model TimeAide.Models.ViewModel.ApplicantInformationViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .material-icons {
+        font-size: unset;
+    }
+
+    .profile-info-right table tr {
+        height: 30px;
+    }
+
+    .title {
+        color: #4f4f4f;
+    }
+
+    .page-header {
+        margin-bottom: 0px;
+    }
+
+
+    .tab-box {
+        margin-bottom: 0px;
+    }
+
+    .profile-img-wrap.edit-img {
+        margin: 0;
+        position: absolute;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    .table th {
+        font-size: small;
+        background-color: #d9edf7 !important;
+    }
+
+    .table thead th {
+        font-size: small;
+        background-color: #d9edf7 !important;
+    }
+
+    .table tbody td {
+        font-size: small;
+    }
+</style>
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Applicant Profile</h3>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+@{
+    var appStatusBgClass = Model.UseAsHire ? "bg-inverse-success" : "bg-inverse-primary";
+
+}
+@Html.HiddenFor(model => model.ApplicantStatusId)
+@Html.HiddenFor(model => model.UseAsHire)
+@Html.HiddenFor(model => model.ApplicantInformationId)
+@Html.HiddenFor(model => model.ApplicantContactInformationId)
+@Html.HiddenFor(model => model.UserInformationId)
+
+<div class="card mb-0">
+    <div class="card-body pb-3" style="height:140px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-view">
+                    <div class="profile-img-wrap edit-img">
+                        <img class="inline-block" src="@Model.PictureFilePath" alt="user" id="profileMainPicture">
+                        <div class="fileupload btn">
+                            @if (ViewBag.AllowEdit && (Model.UserInformationId == null))
+                            {
+                                <a href="" class="btn-text" data-toggle="modal" data-target="#upload_picture_modal">Edit</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="profile-basic">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="profile-info-left">
+
+                                    <div class="staff-id">
+                                        Name:
+                                        <span class="text-dark ml-1" style="font-size:x-large;">
+
+                                            @Html.DisplayFor(model => model.ShortFullName)
+
+                                        </span>
+
+                                    </div>
+                                    <div class="staff-id">
+                                        Status:<span class="text-muted ml-1 badge @appStatusBgClass" style="font-size:small;">
+                                            @Html.DisplayFor(model => model.ApplicantStatusName)
+                                        </span>
+                                    </div>
+                                    <div class="staff-id">
+                                        Position:<span class="text-muted ml-1" style="font-size:small;">
+                                            @Html.DisplayFor(model => model.PositionName)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card tab-box">
+    <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+            <ul class="nav nav-tabs nav-tabs-bottom">
+                <li class="nav-item" id="generalInfoTab"><a href="#applicant_generalInfo" onclick="ApplicantGeneralInfoTabClicked()" data-toggle="tab" class="nav-link active">General Info.</a></li>
+                @if (SecurityHelper.IsAvailable("ApplicantApplication"))
+                {
+                    <li class="nav-item" id="applicantApplicationTab" onclick="ApplicantApplicationTabClicked()"><a href="#applicant_applicationDetail" data-toggle="tab" class="nav-link">Application</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("ApplicantEmployment"))
+                {
+                    <li class="nav-item" id="applicantEmploymentTab" onclick="ApplicantEmploymentTabClicked()"><a href="#applicant_employmentDetail" data-toggle="tab" class="nav-link">Previous Employment</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("ApplicantInterview"))
+                {
+                    <li class="nav-item" id="applicantInterviewTab" onclick="ApplicantInterviewTabClicked()"><a href="#applicant_interviewDetail" data-toggle="tab" class="nav-link">Interview</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("ApplicantEducation"))
+                {
+                    <li class="nav-item" id="applicantEducationTab" onclick="ApplicantEducationTabClicked()"><a href="#applicant_educationDetail" data-toggle="tab" class="nav-link">Education</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("ApplicantCustomField"))
+                {
+                    <li class="nav-item" id="applicantCustomFieldTab" onclick="ApplicantCustomFieldTabClicked()"><a href="#applicant_customFieldDetail" data-toggle="tab" class="nav-link">Custom Field</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("ApplicantDocument"))
+                {
+                    <li class="nav-item" id="applicantDocumentTab" onclick="ApplicantDocumentTabClicked()"><a href="#applicant_documentDetail" data-toggle="tab" class="nav-link">Document</a></li>
+                }
+                @if (SecurityHelper.IsAvailable("ApplicantAction"))
+                {
+                    <li class="nav-item" id="applicantActionTab" onclick="ApplicantActionTabClicked()"><a href="#applicant_actionDetail" data-toggle="tab" class="nav-link">Action History</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tab-content pt-0">
+    <div id="applicant_generalInfo" class="pro-overview tab-pane fade show active">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <!--<h3 class="card-title">General Information  <a href="javascript:editGeneralInfo()" class="edit-icon" title="Edit General Info."><i class="fa fa-pencil"></i></a></h3>-->
+                        <!--Tab Title & Right dropdown menu-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    General Information
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @if (Model.UserInformationId == null)
+                                            {
+                                                <div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:getHireApplicantData()">Hire Applicant</a>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (Model.UserInformationId == null)
+                                                    {
+                                                        <a href="" data-toggle="modal" data-target="#uploadApplicantCV_modal" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload CV</a>
+                                                    }
+                                                    <a href="javascript:downloadApplicantCV()" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download CV</a>
+
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingGenInfoTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantPersonalDetail">
+
+                            </div>
+                        }
+                        <div id="divApplicantContactDetail">
+
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantGenInfoEdit">
+
+                            </div>
+                            <div id="divApplicantGenInfoCVUpload">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--General Info End-->
+    <div id="applicant_applicationDetail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <!--<h3 class="card-title">General Information  <a href="javascript:editGeneralInfo()" class="edit-icon" title="Edit General Info."><i class="fa fa-pencil"></i></a></h3>-->
+                        <!--Tab Title & Right dropdown menu-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Application
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @*<div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(0,0)">Print</a>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                @*<a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                                                         <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="" data-toggle="modal" data-target="#uploadApplicantCV_modal" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload CV</a>
+                                                        <a href="javascript:downloadApplicantCV()" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download CV</a>
+
+                                                    </div>*@
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingApplicationTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+
+                        <div id="divApplicantApplicationDetail">
+
+                        </div>
+
+                        <div id="divApplicantApplicationEdit">
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Previous Employment-->
+    <div id="applicant_employmentDetail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Previous Employment
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @*<div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (Model.UserInformationId == null)
+                                                    {
+                                                        <a href="javascript:createEditApplicantEmployment(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditApplicantEmployment(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingEmploymentTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantEmploymentDetail">
+
+                            </div>
+                        }
+                        <div id="divApplicantEmploymentIndex">
+
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantEmploymentCreateEdit">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Employment-->
+    <!--Interview-->
+    <div id="applicant_interviewDetail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Interview
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @*<div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (Model.UserInformationId == null)
+                                                    {
+                                                        <a href="javascript:createEditApplicantInterviewQA(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingInterviewTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+                        <div id="divApplicantInterviewIndex">
+
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantInterviewCreateEdit">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End interview-->
+    <div id="applicant_educationDetail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Education
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @*<div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (Model.UserInformationId == null)
+                                                    {
+                                                        <a href="javascript:createEditApplicantEducation(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                        <a href="javascript:createEditApplicantEducation(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a href="javascript:getApplicantEducationDocView(null)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                    }
+                                                    <a href="javascript:downloadApplicantEducationDoc(null)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingEduTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantEducationDetail">
+
+                            </div>
+                        }
+                        <div id="divApplicantEducationIndex">
+
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantEducationCreateEdit">
+
+                            </div>
+                            <div id="divEApplicantEducationDocUpload">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Education tab-->
+    <div id="applicant_customFieldDetail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Custom Field
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @*<div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (Model.UserInformationId == null)
+                                                    {
+                                                        <a href="javascript:createEditApplicantCustomField(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingCustomFieldTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+                        <div id="divApplicantCustomFieldIndex">
+
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantCustomFieldCreateEdit">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="applicant_documentDetail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Document
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @*<div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (Model.UserInformationId == null)
+                                                    {
+                                                        <a href="javascript:createEditApplicantDocument(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingDocumentTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+                        <div id="divApplicantDocumentIndex">
+
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantDocumentCreateEdit">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="applicant_actionDetail" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Action History
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-11 pl-0 pr-0">
+                                        <div class="nav btn-toolbar pull-right bg-gradient-blue">
+                                            @*<div class="btn-group" role="group">
+                                                    <a class="nav-link btn btn-primary" role="button" href="javascript:openAdhocReport(14,@Model.EmployeeId)">Print</a>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 bg-gradient-blue">
+                                        @if (!SecurityHelper.IsUser)
+                                        {
+                                            <div class="pull-right dropdown-action">
+
+                                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons pt-3" style="color:white">more_horiz</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                    @if (Model.UserInformationId == null)
+                                                    {
+                                                        <a href="javascript:createEditApplicantAction(null)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadingActionTab" class="align-content-md-center">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantActionDetail">
+                            </div>
+                        }
+                        <div id="divApplicantActionIndex">
+
+                        </div>
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div id="divApplicantActionCreateEdit">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-primary" title="Back to Applicants List" href="\ApplicantInformation\Index"><span id="" class="pull-left fa fa fa-chevron-left" style="font-size:medium"></span></a>
+</div>
+
+@Html.Partial("_UploadApplicantPicture")
+@Html.Partial("_UploadApplicantCV")
+<script src="~/Scripts/ApplicantInformation/applicantApplication-js.js?version=1.1"></script>
+<script src="~/Scripts/ApplicantInformation/applicantEmployment-js.js?version=1.0"></script>
+<script src="~/Scripts/ApplicantInformation/applicantInterview-js.js?version=1.0"></script>
+<script src="~/Scripts/ApplicantInformation/applicantEducation-js.js?version=1.0"></script>
+<script src="~/Scripts/ApplicantInformation/applicantCustomField-js.js?version=1.2"></script>
+<script src="~/Scripts/ApplicantInformation/applicantDocument-js.js?version=1.0"></script>
+<script src="~/Scripts/ApplicantInformation/applicantAction-js.js?version=1.0"></script>
+<script>
+    $(document).ready(function () {
+        getPersonalInfo();
+        getContactInfo();
+        $('#divLoadingUpload_applicantCV').hide();
+        $('#btnUploadApplicantCV').click(function () {
+            /*uploadApplicantCV();*/
+        });
+    });
+    function ApplicantGeneralInfoTabClicked() {
+        $("#applicantError_modal").parent().html("");
+    }
+
+    function getHireApplicantData() {
+        debugger;
+        var userId = $("#UserInformationId").val();
+        if (userId != "") {
+            showAlertAutoHide("", "Error", "Applicant is already hired.");
+            return;
+        }
+        var id = $("#ApplicantInformationId").val();
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/ApplicantInformation/HireApplicant',
+                data: { "id": id },
+
+                success: function (data) {
+                    // debugger;
+
+                    $("#divApplicantGenInfoEdit").html(data);
+                    $("#hireApplicant_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+
+    function getPersonalInfo() {
+        var id = $("#ApplicantInformationId").val();
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/ApplicantInformation/PersonalInformation',
+                data: { "id": id },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divApplicantPersonalDetail").html(data);
+                    // $("#divLoadingGenInfoTab").hide();
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function getContactInfo() {
+        var id = $("#ApplicantContactInformationId").val();
+
+        $.ajax({
+            type: "get",
+            url: '/ApplicantContactInformation/Details',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divApplicantContactDetail").html(data);
+                $("#divLoadingGenInfoTab").hide();
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+
+
+    }
+
+    function editPersonalInformation() {
+        var id = $("#ApplicantInformationId").val();
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/ApplicantInformation/EditPersonalInformation',
+                data: { "id": id },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divApplicantGenInfoEdit").html(data);
+                    $("#editPersonalInfo_modal").modal("show");
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function savePersonalInformation() {
+        var isRequiredValidated = 0;
+        var isValidated = true
+        var message = "";
+        var dataObj = new Object();
+        dataObj.Id = $('#ApplicantInformationId').val();
+        dataObj.SSN = $('#SSN').mask();
+        dataObj.FirstName = $('#FirstName').val();
+        dataObj.MiddleInitial = $('#MiddleInitial').val();
+        dataObj.FirstLastName = $('#FirstLastName').val();
+        dataObj.SecondLastName = $('#SecondLastName').val();
+        dataObj.BirthDate = $('#BirthDate').val();
+        dataObj.GenderId = $('#GenderId').val();
+        dataObj.DisabilityId = $('#DisabilityId').val();
+        dataObj.ApplicantStatusId = $('#NewApplicantStatusId').val();
+
+        if (dataObj != null) {
+
+            isRequiredValidated += dataObj.FirstName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FirstLastName.trim().length > 0 ? 1 : 0;
+            //isRequiredValidated += dataObj.SecondLastName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.ApplicantStatusId.trim().length > 0 ? 1 : 0;
+            if (isRequiredValidated != 3) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+
+            if (isValidated) {
+
+                $.ajax({
+                    url: "/ApplicantInformation/AjaxCreateEditApplicant",
+                    type: "POST",
+                    data: JSON.stringify(dataObj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if (data.status == "Success") {
+                            $("#editPersonalInfo_modal").modal("hide");
+                            showAlertAutoHide("", data.status, data.message);
+                            window.location.reload();
+
+                        }
+                        else if (data.status == "Error") {
+
+                            showAlertAutoHide("", "Error", data.message);
+                        }
+
+                    }
+                    ,
+                    error: function (data) {
+                        showAlertAutoHide("", "Error", data.message);
+
+                    }
+                });
+            }
+            else {
+                showAlertAutoHide("", "Error", message);
+            }
+        }
+    }
+
+    function AddEditContactInfo() {
+        var id = $("#ApplicantContactInformationId").val();
+
+        $.ajax({
+            type: "get",
+            url: '/ApplicantContactInformation/CreateEditContactInfo',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divApplicantGenInfoEdit").html(data);
+                $("#createEditContactInfo_modal").modal("show");
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function saveAddEditContactInfo() {
+        debugger;
+        var IsValidEmail = true;
+        var dataObj = new Object();
+        dataObj.ApplicantInformationId = $("#ApplicantInformationId").val();
+        dataObj.id = $("#ApplicantContactInformationId").val();
+
+        dataObj.HomeNumber = $('#HomeNumber').val();
+        dataObj.CelNumber = $('#CelNumber').val();
+        dataObj.FaxNumber = $('#FaxNumber').val();
+        dataObj.OtherNumber = $('#OtherNumber').val();
+
+        dataObj.PersonalEmail = $('#PersonalEmail').val();
+        dataObj.WorkEmail = $('#WorkEmail').val();
+        dataObj.OtherEmail = $('#OtherEmail').val();
+        if (!IsValidEmailFormat(dataObj.PersonalEmail) ||
+            !IsValidEmailFormat(dataObj.WorkEmail) ||
+            !IsValidEmailFormat(dataObj.OtherEmail)) {
+            IsValidEmail = false;
+        }
+        if (!IsValidEmail) {
+            showAlertAutoHide("", "Error", "Invlid email format.");
+            return;
+        }
+        $.ajax({
+            url: "/ApplicantContactInformation/AjaxCreateEditContactInfo",
+            type: "POST",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    $("#createEditContactInfo_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    $("#ApplicantContactInformationId").val(data.id);
+                    //window.location.reload();
+                    $("#divLoadingGenInfoTab").show();
+                    getContactInfo();
+
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+    function IsValidEmailFormat(email) {
+        if (email == "") {
+            return true;
+        }
+        //var regex = /^([a-zA-Z0-9_\.\-\+])+\@@(([a-zA-Z0-9\-])+\.)+ ([a - zA - Z0 - 9]{ 2, 4})+$ /;
+        var regex = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (!regex.test(email)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function AddEditAddressInfo() {
+        var id = $("#ApplicantContactInformationId").val();
+
+        $.ajax({
+            type: "get",
+            url: '/ApplicantContactInformation/CreateEditAddressInfo',
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divApplicantGenInfoEdit").html(data);
+                $("#createEditAddressInfo_modal").modal("show");
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveAddEditAddressInfo() {
+        debugger;
+        var dataObj = new Object();
+        dataObj.ApplicantInformationId = $("#ApplicantInformationId").val();
+        dataObj.id = $("#ApplicantContactInformationId").val();
+
+        dataObj.HomeAddress1 = $('#HomeAddress1').val();
+        dataObj.HomeAddress2 = $('#HomeAddress2').val();
+        dataObj.HomeCityId = $('#ddlCityId_Home').val();
+        dataObj.HomeStateId = $('#ddlStateId_Home').val();
+        dataObj.HomeCountryId = $('#ddlCountryId_Home').val();
+        dataObj.HomeZipCode = $('#HomeZipCodeTxt').val();
+
+        dataObj.MailingAddress1 = $('#MailingAddress1').val();
+        dataObj.MailingAddress2 = $('#MailingAddress2').val();
+        dataObj.MailingCityId = $('#ddlCityId_Mailing').val();
+        dataObj.MailingStateId = $('#ddlStateId_Mailing').val();
+        dataObj.MailingCountryId = $('#ddlCountryId_Mailing').val();
+        dataObj.MailingZipCode = $('#MailingZipCodeTxt').val();
+
+        $.ajax({
+            url: "/ApplicantContactInformation/AjaxCreateEditAddressInfo",
+            type: "POST",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    $("#createEditAddressInfo_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    $("#ApplicantContactInformationId").val(data.id);
+                    //window.location.reload();
+                    $("#divLoadingGenInfoTab").show();
+                    getContactInfo();
+
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+    function uploadApplicantCV(action, droppedFiles) {
+
+        debugger;
+        var isProceed = true;
+        var formData = new FormData();
+        var id = $('#ApplicantInformationId').val();
+
+        formData.append("ApplicantID", id);
+
+        var totalFiles = document.getElementById("uploadApplicantCVFile").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadApplicantCVFile").files[0];
+            formData.append("FileUpload", file);
+
+        }
+        else if (droppedFiles) {
+            Array.prototype.forEach.call(droppedFiles, function (eachFile) {
+                formData.append("FileUpload", eachFile);
+            });
+        }
+        else {
+            isProceed = false;
+            showAlertAutoHide("#uploadCVAlert", "Error", "Please choose the Applicant CV");
+        }
+
+        if (isProceed) {
+            $('#divLoadingUpload_applicantCV').show();
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/ApplicantInformation/AjaxUploadApplicantCV',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    debugger;
+                    $('#divLoadingUpload_applicantCV').hide();
+                    if (data.status == "Success") {
+                        // $('#CVNameDiv').text(data.cvName);
+                        $('#uploadApplicantCV_modal').modal('hide');
+                        getPersonalInfo();
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                    }
+                    else {
+                        showAlertAutoHide("#uploadCVAlert", data.status, data.message);
+                    }
+                },
+                error: function (error) {
+                    //$('#divLoadingUpload_userCV').hide();
+                    showAlertAutoHide("#uploadCVAlert", "Error", error);
+
+                }
+            });
+        }
+    }
+    function downloadApplicantCV() {
+        debugger;
+        var id = $('#ApplicantInformationId').val();
+        $.ajax({
+            url: "/ApplicantInformation/AjaxCheckApplicantCV",
+            type: "POST",
+            data: {
+                "appID": id
+            },
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    //$("#processing-spinner").hide();
+                    window.location.href = "/ApplicantInformation/DownloadApplicantCV/" + id;
+                }
+                else {
+                    showAlertAutoHide('#userDetailAlert', data.status, data.message);
+                }
+            }
+            ,
+            error: function (data) {
+                showAlertDismissable("#userDetailAlert", "Error", data);
+
+            }
+        });
+
+    }
+
+    function uploadProfilePicture(action, droppedFiles) {
+
+        debugger;
+        var isProceed = true;
+        var formData = new FormData();
+        var id = $('#ApplicantInformationId').val();
+        var pictureSrc = $('#profileMainPicture').attr("src");
+
+        formData.append("ApplicantID", id);
+        formData.append("Action", action);
+
+
+        if (action == 'U') {
+            var totalFiles = document.getElementById("applicantPictureUpload").files.length;
+            if (totalFiles > 0) {
+                var file = document.getElementById("applicantPictureUpload").files[0];
+                formData.append("FileUpload", file);
+
+            }
+            else if (droppedFiles) {
+                Array.prototype.forEach.call(droppedFiles, function (eachFile) {
+                    formData.append("FileUpload", eachFile);
+                });
+            }
+            else {
+                isProceed = false;
+                showAlertAutoHide("#uploadPicAlert", "Error", "Please choose the profile picture");
+            }
+        }
+        else if (action == "D") {
+            if (pictureSrc.indexOf("no-profile-image.jpg") > 0) {
+                isProceed = false;
+                showAlertAutoHide("#uploadPicAlert", "Error", "No picture is available to delete");
+            }
+        }
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/ApplicantInformation/AjaxUploadApplicantPicture',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+
+                        $('#profileMainPicture').attr('src', data.picturePath + "?timestamp=" + new Date().getTime());
+                        $('#upload_picture_modal').modal('hide');
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                    else {
+                        showAlertDismissable("", data.status, data.message);
+                    }
+
+
+                },
+                error: function (error) {
+
+                    showAlertDismissable("#uploadPicAlert", "Error", error);
+
+                }
+            });
+        }
+    }
+
+
+
+
+</script>

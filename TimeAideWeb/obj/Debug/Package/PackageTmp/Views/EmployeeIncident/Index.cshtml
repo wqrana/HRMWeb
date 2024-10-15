@@ -1,0 +1,92 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeIncident>
+<h4 class="pull-left"> Incident List</h4>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblUserIncident">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>
+                    Incident Type
+                </th>
+                <th>
+                    Incident Date
+                </th>
+                <th>
+                    OSHA Recordable
+                </th>
+                <th>
+                    Case Classification
+                </th>
+                <th>
+                    Establishment
+                </th>
+                <th>
+                    Incident Area
+                </th>
+                <th>
+                    Injury Classification
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href='javascript:getEmployeeIncidentDetail(@item.Id)'> @Html.DisplayFor(modelItem => item.Id)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncidentType.IncidentTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncidentDate)
+                </td>
+                <td align="center">
+                    @Html.CheckBoxFor(modelItem => item.IsOSHARecordable, new { @disabled = "disabled" })
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OSHACaseClassification.OSHACaseClassificationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.LocationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncidentArea.IncidentAreaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OSHAInjuryClassification.OSHAInjuryClassificationName)
+
+                </td>
+
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                            <a href="javascript:createEditEmployeeIncident(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            <a href="javascript:getEmployeeIncidentDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                            <a href="javascript:getEmployeeIncidentDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                            @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                            {
+                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                            }
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        //$('#tblTemplate').dataTable({
+        //    "searching": true,
+        //    "order": [[0, "dsc"]]
+        //});
+    });
+</script>

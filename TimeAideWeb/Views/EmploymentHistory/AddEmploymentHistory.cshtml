@@ -1,0 +1,168 @@
+﻿@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.EmploymentHistory
+@Html.HiddenFor(model => model.UserInformationId)
+<input id="EmploymentHistoryId" name="EmploymentHistoryId" type="hidden" value="@Model.Id">
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Start Date: <span class="text-danger">*</span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Company:<span class="text-danger">*</span>
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.Company>("CompanyId", null, TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId, htmlAttributes: new { @class = "form-control", disabled = true }))
+            @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Location:
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.Location>("LocationId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Department:<span class="text-danger">*</span>
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.Department>("DepartmentId", null, htmlAttributes: new { @class = "form-control searchableDDL" }))
+            @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            SubDepartment:
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.SubDepartment>("SubDepartmentId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.SubDepartmentId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Position:
+        </label>
+        @*<div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.Position>("PositionId", null, htmlAttributes: new { @class = "form-control searchableDDL" }))
+            @Html.ValidationMessageFor(model => model.PositionId, "", new { @class = "text-danger" })
+        </div>*@
+    <div class="col-md-6">
+        @{ 
+            var showplus = SecurityHelper.AllowAdd(typeof(TimeAide.Web.Models.Position).Name);
+        }
+        <div class="input-group">
+            @Html.DropDownList("PositionId", null, "Please select", new { @class = "form-control searchableDDL" })
+          @if (showplus)
+          {
+            <div class="input-group-append">
+                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+            </div>
+          }
+        </div>
+    </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Supervisor:
+        </label>
+        <div class="col-md-6" style="width:100% !important">
+            @Html.ListBox("SupervisorId", (IEnumerable<SelectListItem>)ViewBag.SupervisorId, new { @class = "form-control", style = "width:100%;" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Employee Type:
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.EmployeeType>("EmployeeTypeId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.EmployeeTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Employment Type:
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.EmploymentType>("EmploymentTypeId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.EmploymentTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="submit-section">
+        <button type="button" id="btnAddEmploymentHistory" class="btn btn-primary submit-btn">Save</button>
+        <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('input[id*=Date]').each(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+        $(".searchableDDL").each(function () {
+            $(this).select2();
+           // $(".select2-container").css("width", "100%");
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#SupervisorId').select2();
+        $('#AuthorizeById').select2();
+    });
+    $(document).ready(function () {
+        $('#DepartmentId').change(function (e) {
+            debugger;
+            var departmentId = $(this).val();
+            LoadSubDepartmentDropdown(departmentId, '#SubDepartmentId', null);
+        });
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        }); 
+    });
+
+    function LoadSubDepartmentDropdown(departmentId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/SubDepartment/SubDepartmentByDepartment',
+            data: { 'departmentId': departmentId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+</script>

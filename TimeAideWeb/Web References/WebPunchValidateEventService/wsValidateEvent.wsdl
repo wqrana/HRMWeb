@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://cloudaide.timeaide.com/wsValidateEvent" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://cloudaide.timeaide.com/wsValidateEvent" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://cloudaide.timeaide.com/wsValidateEvent">
+      <s:element name="ValidateEvent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEmployeeID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEventMode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intJobCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEventResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateEventResult" type="tns:clsValidateEventResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="clsValidateEventResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="intTokenValidationResult" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="strTokenValidationResult" type="tns:SessionTokenValidationResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="intValidateEventResult" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="strValidateEventResult" type="tns:enumValidateEventResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="strReturnMessage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="SessionTokenValidationResult">
+        <s:restriction base="s:string">
+          <s:enumeration value="MiscError" />
+          <s:enumeration value="TokenIsValid" />
+          <s:enumeration value="IsEmpty" />
+          <s:enumeration value="InvalidFormat" />
+          <s:enumeration value="NotFoundInDB" />
+          <s:enumeration value="Expired" />
+          <s:enumeration value="ConsumationCountExceeded" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="enumValidateEventResult">
+        <s:restriction base="s:string">
+          <s:enumeration value="General_Error" />
+          <s:enumeration value="Pending_Validation" />
+          <s:enumeration value="Validation_Successful" />
+          <s:enumeration value="Password_Matching_Failed" />
+          <s:enumeration value="GeoTerminal_Disabled_For_Employee" />
+          <s:enumeration value="Database_No_Employee_Found" />
+          <s:enumeration value="Database_No_Password_In_UserRecord" />
+          <s:enumeration value="Database_No_GeoTerminal_Assigned" />
+          <s:enumeration value="Database_Error_Saving_In_tEnter" />
+          <s:enumeration value="Restriction_GeoTerminal" />
+          <s:enumeration value="Restriction_TimeRestriction" />
+          <s:enumeration value="EmployeeID_Empty" />
+          <s:enumeration value="EmployeeID_Invalid_Format" />
+          <s:enumeration value="Password_Empty" />
+          <s:enumeration value="EventDate_Empty" />
+          <s:enumeration value="EventDate_Invalid_Format" />
+          <s:enumeration value="EventTime_Empty" />
+          <s:enumeration value="EventTime_Invalid_Format" />
+          <s:enumeration value="TerminalID_Empty" />
+          <s:enumeration value="TerminalID_Invalid_Format" />
+          <s:enumeration value="Latitude_Empty" />
+          <s:enumeration value="Longitude_Empty" />
+          <s:enumeration value="Latitude_Invalid_Format" />
+          <s:enumeration value="Longitude_Invalid_Format" />
+          <s:enumeration value="JobCode_Empty" />
+          <s:enumeration value="JobCode_Invalid_Format" />
+          <s:enumeration value="JobCode_Not_Found" />
+          <s:enumeration value="EventMode_Empty" />
+          <s:enumeration value="EventMode_Invalid_Format" />
+          <s:enumeration value="GeoLocation_Error" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ValidateEvent_GPS">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEmployeeID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEventMode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intJobCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLatitude" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLongitude" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intGPS_Exception" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEvent_GPSResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateEvent_GPSResult" type="tns:clsValidateEventResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEvent_PWD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEmployeeID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEventMode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intJobCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEvent_PWDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateEvent_PWDResult" type="tns:clsValidateEventResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEvent_PWD_GPS">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEmployeeID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEventMode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intJobCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLatitude" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLongitude" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intGPS_Exception" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEvent_PWD_GPSResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateEvent_PWD_GPSResult" type="tns:clsValidateEventResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEventWithGPS">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEventEmployeeID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intTerminalID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLatitude" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLongitude" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEventWithGPSResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateEventWithGPSResult" type="tns:clsValidateEventResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEvent_GPS_JC">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intEventEmployeeID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dtEventTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLatitude" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="decLongitude" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="intJobCodeID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateEvent_GPS_JCResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateEvent_GPS_JCResult" type="tns:clsValidateEventResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="clsValidateEventResult" nillable="true" type="tns:clsValidateEventResult" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ValidateEventSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateEvent" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateEventResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPSSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_GPS" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPSSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_GPSResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWDSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_PWD" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWDSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_PWDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWD_GPSSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_PWD_GPS" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWD_GPSSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_PWD_GPSResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventWithGPSSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateEventWithGPS" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventWithGPSSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateEventWithGPSResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPS_JCSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_GPS_JC" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPS_JCSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateEvent_GPS_JCResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventHttpGetIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPSHttpGetIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+    <wsdl:part name="intGPS_Exception" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPSHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWDHttpGetIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWDHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWD_GPSHttpGetIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+    <wsdl:part name="intGPS_Exception" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWD_GPSHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventWithGPSHttpGetIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEventEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intTerminalID" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventWithGPSHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPS_JCHttpGetIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEventEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+    <wsdl:part name="intJobCodeID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPS_JCHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventHttpPostIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPSHttpPostIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+    <wsdl:part name="intGPS_Exception" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPSHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWDHttpPostIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWDHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWD_GPSHttpPostIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intEventMode" type="s:string" />
+    <wsdl:part name="intJobCode" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+    <wsdl:part name="intGPS_Exception" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_PWD_GPSHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventWithGPSHttpPostIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEventEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="intTerminalID" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEventWithGPSHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPS_JCHttpPostIn">
+    <wsdl:part name="strSessionToken" type="s:string" />
+    <wsdl:part name="intEventEmployeeID" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="dtEventDate" type="s:string" />
+    <wsdl:part name="dtEventTime" type="s:string" />
+    <wsdl:part name="decLatitude" type="s:string" />
+    <wsdl:part name="decLongitude" type="s:string" />
+    <wsdl:part name="intJobCodeID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ValidateEvent_GPS_JCHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsValidateEventResult" />
+  </wsdl:message>
+  <wsdl:portType name="wsValidateEventSoap">
+    <wsdl:operation name="ValidateEvent">
+      <wsdl:input message="tns:ValidateEventSoapIn" />
+      <wsdl:output message="tns:ValidateEventSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS">
+      <wsdl:input message="tns:ValidateEvent_GPSSoapIn" />
+      <wsdl:output message="tns:ValidateEvent_GPSSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD">
+      <wsdl:input message="tns:ValidateEvent_PWDSoapIn" />
+      <wsdl:output message="tns:ValidateEvent_PWDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD_GPS">
+      <wsdl:input message="tns:ValidateEvent_PWD_GPSSoapIn" />
+      <wsdl:output message="tns:ValidateEvent_PWD_GPSSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEventWithGPS">
+      <wsdl:input message="tns:ValidateEventWithGPSSoapIn" />
+      <wsdl:output message="tns:ValidateEventWithGPSSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS_JC">
+      <wsdl:input message="tns:ValidateEvent_GPS_JCSoapIn" />
+      <wsdl:output message="tns:ValidateEvent_GPS_JCSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsValidateEventHttpGet">
+    <wsdl:operation name="ValidateEvent">
+      <wsdl:input message="tns:ValidateEventHttpGetIn" />
+      <wsdl:output message="tns:ValidateEventHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS">
+      <wsdl:input message="tns:ValidateEvent_GPSHttpGetIn" />
+      <wsdl:output message="tns:ValidateEvent_GPSHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD">
+      <wsdl:input message="tns:ValidateEvent_PWDHttpGetIn" />
+      <wsdl:output message="tns:ValidateEvent_PWDHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD_GPS">
+      <wsdl:input message="tns:ValidateEvent_PWD_GPSHttpGetIn" />
+      <wsdl:output message="tns:ValidateEvent_PWD_GPSHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEventWithGPS">
+      <wsdl:input message="tns:ValidateEventWithGPSHttpGetIn" />
+      <wsdl:output message="tns:ValidateEventWithGPSHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS_JC">
+      <wsdl:input message="tns:ValidateEvent_GPS_JCHttpGetIn" />
+      <wsdl:output message="tns:ValidateEvent_GPS_JCHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsValidateEventHttpPost">
+    <wsdl:operation name="ValidateEvent">
+      <wsdl:input message="tns:ValidateEventHttpPostIn" />
+      <wsdl:output message="tns:ValidateEventHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS">
+      <wsdl:input message="tns:ValidateEvent_GPSHttpPostIn" />
+      <wsdl:output message="tns:ValidateEvent_GPSHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD">
+      <wsdl:input message="tns:ValidateEvent_PWDHttpPostIn" />
+      <wsdl:output message="tns:ValidateEvent_PWDHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD_GPS">
+      <wsdl:input message="tns:ValidateEvent_PWD_GPSHttpPostIn" />
+      <wsdl:output message="tns:ValidateEvent_PWD_GPSHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEventWithGPS">
+      <wsdl:input message="tns:ValidateEventWithGPSHttpPostIn" />
+      <wsdl:output message="tns:ValidateEventWithGPSHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS_JC">
+      <wsdl:input message="tns:ValidateEvent_GPS_JCHttpPostIn" />
+      <wsdl:output message="tns:ValidateEvent_GPS_JCHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsValidateEventSoap" type="tns:wsValidateEventSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ValidateEvent">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_GPS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_PWD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD_GPS">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_PWD_GPS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEventWithGPS">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEventWithGPS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS_JC">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_GPS_JC" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsValidateEventSoap12" type="tns:wsValidateEventSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ValidateEvent">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_GPS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_PWD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD_GPS">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_PWD_GPS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEventWithGPS">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEventWithGPS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS_JC">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsValidateEvent/ValidateEvent_GPS_JC" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsValidateEventHttpGet" type="tns:wsValidateEventHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ValidateEvent">
+      <http:operation location="/ValidateEvent" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS">
+      <http:operation location="/ValidateEvent_GPS" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD">
+      <http:operation location="/ValidateEvent_PWD" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD_GPS">
+      <http:operation location="/ValidateEvent_PWD_GPS" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEventWithGPS">
+      <http:operation location="/ValidateEventWithGPS" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS_JC">
+      <http:operation location="/ValidateEvent_GPS_JC" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsValidateEventHttpPost" type="tns:wsValidateEventHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ValidateEvent">
+      <http:operation location="/ValidateEvent" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS">
+      <http:operation location="/ValidateEvent_GPS" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD">
+      <http:operation location="/ValidateEvent_PWD" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_PWD_GPS">
+      <http:operation location="/ValidateEvent_PWD_GPS" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEventWithGPS">
+      <http:operation location="/ValidateEventWithGPS" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateEvent_GPS_JC">
+      <http:operation location="/ValidateEvent_GPS_JC" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsValidateEvent">
+    <wsdl:port name="wsValidateEventSoap" binding="tns:wsValidateEventSoap">
+      <soap:address location="http://tawqc.timeaide.com:9001/wsValidateEvent.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsValidateEventSoap12" binding="tns:wsValidateEventSoap12">
+      <soap12:address location="http://tawqc.timeaide.com:9001/wsValidateEvent.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsValidateEventHttpGet" binding="tns:wsValidateEventHttpGet">
+      <http:address location="http://tawqc.timeaide.com:9001/wsValidateEvent.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsValidateEventHttpPost" binding="tns:wsValidateEventHttpPost">
+      <http:address location="http://tawqc.timeaide.com:9001/wsValidateEvent.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,408 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.AccrualRuleTier
+<div id="acrualRuleTierCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Accrual Rule Tier - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.Hidden("AccrualRuleTierId",Model.Id)
+                        @Html.HiddenFor(m => m.AccrualRuleId)
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">TierNo: <span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.TierNo, new { htmlAttributes = new { @class = "form-control", @disabled = "disable" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Tier Desc.: <span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.TierDescription, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Years: <span class="text-danger"></span></label>
+                            <label class="col-md-1 col-form-label pl-0 pr-0">From: <span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.YearsWorkedFrom, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">To: <span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.YearsWorkedTo, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Waiting Period?: <span class="text-danger"></span></label>
+                            <div class="col-md-1 pt-2">
+                                @Html.CheckBoxFor(model => model.WaitingPeriodType, new { id = "WaitingPeriodTypeAE" })
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.WaitingPeriodLength, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                    <div class="input-group-append">
+                                        <span class="pt-2 pl-1">Month(s)</span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+
+                            <label class="col-md-2 col-form-label pr-0">Excess Max: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @{
+                                    var excessMaxType = DataHelper.AccuralExcessMaxType.
+                                                    Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+                                }
+                                @Html.DropDownList("AllowedMaxHoursTypeId", excessMaxType, "Please select", new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">Max Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.AllowedMaxHours, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Excess Code: <span class="text-danger"></span></label>
+                            <div class="col-md-2 pr-0">
+                                @Html.DropDownList("AccrualTypeExcess", (SelectList)ViewBag.AccrualTypeExcessId, "Please select", new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Accrued Reset: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @{
+                                    var resetType = DataHelper.AccuredResetType.
+                                                    Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+                                }
+                                @Html.DropDownList("ResetAccruedHoursTypeId", resetType, "Please select", new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">Reset Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.ResetHours, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Reset Date: <span class="text-danger"></span></label>
+                            <div class="col-md-2 pr-0">
+                                @Html.EditorFor(model => model.ResetDate, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label pr-0">Min. Worked Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2 pt-2">
+                                @Html.CheckBoxFor(model => model.MinWorkedHoursType, new { id = "MinWorkedHoursTypeAE" })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Accrual Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.AccrualHours, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div id="minHoursWorkedTierPanel" class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Min. Hours-worked Tier(s)
+                                <div class="pull-right dropdown-action" style="height:20px;">
+
+                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                        <a id="minHoursAddTier" href="javascript:createWorkHourTier();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="divMinHoursWorkedTier" style="min-height:100px; max-height:175px; overflow-y:auto">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnSaveAccrualRuleTier" class="btn btn-primary submit-btn">Save</button>
+                        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+@{ 
+    var workHourTierModel = new TimeAide.Web.Models.AccrualRuleWorkedHoursTier();
+    Html.RenderPartial("AccrualRuleWorkedHoursTierCreateEdit", workHourTierModel);
+}
+<script src="~/Content/Themes/assets/js/moment.min.js"></script>
+<script>
+    var workedHoursTierListData = [];
+
+    $(document).ready(function () {
+        $("#ResetDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        initFieldsLayout();
+        getWorkedHoursTierList(@Model.Id);
+
+        $("#WaitingPeriodTypeAE").change(function () {
+            var val = $(this).is(":checked");
+            if (val) {
+                $("#WaitingPeriodLength").removeAttr("disabled");
+            }
+            else {
+                $("#WaitingPeriodLength").val(null);
+                $("#WaitingPeriodLength").attr("disabled", "disabled");
+            }
+        });
+        $("#AllowedMaxHoursTypeId").change(function () {
+            var val = $(this).val();
+            if (val!="0"&& val!="" ) {
+                $("#AllowedMaxHours").removeAttr("disabled");
+                $("#AccrualTypeExcess").removeAttr("disabled");
+            }
+            else {
+                $("#AllowedMaxHours").val(null);
+                $("#AllowedMaxHours").attr("disabled", "disabled");
+                $("#AccrualTypeExcess").val(null);
+                $("#AccrualTypeExcess").attr("disabled", "disabled");
+            }
+        });
+        $("#ResetAccruedHoursTypeId").change(function () {
+            debugger;
+            var val = $(this).val();
+            if (val != "0" && val != "") {
+                $("#ResetHours").removeAttr("disabled");
+                $("#ResetDate").removeAttr("disabled");
+                var currDate = new Date();
+                var resetDate = null;
+                switch (val) {
+                    case "1":
+                        resetDate = new Date(currDate.getFullYear() + 1, 0, 1);
+                        break;
+                    case "2":
+                        resetDate = new Date(currDate.getFullYear(), 5, 30);
+                        break;
+                }
+                if (resetDate != null) {
+                    var setDateVal = moment(resetDate).format('MM/DD/YYYY');
+                    $("#ResetDate").val(setDateVal);
+                }
+            }
+            else {
+                $("#ResetHours").val(null);
+                $("#ResetHours").attr("disabled", "disabled");
+                $("#ResetDate").val(null);
+                $("#ResetDate").attr("disabled", "disabled");
+            }
+        });
+        $("#MinWorkedHoursTypeAE").change(function () {
+            var val = $(this).is(":checked");
+            if (val) {
+                $("#AccrualHours").val(null);
+                $("#AccrualHours").attr("disabled", "disabled");
+                $("#minHoursWorkedTierPanel").show();
+            }
+            else {
+                $("#AccrualHours").removeAttr("disabled");
+                $("#AccrualHours").val(0);
+                $("#minHoursWorkedTierPanel").hide();
+            }
+        });
+        //here
+        $("#btnSaveAccrualRuleTier").click(function () {
+
+            debugger;
+            var isRequiredValidated = 0;
+            var isValidated = true;
+            var message = "";
+            var dataObj = new Object();
+            dataObj.Id = $("#AccrualRuleTierId").val();
+            dataObj.AccrualRuleId = $("#AccrualRuleId").val();
+            dataObj.TierNo = $("#TierNo").val();
+            dataObj.TierDescription = $("#TierDescription").val();
+            dataObj.YearsWorkedFrom = $("#YearsWorkedFrom").val();
+            dataObj.YearsWorkedTo = $("#YearsWorkedTo").val();
+
+            dataObj.WaitingPeriodType = $("#WaitingPeriodTypeAE").is(":checked");
+            dataObj.WaitingPeriodLength = $("#WaitingPeriodLength").val();
+
+            dataObj.AllowedMaxHoursTypeId = $("#AllowedMaxHoursTypeId").val();
+            dataObj.AllowedMaxHours = $("#AllowedMaxHours").val();
+            dataObj.AccrualTypeExcess = $("#AccrualTypeExcess").val();
+
+            dataObj.ResetAccruedHoursTypeId = $("#ResetAccruedHoursTypeId").val();
+            dataObj.ResetHours = $("#ResetHours").val();
+            dataObj.ResetDate = $("#ResetDate").val();
+
+            dataObj.MinWorkedHoursType = $("#MinWorkedHoursTypeAE").is(":checked");
+            dataObj.AccrualHours = $("#AccrualHours").val();
+            
+
+            if (dataObj != null) {
+                isRequiredValidated += dataObj.TierDescription.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.YearsWorkedFrom.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.YearsWorkedTo.trim().length > 0 ? 1 : 0;
+
+                if (isRequiredValidated != 3) {
+                    isValidated = false;
+                    message = " Missing Required field(s)";
+                }
+            }
+
+            if (!isValidated)  showAlertAutoHide("", 'Error', message);
+
+            if (isValidated) {
+                dataObj.AccrualRuleWorkedHoursTiers = workedHoursTierListData;
+                saveAccrualRuleTierData(dataObj);
+            }
+        });
+
+    });
+    function initFieldsLayout() {
+        debugger;
+        var accumulationType = @Model.AccrualRule.AccumulationTypeId;
+        var waitingPeriodType = $("#WaitingPeriodTypeAE").is(":checked");
+        var allowedMaxHoursTypeId = $("#AllowedMaxHoursTypeId").val();
+        var resetAccruedHoursTypeId = $("#ResetAccruedHoursTypeId").val();
+        var minWorkedHoursType = $("#MinWorkedHoursTypeAE").is(":checked");
+
+        if (accumulationType === 1) {
+            $("#MinWorkedHoursTypeAE").attr("disabled", "disabled");
+            $("#AccrualHours").attr("disabled", "disabled");
+            $("#minHoursWorkedTierPanel").hide();
+        }
+
+        if (waitingPeriodType) {
+            $("#WaitingPeriodLength").removeAttr("disabled");
+        }
+
+        if (allowedMaxHoursTypeId !== "0" && allowedMaxHoursTypeId != "") {
+            $("#AllowedMaxHours").removeAttr("disabled");
+            $("#AccrualTypeExcess").removeAttr("disabled");
+        }
+
+        if (resetAccruedHoursTypeId != "0" && resetAccruedHoursTypeId != "") {
+            $("#ResetHours").removeAttr("disabled");
+        }
+
+        if (!minWorkedHoursType && accumulationType !== 1) {
+            $("#AccrualHours").removeAttr("disabled");
+            
+            $("#minHoursWorkedTierPanel").hide();
+        }
+        else if (minWorkedHoursType && accumulationType !== 1) {
+            $("#AccrualHours").removeAttr("disabled");
+            $("#minHoursWorkedTierPanel").show();
+        }
+    }
+    function getWorkedHoursTierList(accrualRuleTierId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/AccrualRuleWorkedHoursTierList',
+            data: { "id": accrualRuleTierId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divMinHoursWorkedTier").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAccrualRuleTierList");
+            }
+        });
+    }
+    function deleteWorkHourTier(element) {
+        debugger;
+        var workHourTierNo = $(element).closest("tr").find("td:eq(2)").text().trim();
+        if (workHourTierNo > 0) {
+
+            var index = workedHoursTierListData.findIndex(function (record) {
+                return record.TierNo == workHourTierNo;
+            });
+            if (index !== -1) {
+                workedHoursTierListData.splice(index, 1);
+                var seq = 1;
+                workedHoursTierListData.forEach(function (row) {
+                    row.TierNo = seq;
+                    seq++;
+                });
+            }
+            refreshWorkedHoursTierData("del");
+        }
+    }
+    function createWorkHourTier() {
+        debugger;
+        setWorkHourTierPopupData(0);
+        $("#acrualRuleWorkHrTierCreateEdit_modal").modal("show");
+    }
+    function editWorkHourTier(element) {
+        debugger;
+        var workHourTierNo= $(element).closest("tr").find("td:eq(2)").text().trim();
+        if (workHourTierNo > 0) {
+            setWorkHourTierPopupData(workHourTierNo);
+            $("#acrualRuleWorkHrTierCreateEdit_modal").modal("show");
+        }
+    }
+    function setWorkHourTierPopupData(tNo) {
+        var tierNo = workedHoursTierListData.length + 1;
+        $("#AccrualRuleWorkHourTierId").val(0);
+        $("#WorkHourTierNo").val(tierNo);
+        $("#WorkHourTierDescription").val("");
+        $("#TierWorkedHoursMin").val(null);
+        $("#TierWorkedHoursMax").val(null);
+        $("#WorkHourTierAccrualHours").val(null);
+
+        var result = $.grep(workedHoursTierListData, function (e) {
+            return e.TierNo == tNo;
+        });
+
+        if (result.length == 1) {
+            $("#AccrualRuleWorkHourTierId").val(result[0].Id);
+            $("#WorkHourTierNo").val(result[0].TierNo);
+            $("#WorkHourTierDescription").val(result[0].TierDescription);
+            $("#TierWorkedHoursMin").val(result[0].TierWorkedHoursMin);
+            $("#TierWorkedHoursMax").val(result[0].TierWorkedHoursMax);
+            $("#WorkHourTierAccrualHours").val(result[0].AccrualHours);
+        }
+    }
+    function refreshWorkedHoursTierData(action) {
+        debugger;
+        //$("#tblWorkedHoursTier tbody").remove();
+        var targetTbl = $("#tblWorkedHoursTier tbody");
+        var sourceRow = $("#tblSampleRow tr");
+        var trHtml = "";
+        $(targetTbl).empty();
+        workedHoursTierListData.sort(function (a, b) { return a.TierNo - b.TierNo; });
+        workedHoursTierListData.forEach(function (row) {
+            var newTr = sourceRow.clone();
+            $(newTr).find("td:eq(1)").text(row.Id);
+            $(newTr).find("td:eq(2)").text(row.TierNo);
+            $(newTr).find("td:eq(3)").text(row.TierDescription);
+            $(newTr).find("td:eq(4)").text(row.TierWorkedHoursMin);
+            $(newTr).find("td:eq(5)").text(row.TierWorkedHoursMax);
+            $(newTr).find("td:eq(6)").text(row.AccrualHours);
+            $(targetTbl).append(newTr);
+        })
+
+        if (action == "AE") {
+            $("#acrualRuleWorkHrTierCreateEdit_modal").modal("hide");
+        }
+
+          
+    }
+</script>
+
+

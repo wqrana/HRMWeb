@@ -1,0 +1,284 @@
+﻿@model TimeAide.Models.ViewModel.TimeOffCalendarViewModel
+@{
+    var calendarStartDate = Model.CalendarStartDate.ToString("MM/dd/yyyy");
+    var calendarEndDate = Model.CalendarEndDate.ToString("MM/dd/yyyy");    
+    var calendarMonths = Model.CalenderMonths;
+}
+@Html.Hidden("CalendarStartDate", calendarStartDate)
+@Html.Hidden("CalendarEndDate", calendarEndDate)
+@Html.Hidden("CalendarMonths", calendarMonths)
+@Html.Hidden("TimeOffDayHours",0)
+<style>
+
+    .pagination {
+        display: inline-block;
+    }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+        }
+
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+
+            .pagination a.disabled {
+                pointer-events: none;
+                cursor: default;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+            }
+</style>
+<div id="timeOffCalendar_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Time Off Calendar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-1">
+                    <div class="col-md-12 d-flex">
+
+                        <div class="card flex-fill mb-2">
+                            <div class="card-header" style="padding:15px;padding-bottom:0px;">
+                                <div class="row">
+                                    <div class="col-xl-3 pl-1 pr-0">
+
+                                        <div class="pagination pull-left pr-2">
+                                            <a id="navPrev" href="javascript:showTimeOffCalendarMonth('p')" class="">❮</a>
+                                            <a id="navNext" href="javascript:showTimeOffCalendarMonth('n')" class="">❯</a>
+                                        </div>
+                                        <h1 class="card-title mb-1 pt-2 large" id="selectedMonthHeading">
+                                            @*November 2023*@
+
+                                        </h1>
+                                    </div>
+                                    <div class="col-xl-2 pt-2">
+                                        <h5 id="transTypeName"></h5>
+                                    </div>
+                                    <div class="col-xl-7">
+                                        <div class="form-group row">
+                                            <label class="col-xl-1 col-form-label pl-0 pr-0"> From: <span class="text-danger">*</span></label>
+                                            <div class="col-xl-3">
+                                                <div class="cal-icon">
+                                                    <input class="form-control datepicker" type="text" value="11/9/2023" id="TimeOffStartDate">
+                                                </div>
+                                            </div>
+                                            <label class="col-xl-1 col-form-label  pl-0 pr-0">To: <span class="text-danger">*</span></label>
+                                            <div class="col-xl-3">
+                                                <div class="cal-icon">
+                                                    <input class="form-control datepicker" type="text" value="11/9/2023" id="TimeOffEndDate">
+                                                </div>
+                                            </div>
+                                            <label class="col-xl-2 col-form-label  pl-0 pr-0">Work-Day(s): <span class="text-danger"></span></label>
+                                            <div class="col-xl-2 pr-1">
+                                                <input class="form-control" type="text" readonly id="WorkDaysInRange">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                               <div style="text-align:center;" class="pb-2">
+
+                                <button id="btnApplyChanges" class="btn btn-primary submit-btn" onclick="javascript:applyTimeoffChanges()">Apply</button>
+                                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+
+                            </div>
+                            </div>
+                                <div class="card-body p-0">
+                                    <div id="divCalendarAlert" class="alert alert-danger mb-1" role="alert">
+                                        
+                                    </div>
+                                    <div id="calendar">
+                                        @*@Html.Partial("RenderTImeOffCalendarMonth")*@
+                                    </div>
+
+                                </div>
+                                @*<div class="card-footer" style="text-align:center;">
+
+                                    <button id="btnApplyChanges" class="btn btn-danger submit-btn" onclick="javascript:applyTimeoffChanges()">Apply</button>
+                                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+
+                                </div>*@
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+        var calendarMonthsList = [];
+        var currentMonthIndex = 0;
+        var totalCalendarMonths = 0;
+        $(document).ready(function () {
+            debugger;
+            calendarMonthsList = $("#CalendarMonths").val().split(",");
+            totalCalendarMonths = calendarMonthsList.length;
+
+            applyDatePickerRange();
+            populateRequiredFields();
+            initCalendarRendering();
+
+
+            $("#TimeOffStartDate").change(function () {
+                var startDate = new Date($(this).val());
+                $("#TimeOffEndDate").datepicker('setDate', startDate);
+                //getTimeOffCalculationDetail();
+                initCalendarRendering();
+            });
+            $("#TimeOffEndDate").change(function () {
+                debugger;
+                var endDate = new Date($(this).val());
+                var startDate = new Date($("#TimeOffStartDate").val());
+                if (endDate < startDate) {
+                    $(this).datepicker('setDate', startDate);
+                }
+                //getTimeOffCalculationDetail();
+                initCalendarRendering();
+            });
+
+        });
+        function applyTimeoffChanges() {
+            var startDate = new Date($("#TimeOffStartDate").val());
+            var endDate = new Date($("#TimeOffEndDate").val());
+            $("#StartDate").datepicker('setDate', startDate);
+            $("#EndDate").datepicker('setDate', endDate);
+            enableRequestSubmission(true);
+            getTimeOffCalculationDetail();
+            $("#timeOffCalendar_modal").modal("hide");    
+
+        }
+        function setCalendarMonthPaging() {
+            $("#navPrev").removeClass("disabled");
+            $("#navNext").removeClass("disabled");
+            if (currentMonthIndex == 0) {
+                $("#navPrev").addClass("disabled");
+            }
+            else if (currentMonthIndex == (totalCalendarMonths - 1)) {
+                $("#navNext").addClass("disabled");
+            }
+            else if (currentMonthIndex == (totalCalendarMonths - 1) && currentMonthIndex == 0) {
+                $("#navPrev").addClass("disabled");
+                $("#navNext").addClass("disabled");
+            }
+        }
+
+        function populateRequiredFields() {
+            var startDate = new Date($("#StartDate").val());
+            var endDate = new Date($("#EndDate").val());
+            $("#TimeOffStartDate").datepicker('setDate', startDate);
+            $("#TimeOffEndDate").datepicker('setDate', endDate);
+            $("#WorkDaysInRange").val($("#WorkDays").val());
+            $("#transTypeName").text($("#TimeOffTypeId option:selected").text());
+            $("#TimeOffDayHours").val($("#DayHours").val());
+        }
+
+        function findMonthByIndex(val) {
+
+            var inexOfMonth = calendarMonthsList.findIndex(function (mVal) {
+                return mVal == val
+            });
+            return inexOfMonth;
+        }
+        function showTimeOffCalendarMonth(navType) {
+            switch (navType) {
+                case 'p':
+                    currentMonthIndex--;
+                    break;
+                case 'n':
+                    currentMonthIndex++;
+                    break;
+            }
+            setCalendarMonthPaging();
+            renderTimeOffCalendarMonth();
+        }
+    //function renderTimeOffCalendarMonth() {
+    //    debugger;
+    //    var yearVal = 0;
+    //    var monthVal = 0;
+    //    if (currentMonthIndex >= 0 && currentMonthIndex < totalCalendarMonths)
+    //    {
+    //        var renderMonthData = calendarMonthsList[currentMonthIndex].split("_");
+    //        yearVal = renderMonthData[0];
+    //        monthVal = renderMonthData[1];
+    //    }
+    //    $.ajax({
+    //        type: "GET",
+    //        url: '/EmployeeTimeOffRequest/AjaxRenderCalendarMonth',
+    //        data: { "year": yearVal, "month": monthVal },
+    //        success: function (data) {
+    //            debugger;
+    //            $("#calendar").html(data);
+
+    //        },
+    //        error: function () {
+    //        }
+    //    });
+    //}
+
+
+    function renderTimeOffCalendarMonth()
+    {
+        $(".loading").hide();
+        debugger;
+        var dataObject = new Object();
+        
+        dataObject.UserInformationId = $('#UserInformationId').val();
+        dataObject.EmployeeId = $('#EmployeeId').val();
+        dataObject.AccrualType = $('#TimeOffTypeId').val();
+        dataObject.TransType = $("#TimeOffTypeId option:selected").text();
+        dataObject.TimeOffStartDate = $("#TimeOffStartDate").val();
+        dataObject.TimeOffEndDate = $("#TimeOffEndDate").val();
+        dataObject.TimeOffDayHours = $("#TimeOffDayHours").val();
+        if (currentMonthIndex >= 0 && currentMonthIndex < totalCalendarMonths) {
+            var renderMonthData = calendarMonthsList[currentMonthIndex].split("_");
+            dataObject.RenderYear = renderMonthData[0];
+            dataObject.RenderMonth = renderMonthData[1];
+        }
+      
+            $.ajax({
+            type: "POST",
+                url: '/EmployeeTimeOffRequest/AjaxRenderCalendarMonth',
+            data: JSON.stringify(dataObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#calendar").html(data);              
+            },
+            error: function () {
+                 alert(data.ErrorMessage);
+            }
+        });
+    }
+    function initCalendarRendering() {
+
+        var timeoffStartDate = new Date($("#TimeOffStartDate").val());
+        var currentMonth = timeoffStartDate.getFullYear() + '_' + (timeoffStartDate.getMonth() + 1);
+        currentMonthIndex = findMonthByIndex(currentMonth);
+        // debugger;
+        setCalendarMonthPaging();
+        renderTimeOffCalendarMonth();
+
+    }
+</script>
+
+
+
+
+

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeCompensation>
+<div style="padding:10px;padding-bottom:0px">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Employee Compensation - Timeline</h4>
+        <button class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="experience-box">
+            @{ TimeAide.Web.Models.EmployeeCompensation pEmployeeCompensation = null; }
+            <ul class="experience-list">
+                @foreach (var eachCompensation in Model)
+                {
+                <li>
+                    <div class="experience-user">
+                        <div class="before-circle"></div>
+                    </div>
+                    @if (pEmployeeCompensation != null && pEmployeeCompensation.EndDate.HasValue)
+                    {
+                        <div class="experience-content">
+                            <div class="timeline-content">
+                                <a href="#/" class="name">@eachCompensation.CompanyCompensation.CompensationName</a>
+                                <span class="time">
+                                    @String.Format("{0:MM/dd/yyyy}", eachCompensation.StartDate)
+                                    @if (eachCompensation.EndDate.HasValue)
+                                    {
+                                        <span>
+                                            -
+                                            @String.Format("{0:MM/dd/yyyy}", eachCompensation.EndDate)
+                                        </span>
+                                    }
+                                    <span>
+                                        ,
+                                        @eachCompensation.MoneyAmount
+                                    </span>
+                                </span>
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="experience-content">
+                            <div class="timeline-content">
+                                <a href="#/" class="name">@eachCompensation.CompanyCompensation.CompensationName</a>
+                                <span class="time">
+                                    @String.Format("{0:MM/dd/yyyy}", eachCompensation.StartDate)
+                                    @if (eachCompensation.EndDate.HasValue)
+                                    {
+                                        <span>
+                                            -
+                                            @String.Format("{0:MM/dd/yyyy}", eachCompensation.EndDate)
+                                        </span>
+                                    }
+                                    <span>
+                                        ,
+                                        @eachCompensation.MoneyAmount
+                                    </span>
+                                </span>
+
+                            </div>
+                        </div>
+                    }
+                </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>
+<style>
+    p {
+        text-align: center;
+    }
+
+    /*dt {
+        display: inline;
+        width: 25%;
+    }*/
+
+    dt::after {
+        content: ":";
+    }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+
+    .timelinex.non_complete::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        background-color: #f4f4f4;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -3px;
+        border: 1em dotted #f4f4f4;
+    }
+</style>

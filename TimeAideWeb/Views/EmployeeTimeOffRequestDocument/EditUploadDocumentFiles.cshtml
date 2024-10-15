@@ -1,0 +1,299 @@
+﻿@model TimeAide.Web.Models.EmployeeTimeOffRequestDocument
+<style>
+    .files input {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        padding: 10px 0px 40px 2%;
+        text-align: center !important;
+        margin: 0;
+        width: 100% !important;
+    }
+
+        .files input:focus {
+            outline: 2px dashed #92b0b3;
+            outline-offset: -10px;
+            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            border: 1px solid #92b0b3;
+        }
+
+    .files {
+        position: relative
+    }
+
+        .files:after {
+            pointer-events: none;
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 50px;
+            right: 0;
+            height: 56px;
+            content: "";
+            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+            display: block;
+            margin: 0 auto;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .color input {
+        background-color: #f1f1f1;
+    }
+
+    .files:before {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        right: 0;
+        height: 50px;
+        content: " or drag it here. ";
+        display: block;
+        margin: 0 auto;
+        color: #2ea591;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+    }
+
+    .hideSection {
+        display: none;
+    }
+
+    .showSection {
+        display: block;
+    }
+</style>
+
+<div id="uploadTimeOffDocument_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Upload Document</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0 pb-2">
+                @Html.Hidden("Id", Model.Id)
+                @Html.Hidden("RequestId", Model.EmployeeTimeOffRequest.Id)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row mb-1">
+                            <label class="col-md-3 pr-0 col-form-label"> Document Name:<span class="text-danger"></span></label>
+                            <div class="col-md-9">
+                                @*<input type="text" id="DocumentName" class="form-control" disabled />*@
+                                @Html.EditorFor(model => model.DocumentName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-md-3 pr-0 col-form-label"> Type:<span class="text-danger"></span></label>
+                            <div class="col-md-9">
+                                @*<input type="text" id="DocumentType" class="form-control" disabled />*@
+                                @Html.EditorFor(model => model.DocumentType, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            </div>
+                        </div>
+                        @{
+                            var isDocFileUploaded = (!string.IsNullOrEmpty(Model.DocumentFile1Name) && Model.DocumentFile1 != null);
+                            var docFileAction = isDocFileUploaded ? "Existing" : "New";
+                            var showAHideSection = isDocFileUploaded ? "hideSection" : "showSection";
+                        }
+                        @Html.Hidden("DocFile1Action", docFileAction)
+                        <div class="form-group row mb-1">
+                            <label class="col-md-3 pr-0 col-form-label"> Doc. File 1:<span class="text-danger"></span></label>
+                            <div class="col-md-7">
+                                @*<input type="text" id="DocumentFile1Name" class="form-control" />*@
+                                @Html.EditorFor(model => model.DocumentFile1Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @if (isDocFileUploaded)
+                            {
+                                <div class="col-md-2 pl-0">
+                                    <span class="text-success text-sm fa fa-check">Uploaded</span>
+                                    <a href="javascript:editUploadedFile(1)" class="fa fa-pencil"></a>
+                                </div>
+                            }
+                        </div>
+                        <div id="divDocumentFile1" class="@showAHideSection">
+                            <div class="form-group row mb-1">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <div class="form-group files">
+                                        <input type="file" class="form-control" id="DocumentFile1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @{
+                            isDocFileUploaded = (!string.IsNullOrEmpty(Model.DocumentFile2Name) && Model.DocumentFile2 != null);
+                            docFileAction = isDocFileUploaded ? "Existing" : "New";
+                            showAHideSection = isDocFileUploaded ? "hideSection" : "showSection";
+                        }
+                        @Html.Hidden("DocFile2Action", docFileAction)
+                        <div class="form-group row mb-1">
+                            <label class="col-md-3 pr-0 col-form-label"> Doc. File 2:<span class="text-danger"></span></label>
+                            <div class="col-md-7">
+                                @*<input type="text" id="DocumentFile2Name" class="form-control" />*@
+                                @Html.EditorFor(model => model.DocumentFile2Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @if (isDocFileUploaded)
+                            {
+                                <div class="col-md-2 pl-0">
+                                    <span class="text-success text-sm fa fa-check">Uploaded</span>
+                                    <a href="javascript:editUploadedFile(2)" class="fa fa-pencil"></a>
+                                </div>
+                            }
+                        </div>
+                        <div id="divDocumentFile2" class="@showAHideSection">
+                            <div class="form-group row mb-1">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <div class="form-group files">
+                                        <input type="file" class="form-control" id="DocumentFile2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @{
+                            isDocFileUploaded = (!string.IsNullOrEmpty(Model.DocumentFile3Name) && Model.DocumentFile3 != null);
+                            docFileAction = isDocFileUploaded ? "Existing" : "New";
+                            showAHideSection = isDocFileUploaded ? "hideSection" : "showSection";
+                        }
+                        @Html.Hidden("DocFile3Action", docFileAction)
+                        <div class="form-group row mb-1">
+                            <label class="col-md-3 pr-0 col-form-label"> Doc. File 3:<span class="text-danger"></span></label>
+                            <div class="col-md-7">
+                                @*<input type="text" id="DocumentFile3Name" class="form-control" />*@
+                                @Html.EditorFor(model => model.DocumentFile3Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @if (isDocFileUploaded)
+                            {
+                                <div class="col-md-2 pl-0">
+                                    <span class="text-success text-sm fa fa-check">Uploaded</span>
+                                    <a href="javascript:editUploadedFile(3)" class="fa fa-pencil"></a>
+                                </div>
+                            }
+                        </div>
+                        <div id="divDocumentFile3" class="@showAHideSection">
+                            <div class="form-group row mb-1">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <div class="form-group files">
+                                        <input type="file" class="form-control" id="DocumentFile3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="submit-section pb-2 mt-0">
+                <button id="btnSubmitTimeOffDocument" class="btn btn-primary submit-btn">Submit</button>
+                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if ($("#DocFile1Action").val() == "Existing") $("#DocumentFile1Name").attr("disabled", true);
+        if ($("#DocFile2Action").val() == "Existing") $("#DocumentFile2Name").attr("disabled", true);
+        if ($("#DocFile3Action").val() == "Existing") $("#DocumentFile3Name").attr("disabled", true);
+
+        $("#btnSubmitTimeOffDocument").click(function () {
+            debugger;
+            var dataObj = new Object();
+            dataObj.Id = $("#Id").val();
+            dataObj.RequestId = $("#RequestId").val();
+            dataObj.DocumentName = $("#DocumentName").val();
+            dataObj.DocumentType = $("#DocumentType").val();
+            dataObj.SubmissionType = null;
+            dataObj.Status = "Submitted";
+
+            dataObj.DocumentFile1Name = $("#DocumentFile1Name").val();
+            dataObj.DocumentFile1 = null;
+            dataObj.DocFile1Action = $("#DocFile1Action").val();
+            var totalFiles = document.getElementById("DocumentFile1").files.length;
+            if (totalFiles > 0) {
+                dataObj.DocumentFile1 = document.getElementById("DocumentFile1").files[0];
+            }
+            dataObj.DocumentFile2Name = $("#DocumentFile2Name").val();
+            dataObj.DocumentFile2 = null;
+            dataObj.DocFile2Action = $("#DocFile2Action").val();
+            var totalFiles = document.getElementById("DocumentFile2").files.length;
+            if (totalFiles > 0) {
+                dataObj.DocumentFile2 = document.getElementById("DocumentFile2").files[0];
+            }
+            dataObj.DocumentFile3Name = $("#DocumentFile3Name").val();
+            dataObj.DocumentFile3 = null;
+            dataObj.DocFile3Action = $("#DocFile3Action").val();
+            var totalFiles = document.getElementById("DocumentFile3").files.length;
+            if (totalFiles > 0) {
+                dataObj.DocumentFile3 = document.getElementById("DocumentFile3").files[0];
+            }
+            if (((dataObj.DocumentFile1Name != "" && dataObj.DocumentFile1 == null) || (dataObj.DocumentFile1Name == "" && dataObj.DocumentFile1 != null))
+                && (dataObj.DocFile1Action == "New" || dataObj.DocFile1Action == "Edit" )   )
+            {
+                if (dataObj.DocumentFile1 == null)
+                showAlertAutoHide("", "Error", "Missing Doc. File 1, uploading file.");
+                else if (dataObj.DocumentFile1Name == "")
+                    showAlertAutoHide("", "Error", "Missing Doc. File 1, description.");
+
+                return;
+            }
+            if (((dataObj.DocumentFile2Name != "" && dataObj.DocumentFile2 == null) || (dataObj.DocumentFile2Name == "" && dataObj.DocumentFile2 != null))
+                && (dataObj.DocFile2Action == "New" || dataObj.DocFile2Action == "Edit"))
+            {
+                if (dataObj.DocumentFile2 == null)
+                    showAlertAutoHide("", "Error", "Missing Doc. File 2, uploading file.");
+                else if (dataObj.DocumentFile2Name == "")
+                    showAlertAutoHide("", "Error", "Missing Doc. File 2, description.");
+
+                //showAlertAutoHide("", "Error", "Missing either DocumentFile2 name/file");
+                return;
+            }
+            if (((dataObj.DocumentFile3Name != "" && dataObj.DocumentFile3 == null) || (dataObj.DocumentFile3Name == "" && dataObj.DocumentFile3 != null))
+                && (dataObj.DocFile2Action == "New" || dataObj.DocFile2Action == "Edit")) 
+            {
+                if (dataObj.DocumentFile3 == null)
+                    showAlertAutoHide("", "Error", "Missing Doc. File 3, uploading file.");
+                else if (dataObj.DocumentFile3Name == "")
+                    showAlertAutoHide("", "Error", "Missing Doc. File 3, description.");
+
+                //showAlertAutoHide("", "Error", "Missing either DocumentFile3 name/file");
+                return;
+            }
+            saveTimeOffDocumentFileData(dataObj);
+        });
+    });
+    function editUploadedFile(fileSeq) {
+        switch (fileSeq) {
+            case 1:
+                $("#divDocumentFile1").removeClass("hideSection").addClass("showSection");
+                $("#DocumentFile1Name").removeAttr("disabled");
+                $("#DocFile1Action").val("Edit");
+                break;
+            case 2:
+                $("#divDocumentFile2").removeClass("hideSection").addClass("showSection");
+                $("#DocumentFile2Name").removeAttr("disabled");
+                $("#DocFile2Action").val("Edit");
+                break;
+            case 3:
+                $("#divDocumentFile3").removeClass("hideSection").addClass("showSection");
+                $("#DocumentFile3Name").removeAttr("disabled");
+                $("#DocFile3Action").val("Edit");
+                break;
+        }
+
+    }
+</script>
+
+
+

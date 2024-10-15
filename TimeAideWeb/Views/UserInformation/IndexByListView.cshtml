@@ -1,0 +1,277 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.UserInformationViewModel>
+@using TimeAide.Common.Helpers;
+
+
+<div class="row">
+
+    @{
+        var filterStatus = SessionHelper.UserFilterInSession.IsFilterApllied;
+
+    }
+    @Html.Hidden("IsFilteredApplied", filterStatus)
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblUser">
+            <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>
+                        EmployeeID
+                    </th>
+                    <th>View</th>
+                    <th>Status</th>
+                    @*<th>
+
+
+                            SystemID
+                        </th>*@
+
+                    <th>
+
+                        FirstName
+                    </th>
+
+                    <th>
+                        LastName
+                    </th>
+                    <th>
+
+                        Company
+                    </th>
+                    <th>
+                        Department
+                    </th>
+                    <th>
+                        SubDepartment
+                    </th>
+                    <th>
+                        EmployeeType
+                    </th>
+                    <th>
+                        Position
+                    </th>
+                    <th>
+                        Login Email
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        Employee Groups
+                    </th>
+
+
+                </tr>
+            </thead>
+
+
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+
+
+
+
+        var filterObject = {
+            "EmployeeId": $('#EmployeeId').val(),
+            "EmployeeName": $('#EmployeeName').val(),
+            DepartmentId : $('#DepartmentId').val(),
+             "SubDepartmentId" : $('#SubDepartmentId').val(),
+              "PositionId" : $('#PositionId').val(),
+            "EmploymentTypeId" : $('#EmploymentTypeId').val(),
+            "EmployeeTypeId" : $('#EmployeeTypeId').val(),
+            "EmployeeStatusId" : $('#EmployeeStatusId').val(),
+            "SupervisorId" : $('#SupervisorId').val(),
+
+            "PageSize" : $('#PageSize').val(),
+            "PageNo" : $('#PageNo').val(),
+            "SearchText" : $('#GridSearchTxt').val()
+        }
+
+
+
+
+        Load_GlobelEmployeeListtble(filterObject);
+
+        function Load_GlobelEmployeeListtble(Load_data) {
+            debugger
+          
+            $('#tblUser').dataTable({
+                "searching": true,
+               /* scrollX: true,*/
+                /*"dom": 'lfrtip',*/
+              /*  "dom": '<"pull-left"f>r<"pull-right"l>tip',*/
+                /* "dom": '<"pull-right"f>ltip',*/
+                /*dom: '<"toolbar">frtip',*/
+                scroller: {
+                    loadingIndicator: true
+                },
+                initComplete: function () {
+                    debugger
+                  
+                 
+                    IsFilterApplied();
+                
+                },
+                "processing": true,
+                "language": {
+
+                    loadingRecords: '<i style="margin-left:-820px;" class="fa fa-spinner fa-spin fa-3x fa-fw"></i>',
+
+                    zeroRecords: '<h4 class="block text-center"><i class="fa fa-exclamation-triangle" style="margin-left:-1350px;  color: #C49F47;"></i> No matching records found</h4>'
+
+
+                },
+                "serverSide": false,
+
+                "ajax": {
+                    url: '/UserInformation/GetEmployeeGridList',
+                    type: 'Get',
+                    data: Load_data,
+                    contentType: 'application/json'
+
+
+                },
+
+                "columns": [
+
+
+                    {
+                        data: null,
+                        title: 'Action',
+                        render: function (data, type, item) {
+                            return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a><div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);"><a class="dropdown-item" href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/Details/' + data.EncryptedId + '\'  ); return false;"><i class="fa fa-eye m-r-5"></i> Record</a><a class="dropdown-item" href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/EmployeeProfile/' + data.EncryptedId + '\'  ); return false;"><i class="fa fa-user-circle m-r-5"></i> Profile</a><a class="dropdown-item" href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserDashboard/MyDashboard/' + data.EncryptedId + '\'  ); return false;"><i class="la la-user m-r-5"></i> Self Service</a></div></div>'
+                        },
+                        className: 'text-left'
+
+
+                    },
+                    {
+
+                        data: null,
+                        title: 'EmployeeId',
+                        render: function (data, type, item) {
+                            return ' <a href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/Details/' + data.EncryptedId + '\'  ); return false;" title="View Record"> ' + data.EmployeeId + '</a>'
+                        }
+
+                    },
+                    {
+
+                        data: null,
+                        title: 'View',
+                        render: function (data, type, item) {
+                            return '<a href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\' /UserInformation/Details/' + data.EncryptedId + '\'  ); return false;" title="Edit Record">Edit</a> |<a href="#" onclick="SelectCompanyByGlobalEmployeeSearch(' + data.CompanyId + ',\'/UserInformation/EmployeeProfile/' + data.EncryptedId + '\'); return false;" title="View Profile"> Profile</a>'
+                        }
+
+                    },
+
+                    {
+
+                        data: null,
+                        title: 'Status',
+                        render: function (data, type, item) {
+                            return ' <span class="badge ' + data.EmpStatusBgClass + '">' + data.EmployeeStatusName + '</span>'
+                        }
+
+
+                    },
+                    {
+
+                        data: 'FirstName'
+                    },
+                    {
+
+                        data: 'LastName'
+
+
+                    },
+                    {
+
+                        data: 'CompanyName'
+
+
+                    },
+                    {
+
+                        data: 'DepartmentName'
+
+
+                    },
+                    {
+
+                        data: "SubDepartmentName"
+
+
+                    },
+                    {
+
+                        data: 'EmployeeTypeName'
+
+
+                    },
+
+                    {
+
+                        data: 'PositionName'
+
+
+                    },
+                    {
+
+                        data: 'LoginEmail'
+
+
+                    },
+
+                    {
+
+                        data: 'UserRole'
+
+
+                    },
+
+                    {
+
+                        data: 'EmployeeGroups'
+
+
+                    }
+
+
+
+
+
+
+                ]
+
+            });
+        }
+
+        function IsFilterApplied() {
+
+            $.ajax({
+                type: "GET",
+                url: '/UserInformation/FilterAppliedCheck',
+                
+                success: function (data) {
+                    debugger;
+                    
+              
+                    if (data) {
+                        $("#divResetFilter").removeClass("hideFilter").addClass("showFilter");
+                    }
+                    else {
+                        $("#divResetFilter").removeClass("showFilter").addClass("hideFilter");
+                    }
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+
+    });
+</script>

@@ -1,0 +1,171 @@
+﻿@using TimeAide.Web.Models
+@model EmployeeTimeOffRequest
+@Html.HiddenFor(m => m.AccrualType, new { @id = "hdnAccrualType" })
+@Html.HiddenFor(m => m.RemainingTime, new {@id= "hdnRemainingTime" })
+<div id="timeOffRequestApproval_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Time-Off Request Approval</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12 d-flex">
+
+                        <div class="card flex-fill mb-2">
+
+                            <div class="card-header" style="padding:15px;padding-bottom:0px;">
+                                <h3 class="card-title mb-1" id="">
+                                    Time-Off Request
+                                    @{ var requestStatus = Model.ChangeRequestStatusId;
+                                        var badgeCSS = "text-primary";
+                                        if (requestStatus >= 3)
+                                        {
+                                            badgeCSS = "text-danger";
+                                        }
+                                        else if (requestStatus == 2)
+                                        {
+                                            badgeCSS = "text-success";
+                                        }}
+                                    <span class="pt-2 @badgeCSS" style="font-size:small;">(@Model.ChangeRequestStatus.ChangeRequestStatusName)</span>
+                                </h3>
+                                <div class="row pb-0">
+                                    <div class="col-lg-12">
+                                        <ul class="list-unstyled">
+                                            <li><h4 class="mb-0"> @Html.DisplayFor(m => m.UserInformation.ShortFullName)</h4></li>
+                                            <li>Employee ID: @Html.DisplayFor(m => m.UserInformation.EmployeeId)</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pb-0">
+                                @if (Model.CanTakeAction == true)
+                                {
+                                    <div class="form-group row">
+                                        <label class="col-md-1 col-form-label pr-0">Type: <span class="text-danger"></span></label>
+                                        <div class="col-md-4 text-muted mt-2">
+                                            @Html.DisplayFor(m => m.TransType)
+                                        </div>
+                                        <label class="col-md-1 col-form-label pr-0">From: <span class="text-danger"></span></label>
+                                        <div class="col-md-2 text-muted mt-2">
+                                            @Html.DisplayFor(m => m.StartDate)
+                                        </div>
+                                        <label class="col-md-1 col-form-label pr-0">To: <span class="text-danger"></span></label>
+                                        <div class="col-md-2 text-muted mt-2">
+                                            @Html.DisplayFor(m => m.EndDate)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label">License: <span class="text-danger"></span></label>
+                                        <div class="col-md-3  text-muted mt-2">
+                                            @Html.DisplayFor(m => m.AccrualType)
+                                        </div>
+                                        <label class="col-md-2 col-form-label pr-0">Available Bal.: <span class="text-danger"></span></label>
+                                        <div class="col-md-2  text-muted mt-2">
+                                            @{ var balanceStr = Model.AccrualType == "NO" ? "N/A" : Model.Balance.ToString() + " Hrs"; }
+                                            @balanceStr
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label pr-0">Hour(s) in Day: <span class="text-danger"></span></label>
+                                        <div class="col-md-3 text-muted mt-2">
+                                            @Html.DisplayFor(m => m.DayHours)
+                                        </div>
+                                        <label class="col-md-2 col-form-label pr-0">Work-Day(s): <span class="text-danger"></span></label>
+                                        <div class="col-md-2 text-muted mt-2">
+                                            @Html.DisplayFor(m => m.WorkingDays)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label pr-0">Requested Time(Hrs): <span class="text-danger"></span></label>
+                                        <div class="col-md-2 text-muted mt-2 pl-0">
+
+                                            @Html.DisplayFor(m => m.RequestedTime)
+                                        </div>
+                                        <label class="col-md-3 col-form-label pr-0">Remaining Time(Hrs): <span class="text-danger"></span></label>
+                                        @{ var CSSTextAlert = "";
+                                            if (Model.AccrualType != "NO" && Model.RequestedTime < 0)
+                                            {
+                                                CSSTextAlert = "text-danger";
+                                            }
+                                        }
+                                        <div class="col-md-2 text-muted mt-2 pl-0 @CSSTextAlert">
+                                            @{ var remainingTimeStr = Model.AccrualType == "NO" ? "N/A" : String.Format("{0:0.00}", Model.RemainingTime); }
+                                            @Html.DisplayFor(m => remainingTimeStr)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label">Reason: <span class="text-danger"></span></label>
+                                        <div class="col-md-9 text-muted mt-2">
+                                            @Html.DisplayFor(m => m.RequestNote)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label">Remarks: <span class="text-danger">*</span></label>
+                                        <div class="col-md-9 pr-0">
+                                            <textarea rows="2" class="form-control" id="ChangeRequestRemarksBySup"></textarea>
+
+                                        </div>
+                                    </div>
+                                }
+                                @if (Model.CanTakeAction == false)
+                                {
+                                    <div class="">
+                                        @{
+                                            var statementTxt = "You are not eligible right now, to take any action on this request!";
+                                            switch (Model.ChangeRequestStatusId)
+                                            {
+                                                case 2:
+                                                    statementTxt = "An approved action has already been taken";
+                                                    break;
+                                                case 3:
+                                                    statementTxt = "A declined action has already been taken";
+                                                    break;
+                                            }
+                                            if (Model.CanRequiredDocument == true)
+                                            {
+                                                statementTxt = "Time-Off mandatory/conditional mandatory document(s) are not yet submitted. Time-Off request can't be approved.";
+                                            }
+                                        }
+                                        <h4 class="text-center text-danger">
+                                            @statementTxt
+                                        </h4>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-footer" style="text-align:center;">
+                                <div class="align-content-md-start submit-in-processing" style="display:none;">
+                                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                                </div>
+                                @if (Model.CanTakeAction == true)
+                                {
+                                    <button id="btnApproveTimeOffRequest" class="btn btn-success submit-btn" onclick="javascript:saveTimeOffRequestActionBySup(@Model.Id,2)">Approve</button>
+                                    <button id="btnDeclineTimeOffRequest" class="btn btn-danger  submit-btn" onclick="javascript:saveTimeOffRequestActionBySup(@Model.Id,3)">Decline</button>
+                                }
+                                @if (Model.CanTakeAction == false)
+                                {
+                                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Closed</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // $("#divLoadingTimeOffRequestAction").hide();
+    });
+</script>
+
+
+
+

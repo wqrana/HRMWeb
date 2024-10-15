@@ -1,0 +1,330 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.EmployeeTimeOffRequestDocumentViewModel>
+@{
+    var requestDocList = Model.Where(w => w.DocumentType == "Request");
+    var requestDocId = 0;
+    var supportingDocList = Model.Where(w => w.DocumentType == "Supporting");
+    var supportingDocId = 0;
+}
+<div class="panel panel-default" style="margin-left:0px;min-height:200px;">
+    <div class="panel-heading" style="padding-left:5px">
+        Request Document(s)
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-condensed table-sm table-striped  table-nowrap mb-0" id="tblRequestDoc">
+                <thead>
+                    <tr>
+                        <th style="display:none;"></th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Submission Type
+                        </th>
+                        <th></th>
+                        <th style="display:none;"></th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in requestDocList)
+                {
+                    ++requestDocId;
+                    var timeOffDaysCondStr = "";
+                <tr>
+                    <td style="display:none;">@requestDocId</td>
+                    <td>
+                        @Html.DisplayFor(m => item.DocumentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.SubmissionType)
+                    </td>
+                    <td>
+                        @if (item.SubmissionType == "Conditional Mandatory")
+                        {
+                            timeOffDaysCondStr = string.Format("> {0} day(s)", item.TimeoffDays);
+                        }
+                        @timeOffDaysCondStr
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(m => item.TimeoffDays)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Status)
+                    </td>
+                    <td width="10%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                <a href="javascript:openUploadDocumentPopup(@requestDocId,'Request');" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default" style="margin-left:0px;min-height:200px;">
+    <div class="panel-heading" style="padding-left:5px">
+        Supporting Document(s)
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-condensed table-sm table-striped  table-nowrap mb-0" id="tblSupportingDoc">
+                <thead>
+                    <tr>
+                        <th style="display:none;"></th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Submission Type
+                        </th>
+                        <th></th>
+                        <th  style="display:none;"></th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in supportingDocList)
+                {
+                    ++supportingDocId;
+                    var timeOffDaysCondStr = "";
+                    <tr>
+                        <td style="display:none;">@supportingDocId</td>
+                        <td>
+                            @Html.DisplayFor(m => item.DocumentName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.SubmissionType)
+                        </td>
+                        <td>
+                            @if(item.SubmissionType=="Conditional Mandatory")
+                            {
+                                timeOffDaysCondStr = string.Format("> {0} day(s)", item.TimeoffDays);
+                            }
+                            @timeOffDaysCondStr
+                        </td>
+                        <td style="display:none;">
+                            @Html.DisplayFor(m => item.TimeoffDays)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Status)
+                        </td>
+                        <td width="10%">
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                    <a href="javascript:openUploadDocumentPopup(@supportingDocId,'Supporting');" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        populateTimeOffTransTypeDoc();
+
+        $('#btnSaveTimeOffRequestDocument').click(function () {
+            saveTimeOffRequestDocuments();
+        });
+    });
+
+    function openUploadDocumentPopup(id, documentType) {
+        debugger;
+        var documentData = $.grep(timeOffTypeDocumentList, function (e) {
+            return (e.Id == id &&
+                e.DocumentType == documentType);
+        });
+        if (documentData.length == 1) {
+            resetDocumentPopup();
+            $("#Id").val(id);
+            $("#DocumentName").val(documentData[0].DocumentName);
+            $("#DocumentType").val(documentData[0].DocumentType);
+            $("#uploadTimeOffDocument_modal").modal("show");
+        }
+    }
+    function resetDocumentPopup() {
+        $("#DocumentName").val("");
+        $("#DocumentType").val("");
+        $("#DocumentFile1Name").val("");
+        $("#DocumentFile1").val("");
+        $("#DocumentFile2Name").val("");
+        $("#DocumentFile2").val("");
+        $("#DocumentFile3Name").val("");
+        $("#DocumentFile3").val("");
+    }
+
+    function findTimeOffDocumentTr(recordId, Doctype) {
+        debugger;
+        var searchTableElement = Doctype == "Request" ? "#tblRequestDoc tbody" : "#tblSupportingDoc tbody";
+        var rowTr = null;
+        $(searchTableElement).find("tr").each(function () {
+            debugger;
+            id = $(this).find("td:eq(0)").text().trim();
+            if (recordId == id) {
+                rowTr = this;
+            }
+        });
+        return rowTr;
+    }
+    function populateTimeOffTransTypeDoc() {
+        timeOffTypeDocumentList = [];
+        timeOffReqUploadedDocData = [];
+        var searchRequestTableElement = "#tblRequestDoc tbody";
+        var searchSupportingTableElement = "#tblSupportingDoc tbody";
+        debugger;
+        $(searchRequestTableElement).find("tr").each(function () {
+            debugger;
+            var rowObject = new Object();
+            rowObject.Id = $(this).find("td:eq(0)").text().trim();
+            rowObject.DocumentName = $(this).find("td:eq(1)").text().trim();
+            rowObject.DocumentType = "Request";
+            rowObject.SubmissionType = $(this).find("td:eq(2)").text().trim();
+            rowObject.TimeoffDays = $(this).find("td:eq(4)").text().trim();
+            rowObject.Status = $(this).find("td:eq(5)").text().trim();
+            rowObject.DocumentFile1Name = '';
+            rowObject.DocumentFile1 = null;
+            rowObject.DocumentFile2Name = '';
+            rowObject.DocumentFile2 = null;
+            rowObject.DocumentFile3Name = '';
+            rowObject.DocumentFile3 = null;
+            timeOffTypeDocumentList.push(rowObject);
+        });
+        $(searchSupportingTableElement).find("tr").each(function () {
+            debugger;
+            var rowObject = new Object();
+            rowObject.Id = $(this).find("td:eq(0)").text().trim();
+            rowObject.DocumentName = $(this).find("td:eq(1)").text().trim();
+            rowObject.DocumentType = "Supporting";
+            rowObject.SubmissionType = $(this).find("td:eq(2)").text().trim();
+            rowObject.TimeoffDays = $(this).find("td:eq(4)").text().trim();
+            rowObject.Status = $(this).find("td:eq(5)").text().trim();
+            rowObject.DocumentFile1Name = '';
+            rowObject.DocumentFile1 = null;
+            rowObject.DocumentFile2Name = '';
+            rowObject.DocumentFile2 = null;
+            rowObject.DocumentFile3Name = '';
+            rowObject.DocumentFile3 = null;
+            timeOffTypeDocumentList.push(rowObject);
+        });
+    }
+    function setTimeOffDocumentFileData(dataObj) {
+        debugger;
+        if (dataObj != null) {
+                //var result = $.grep(timeOffTypeDocumentList, function (e) {
+                //    return (e.Id == dataObj.Id &&
+                //        e.DocumentType == dataObj.DocumentType);
+                //});
+                //if (result.length == 1) {
+                //    debugger;              
+                //    dataObj.Status = "Submitted";
+                //    dataObj.SubmissionType = result[0].SubmissionType;
+                //    trObj = findTimeOffDocumentTr(dataObj.Id, dataObj.DocumentType)
+                //    if (trObj != null) {
+                //        $(trObj).find("td:eq(3)").text(dataObj.Status);
+                //    }
+                //}
+
+            trObj = findTimeOffDocumentTr(dataObj.Id, dataObj.DocumentType)
+            if (trObj != null) {
+                $(trObj).find("td:eq(5)").text(dataObj.Status);
+            }
+            var index = timeOffTypeDocumentList.findIndex(function (record) {
+                return (record.Id == dataObj.Id &&
+                    record.DocumentType == dataObj.DocumentType);
+
+            })
+            if (index !== -1) {
+                dataObj.SubmissionType = timeOffTypeDocumentList[index].SubmissionType;
+                timeOffTypeDocumentList.splice(index, 1);
+            }
+            timeOffTypeDocumentList.push(dataObj);
+
+            showAlertAutoHide("", "Success", "Document File(s) are successfully submitted");
+            $("#uploadTimeOffDocument_modal").modal("hide");
+        }
+    }
+    function checkMandatoryDocumentSubmissionRequired() {
+        debugger;
+        var retVal = false;
+         var result = $.grep(timeOffTypeDocumentList, function (e) {
+             return (e.DocumentType == 'Request' &&
+                    e.SubmissionType == 'Mandatory' &&
+                    e.Status == 'NA');
+         });
+        if (result.length > 0) retVal = true;
+
+        return retVal;
+    }
+    function checkConditionalMandatoryDocumentSubmission(requestWorkDays) {
+        debugger;
+        var retVal = false;
+        var result = $.grep(timeOffTypeDocumentList, function (e) {
+            return (e.DocumentType == 'Request' &&
+                e.SubmissionType == 'Conditional Mandatory' &&
+                e.TimeoffDays < requestWorkDays &&
+                e.Status == 'NA');
+        });
+        if (result.length > 0) retVal = true;
+
+        return result;
+    }
+    function saveTimeOffRequestDocuments(timeOffRequestId) {
+        debugger;
+        if (timeOffTypeDocumentList.length > 0) {
+            var formData = new FormData();
+            for (var i = 0; i < timeOffTypeDocumentList.length; i++) {
+                var record = timeOffTypeDocumentList[i];
+                formData.append('model[' + i + '].EmployeeTimeOffRequestId', timeOffRequestId);
+                formData.append('model[' + i + '].DocumentName', record.DocumentName);
+                formData.append('model[' + i + '].DocumentType', record.DocumentType);
+                formData.append('model[' + i + '].SubmissionType', record.SubmissionType);
+                formData.append('model[' + i + '].TimeoffDays', record.TimeoffDays);
+                formData.append('model[' + i + '].Status', record.Status);
+
+                formData.append('model[' + i + '].DocumentFile1Name', record.DocumentFile1Name);
+                formData.append('model[' + i + '].DocumentFile1', record.DocumentFile1);
+
+                formData.append('model[' + i + '].DocumentFile2Name', record.DocumentFile2Name);
+                formData.append('model[' + i + '].DocumentFile2', record.DocumentFile2);
+
+                formData.append('model[' + i + '].DocumentFile3Name', record.DocumentFile3Name);
+                formData.append('model[' + i + '].DocumentFile2', record.DocumentFile3);
+            }
+            if (formData != null) {
+                $.ajax({
+                    url: "/EmployeeTimeOffRequestDocument/CreateTimeOffRequestDocuments",
+                    type: 'POST',
+                    dataType: "json",
+                    contentType: "multipart/form-data",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        debugger;
+                        console.log("Success", result.status);
+                    },
+                    error: function (data) {                        
+                        console.log(data.status);
+                    }
+                });
+            }
+        }
+    }
+</script>

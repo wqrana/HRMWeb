@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TimeAide.Web.Models.GLAccount>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GLAccountName)
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            GLAccount Type
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GLAccountName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GLAccountDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GLAccountType.GLAccountTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

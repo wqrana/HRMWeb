@@ -1,0 +1,23 @@
+﻿@model TimeAide.Web.Models.EEOCategory
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EEONumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EEONumber)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EEOCategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EEOCategoryName)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

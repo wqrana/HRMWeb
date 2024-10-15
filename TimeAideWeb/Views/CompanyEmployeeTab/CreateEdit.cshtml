@@ -1,0 +1,126 @@
+﻿<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Content/multi-select.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.multi-select.js"></script>
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div class="form-horizontal">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Employee Tab - Add/Edit</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <input type="hidden" id="SelectedEmployeeTabId" , value="@ViewBag.EmployeeTabId" />
+    <div class="alert" style="display:none;" id="employeeTabCreateEditAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    <div class="col-md-12">
+        @Html.DropDownList("EmployeeTabList",
+            new MultiSelectList(ViewBag.TabList,
+            "Value", "Text", ViewBag.SelectedTabList),
+       new
+       {
+           multiple = "multiple",
+           id = "EmployeeTabList",
+           name = "CredentialList[]"
+       })
+    </div>
+    <div class="submit-section">
+        <button id="btnSaveemployeeTabs" class="btn btn-primary submit-btn">Save</button>
+        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#EmployeeTabList').multiSelect(
+            {
+                keepOrder: false,
+                selectableHeader: "<div class='custom-header'>Available Tabs</div>",
+                selectionHeader: "<div class='custom-header'>Associated Tabs</div>",
+                selectableFooter: "<button id='btnSelectAll' class='btn btn-sm submit-btn btn-sm' onclick='SelectAllTabs();'>Select All</button>",
+                selectionFooter: "<button id='btnSelectAll' class='btn btn-sm submit-btn btn-sm' onclick='UnSelectAllTabs();'>Unselect All</button>",
+                afterInit: function (ms) {
+                    
+                    //alert($("#btnSelectAll").html());
+                    //alert($("#EmployeeTabList").html());
+                }
+            }
+        );
+
+        $("#btnSaveemployeeTabs").click(function () {
+            debugger;
+            var selectedCredentialsStr = '';
+            var selectedCredentialList = $('#EmployeeTabList').val();
+            if (selectedCredentialList.length > 0) {
+                selectedCredentialsStr = selectedCredentialList.length > 1 ? selectedCredentialList.join(',') : selectedCredentialList[0];
+            }
+            saveemployeeTabData(selectedCredentialsStr);
+        })
+    });
+    function UnSelectAllTabs() {
+        debugger
+        $('#EmployeeTabList').multiSelect('deselect_all');
+    }
+    function SelectAllTabs() {
+        debugger
+        $('#EmployeeTabList').multiSelect('select_all');
+    }
+    function saveemployeeTabData(selectedCredentialStr) {
+        debugger;
+        alertID = "#employeeTabCreateEditAlert"
+        var userId = $("#SelectedEmployeeTabId").val();
+        if (userId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/CompanyEmployeeTab/CreateEdit',
+                data: {
+                    "id": userId,
+                    "selectedCredentialIds": selectedCredentialStr
+                },
+
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#myModal").modal("hide");
+                        LoadEmployeeSupervises(userId);
+                    }
+                },
+                error: function () {
+                    alert("error in saveemployeeTabData");
+                }
+            });
+        }
+    }
+</script>
+<style>
+    .modal-md {
+        min-width: 20% !important;
+        margin: 0 auto;
+    }
+
+    .custom-header {
+        text-align: center;
+        padding: 3px;
+        background: #000;
+        color: #fff;
+    }
+
+    .ms-container {
+        width: 100%;
+    }
+
+    .ms-selectable {
+        width: 49% !important;
+    }
+
+    .ms-selection {
+        width: 49% !important;
+    }
+</style>
+

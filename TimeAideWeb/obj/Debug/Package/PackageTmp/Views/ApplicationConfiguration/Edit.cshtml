@@ -1,0 +1,50 @@
+﻿@model TimeAide.Web.Models.ApplicationConfiguration
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.HiddenFor(model => model.ValueType)
+    @Html.HiddenFor(model => model.ApplicationConfigurationName)
+    @Html.Partial("_CreatePageTitleView")
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApplicationConfigurationName, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.DisplayFor(model => model.ApplicationConfigurationName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApplicationConfigurationValue, "Configuration Value", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @if (Model.ValueType == "Boolean")
+            {
+                @Html.CheckBoxFor(model => model.ValueAsBoolean, new { htmlAttributes = new { @class = "form-control" } })
+            }
+            else
+            {
+                @Html.EditorFor(model => model.ApplicationConfigurationValue, new { htmlAttributes = new { @class = "form-control" } })
+            }
+            @Html.ValidationMessageFor(model => model.ApplicationConfigurationValue, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ModuleFormName, "Module/Form Name", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ModuleFormName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    @Html.Partial("_CreatePageFooterView")
+
+</div>
+}

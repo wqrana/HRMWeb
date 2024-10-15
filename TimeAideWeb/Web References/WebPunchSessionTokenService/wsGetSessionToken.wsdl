@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://cloudaide.timeaide.com/wsGetSessionToken" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://cloudaide.timeaide.com/wsGetSessionToken" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://cloudaide.timeaide.com/wsGetSessionToken">
+      <s:element name="GetSessionToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strAPIKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strCompanyCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSessionTokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSessionTokenResult" type="tns:clsGetSessionTokenResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="clsGetSessionTokenResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="intGetSessionTokenResult" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="strGetSessionTokenResult" type="tns:enumGetSessionTokenResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="strSessionToken" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="enumGetSessionTokenResult">
+        <s:restriction base="s:string">
+          <s:enumeration value="General_Error" />
+          <s:enumeration value="Password_Match" />
+          <s:enumeration value="Password_Matching_Failed" />
+          <s:enumeration value="APIKey_or_Password_or_Customer_IsEmpty" />
+          <s:enumeration value="SessionToken_Generation_Failed" />
+          <s:enumeration value="SessionToken_Not_Saved_in_DB" />
+          <s:enumeration value="APIKey_Not_Found" />
+          <s:enumeration value="Password_Not_Found_For_APIKey" />
+          <s:enumeration value="Customer_Not_Found" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="clsGetSessionTokenResult" nillable="true" type="tns:clsGetSessionTokenResult" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetSessionTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSessionToken" />
+  </wsdl:message>
+  <wsdl:message name="GetSessionTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSessionTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSessionTokenHttpGetIn">
+    <wsdl:part name="strAPIKey" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="strCompanyCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetSessionTokenHttpGetOut">
+    <wsdl:part name="Body" element="tns:clsGetSessionTokenResult" />
+  </wsdl:message>
+  <wsdl:message name="GetSessionTokenHttpPostIn">
+    <wsdl:part name="strAPIKey" type="s:string" />
+    <wsdl:part name="strPassword" type="s:string" />
+    <wsdl:part name="strCompanyCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetSessionTokenHttpPostOut">
+    <wsdl:part name="Body" element="tns:clsGetSessionTokenResult" />
+  </wsdl:message>
+  <wsdl:portType name="wsGetSessionTokenSoap">
+    <wsdl:operation name="GetSessionToken">
+      <wsdl:input message="tns:GetSessionTokenSoapIn" />
+      <wsdl:output message="tns:GetSessionTokenSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsGetSessionTokenHttpGet">
+    <wsdl:operation name="GetSessionToken">
+      <wsdl:input message="tns:GetSessionTokenHttpGetIn" />
+      <wsdl:output message="tns:GetSessionTokenHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsGetSessionTokenHttpPost">
+    <wsdl:operation name="GetSessionToken">
+      <wsdl:input message="tns:GetSessionTokenHttpPostIn" />
+      <wsdl:output message="tns:GetSessionTokenHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsGetSessionTokenSoap" type="tns:wsGetSessionTokenSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSessionToken">
+      <soap:operation soapAction="http://cloudaide.timeaide.com/wsGetSessionToken/GetSessionToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsGetSessionTokenSoap12" type="tns:wsGetSessionTokenSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSessionToken">
+      <soap12:operation soapAction="http://cloudaide.timeaide.com/wsGetSessionToken/GetSessionToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsGetSessionTokenHttpGet" type="tns:wsGetSessionTokenHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="GetSessionToken">
+      <http:operation location="/GetSessionToken" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsGetSessionTokenHttpPost" type="tns:wsGetSessionTokenHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="GetSessionToken">
+      <http:operation location="/GetSessionToken" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsGetSessionToken">
+    <wsdl:port name="wsGetSessionTokenSoap" binding="tns:wsGetSessionTokenSoap">
+      <soap:address location="http://tawqc.timeaide.com:9001/wsGetSessionToken.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsGetSessionTokenSoap12" binding="tns:wsGetSessionTokenSoap12">
+      <soap12:address location="http://tawqc.timeaide.com:9001/wsGetSessionToken.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsGetSessionTokenHttpGet" binding="tns:wsGetSessionTokenHttpGet">
+      <http:address location="http://tawqc.timeaide.com:9001/wsGetSessionToken.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsGetSessionTokenHttpPost" binding="tns:wsGetSessionTokenHttpPost">
+      <http:address location="http://tawqc.timeaide.com:9001/wsGetSessionToken.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

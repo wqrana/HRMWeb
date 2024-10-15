@@ -1,0 +1,230 @@
+﻿@using TimeAide.Web.ViewModel;
+@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.WorkflowTriggerRequest
+
+
+<div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+    <h4 style="display: inline;">Workflow Notification Emails</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+<div id="workflowNotification" class="pro-overview tab-pane fade show active">
+    <div class="row">
+        <div class="col-md-12 d-flex">
+            <div class="card profile-box flex-fill">
+                <div class="card-body pt-1">
+                    <div class="form-group row">
+                        <div class="table-responsive">
+                            <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexWorkflowNotificationEmails">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th>
+                                            Level
+                                        </th>
+                                        <th>
+                                            Level Ifo
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int totalLevels = Model.WorkflowTriggerRequestDetail.Count(); }
+                                    @foreach (var item in Model.WorkflowTriggerRequestDetail.OrderByDescending(x => x.Id))
+                                    {
+                                        foreach (var each in item.WorkflowTriggerRequestDetailEmail)
+                                        {
+                                            foreach (var eachEmail in each.ToAddressList)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => eachEmail)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.WorkflowActionTypeId == 6)
+                                                        {<span>Closing Email</span>}
+                                                        else
+                                                        {<span>@totalLevels</span>}
+                                                    </td>
+                                                    <td>
+                                                        @if (item.WorkflowActionTypeId == 6)
+                                                        {<span>Closing Email / Auto Email</span>}
+                                                        else
+                                                        {
+                                                            <span>Level @totalLevels,</span>
+                                                            @Html.DisplayFor(modelItem => item.WorkflowActionType.WorkflowActionTypeName)<span> by </span>
+                                                            @Html.DisplayFor(modelItem => item.ActionBy.ShortFullName)
+                                                            <span>(</span>@Html.DisplayFor(modelItem => item.WorkflowLevel.SelectedWorkflowLevelGroupNames)
+                                                            @Html.DisplayFor(modelItem => item.WorkflowLevel.WorkflowLevelType.WorkflowLevelTypeName)<span>)</span>
+                                                        }
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_@totalLevels" style="float:right">
+                                                            View Email Template
+                                                        </button>
+
+                                                        <!-- Modal -->
+
+                                                        <div class="modal" id="exampleModal_@totalLevels" role="dialog" aria-labelledby="exampleModalLabel">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Email Template</h5>
+                                                                        <button type="button" class="close" onclick="CloseMessagePopup('exampleModal_@totalLevels')" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        @if (item.WorkflowLevelId.HasValue)
+                                                                        {
+                                                                            @Html.Raw(@TimeAide.Services.NotificationLogService.GetNotifiationMessage(item.WorkflowLevel.NotificationMessageId))
+                                                                        }
+                                                                        @*else if (item.WorkflowLevelId.HasValue)
+                                                                        {
+                                                                            @Html.Raw(@TimeAide.Services.NotificationLogService.GetNotifiationMessage(item.WorkflowLevelId))
+
+                                                                        }*@
+                                                                        </div>
+
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" onclick="CloseMessagePopup('exampleModal_@totalLevels')">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        totalLevels--;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-dialog {
+        width: 65%;
+        max-width: 65% !important;
+    }
+
+    .group {
+        color: #31708f;
+        background-color: #d9edf7 !important;
+        border-color: #bce8f1 !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var groupColumn = 2;
+        var indexColumns = $("#tblIndexWorkflowNotificationEmails > thead > tr:first > th").length;
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        var dtable = $('#tblIndexWorkflowNotificationEmails').DataTable({
+            columnDefs: [{ visible: false, targets: groupColumn }],
+            order: [[1, 'desc']],
+            paging: false,
+            searching: false,
+            ordering: false,
+            drawCallback: function (settings) {
+                var api = this.api();
+                var rows = api.rows({ page: 'current' }).nodes();
+                var last = null;
+
+                api
+                    .column(groupColumn, { page: 'current' })
+                    .data()
+                    .each(function (group, i) {
+                        if (last !== group) {
+                            $(rows)
+                                .eq(i)
+                                .before('<tr class="group"><td colspan="5">' + group + '</td></tr>');
+
+                            last = group;
+                        }
+                    });
+            },
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+        
+        //var table = $('#tblIndexWorkflowNotificationEmails').DataTable({
+            
+        //});
+
+        // Order by the grouping
+        //$('#tblIndexWorkflowNotificationEmails tbody').on('click', 'tr.group', function () {
+        //    var currentOrder = table.order()[0];
+        //    if (currentOrder[0] === groupColumn && currentOrder[1] === 'asc') {
+        //        table.order([groupColumn, 'desc']).draw();
+        //    } else {
+        //        table.order([groupColumn, 'asc']).draw();
+        //    }
+        //});
+    });
+    function CloseMessagePopup(popUpId) {
+        /*$('#' + popUpId + '').hide();*/
+        /*$(this).closest(".modal").modal("hide")*/
+        $('#' + popUpId + '').modal("hide");
+    }
+</script>

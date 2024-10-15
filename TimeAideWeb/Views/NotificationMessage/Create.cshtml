@@ -1,0 +1,166 @@
+﻿@model TimeAide.Web.Models.NotificationMessage
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.NotificationMessageName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.NotificationMessageName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificationMessageName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.NotificationMessageDescription, "Description", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.NotificationMessageDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificationMessageDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3 pr-0">
+                @* @Html.LabelFor(model => model.Message, "Message", htmlAttributes: new { @class = "control-label" })*@
+                <label class="col-form-label">Tags List <span class="text-danger"></span></label>
+                <div style="max-height:450px; overflow-y:auto">
+                    <ul class="list-group">
+                        <li class="list-group-item" ><a href="#" class="label label-primary" title="Click on" >[FirstName]</a></li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[MiddleInitial]</a></li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[FirstLastName]</a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[SecondLastName] </a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[ShortFullName]</a></li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[DaysBefore]</a></li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[RecordName]</a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[CompanyName] </a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[Department]</a></li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[SubDepartment]</a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[EmployeeType] </a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[EmploymentStatus]</a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[PositionId] </a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[URL]</a> </li>
+                        <li class="list-group-item"><a href="#" class="label label-primary" title="Click on" >[LoginUserName] </a> </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8 pr-0">
+                <label class="col-form-label">Message <span class="text-danger"></span></label>
+                @*@Html.TextAreaFor(model => model.Message, 10, 50, new { style = "width:100% !important;background: none;margin-top: 0;border: none;resize: none;resize:none;", @class = "form-control richtext-editor" })*@
+                @Html.TextAreaFor(m => m.Message, new { rows = "20", style = "resize:none;width:500px;", @class = "form-control richtext-editor" })
+                @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    <!--
+           <div class="form-group row">
+               <div class="col-md-3">
+                   Add any of the field to the email body.
+               </div>
+               <div class="col-md-8">
+                   <ul class="list-group">
+                       <li class="list-group-item"><a href="#" class="label label-primary">[FirstName]</a></li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[MiddleInitial]</a></li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[FirstLastName]</a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[SecondLastName] </a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[ShortFullName]</a></li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[DaysBefore]</a></li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[RecordName]</a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[CompanyName] </a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[Department]</a></li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[SubDepartment]</a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[EmployeeType] </a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[EmploymentStatus]</a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[PositionId] </a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[URL]</a> </li>
+                       <li class="list-group-item"><a href="#" class="label label-primary">[LoginUserName] </a> </li>
+                   </ul>
+                   @*<ul style="float: left;list-style: none;padding-inline-start: 0;">
+                       <li class="draggable">[FirstName]</li>
+                       <li class="draggable">[MiddleInitial]</li>
+                       <li class="draggable">[FirstLastName]</li>
+                       <li class="draggable">[SecondLastName]</li>
+                       <li class="draggable">[ShortFullName]</li>
+                       <li class="draggable">[DaysBefore]</li>
+                       <li class="draggable">[RecordName]</li>
+                       <li class="draggable">[CompanyName]</li>
+                       <li class="draggable">[Department]</li>
+                       <li class="draggable">[SubDepartment]</li>
+                       <li class="draggable">[EmployeeType]</li>
+                       <li class="draggable">[EmploymentStatus]</li>
+                       <li class="draggable">[PositionId]</li>
+                       <li class="draggable">[URL]</li>
+                       <li class="draggable">[LoginUserName]</li>
+                   </ul>*@
+               </div>
+           </div>
+       -->
+    @Html.Partial("_CreatePageFooterView")
+    </div>
+}
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="~/Scripts/jquery-ui.js"></script>
+@*<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>*@
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+<script>
+    $(document).ready(function () {
+        var width = $(window).width();
+        var modal = $(".modal-content");
+        if (width >= 1024) {
+            modal.css('width', '900px');
+        }
+        else {
+            modal.css('width', '700px');
+        }
+        $('.richtext-editor').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],              
+                ['table', ['']],
+                ['insert', ['link', 'picture']],
+                ['view', []],
+            ],
+
+            height: 400, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            disableDragAndDrop: true
+
+        });
+        $('div.note-popover').css("display", "none");
+        setTimeout(function () {
+            debugger;
+            $('.richtext-editor').summernote('fontName', 'Arial');
+            $('.richtext-editor').summernote('fontSizeUnit', 'pt');
+            $('.richtext-editor').summernote('fontSize', 14);
+            $('.richtext-editor').summernote('justifyLeft');
+           
+        }, 500);
+       
+       
+    });
+
+    //$(".draggable").click(function () {
+    //    debugger
+    //    $('.richtext-editor').summernote('editor.insertText', $(this).html());
+    //});
+    $(".list-group li a").click(function () {
+        $('.richtext-editor').summernote('editor.insertText', $(this).text());
+    });
+</script>
+
+
+
+

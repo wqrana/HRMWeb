@@ -1,0 +1,437 @@
+﻿@using TimeAide.Models.ViewModel;
+@{
+    ViewBag.Title = "Applicants";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var qACriteriaFilterJson = (string)ViewBag.QACriteriaFiltersInJson;
+}
+@Html.Hidden("sessionFilterData", qACriteriaFilterJson)
+<style>
+    #tblQAFilter>thead{
+        font-size:smaller;
+        font-weight:lighter;
+    }
+    #tblQAFilter > tbody {
+        font-size: smaller;
+        font-weight: lighter;
+        color:darkgrey;    
+
+    }
+    .showFilter {
+        display: block;
+    }
+
+    .hideFilter {
+        display: none;
+    }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Applicants</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Applicants</li>
+                <li class="breadcrumb-item active">Applicant</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="applicantIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+      
+        <div class="col-auto float-right ml-auto">
+            @if (ViewBag.AllowAdd)
+            {
+            <a href="" data-toggle="modal" data-target="#applicantCreate_modal" class="btn add-btn"><i class="fa fa-plus"></i> Add Applicant</a>
+            }
+            @*<div class="view-icons">
+            <a id="btnGridView" href="javascript:getUserViewData(1)" class="grid-view btn btn-link " title="Grid View"><i class="fa fa-th"></i></a>
+            <a id="btnListView" href="javascript:getUserViewData(0)" class="list-view btn btn-link" title="List View"><i class="fa fa-bars"></i></a>
+            @Html.Hidden("ViewTypeId",0)
+            @Html.Hidden("PageNo",1)
+            @Html.Hidden("PageSize",12)
+            @Html.Hidden("GridSearchTxt","")
+
+        </div>*@
+            @Html.Hidden("ViewTypeId", 0)
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus mb-2">
+            <input id="ApplicantName" type="text" class="form-control floating">
+            <label class="focus-label">Applicant Name</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-2">
+            @Html.DropDownList("PositionId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Position</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-2">
+            @*@Html.DropDownList("ApplicantStatusId", (IEnumerable<SelectListItem>)ViewBag.ApplicantStatusId, "All", new { @class = "select floating" })*@
+            @Html.DropDownList("ApplicantStatusId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Applicant Status</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-2">
+            @*@Html.DropDownList("LocationId", (IEnumerable<SelectListItem>)ViewBag.LocationId, "All", new { @class = "select floating searchableDDL" })*@
+            @Html.DropDownList("LocationId", null, "All", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Location</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-6 pr-0">
+        <div id="minHoursWorkedTierPanel" class="panel panel-default" style="margin-left:5px">
+            <div class="panel-heading" style="padding-left:10px">
+                Interview Question(s)
+                <div class="pull-right dropdown-action" style="height:20px;">
+                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                        <a id="" href="javascript:addQAFilter();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div id="divQAFilters" style="min-height:60px; max-height:150px; overflow-y:auto">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-sm custom-table table-nowrap mb-0" id="tblQAFilter">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th style="display:none;"></th>
+                                    <th>Question</th>
+                                    <th colspan="2">Filter criteria</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-1 pr-0">
+        <a href="javascript: getFilterApplicantList();" class="btn btn-success btn-block"> Filter </a>
+    </div>
+    <div class="col-sm-4 col-md-2 hideFilter" id="divResetFilter">
+        <a href="javascript:resetApplicantFilterList();" class="btn btn-danger btn-block"> Reset Filter(s) </a>
+    </div>
+</div>
+
+<div id="divLoadingApplicants" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div id="divLayoutView">
+    
+</div>
+<div id="divDeleteView">
+
+</div>
+@Html.Partial("ApplicantQAFilterPopup")
+@Html.Partial("CreateApplicant")
+
+<script>
+    //JS for Applicant main page
+    var alertID = null;
+    var qAnswerFilterListData = [];
+    $(document).ready(function () {
+        $('#app_SSN').mask('999-99-9999');
+        //Default User List on list view
+        $("#divLoadingApplicants").hide();
+        debugger;
+        var qAnswerFilterInSession = JSON.parse($("#sessionFilterData").val());      
+        if (qAnswerFilterInSession.length > 0) {
+            qAnswerFilterListData = qAnswerFilterInSession;
+            qASessionFilterData();
+        }
+
+        //Default retreive List view data
+        getApplicantList(0);
+
+        $('#ApplicantName').on("keyup", function (e) {
+            debugger;
+            if (e.which == 13) {
+                getFilterApplicantList();
+            }
+        });
+
+        $('.searchableDDL').on("change", function () {
+            debugger;
+            getFilterApplicantList();
+        });
+
+        //Save Applicant
+        $('#btnSaveApplicant').click(function () {
+            debugger;
+            alertID = "#applicantCreateEditAlert";
+            var datafieldsObject = getInputFieldsData();
+            var isValidated = validateInputFields(datafieldsObject);
+            if (isValidated) {
+                // ajax call for saving data
+                saveApplicantData(datafieldsObject);
+            }
+
+        });
+
+        $("#applicantCreate_modal").on('shown.bs.modal', function () {
+            debugger;
+          $('#app_SSN').val("");
+            $('#app_firstName').val("");
+            $('#app_middleName').val("");
+            $('#app_firstLastName').val("");
+            $('#app_secondLastName').val("");
+            $('#app_BirthDate').val("");
+            $('#GenderId').val(null);
+            // $('#GenderId option:selected').remove();
+            $('#app_ApplicantStatusId').val(null);
+            //$('#ApplicantStatusId option:selected').remove();
+
+        });
+
+    });
+    function addQAFilter() {
+        $("#ApplicantInterviewQuestionId").val(null);
+        $("#divQADetail").empty();
+
+        $("#applicantQAFilterPopup_modal").modal("show");
+    }
+    function deleteQAFilter(element) {
+        debugger;
+        var questionId = $(element).closest("tr").find("td:eq(1)").text().trim();
+        if (questionId > 0) {
+
+            var index = qAnswerFilterListData.findIndex(function (record) {
+                return record.ApplicantInterviewQuestionId == questionId;
+            });
+            if (index !== -1) {
+                qAnswerFilterListData.splice(index, 1);
+            }
+            refreshQAFilterData("del");
+        }
+    }
+    function refreshQAFilterData(action) {
+        debugger;
+        //$("#tblWorkedHoursTier tbody").remove();
+        var targetTbl = $("#tblQAFilter tbody");
+        var sourceRow = $("#tblSampleRow tr");
+        var trHtml = "";
+        $(targetTbl).empty();
+        qAnswerFilterListData.sort(function (a, b) { return a.Id - b.Id; });
+        qAnswerFilterListData.forEach(function (row) {
+            var newTr = sourceRow.clone();
+            $(newTr).find("td:eq(1)").text(row.ApplicantInterviewQuestionId);
+            $(newTr).find("td:eq(2)").text(row.QuestionName);
+            $(newTr).find("td:eq(3)").text(row.FilterOpertor);
+            $(newTr).find("td:eq(4)").text(row.FilterValue);
+
+            $(targetTbl).append(newTr);
+        });
+
+        if (action == "AE") {
+            $("#applicantQAFilterPopup_modal").modal("hide");
+        }
+    }
+
+    function qASessionFilterData() {
+        debugger;
+        //$("#tblWorkedHoursTier tbody").remove();
+        var targetTbl = $("#tblQAFilter tbody");
+        var sourceRow = $("#tblSampleRow tr");
+        var trHtml = "";
+        $(targetTbl).empty();
+        qAnswerFilterListData.sort(function (a, b) { return a.Id - b.Id; });
+        qAnswerFilterListData.forEach(function (row) {
+            var newTr = sourceRow.clone();
+            $(newTr).find("td:eq(1)").text(row.ApplicantInterviewQuestionId);
+            $(newTr).find("td:eq(2)").text(row.QuestionName);
+            $(newTr).find("td:eq(3)").text(row.FilterOpertor);
+            $(newTr).find("td:eq(4)").text(row.FilterValue);
+
+            $(targetTbl).append(newTr);
+        });
+
+    }
+
+    function getFilterApplicantList() {
+        var viewTypeId = $('#ViewTypeId').val();
+        if (viewTypeId == 0) { //list view
+            getApplicantList(viewTypeId);
+        }
+
+    }
+
+
+    function getApplicantList(ViewTypeId) {
+        $("#divLoadingApplicants").show();
+        debugger;
+        var filterObject = new Object();
+
+        filterObject.ApplicantName = $('#ApplicantName').val();
+        filterObject.PositionId = $('#PositionId').val();
+        filterObject.ApplicantStatusId = $('#ApplicantStatusId').val();
+        filterObject.LocationId = $('#LocationId').val();
+        filterObject.QACriteriaFilters = qAnswerFilterListData;
+        filterObject.ViewTypeId = ViewTypeId;
+        $.ajax({
+            type: "POST",
+            url: '/ApplicantInformation/IndexByViewType',
+            data: JSON.stringify(filterObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divLayoutView").html(data);
+                $("#divLoadingApplicants").hide();
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getInputFieldsData() {
+
+        var dataObj = new Object();
+        dataObj.SSN = $('#app_SSN').mask();
+        dataObj.FirstName = $('#app_firstName').val();
+        dataObj.MiddleInitial = $('#app_middleName').val();
+        dataObj.FirstLastName =$('#app_firstLastName').val();
+        dataObj.SecondLastName= $('#app_secondLastName').val();
+        dataObj.BirthDate =$('#app_BirthDate').val();
+        dataObj.GenderId =$('#GenderId').val();
+        dataObj.ApplicantStatusId = $('#app_ApplicantStatusId').val();
+
+        return dataObj;
+    }
+
+    function validateInputFields(dataObj) {
+        //validate object data
+        var isRequiredValidated = 0;
+        var isValidated = true
+            ;
+        if (dataObj != null) {
+
+            isRequiredValidated += dataObj.FirstName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FirstLastName.trim().length > 0 ? 1 : 0;
+            //isRequiredValidated += dataObj.SecondLastName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.ApplicantStatusId.trim().length > 0 ? 1 : 0;
+            if (isRequiredValidated != 3) {
+                isValidated = false;
+                var message = " Missing Required field(s)";
+            }
+
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        return isValidated;
+    }
+
+    function saveApplicantData(dataObj) {
+
+
+            $.ajax({
+                url: "/ApplicantInformation/AjaxCreateEditApplicant",
+                type: "POST",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#applicantCreate_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        window.location.href = "/ApplicantInformation/Details/" + data.id;
+                        //window.location.reload();
+
+                    }
+                    else if (data.status == "Error") {
+
+                        showAlertAutoHide("", "Error", data.message);
+                    }
+
+                }
+                ,
+                error: function (data) {
+                    showAlertAutoHide("", "Error", data.message);
+
+                }
+            });
+        }
+
+    function getApplicantDeleteData(id) {
+        debugger;
+        if (id != 0) {
+            $.ajax({
+                type: "get",
+                url: '/ApplicantInformation/Delete',
+                data: { "id": id },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divDeleteView").html(data);
+                    $('#applicantDelete_modal').modal('show');
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteApplicant(id) {
+
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/ApplicantInformation/ConfirmDelete",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#applicantDelete_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        //getApplicantList(0);
+                        window.location.reload();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function resetUserFilterList() {
+        debugger;
+        $('#EmployeeId').val("");
+        $('#EmployeeName').val("");
+        
+
+        getFilterUserList();
+    }
+    function resetApplicantFilterList() {
+        $('#ApplicantName').val("");
+        $(".searchableDDL").each(function () {
+            $(this).val("");
+            $(this).select2('destroy');
+            $(this).select2();
+            $(".select2-container").css("width", "100%");
+        });
+        //reset qa filter data
+        qAnswerFilterListData = [];
+        qASessionFilterData();
+        //get data
+        getFilterApplicantList();
+    }
+</script>

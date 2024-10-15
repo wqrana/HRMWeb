@@ -1,0 +1,91 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeePerformance>
+<h4 class="pull-left"> Performance List</h4>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0">
+        <thead>
+            <tr>
+                <th>
+                    Review Date
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Review By
+                </th>
+                <th>
+                    Summary
+                </th>
+                <th>
+                    Notes
+                </th>
+                <th>
+                    Result
+                </th>
+                <th>
+                    Action Taken
+                </th>
+                <th>
+                    Expiry Date
+                </th>
+                <th>
+                    Document
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @String.Format("{0:MM/dd/yyyy}", item.ReviewDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerformanceDescription.PerformanceDescriptionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supervisor.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReviewSummary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReviewNote)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerformanceResult.PerformanceResultName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionTaken.ActionTakenName)
+                </td>
+                <td>
+                    @String.Format("{0:MM/dd/yyyy}", item.ExpiryDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocName)
+                </td>
+
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                            <a href="javascript:createEditUserPerformance(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            <a href="javascript:getUserPerformanceDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                            <a href="javascript:getUserPerformanceDocView(@item.Id)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                            <a href="javascript:downloadUserPerformanceDoc(@item.Id)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+                            <a href="javascript:getUserPerformanceDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                            @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                            {
+                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                            }
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

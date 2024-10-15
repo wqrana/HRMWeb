@@ -1,0 +1,83 @@
+﻿@model TimeAide.Web.Models.EmergencyContact
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(model => model.UserInformationId, new { id = "ECUserInformationId" })
+        @Html.HiddenFor(model => model.Id, new { id = "EmergencyContactId" })
+        <div class="form-group row">
+            <div class="col-md-4">
+                @*@Html.LabelFor(model => model.ContactPersonName, "Contact Name", htmlAttributes: new { @class = "control-label" })*@
+                <label class="col-form-label" style="margin-left:0px">
+                    Contact Name:<span class="text-danger">*</span>
+                </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContactPersonName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.RelationshipId, "Relationship", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Relationship>("RelationshipId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.RelationshipId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.IsDefault, "Is Default", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsDefault)
+                    @Html.ValidationMessageFor(model => model.IsDefault, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.MainNumber, "Main Number", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.MainNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MainNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.AlternateNumber, "Alternate Number", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AlternateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AlternateNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="submit-section">
+            <button type="button" id="btnAddEmergencyContact" class="btn btn-primary submit-btn">Save</button>
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+    $(document).ready(function () {
+        //$('#MainNumber').mask('(999) 999-9999');
+        //$('#AlternateNumber').mask('(999) 999-9999');
+        $('#MainNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('MainNumber', 'Home');
+        });
+        $('#AlternateNumber').mask('(999) 999-9999', { autoclear: false }).on('blur', function () {
+            ValidateNumbers('AlternateNumber', 'Home');
+        });
+    });
+</script>

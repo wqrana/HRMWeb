@@ -1,0 +1,80 @@
+﻿@model TimeAide.Web.Models.CustomField
+@using (Html.BeginForm())
+{
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.AntiForgeryToken()
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.FieldDisplayOrder, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.FieldDisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FieldDisplayOrder, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CustomFieldName, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CustomFieldName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CustomFieldName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CustomFieldDescription, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CustomFieldDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CustomFieldDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.IsExpirable, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            <div class="checkbox" style="display: inline;">
+                @Html.EditorFor(model => model.IsExpirable)
+                @Html.ValidationMessageFor(model => model.IsExpirable, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.DocumentRequiredById, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.DocumentRequiredBy>("DocumentRequiredById", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.DocumentRequiredById, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CustomFieldTypeId, "Field Type", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.CustomFieldType>("CustomFieldTypeId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.CustomFieldTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.NotificationScheduleId, "Notification Schedule", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.NotificationSchedule>("NotificationScheduleId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.NotificationScheduleId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    @Html.Partial("_CreatePageFooterView")
+</div>
+}

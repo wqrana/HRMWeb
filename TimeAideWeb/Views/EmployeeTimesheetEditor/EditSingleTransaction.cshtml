@@ -1,0 +1,337 @@
+﻿@model TimeAide.Data.tPunchPair
+@{
+
+    var defaultDayHours = (decimal)ViewBag.dayHours;
+    var CurrentTransVal = ViewBag.SelectedTransVal;
+    var CurrentAccrualType = ViewBag.SelectedAccrualType;
+    var selectedTSDIds = ViewBag.selectedIds;
+
+}
+<style>
+    .child-modal-trans {
+        z-index: 1200;
+    }
+</style>
+<div id="timesheetEditTransaction_modal" class="modal custom-modal child-modal-trans">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+       
+            <div class="modal-content" style="border:1px solid">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Transaction</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="welcome-box mb-2">
+                                <div class="welcome-det">
+                                    <h4>@Html.DisplayFor(m => m.e_name)</h4>
+                                    <p><span class="">EmployeeId:</span>@Html.DisplayFor(m => m.e_id)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4 p-0">
+                            <div class="panel panel-default" style="margin-left:5px">
+                                <div class="panel-heading" style="padding-left:10px">
+                                    Transaction Date
+                                </div>
+                                <div class="panel-body">
+                                    <div id="divTransactionAlert" class="alert alert-danger mb-1" role="alert">
+
+                                    </div>
+                                    <div id="divTransactionDates">
+                                        <div id="" style="max-height:250px; overflow-y:auto">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date </th>
+                                                            <th>Bal.</th>
+                                                            <th>Rem.</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                       
+                                                            <tr>
+                                                                <td>@Html.DisplayFor(m => m.DTPunchDate)</td>
+                                                                <td>-</td>
+                                                                <td>-</td>
+                                                            </tr>
+                                                       
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="" class="col-md-8 pl-2">
+                            <div class="row">
+                                <div class="col-md-12 d-flex">
+                                    <div class="card profile-box flex-fill mb-0">
+                                        <div class="card-body pt-1 pb-1">
+                                            <!--Start of Time Off-->
+                                            @*<div id="divRefreshingDetail" class="align-content-md-start">
+                                                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                                                </div>*@
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">Trans. Type: <span class="text-danger">*</span></label>
+                                                        <div class="col-md-8 pr-0">
+                                                            @Html.DropDownList("TransTypeId", null, "Select Trans. Type", new { @class = "form-control" })
+                                                            <div class="font-weight-light text-info">
+                                                                License:<span id="spanLicenseTypeId" class="text-secondary font-weight-bold pr-1"></span>
+                                                                @*, Available Bal.:<span id="spanLicenseTypeBalance" class="text-secondary font-weight-bold pr-2">N/A</span>*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">Clear Tardiness:</label>
+                                                        <div class="col-md-3 pt-2">
+                                                            <input class="" type="checkbox" id="ClearTardiness" />
+                                                        </div>
+                                                    </div>
+                                                    <div id="divHrsTrans">
+                                                        <div class="form-group row">
+                                                            <label class="col-md-4 col-form-label">Day Hour(s): <span class="text-danger">*</span></label>
+                                                            <div class="col-md-5">
+                                                                <input class="form-control" type="number" id="DayHours" value="@Model.HoursWorked" min="0.00" max="@defaultDayHours">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="divMoneyTrans">
+                                                        <div class="form-group row">
+                                                            <label class="col-md-4 col-form-label">Amount: <span class="text-danger">*</span></label>
+                                                            <div class="col-md-5">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="pt-2 pr-2">$</span>
+                                                                    </div>
+                                                                    <input class="form-control" type="number" id="TransAmt" value="@Model.HoursWorked">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">Note: <span class="text-danger">*</span></label>
+                                                        <div class="col-md-8">
+                                                            <textarea rows="2" class="form-control" id="TransNote" >@Model.sTDesc</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section mt-2">
+                        <div id="" class="align-content-md-start submit-in-processing" style="display:none;">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                        </div>
+                        <button id="btnSaveEditTransaction" class="btn btn-primary submit-btn btn-sm">Submit</button>
+                        <button id="btnCancel" class="btn btn-primary  submit-btn btn-sm" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </div>
+            </div>
+       
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#divTransactionAlert").hide();
+        $("#divMoneyTrans").hide();
+        debugger;
+        $("#TransTypeId").val('@CurrentTransVal');
+        setTransfield(true);
+        getTimeOffTypeDetail();
+
+        $("#TransTypeId").change(function () {
+            debugger;
+            setTransfield(false);
+            getTimeOffTypeDetail();
+
+        });
+        $("#DayHours").change(function () {
+            debugger;
+            var newDayHours = $(this).val();
+            if (newDayHours >@defaultDayHours || newDayHours < 0) {
+                $(this).val(@defaultDayHours);
+            }
+
+            getTimeOffTypeDetail();
+
+        });
+
+        $("#btnSaveEditTransaction").click(function () {
+            debugger;
+            var dataObject = new Object();
+            var transInfo = $('#TransTypeId').val().split(',');
+            dataObject.EmployeeId = '@Model.e_id';
+            dataObject.TransType = $("#TransTypeId option:selected").text();
+            dataObject.TimeOffDayHours = isMoneyTrans() ? $("#TransAmt").val() : $("#DayHours").val();
+            dataObject.ReferenceIds = '@Model.tppID';
+            dataObject.AccrualType = transInfo[1];
+            dataObject.IsMoneyTrans = isMoneyTrans()
+            dataObject.TransNote = $("#TransNote").val();
+
+            saveEditTransactionData(dataObject);
+        });
+
+    });
+
+    function saveEditTransactionData(dataObject) {
+
+        var isRequiredValidated = 0;
+            var isValidated = true;
+            var message = "";
+
+            if (dataObject != null) {
+                isRequiredValidated += dataObject.TransType.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObject.TimeOffDayHours.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObject.TransNote.trim().length > 0 ? 1 : 0;
+                if (isRequiredValidated != 3) {
+                    isValidated = false;
+                    message = " Missing Required field(s)";
+                }
+                if (!isValidated) {
+                    showAlertAutoHide("", 'Error', message);
+                    return;
+                }
+                disabledSubmitAction(true);
+                $.ajax({
+                    type: "POST",
+                    url: '/EmployeeTimesheetEditor/SaveEditTransaction',
+                    data: JSON.stringify(dataObject),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        debugger;
+                        disabledSubmitAction(false);
+                        if (data.status == "Success") {
+                            showAlertAutoHide("", data.status, data.message);
+                            $("#timesheetEditTransaction_modal").modal("hide");
+                            getEditPunchDateDetail('@selectedTSDIds');
+                        }
+                        else {
+                            showAlertAutoHide("", data.status, data.message);
+                        }
+
+                    },
+                    error: function () {
+                        disabledSubmitAction(false);
+                    }
+                });
+            }
+    }
+
+    function getTimeOffTypeDetail() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.EmployeeId = '@Model.e_id';
+        dataObject.AccrualType = $('#TransTypeId').val().split(',')[1];
+        dataObject.TransType = $("#TransTypeId option:selected").text();
+        $("#spanLicenseTypeId").text(dataObject.AccrualType);
+        renderTransactionDates();
+
+        //if (dataObject.AccrualType == "" || dataObject.AccrualType == "NO") {
+        //    //$("#spanLicenseTypeBalance").text("N/A");
+        //    renderTransactionDates();
+        //    return;
+        //}
+        //$.ajax({
+        //    url: "/EmployeeTimeOffRequest/AjaxGetTimeOffDetail",
+        //    type: "POST",
+        //    data: JSON.stringify(dataObject),
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //    success: function (data) {
+        //        debugger;
+        //        if (data.status == "Success") {
+        //            console.log(data.timeOffTypeData);
+        //            //$("#spanLicenseTypeBalance").text(data.timeOffTypeData.Balance + " Hrs");
+        //            renderTransactionDates();
+        //        }
+        //        else if (data.status == "Error") {
+
+        //            showAlertAutoHide("", "Error", data.message);
+        //        }
+
+        //    }
+        //    ,
+        //    error: function (data) {
+        //        showAlertAutoHide("", "Error", data.message);
+
+        //    }
+        //});
+    }
+    function renderTransactionDates() {
+        //$(".loading").hide();
+        //debugger;
+        var dataObject = new Object();
+        var transInfo = $('#TransTypeId').val().split(',');
+        dataObject.EmployeeId = '@Model.e_id';
+        dataObject.TransType = transInfo[0];
+        dataObject.TimeOffDayHours = $("#DayHours").val();
+        dataObject.ReferenceIds = '@selectedTSDIds';
+        dataObject.AccrualType = transInfo[1];
+        dataObject.CurrentAccrualType = '@CurrentAccrualType'
+        dataObject.CurrentDayHours = '@Model.HoursWorked'
+
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeTimeSheetEditor/AjaxRenderTransactionDates',
+            data: JSON.stringify(dataObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divTransactionDates").html(data);
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function setTransfield(isFirstTime) {
+        var defaultHrs = isFirstTime ? '@Model.HoursWorked':'@defaultDayHours';
+
+        if (isMoneyTrans() == true) {
+            $("#divMoneyTrans").show();
+            $("#divHrsTrans").hide();
+            $("#DayHours").val('0.00');
+        }
+        else {
+
+            $("#divMoneyTrans").hide();
+            $("#divHrsTrans").show();
+            $("#DayHours").val(defaultHrs);
+            $("#TransAmt").val('0.00');
+        }
+    }
+    function isMoneyTrans() {
+        var isMoney = false;
+        var transInfo = $('#TransTypeId').val().split(',');
+        if (transInfo.length = 3) {
+            if (transInfo[2] == "1")
+                isMoney = true;
+        }
+        return isMoney;
+    }
+</script>
+
+
+
+

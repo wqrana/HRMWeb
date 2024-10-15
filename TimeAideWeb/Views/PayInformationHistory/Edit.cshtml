@@ -1,0 +1,319 @@
+﻿@*@model TimeAide.Web.Models.PayInformationHistory
+    @Html.HiddenFor(model => model.UserInformationId)
+    <input id="PayInformationHistoryId" name="PayInformationHistoryId" type="hidden" value="@Model.Id">
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row" style="padding-top:10px">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.StartDate, "Start Date")
+            </label>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.RateAmount, "Rate")
+            </label>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.RateAmount, new { htmlAttributes = new { @class = "form-control", onblur = "SelectedIndexChanged()" } })
+                @Html.ValidationMessageFor(model => model.RateAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.RateFrequencyId, "Rate Frequency")
+            </label>
+            <div class="col-md-3">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.RateFrequency>("RateFrequencyId", null, Model.RateFrequencyId, htmlAttributes: new { @class = "form-control", onchange = "SelectedIndexChanged()" }))
+                @Html.ValidationMessageFor(model => model.RateFrequencyId, "", new { @class = "text-danger" })
+            </div>
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.PayFrequencyId, "Pay Frequency")
+            </label>
+            <div class="col-md-3">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.PayFrequency>("PayFrequencyId", null, Model.PayFrequencyId, htmlAttributes: new { @class = "form-control", onchange = "SelectedIndexChanged()" }))
+                @Html.ValidationMessageFor(model => model.PayFrequencyId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Hourly Rate
+            </label>
+            <div class="col-md-3">
+                <input type="text" id="txtHourlyRate" disabled="disabled" class="form-control" />
+                @foreach (SelectListItem eachItem in ViewBag.RateFrequencyMultiplierId)
+                {
+                    <input type="hidden" id='@String.Format("txtRateFrequencyHour{0}",eachItem.Value)' value="@eachItem.Text" />
+                }
+            </div>
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Period Hours
+            </label>
+            <div class="col-md-3">
+                <input type="text" id="txtPeriodHours" disabled="disabled" class="form-control" />
+                @foreach (SelectListItem eachItem in ViewBag.HourlyMultiplierId)
+                {
+                    <input type="hidden" id='@String.Format("txtPeriodHour{0}",eachItem.Value)' value="@eachItem.Text"/>
+                }
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Period Gross Pay
+            </label>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.PeriodGrossPay, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+            </div>
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                Yearly Gross Pay
+            </label>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.YearlyGrossPay, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.PayScaleId, "Pay Scale")
+            </label>
+            <div class="col-md-3">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.PayScale>("PayScaleId", null, Model.PayScaleId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.PayScaleId, "", new { @class = "text-danger" })
+            </div>
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.PayTypeId, "Pay Type")
+            </label>
+            <div class="col-md-3">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.PayType>("PayTypeId", null, Model.PayTypeId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.PayTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.EEOCategoryId, "EEO Category")
+            </label>
+            <div class="col-md-3">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.EEOCategory>("EEOCategoryId", null, Model.EEOCategoryId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.EEOCategoryId, "", new { @class = "text-danger" })
+            </div>
+            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.WCClassCodeId, "WC Class")
+            </label>
+            <div class="col-md-3">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.WCClassCode>("WCClassCodeId", null, Model.WCClassCodeId, Model.WCClassCodeId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.WCClassCodeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="submit-section">
+            <button type="button" id="btnAddPayInformationHistory" class="btn btn-primary submit-btn">Save</button>
+            <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[id*=Date]').each(function () {
+                $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+            });
+            SelectedIndexChanged();
+        });
+
+        function SelectedIndexChanged() {
+            debugger
+            var selectedRateFreq = $('#RateFrequencyId  :selected').val();
+            var selectedPayFreq = $('#PayFrequencyId  :selected').val();
+            var periodHours = $('#txtPeriodHour' + selectedPayFreq ).val();
+            var rateHours = $('#txtRateFrequencyHour' + selectedRateFreq).val();
+            var payRate = $("#RateAmount").val();
+            var hourlyRate = payRate / rateHours;
+            $('#txtPeriodHours').val(periodHours);
+            $('#txtHourlyRate').val(hourlyRate);
+            $("#YearlyGrossPay").val(parseFloat(hourlyRate * 2080, 10).toFixed(2));
+            $("#PeriodGrossPay").val(parseFloat(hourlyRate * periodHours, 10).toFixed(2));
+
+            //$("#YearlyGrossPay").val($("#RateAmount").val() * 2080);
+            //$("#PeriodGrossPay").val($("#RateAmount").val() * 2080);
+            /*'Hourly Rate = PayRate / HourlyMultiplier from RateFrequency for ‘Rate Frequency’ selection
+            'Period Gross Pay = Hourly Rate * HourlyMultiplier from RateFrequency for ‘Pay Frequency’ selection for the Client
+            'Yearly Gross Pay = Hourly Rate * HourlyMultiplier from for Yearly value in RateFrequency for the Client
+            'Period Hours Box refers to HourlyMultiplier from RateFrequency for ‘Pay Frequency’ selection for the Client.Example: Biweekly -> 80 hours(depending on the client configuration)
+            */
+        }
+    </script>
+    <style>
+        .modal-dialog {
+            width: 1000px;
+            max-width: 1000px !important;
+        }
+    </style>*@
+
+@model TimeAide.Web.Models.PayInformationHistory
+@Html.HiddenFor(model => model.UserInformationId)
+<input id="PayInformationHistoryId" name="PayInformationHistoryId" type="hidden" value="@Model.Id">
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row" style="padding-top:10px">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.StartDate, "Start Date")
+        </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        </div>
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.RateAmount, "Base Rate")
+        </label>
+        <div class="col-md-2 pr-0">
+            @Html.EditorFor(model => model.RateAmount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RateAmount, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2 pl-0">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.RateFrequency>("RateFrequencyId", null, Model.RateFrequencyId, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.RateFrequencyId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Hourly Base Rate
+        </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.HourlyRate, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            @*<input type="text" id="txtHourlyRate" disabled="disabled" class="form-control" />
+                @foreach (SelectListItem eachItem in ViewBag.RateFrequencyMultiplierId)
+                {
+                    <input type="hidden" id='@String.Format("txtRateFrequencyHour{0}",eachItem.Value)' value="@eachItem.Text" />
+                }*@
+        </div>
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.CommRateAmount, "Comm. Rate")
+        </label>
+        <div class="col-md-2 pr-0">
+            @Html.EditorFor(model => model.CommRateAmount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CommRateAmount, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2 pl-0">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.RateFrequency>("CommRateFrequencyId", null, Model.CommRateFrequencyId, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.RateFrequencyId, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.PayFrequencyId, "Pay Frequency")
+        </label>
+        <div class="col-md-3">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.PayFrequency>("PayFrequencyId", null, Model.PayFrequencyId, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.PayFrequencyId, "", new { @class = "text-danger" })
+        </div>
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.PeriodHours, "Period Hours")
+        </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.PeriodHours, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PeriodHours, "", new { @class = "text-danger" })
+        </div>
+        @*<label class="col-md-2 col-form-label" style="margin-left:10px">
+                Period Hours
+            </label>
+            <div class="col-md-3">
+                <input type="text" id="txtPeriodHours" disabled="disabled" class="form-control" />
+                @foreach (SelectListItem eachItem in ViewBag.HourlyMultiplierId)
+                {
+                    <input type="hidden" id='@String.Format("txtPeriodHour{0}",eachItem.Value)' value="@eachItem.Text" />
+                }
+            </div>*@
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Period Base Pay
+        </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.PeriodGrossPay, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+        </div>
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Yearly Base Pay
+        </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.YearlyGrossPay, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Yearly Comm. Pay
+        </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.YearlyCommBasePay, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+        </div>
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            Yearly Gross Pay
+        </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.YearlyBaseNCommPay, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.PayScaleId, "Pay Scale")
+        </label>
+        <div class="col-md-3">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.PayScale>("PayScaleId", null, Model.PayScaleId, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.PayScaleId, "", new { @class = "text-danger" })
+        </div>
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.PayTypeId, "Pay Type")
+        </label>
+        <div class="col-md-3">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.PayType>("PayTypeId", null, Model.PayTypeId, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.PayTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.EEOCategoryId, "EEO Category")
+        </label>
+        <div class="col-md-3">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.EEOCategory>("EEOCategoryId", null, Model.EEOCategoryId, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.EEOCategoryId, "", new { @class = "text-danger" })
+        </div>
+        <label class="col-md-2 col-form-label" style="margin-left:10px">
+            @Html.LabelFor(model => model.WCClassCodeId, "WC Class")
+        </label>
+        <div class="col-md-3">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.WCClassCode>("WCClassCodeId", null, Model.WCClassCodeId, Model.WCClassCodeId, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.WCClassCodeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="submit-section">
+        <button type="button" id="btnEditPayInformationHistory" class="btn btn-primary submit-btn">Save</button>
+        <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+       
+        //SelectedIndexChanged();
+        $('#RateAmount,#RateFrequencyId').on('change', function () {
+            debugger;
+            getHourlyBaseRate();
+        });
+        $('#PayFrequencyId').on('change', function () {
+            getPayPeriodHours();
+        });
+        $('#CommRateAmount,#CommRateFrequencyId,#PeriodHours').on('change', function () {
+            debugger;
+            ajaxPayCalculation();
+        });
+    });
+  
+</script>
+<style>
+    .modal-dialog {
+        width: 1000px;
+        max-width: 1000px !important;
+    }
+</style>

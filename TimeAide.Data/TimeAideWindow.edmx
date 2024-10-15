@@ -1,0 +1,2095 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TIMEAIDE_7_PSICOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tAccrualTypes">
+          <Key>
+            <PropertyRef Name="sAccrualCodeID" />
+          </Key>
+          <Property Name="sAccrualCodeID" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="sAccrualTypeDesc" Type="nvarchar" MaxLength="50" />
+          <Property Name="intAccrualType" Type="int" />
+        </EntityType>
+        <EntityType Name="tAuditInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DTTimeStamp" Type="datetime" />
+          <Property Name="nAdminID" Type="int" />
+          <Property Name="sAdminName" Type="nvarchar" MaxLength="30" />
+          <Property Name="sAdminAction" Type="nvarchar" MaxLength="30" />
+          <Property Name="sRecordAffected" Type="nvarchar" MaxLength="30" />
+          <Property Name="nUserIDAffected" Type="int" />
+          <Property Name="sUserNameAffected" Type="nvarchar" MaxLength="30" />
+          <Property Name="sFieldName" Type="nvarchar" MaxLength="30" />
+          <Property Name="PrevValue" Type="nvarchar" MaxLength="30" />
+          <Property Name="NewValue" Type="nvarchar" MaxLength="30" />
+          <Property Name="nWeekID" Type="bigint" />
+          <Property Name="sNote" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tblCompanyPayrollInformation">
+          <Key>
+            <PropertyRef Name="strCompanyName" />
+          </Key>
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strAddress1" Type="nvarchar" MaxLength="50" />
+          <Property Name="strAddress2" Type="nvarchar" MaxLength="50" />
+          <Property Name="strCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="strState" Type="nvarchar" MaxLength="50" />
+          <Property Name="strZipCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="strCountry" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="strFax" Type="nvarchar" MaxLength="50" />
+          <Property Name="strEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="strWebSite" Type="nvarchar" MaxLength="50" />
+          <Property Name="strContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollName" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollAddress1" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollAddress2" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollCountry" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollState" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollZipCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="strEIN" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strPayrollFax" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollContactTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="strPayrollContactPhone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strPayrollEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtCompanyStartDate" Type="date" />
+          <Property Name="strSICCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strNAICSCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strSeguroChoferilAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strDepartamentoDelTrabajoAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="decDepartamentoDelTrabajoRate" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSS_TimeOffRequest">
+          <Key>
+            <PropertyRef Name="intTORUniqueID" />
+          </Key>
+          <Property Name="intTORUniqueID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intUserID" Type="int" />
+          <Property Name="strTransType" Type="nvarchar" MaxLength="50" />
+          <Property Name="bitSingleDay" Type="bit" />
+          <Property Name="dtStartDate" Type="date" />
+          <Property Name="dtEndDate" Type="date" />
+          <Property Name="dtDayStart" Type="datetime" />
+          <Property Name="decDayHours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="strRequestNote" Type="nvarchar" MaxLength="500" />
+          <Property Name="intTORStatusID" Type="int" />
+          <Property Name="dtTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSS_TransdefTimeOffDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intTransId" Type="int" Nullable="false" />
+          <Property Name="sDocumentName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intDocumentType" Type="int" />
+          <Property Name="intSubmissionType" Type="int" />
+          <Property Name="intTimeOffDays" Type="int" />
+        </EntityType>
+        <EntityType Name="tblSS_TransdefTimeOffRequest">
+          <Key>
+            <PropertyRef Name="strTransName" />
+          </Key>
+          <Property Name="strTransName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intTimeOffRequest" Type="int" Nullable="false" />
+          <Property Name="intWorkFlowID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTAEDetail">
+          <Key>
+            <PropertyRef Name="intTAEDetailID" />
+          </Key>
+          <Property Name="intTAEDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="strBatchID" Type="nvarchar" MaxLength="50" />
+          <Property Name="strBatchDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strCompensationName" Type="nvarchar" MaxLength="50" />
+          <Property Name="decPayRate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="decHours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="intEditType" Type="int" />
+          <Property Name="dtPunchDate" Type="date" Nullable="false" />
+          <Property Name="decPay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intCompanyID" Type="int" />
+          <Property Name="intDepartmentID" Type="int" />
+          <Property Name="intSubdepartmentID" Type="int" />
+          <Property Name="intEmployeeType" Type="int" />
+          <Property Name="intTAESignID" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTAESignature">
+          <Key>
+            <PropertyRef Name="intTAESignID" />
+          </Key>
+          <Property Name="intTAESignID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intMonth" Type="int" Nullable="false" />
+          <Property Name="intYear" Type="int" Nullable="false" />
+          <Property Name="dtEmployeeDateTime" Type="datetime" />
+          <Property Name="strEmployeeEntry" Type="nvarchar" MaxLength="200" />
+          <Property Name="bitEmployeeSigned" Type="bit" />
+          <Property Name="dtSupervisorDateTime" Type="datetime" />
+          <Property Name="strSupervisorEntry" Type="nvarchar" MaxLength="200" />
+          <Property Name="bitSupervisorSigned" Type="bit" />
+          <Property Name="intSupervisorID" Type="int" />
+        </EntityType>
+        <EntityType Name="tCompany">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
+          <Property Name="nPayRuleID" Type="int" />
+          <Property Name="nSchedID" Type="int" />
+        </EntityType>
+        <EntityType Name="tDept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
+          <Property Name="nCompanyID" Type="int" />
+          <Property Name="boolUSECFSEAssignment" Type="bit" Nullable="false" />
+          <Property Name="strCFSECode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="decCFSECompanyPercent" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tEmployeeType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
+          <Property Name="nCompanyID" Type="int" />
+        </EntityType>
+        <EntityType Name="tJobTitle">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
+          <Property Name="nDeptID" Type="int" />
+          <Property Name="boolUSECFSEAssignment" Type="bit" Nullable="false" />
+          <Property Name="strCFSECode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="decCFSECompanyPercent" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tPunchData">
+          <Key>
+            <PropertyRef Name="tpdID" />
+          </Key>
+          <Property Name="tpdID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DTPunchDate" Type="smalldatetime" />
+          <Property Name="DTPunchDateTime" Type="smalldatetime" />
+          <Property Name="g_id" Type="int" />
+          <Property Name="e_id" Type="int" />
+          <Property Name="e_name" Type="nvarchar" MaxLength="30" />
+          <Property Name="e_idno" Type="nvarchar" MaxLength="30" />
+          <Property Name="e_group" Type="smallint" />
+          <Property Name="e_user" Type="nvarchar" MaxLength="1" />
+          <Property Name="e_mode" Type="nvarchar" MaxLength="1" />
+          <Property Name="e_type" Type="nvarchar" MaxLength="1" />
+          <Property Name="e_result" Type="nvarchar" MaxLength="1" />
+          <Property Name="b_Processed" Type="bit" />
+          <Property Name="b_Modified" Type="bit" />
+          <Property Name="nAdminID" Type="int" />
+          <Property Name="sModType" Type="nvarchar" MaxLength="3" />
+          <Property Name="nJobCodeID" Type="int" />
+          <Property Name="sNote" Type="nvarchar" MaxLength="30" />
+          <Property Name="nPunchType" Type="int" />
+          <Property Name="intTerminalType" Type="int" />
+          <Property Name="DTPunchdate_Original" Type="smalldatetime" />
+          <Property Name="DTPunchDateTime_Original" Type="smalldatetime" />
+          <Property Name="DTPunchDateTime_Rounded" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tPunchDate">
+          <Key>
+            <PropertyRef Name="tpdID" />
+          </Key>
+          <Property Name="tpdID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="e_id" Type="int" Nullable="false" />
+          <Property Name="e_idno" Type="nvarchar" MaxLength="14" />
+          <Property Name="e_name" Type="nvarchar" MaxLength="30" />
+          <Property Name="e_group" Type="smallint" />
+          <Property Name="nSchedID" Type="int" />
+          <Property Name="DayID" Type="nvarchar" MaxLength="16" />
+          <Property Name="DTPunchDate" Type="smalldatetime" />
+          <Property Name="dblPunchHrs" Type="float" />
+          <Property Name="sType" Type="nvarchar" MaxLength="20" />
+          <Property Name="b_Processed" Type="bit" />
+          <Property Name="sPunchSummary" Type="nvarchar" MaxLength="200" />
+          <Property Name="sExceptions" Type="nvarchar" MaxLength="50" />
+          <Property Name="sDaySchedule" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHoursSummary" Type="nvarchar" MaxLength="150" />
+          <Property Name="bLocked" Type="bit" />
+          <Property Name="dblREGULAR" Type="float" />
+          <Property Name="dblONEHALF" Type="float" />
+          <Property Name="dblDOUBLE" Type="float" />
+          <Property Name="sWeekID" Type="nvarchar" MaxLength="30" />
+          <Property Name="nCompanyID" Type="int" />
+          <Property Name="nDeptID" Type="int" />
+          <Property Name="nEmployeeTypeID" Type="int" />
+          <Property Name="dblMEAL" Type="float" />
+          <Property Name="dblOTHERS" Type="float" />
+          <Property Name="nAbsentStatus" Type="int" />
+          <Property Name="nJobTitleID" Type="int" />
+          <Property Name="nWeekID" Type="bigint" />
+          <Property Name="intPayrollLock" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tPunchPair">
+          <Key>
+            <PropertyRef Name="tppID" />
+          </Key>
+          <Property Name="tppID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="e_id" Type="int" />
+          <Property Name="e_idno" Type="nvarchar" MaxLength="14" />
+          <Property Name="e_name" Type="nvarchar" MaxLength="30" />
+          <Property Name="DTPunchDate" Type="smalldatetime" />
+          <Property Name="DTimeIn" Type="smalldatetime" />
+          <Property Name="DTimeOut" Type="smalldatetime" />
+          <Property Name="HoursWorked" Type="float" />
+          <Property Name="sType" Type="nvarchar" MaxLength="30" />
+          <Property Name="pCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="b_Processed" Type="bit" />
+          <Property Name="DayID" Type="nvarchar" MaxLength="16" />
+          <Property Name="bTrans" Type="bit" />
+          <Property Name="sTCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="sTDesc" Type="nvarchar" MaxLength="50" />
+          <Property Name="sTimeIn" Type="nvarchar" MaxLength="25" />
+          <Property Name="sTimeOut" Type="nvarchar" MaxLength="25" />
+          <Property Name="nWeekID" Type="bigint" />
+          <Property Name="nIsTransAbsent" Type="int" />
+          <Property Name="nPunchDateDayOfWeek" Type="int" />
+          <Property Name="nHRAttendanceCat" Type="int" />
+          <Property Name="nHRProcessedCode" Type="int" />
+          <Property Name="nHRReportCode" Type="int" />
+          <Property Name="nJobCodeID" Type="int" />
+        </EntityType>
+        <EntityType Name="tReportWeek">
+          <Key>
+            <PropertyRef Name="tpwID" />
+          </Key>
+          <Property Name="tpwID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="e_id" Type="int" />
+          <Property Name="e_idno" Type="nvarchar" MaxLength="14" />
+          <Property Name="e_name" Type="nvarchar" MaxLength="30" />
+          <Property Name="nPayRuleID" Type="int" />
+          <Property Name="sPayRuleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="nPayWeekNum" Type="int" />
+          <Property Name="DTStartDate" Type="smalldatetime" />
+          <Property Name="DTEndDate" Type="smalldatetime" />
+          <Property Name="dblREGULAR" Type="float" />
+          <Property Name="dblONEHALF" Type="float" />
+          <Property Name="dblDOUBLE" Type="float" />
+          <Property Name="sHoursSummary" Type="nvarchar" MaxLength="175" />
+          <Property Name="sWeekID" Type="nvarchar" MaxLength="30" />
+          <Property Name="nDept" Type="int" />
+          <Property Name="sDeptName" Type="nvarchar" MaxLength="30" />
+          <Property Name="nCompID" Type="int" />
+          <Property Name="sCompanyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="nEmployeeType" Type="int" />
+          <Property Name="sEmployeeTypeName" Type="nvarchar" MaxLength="30" />
+          <Property Name="nJobTitleID" Type="int" />
+          <Property Name="sJobTitleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="nScheduleID" Type="int" />
+          <Property Name="sScheduleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="nPayPeriod" Type="int" />
+          <Property Name="nReviewStatus" Type="int" />
+          <Property Name="nReviewSupervisorID" Type="int" />
+          <Property Name="sSupervisorName" Type="nvarchar" MaxLength="50" />
+          <Property Name="nWeekID" Type="bigint" />
+          <Property Name="dblMEAL" Type="float" />
+          <Property Name="dblOTHERS" Type="float" />
+          <Property Name="nLocked" Type="int" />
+          <Property Name="intUserReviewed" Type="int" Nullable="false" />
+          <Property Name="intUserReviewedID" Type="int" />
+          <Property Name="strUserReviewedName" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtUserReviewDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tSchedModDailyDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nUserID" Type="int" />
+          <Property Name="sUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="sWeekID" Type="nvarchar" MaxLength="30" />
+          <Property Name="sNote" Type="nvarchar" MaxLength="50" />
+          <Property Name="dPunchDate" Type="datetime" />
+          <Property Name="dPunchIn1" Type="datetime" />
+          <Property Name="dPunchOut1" Type="datetime" />
+          <Property Name="dPunchIn2" Type="datetime" />
+          <Property Name="dPunchOut2" Type="datetime" />
+          <Property Name="dPunchIn3" Type="datetime" />
+          <Property Name="dPunchOut3" Type="datetime" />
+          <Property Name="dPunchIn4" Type="datetime" />
+          <Property Name="dPunchOut4" Type="datetime" />
+          <Property Name="nWorkDayType" Type="int" />
+          <Property Name="dblDayHours" Type="float" />
+          <Property Name="nSupervisorID" Type="int" />
+          <Property Name="dModifiedDate" Type="datetime" />
+          <Property Name="nPunchNum" Type="int" />
+          <Property Name="nPayWeekNum" Type="int" />
+          <Property Name="nJobCodeID" Type="int" />
+          <Property Name="nSchedModPeriodSumm" Type="int" />
+        </EntityType>
+        <EntityType Name="tSchedModPeriodSumm">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nUserID" Type="int" />
+          <Property Name="sUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="sWeekID" Type="nvarchar" MaxLength="30" />
+          <Property Name="sNote" Type="nvarchar" MaxLength="50" />
+          <Property Name="dStartDate" Type="datetime" />
+          <Property Name="dEndDate" Type="datetime" />
+          <Property Name="dblPeriodHours" Type="float" />
+          <Property Name="nSupervisorID" Type="int" />
+          <Property Name="dModifiedDate" Type="datetime" />
+          <Property Name="nPayPeriodType" Type="int" />
+          <Property Name="nPayWeekNum" Type="int" />
+        </EntityType>
+        <EntityType Name="tSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="sDesc" Type="nvarchar" MaxLength="30" />
+          <Property Name="nPunchNum" Type="int" />
+          <Property Name="nPunchCode" Type="int" />
+          <Property Name="bSunday" Type="bit" />
+          <Property Name="bMonday" Type="bit" />
+          <Property Name="bTuesday" Type="bit" />
+          <Property Name="bWednesday" Type="bit" />
+          <Property Name="bThursday" Type="bit" />
+          <Property Name="bFriday" Type="bit" />
+          <Property Name="bSaturday" Type="bit" />
+          <Property Name="nCompanyID" Type="int" />
+          <Property Name="nShiftDiff" Type="int" />
+          <Property Name="sShiftDiffName" Type="nvarchar" MaxLength="10" />
+          <Property Name="sShiftDiffCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="nShiftDiffCount" Type="int" />
+          <Property Name="dShiftDiffStart" Type="smalldatetime" />
+          <Property Name="dShiftDiffEnd" Type="smalldatetime" />
+          <Property Name="sShiftDiffName2" Type="nvarchar" MaxLength="10" />
+          <Property Name="sShiftDiffCode2" Type="nvarchar" MaxLength="10" />
+          <Property Name="dShiftDiffStart2" Type="smalldatetime" />
+          <Property Name="dShiftDiffEnd2" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="tScheduleDayInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nSchedID" Type="int" />
+          <Property Name="nDayofWeek" Type="int" />
+          <Property Name="bRight" Type="bit" />
+          <Property Name="bOvernight" Type="bit" />
+          <Property Name="dIn1Hr" Type="smalldatetime" />
+          <Property Name="dOut1Hr" Type="smalldatetime" />
+          <Property Name="dIn2Hr" Type="smalldatetime" />
+          <Property Name="dOut2Hr" Type="smalldatetime" />
+          <Property Name="dIn3Hr" Type="smalldatetime" />
+          <Property Name="dOut3Hr" Type="smalldatetime" />
+          <Property Name="dIn4Hr" Type="smalldatetime" />
+          <Property Name="dOut4Hr" Type="smalldatetime" />
+          <Property Name="nJobCodeID" Type="int" />
+        </EntityType>
+        <EntityType Name="tTransDef">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="nTCode" Type="int" />
+          <Property Name="sTDesc" Type="nvarchar" MaxLength="30" />
+          <Property Name="pCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="nIsAbsent" Type="int" />
+          <Property Name="nAttendaceCategory" Type="int" />
+          <Property Name="sAttendanceCategory" Type="nvarchar" MaxLength="50" />
+          <Property Name="nParentCode" Type="int" />
+          <Property Name="sParentCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="nAccrualType" Type="int" />
+          <Property Name="sAccrualType" Type="nvarchar" MaxLength="50" />
+          <Property Name="sAccrualImportName" Type="nvarchar" MaxLength="30" />
+          <Property Name="nAttendanceRevision" Type="int" />
+          <Property Name="nTardinessRevision" Type="int" />
+          <Property Name="nCountsForVacationAccrual" Type="int" />
+          <Property Name="nCountsForSickAccrual" Type="int" />
+          <Property Name="dblPayRateMultiplier" Type="float" />
+          <Property Name="dblAdditionalPayAmount" Type="float" />
+          <Property Name="nCountForCompensationAccruals" Type="int" />
+          <Property Name="sCountForCompensationAccruals" Type="nvarchar" MaxLength="50" />
+          <Property Name="nIsMoneyTrans" Type="int" />
+          <Property Name="nIsMoneyAmountFixed" Type="int" />
+          <Property Name="decMoneyAmount" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="nAttendanceRevLetter" Type="int" />
+          <Property Name="nTardinessRevLetter" Type="int" />
+          <Property Name="nCompforCompensationAccrual" Type="int" />
+          <Property Name="sCompforCompensationAccrual" Type="nvarchar" MaxLength="50" />
+          <Property Name="decPayRateMultiplier" Type="decimal" Precision="16" Scale="2" />
+          <Property Name="decPayRateOffset" Type="decimal" Precision="16" Scale="2" />
+          <Property Name="nPayRateTransaction" Type="int" />
+          <Property Name="boolUseSickInFamily" Type="bit" Nullable="false" />
+          <Property Name="decMinimumAccrualTypeBalance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="decMaximumYearlyTaken" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="boolUseForTimesheetEditor" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tuser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" />
+          <Property Name="reg_date" Type="varchar" MaxLength="12" />
+          <Property Name="datelimit" Type="varchar" MaxLength="17" />
+          <Property Name="idno" Type="varchar" MaxLength="30" />
+          <Property Name="badmin" Type="varchar" MaxLength="1" />
+          <Property Name="padmin" Type="int" />
+          <Property Name="company" Type="varchar" MaxLength="30" />
+          <Property Name="dept" Type="varchar" MaxLength="30" />
+          <Property Name="phone" Type="varchar" MaxLength="50" />
+          <Property Name="group_id" Type="smallint" />
+          <Property Name="cantgate" Type="image" />
+          <Property Name="timegate" Type="image" />
+          <Property Name="validtype" Type="varchar" MaxLength="1" />
+          <Property Name="pwd" Type="varchar" MaxLength="8" />
+          <Property Name="cancard" Type="varchar" MaxLength="1" />
+          <Property Name="cardnum" Type="varchar" MaxLength="20" />
+          <Property Name="identify" Type="varchar" MaxLength="1" />
+          <Property Name="seculevel" Type="varchar" MaxLength="1" />
+          <Property Name="fpdata" Type="image" />
+          <Property Name="fpimage" Type="image" />
+          <Property Name="fpname" Type="image" />
+          <Property Name="face" Type="image" />
+          <Property Name="voice" Type="image" />
+          <Property Name="remark" Type="varchar" MaxLength="50" />
+          <Property Name="antipass_state" Type="int" />
+          <Property Name="antipass_lasttime" Type="varchar" MaxLength="14" />
+          <Property Name="nCompanyID" Type="int" />
+          <Property Name="nDeptID" Type="int" />
+          <Property Name="nJobTitleID" Type="int" />
+          <Property Name="nGroupID" Type="int" />
+          <Property Name="nEmployeeType" Type="int" />
+          <Property Name="nStatus" Type="int" />
+          <Property Name="sNotes" Type="nvarchar" MaxLength="50" />
+          <Property Name="objPhoto" Type="image" />
+          <Property Name="nPunchClockID" Type="int" />
+          <Property Name="nPayrollRuleID" Type="int" />
+          <Property Name="nScheduleID" Type="int" />
+          <Property Name="nSupervisorType" Type="int" />
+          <Property Name="sPwd" Type="nvarchar" MaxLength="10" />
+          <Property Name="nCompanyRest" Type="int" />
+          <Property Name="nDeptRest" Type="int" />
+          <Property Name="nCatRest" Type="int" />
+          <Property Name="bEmpRecordsView" Type="bit" />
+          <Property Name="bEmpRecordsEdit" Type="bit" />
+          <Property Name="bEmpReportsView" Type="bit" />
+          <Property Name="bPunchMaintView" Type="bit" />
+          <Property Name="bPunchMaintEdit" Type="bit" />
+          <Property Name="bPunchSuperView" Type="bit" />
+          <Property Name="bReptPeriod" Type="bit" />
+          <Property Name="bReptHistorical" Type="bit" />
+          <Property Name="bReptAudit" Type="bit" />
+          <Property Name="bExportPayroll" Type="bit" />
+          <Property Name="bPayRuleView" Type="bit" />
+          <Property Name="bPayRuleEdit" Type="bit" />
+          <Property Name="bSchedView" Type="bit" />
+          <Property Name="bSchedEdit" Type="bit" />
+          <Property Name="bCompanySettings" Type="bit" />
+          <Property Name="bMonitor" Type="bit" />
+          <Property Name="bEmployeeImport" Type="bit" />
+          <Property Name="bRestrictClock" Type="bit" />
+          <Property Name="nRestrickClock" Type="int" />
+          <Property Name="nSupervisorViewOptions" Type="int" />
+          <Property Name="bHoursLostView" Type="bit" />
+          <Property Name="bHoursLostEdit" Type="bit" />
+          <Property Name="nSickRule" Type="int" />
+          <Property Name="nVacationRule" Type="int" />
+          <Property Name="nEmployeeTypeRest" Type="int" />
+          <Property Name="sPwdHash" Type="nvarchar(max)" />
+          <Property Name="intPositionID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="30" />
+          <Property Name="MiddleInitial" Type="nvarchar" MaxLength="2" />
+          <Property Name="FirstLastName" Type="varchar" MaxLength="30" />
+          <Property Name="SecondLastName" Type="varchar" MaxLength="30" />
+          <Property Name="ShortFullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="200" />
+          <Property Name="AutoShortFullName" Type="int" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TIMEAIDE_7_SOUTHERN.dbo.viewPay_UserBatchStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="viewPay_UserBatchStatus">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="strCompanyName" />
+            <PropertyRef Name="strBatchDescription" />
+            <PropertyRef Name="dtBatchCreated" />
+            <PropertyRef Name="intCreatedByID" />
+            <PropertyRef Name="strCreateByName" />
+            <PropertyRef Name="dtBatchUpdates" />
+            <PropertyRef Name="intBatchStatus" />
+            <PropertyRef Name="dtPayDate" />
+            <PropertyRef Name="intPayWeekNum" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="dtStartDatePeriod" />
+            <PropertyRef Name="dtEndDatePeriod" />
+            <PropertyRef Name="strBatchTypeName" />
+            <PropertyRef Name="intPayMethodType" />
+            <PropertyRef Name="intBatchType" />
+            <PropertyRef Name="intTemplateID" />
+            <PropertyRef Name="intUserBatchStatus" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strBatchDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtBatchCreated" Type="datetime" Nullable="false" />
+          <Property Name="intCreatedByID" Type="int" Nullable="false" />
+          <Property Name="strCreateByName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtBatchUpdates" Type="datetime" Nullable="false" />
+          <Property Name="intBatchStatus" Type="int" Nullable="false" />
+          <Property Name="dtPayDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="decBatchCompensationAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="decBatchDeductionAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="strStatusDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="decBatchTransactionHoursAmount" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="intPayWeekNum" Type="int" Nullable="false" />
+          <Property Name="strUserBatchStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="intUserID" Type="int" Nullable="false" />
+          <Property Name="strUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHomeAddressLine1" Type="nvarchar" MaxLength="50" />
+          <Property Name="sHomeAddressLine2" Type="nvarchar" MaxLength="50" />
+          <Property Name="strCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="strState" Type="nvarchar" MaxLength="50" />
+          <Property Name="strZipCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="decBatchUserCompensations" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="decBatchUserWithholdings" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="decBatchNetPay" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="dtStartDatePeriod" Type="datetime" Nullable="false" />
+          <Property Name="dtEndDatePeriod" Type="datetime" Nullable="false" />
+          <Property Name="intCompanyID" Type="int" />
+          <Property Name="intDepartmentID" Type="int" />
+          <Property Name="intSubdepartmentID" Type="int" />
+          <Property Name="intEmployeeTypeID" Type="int" />
+          <Property Name="strCompany" Type="nvarchar" MaxLength="30" />
+          <Property Name="strDepartment" Type="nvarchar" MaxLength="30" />
+          <Property Name="strSubdepartment" Type="nvarchar" MaxLength="30" />
+          <Property Name="strEmployeeType" Type="nvarchar" MaxLength="30" />
+          <Property Name="sSSN" Type="nvarchar" MaxLength="15" />
+          <Property Name="strBatchTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="intPayMethodType" Type="int" Nullable="false" />
+          <Property Name="strPayMethodType" Type="nvarchar" MaxLength="50" />
+          <Property Name="intBatchType" Type="int" Nullable="false" />
+          <Property Name="intTemplateID" Type="int" Nullable="false" />
+          <Property Name="intUserBatchStatus" Type="int" Nullable="false" />
+          <Property Name="intDirectDepositCount" Type="int" />
+          <Property Name="intCheckCount" Type="int" />
+          <Property Name="ClosedByUserID" Type="int" />
+          <Property Name="ClosedDateTime" Type="datetime" />
+        </EntityType>
+        <Function Name="fnComp_EndOfDayBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="AccrualType" Type="varchar" Mode="In" />
+          <Parameter Name="SearchDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="fnPay_tblUserCompensationsYTD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BATCHID" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="strBatchID" Type="nvarchar" MaxLength="50" />
+                <Property Name="intUserID" Type="int" />
+                <Property Name="strCompensationName" Type="nvarchar" MaxLength="50" />
+                <Property Name="decHours" Type="decimal" Precision="18" Scale="5" />
+                <Property Name="decPay" Type="decimal" Precision="18" Scale="5" />
+                <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" />
+                <Property Name="decPayYTD" Type="decimal" Precision="18" Scale="5" />
+                <Property Name="intReportOrder" Type="int" />
+                <Property Name="decPayRate" Type="decimal" Precision="18" Scale="5" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fnPay_tblUserWithholdingsYTD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BATCHID" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="strBatchID" Type="nvarchar" MaxLength="50" />
+                <Property Name="intUserID" Type="int" />
+                <Property Name="strWithHoldingsName" Type="nvarchar" MaxLength="50" />
+                <Property Name="decWithholdingsAmount" Type="decimal" Precision="18" Scale="2" />
+                <Property Name="decBatchEffectivePay" Type="decimal" Precision="18" Scale="2" />
+                <Property Name="strGLAccount" Type="nvarchar" MaxLength="50" />
+                <Property Name="decWithholdingsYTD" Type="decimal" Precision="18" Scale="2" />
+                <Property Name="intReportOrder" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="spSS_CompensationBalances" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="AccrualType" Type="nvarchar" Mode="In" />
+          <Parameter Name="SearchDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="spSS_TransDefTimeOff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spSS_UpdateTimeOffRequestFromWeb" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TimeOffRequestID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="TIMEAIDE_7_PSICOModelStoreContainer">
+          <EntitySet Name="tAccrualTypes" EntityType="Self.tAccrualTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tAuditInfo" EntityType="Self.tAuditInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCompanyPayrollInformation" EntityType="Self.tblCompanyPayrollInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSS_TimeOffRequest" EntityType="Self.tblSS_TimeOffRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSS_TransdefTimeOffDocument" EntityType="Self.tblSS_TransdefTimeOffDocument" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSS_TransdefTimeOffRequest" EntityType="Self.tblSS_TransdefTimeOffRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTAEDetail" EntityType="Self.tblTAEDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTAESignature" EntityType="Self.tblTAESignature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tCompany" EntityType="Self.tCompany" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tDept" EntityType="Self.tDept" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tEmployeeType" EntityType="Self.tEmployeeType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tJobTitle" EntityType="Self.tJobTitle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tPunchData" EntityType="Self.tPunchData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tPunchDate" EntityType="Self.tPunchDate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tPunchPair" EntityType="Self.tPunchPair" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tReportWeek" EntityType="Self.tReportWeek" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tSchedModDailyDetail" EntityType="Self.tSchedModDailyDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tSchedModPeriodSumm" EntityType="Self.tSchedModPeriodSumm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tSchedule" EntityType="Self.tSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tScheduleDayInfo" EntityType="Self.tScheduleDayInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tTransDef" EntityType="Self.tTransDef" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tuser" EntityType="Self.tuser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viewPay_UserBatchStatus" EntityType="Self.viewPay_UserBatchStatus" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [viewPay_UserBatchStatus].[strBatchID] AS [strBatchID], 
+    [viewPay_UserBatchStatus].[strCompanyName] AS [strCompanyName], 
+    [viewPay_UserBatchStatus].[strBatchDescription] AS [strBatchDescription], 
+    [viewPay_UserBatchStatus].[dtBatchCreated] AS [dtBatchCreated], 
+    [viewPay_UserBatchStatus].[intCreatedByID] AS [intCreatedByID], 
+    [viewPay_UserBatchStatus].[strCreateByName] AS [strCreateByName], 
+    [viewPay_UserBatchStatus].[dtBatchUpdates] AS [dtBatchUpdates], 
+    [viewPay_UserBatchStatus].[intBatchStatus] AS [intBatchStatus], 
+    [viewPay_UserBatchStatus].[dtPayDate] AS [dtPayDate], 
+    [viewPay_UserBatchStatus].[decBatchCompensationAmount] AS [decBatchCompensationAmount], 
+    [viewPay_UserBatchStatus].[decBatchDeductionAmount] AS [decBatchDeductionAmount], 
+    [viewPay_UserBatchStatus].[strStatusDescription] AS [strStatusDescription], 
+    [viewPay_UserBatchStatus].[decBatchTransactionHoursAmount] AS [decBatchTransactionHoursAmount], 
+    [viewPay_UserBatchStatus].[intPayWeekNum] AS [intPayWeekNum], 
+    [viewPay_UserBatchStatus].[strUserBatchStatus] AS [strUserBatchStatus], 
+    [viewPay_UserBatchStatus].[intUserID] AS [intUserID], 
+    [viewPay_UserBatchStatus].[strUserName] AS [strUserName], 
+    [viewPay_UserBatchStatus].[sHomeAddressLine1] AS [sHomeAddressLine1], 
+    [viewPay_UserBatchStatus].[sHomeAddressLine2] AS [sHomeAddressLine2], 
+    [viewPay_UserBatchStatus].[strCity] AS [strCity], 
+    [viewPay_UserBatchStatus].[strState] AS [strState], 
+    [viewPay_UserBatchStatus].[strZipCode] AS [strZipCode], 
+    [viewPay_UserBatchStatus].[decBatchUserCompensations] AS [decBatchUserCompensations], 
+    [viewPay_UserBatchStatus].[decBatchUserWithholdings] AS [decBatchUserWithholdings], 
+    [viewPay_UserBatchStatus].[decBatchNetPay] AS [decBatchNetPay], 
+    [viewPay_UserBatchStatus].[dtStartDatePeriod] AS [dtStartDatePeriod], 
+    [viewPay_UserBatchStatus].[dtEndDatePeriod] AS [dtEndDatePeriod], 
+    [viewPay_UserBatchStatus].[intCompanyID] AS [intCompanyID], 
+    [viewPay_UserBatchStatus].[intDepartmentID] AS [intDepartmentID], 
+    [viewPay_UserBatchStatus].[intSubdepartmentID] AS [intSubdepartmentID], 
+    [viewPay_UserBatchStatus].[intEmployeeTypeID] AS [intEmployeeTypeID], 
+    [viewPay_UserBatchStatus].[strCompany] AS [strCompany], 
+    [viewPay_UserBatchStatus].[strDepartment] AS [strDepartment], 
+    [viewPay_UserBatchStatus].[strSubdepartment] AS [strSubdepartment], 
+    [viewPay_UserBatchStatus].[strEmployeeType] AS [strEmployeeType], 
+    [viewPay_UserBatchStatus].[sSSN] AS [sSSN], 
+    [viewPay_UserBatchStatus].[strBatchTypeName] AS [strBatchTypeName], 
+    [viewPay_UserBatchStatus].[intPayMethodType] AS [intPayMethodType], 
+    [viewPay_UserBatchStatus].[strPayMethodType] AS [strPayMethodType], 
+    [viewPay_UserBatchStatus].[intBatchType] AS [intBatchType], 
+    [viewPay_UserBatchStatus].[intTemplateID] AS [intTemplateID], 
+    [viewPay_UserBatchStatus].[intUserBatchStatus] AS [intUserBatchStatus], 
+    [viewPay_UserBatchStatus].[intDirectDepositCount] AS [intDirectDepositCount], 
+    [viewPay_UserBatchStatus].[intCheckCount] AS [intCheckCount], 
+    [viewPay_UserBatchStatus].[ClosedByUserID] AS [ClosedByUserID], 
+    [viewPay_UserBatchStatus].[ClosedDateTime] AS [ClosedDateTime]
+    FROM [dbo].[viewPay_UserBatchStatus] AS [viewPay_UserBatchStatus]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TIMEAIDE_7_PSICOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tCompany">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nPayRuleID" Type="Int32" />
+          <Property Name="nSchedID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tSchedModDailyDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nUserID" Type="Int32" />
+          <Property Name="sUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sNote" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dPunchDate" Type="DateTime" Precision="3" />
+          <Property Name="dPunchIn1" Type="DateTime" Precision="3" />
+          <Property Name="dPunchOut1" Type="DateTime" Precision="3" />
+          <Property Name="dPunchIn2" Type="DateTime" Precision="3" />
+          <Property Name="dPunchOut2" Type="DateTime" Precision="3" />
+          <Property Name="dPunchIn3" Type="DateTime" Precision="3" />
+          <Property Name="dPunchOut3" Type="DateTime" Precision="3" />
+          <Property Name="dPunchIn4" Type="DateTime" Precision="3" />
+          <Property Name="dPunchOut4" Type="DateTime" Precision="3" />
+          <Property Name="nWorkDayType" Type="Int32" />
+          <Property Name="dblDayHours" Type="Double" />
+          <Property Name="nSupervisorID" Type="Int32" />
+          <Property Name="dModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="nPunchNum" Type="Int32" />
+          <Property Name="nPayWeekNum" Type="Int32" />
+          <Property Name="nJobCodeID" Type="Int32" />
+          <Property Name="nSchedModPeriodSumm" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tSchedModPeriodSumm">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nUserID" Type="Int32" />
+          <Property Name="sUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sNote" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dStartDate" Type="DateTime" Precision="3" />
+          <Property Name="dEndDate" Type="DateTime" Precision="3" />
+          <Property Name="dblPeriodHours" Type="Double" />
+          <Property Name="nSupervisorID" Type="Int32" />
+          <Property Name="dModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="nPayPeriodType" Type="Int32" />
+          <Property Name="nPayWeekNum" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nPunchNum" Type="Int32" />
+          <Property Name="nPunchCode" Type="Int32" />
+          <Property Name="bSunday" Type="Boolean" />
+          <Property Name="bMonday" Type="Boolean" />
+          <Property Name="bTuesday" Type="Boolean" />
+          <Property Name="bWednesday" Type="Boolean" />
+          <Property Name="bThursday" Type="Boolean" />
+          <Property Name="bFriday" Type="Boolean" />
+          <Property Name="bSaturday" Type="Boolean" />
+          <Property Name="nCompanyID" Type="Int32" />
+          <Property Name="nShiftDiff" Type="Int32" />
+          <Property Name="sShiftDiffName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sShiftDiffCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nShiftDiffCount" Type="Int32" />
+          <Property Name="dShiftDiffStart" Type="DateTime" Precision="0" />
+          <Property Name="dShiftDiffEnd" Type="DateTime" Precision="0" />
+          <Property Name="sShiftDiffName2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sShiftDiffCode2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="dShiftDiffStart2" Type="DateTime" Precision="0" />
+          <Property Name="dShiftDiffEnd2" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="tScheduleDayInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nSchedID" Type="Int32" />
+          <Property Name="nDayofWeek" Type="Int32" />
+          <Property Name="bRight" Type="Boolean" />
+          <Property Name="bOvernight" Type="Boolean" />
+          <Property Name="dIn1Hr" Type="DateTime" Precision="0" />
+          <Property Name="dOut1Hr" Type="DateTime" Precision="0" />
+          <Property Name="dIn2Hr" Type="DateTime" Precision="0" />
+          <Property Name="dOut2Hr" Type="DateTime" Precision="0" />
+          <Property Name="dIn3Hr" Type="DateTime" Precision="0" />
+          <Property Name="dOut3Hr" Type="DateTime" Precision="0" />
+          <Property Name="dIn4Hr" Type="DateTime" Precision="0" />
+          <Property Name="dOut4Hr" Type="DateTime" Precision="0" />
+          <Property Name="nJobCodeID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tuser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="reg_date" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="datelimit" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+          <Property Name="idno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="badmin" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="padmin" Type="Int32" />
+          <Property Name="company" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="dept" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="group_id" Type="Int16" />
+          <Property Name="cantgate" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="timegate" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="validtype" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="pwd" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="cancard" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cardnum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="identify" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="seculevel" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="fpdata" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="fpimage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="fpname" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="face" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="voice" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="antipass_state" Type="Int32" />
+          <Property Name="antipass_lasttime" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="nCompanyID" Type="Int32" />
+          <Property Name="nDeptID" Type="Int32" />
+          <Property Name="nJobTitleID" Type="Int32" />
+          <Property Name="nGroupID" Type="Int32" />
+          <Property Name="nEmployeeType" Type="Int32" />
+          <Property Name="nStatus" Type="Int32" />
+          <Property Name="sNotes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="objPhoto" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="nPunchClockID" Type="Int32" />
+          <Property Name="nPayrollRuleID" Type="Int32" />
+          <Property Name="nScheduleID" Type="Int32" />
+          <Property Name="nSupervisorType" Type="Int32" />
+          <Property Name="sPwd" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nCompanyRest" Type="Int32" />
+          <Property Name="nDeptRest" Type="Int32" />
+          <Property Name="nCatRest" Type="Int32" />
+          <Property Name="bEmpRecordsView" Type="Boolean" />
+          <Property Name="bEmpRecordsEdit" Type="Boolean" />
+          <Property Name="bEmpReportsView" Type="Boolean" />
+          <Property Name="bPunchMaintView" Type="Boolean" />
+          <Property Name="bPunchMaintEdit" Type="Boolean" />
+          <Property Name="bPunchSuperView" Type="Boolean" />
+          <Property Name="bReptPeriod" Type="Boolean" />
+          <Property Name="bReptHistorical" Type="Boolean" />
+          <Property Name="bReptAudit" Type="Boolean" />
+          <Property Name="bExportPayroll" Type="Boolean" />
+          <Property Name="bPayRuleView" Type="Boolean" />
+          <Property Name="bPayRuleEdit" Type="Boolean" />
+          <Property Name="bSchedView" Type="Boolean" />
+          <Property Name="bSchedEdit" Type="Boolean" />
+          <Property Name="bCompanySettings" Type="Boolean" />
+          <Property Name="bMonitor" Type="Boolean" />
+          <Property Name="bEmployeeImport" Type="Boolean" />
+          <Property Name="bRestrictClock" Type="Boolean" />
+          <Property Name="nRestrickClock" Type="Int32" />
+          <Property Name="nSupervisorViewOptions" Type="Int32" />
+          <Property Name="bHoursLostView" Type="Boolean" />
+          <Property Name="bHoursLostEdit" Type="Boolean" />
+          <Property Name="nSickRule" Type="Int32" />
+          <Property Name="nVacationRule" Type="Int32" />
+          <Property Name="nEmployeeTypeRest" Type="Int32" />
+          <Property Name="sPwdHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="intPositionID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleInitial" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="FirstLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SecondLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ShortFullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Comments" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AutoShortFullName" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="TimeAideWindowContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tCompanies" EntityType="Self.tCompany" />
+          <EntitySet Name="tSchedModDailyDetails" EntityType="Self.tSchedModDailyDetail" />
+          <EntitySet Name="tSchedModPeriodSumms" EntityType="Self.tSchedModPeriodSumm" />
+          <EntitySet Name="tSchedules" EntityType="Self.tSchedule" />
+          <EntitySet Name="tScheduleDayInfoes" EntityType="Self.tScheduleDayInfo" />
+          <EntitySet Name="tusers" EntityType="Self.tuser" />
+          <EntitySet Name="tAccrualTypes" EntityType="TIMEAIDE_7_PSICOModel.tAccrualType" />
+          <FunctionImport Name="spSS_CompensationBalances" ReturnType="Collection(TIMEAIDE_7_PSICOModel.spSS_CompensationBalances_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="AccrualType" Mode="In" Type="String" />
+            <Parameter Name="SearchDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="tPunchDates" EntityType="TIMEAIDE_7_PSICOModel.tPunchDate" />
+          <EntitySet Name="tReportWeeks" EntityType="TIMEAIDE_7_PSICOModel.tReportWeek" />
+          <EntitySet Name="viewPay_UserBatchStatus" EntityType="TIMEAIDE_7_PSICOModel.viewPay_UserBatchStatus" />
+          <FunctionImport Name="fnPay_tblUserCompensationsYTD" IsComposable="true" ReturnType="Collection(TIMEAIDE_7_PSICOModel.fnPay_tblUserCompensationsYTD_Result)">
+          <Parameter Name="BATCHID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fnPay_tblUserWithholdingsYTD" IsComposable="true" ReturnType="Collection(TIMEAIDE_7_PSICOModel.fnPay_tblUserWithholdingsYTD_Result)">
+          <Parameter Name="BATCHID" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="tblCompanyPayrollInformations" EntityType="TIMEAIDE_7_PSICOModel.tblCompanyPayrollInformation" />
+          <EntitySet Name="tJobTitle" EntityType="TIMEAIDE_7_PSICOModel.tJobTitle" />
+          <EntitySet Name="tEmployeeType" EntityType="TIMEAIDE_7_PSICOModel.tEmployeeType" />
+          <EntitySet Name="tblSS_TransdefTimeOffRequest" EntityType="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffRequest" />
+          <EntitySet Name="tTransDef" EntityType="TIMEAIDE_7_PSICOModel.tTransDef" />
+          <EntitySet Name="tblSS_TimeOffRequest" EntityType="TIMEAIDE_7_PSICOModel.tblSS_TimeOffRequest" />
+          <FunctionImport Name="spSS_UpdateTimeOffRequestFromWeb">
+          <Parameter Name="TimeOffRequestID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="tPunchData" EntityType="TIMEAIDE_7_PSICOModel.tPunchData" />
+          <EntitySet Name="tblSS_TransdefTimeOffDocument" EntityType="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffDocument" />
+          <EntitySet Name="tDept" EntityType="TIMEAIDE_7_PSICOModel.tDept" />
+          <FunctionImport Name="spSS_TransDefTimeOff" ReturnType="Collection(TIMEAIDE_7_PSICOModel.spSS_TransDefTimeOff_Result)" />
+          <EntitySet Name="tPunchPair" EntityType="TIMEAIDE_7_PSICOModel.tPunchPair" />
+          <EntitySet Name="tAuditInfo" EntityType="TIMEAIDE_7_PSICOModel.tAuditInfo" />
+          <EntitySet Name="tblTAEDetail" EntityType="TIMEAIDE_7_PSICOModel.tblTAEDetail" />
+          <EntitySet Name="tblTAESignature" EntityType="TIMEAIDE_7_PSICOModel.tblTAESignature" />
+        </EntityContainer>
+        <EntityType Name="tAccrualType">
+          <Key>
+            <PropertyRef Name="sAccrualCodeID" />
+          </Key>
+          <Property Name="sAccrualCodeID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sAccrualTypeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intAccrualType" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="spSS_CompensationBalances_Result">
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="AccrualType" Nullable="false" MaxLength="30" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="18" Scale="5" />
+          <Property Type="DateTime" Name="SearchDate" Nullable="true" />
+          <Property Type="Decimal" Name="RemainingBalance" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="tPunchDate">
+          <Key>
+            <PropertyRef Name="tpdID" />
+          </Key>
+          <Property Name="tpdID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="e_id" Type="Int32" Nullable="false" />
+          <Property Name="e_idno" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="e_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="e_group" Type="Int16" />
+          <Property Name="nSchedID" Type="Int32" />
+          <Property Name="DayID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="DTPunchDate" Type="DateTime" Precision="0" />
+          <Property Name="dblPunchHrs" Type="Double" />
+          <Property Name="sType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="b_Processed" Type="Boolean" />
+          <Property Name="sPunchSummary" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="sExceptions" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sDaySchedule" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHoursSummary" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="bLocked" Type="Boolean" />
+          <Property Name="dblREGULAR" Type="Double" />
+          <Property Name="dblONEHALF" Type="Double" />
+          <Property Name="dblDOUBLE" Type="Double" />
+          <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nCompanyID" Type="Int32" />
+          <Property Name="nDeptID" Type="Int32" />
+          <Property Name="nEmployeeTypeID" Type="Int32" />
+          <Property Name="dblMEAL" Type="Double" />
+          <Property Name="dblOTHERS" Type="Double" />
+          <Property Name="nAbsentStatus" Type="Int32" />
+          <Property Name="nJobTitleID" Type="Int32" />
+          <Property Name="nWeekID" Type="Int64" />
+          <Property Name="intPayrollLock" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tReportWeek">
+          <Key>
+            <PropertyRef Name="tpwID" />
+          </Key>
+          <Property Name="tpwID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="e_id" Type="Int32" />
+          <Property Name="e_idno" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="e_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nPayRuleID" Type="Int32" />
+          <Property Name="sPayRuleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nPayWeekNum" Type="Int32" />
+          <Property Name="DTStartDate" Type="DateTime" Precision="0" />
+          <Property Name="DTEndDate" Type="DateTime" Precision="0" />
+          <Property Name="dblREGULAR" Type="Double" />
+          <Property Name="dblONEHALF" Type="Double" />
+          <Property Name="dblDOUBLE" Type="Double" />
+          <Property Name="sHoursSummary" Type="String" MaxLength="175" FixedLength="false" Unicode="true" />
+          <Property Name="sWeekID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nDept" Type="Int32" />
+          <Property Name="sDeptName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nCompID" Type="Int32" />
+          <Property Name="sCompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nEmployeeType" Type="Int32" />
+          <Property Name="sEmployeeTypeName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nJobTitleID" Type="Int32" />
+          <Property Name="sJobTitleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nScheduleID" Type="Int32" />
+          <Property Name="sScheduleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nPayPeriod" Type="Int32" />
+          <Property Name="nReviewStatus" Type="Int32" />
+          <Property Name="nReviewSupervisorID" Type="Int32" />
+          <Property Name="sSupervisorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nWeekID" Type="Int64" />
+          <Property Name="dblMEAL" Type="Double" />
+          <Property Name="dblOTHERS" Type="Double" />
+          <Property Name="nLocked" Type="Int32" />
+          <Property Name="intUserReviewed" Type="Int32" Nullable="false" />
+          <Property Name="intUserReviewedID" Type="Int32" />
+          <Property Name="strUserReviewedName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtUserReviewDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tJobTitle">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nDeptID" Type="Int32" />
+          <Property Name="boolUSECFSEAssignment" Type="Boolean" Nullable="false" />
+          <Property Name="strCFSECode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decCFSECompanyPercent" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+        </EntityType>
+        <EntityType Name="tEmployeeType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nCompanyID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="viewPay_UserBatchStatus">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+            <PropertyRef Name="strCompanyName" />
+            <PropertyRef Name="strBatchDescription" />
+            <PropertyRef Name="dtBatchCreated" />
+            <PropertyRef Name="intCreatedByID" />
+            <PropertyRef Name="strCreateByName" />
+            <PropertyRef Name="dtBatchUpdates" />
+            <PropertyRef Name="intBatchStatus" />
+            <PropertyRef Name="dtPayDate" />
+            <PropertyRef Name="intPayWeekNum" />
+            <PropertyRef Name="intUserID" />
+            <PropertyRef Name="dtStartDatePeriod" />
+            <PropertyRef Name="dtEndDatePeriod" />
+            <PropertyRef Name="strBatchTypeName" />
+            <PropertyRef Name="intPayMethodType" />
+            <PropertyRef Name="intBatchType" />
+            <PropertyRef Name="intTemplateID" />
+            <PropertyRef Name="intUserBatchStatus" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strBatchDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtBatchCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intCreatedByID" Type="Int32" Nullable="false" />
+          <Property Name="strCreateByName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtBatchUpdates" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intBatchStatus" Type="Int32" Nullable="false" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="decBatchCompensationAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="decBatchDeductionAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="strStatusDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decBatchTransactionHoursAmount" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="intPayWeekNum" Type="Int32" Nullable="false" />
+          <Property Name="strUserBatchStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHomeAddressLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sHomeAddressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decBatchUserCompensations" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="decBatchUserWithholdings" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="decBatchNetPay" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="dtStartDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dtEndDatePeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intCompanyID" Type="Int32" />
+          <Property Name="intDepartmentID" Type="Int32" />
+          <Property Name="intSubdepartmentID" Type="Int32" />
+          <Property Name="intEmployeeTypeID" Type="Int32" />
+          <Property Name="strCompany" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="strDepartment" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="strSubdepartment" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="strEmployeeType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sSSN" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="strBatchTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intPayMethodType" Type="Int32" Nullable="false" />
+          <Property Name="strPayMethodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intBatchType" Type="Int32" Nullable="false" />
+          <Property Name="intTemplateID" Type="Int32" Nullable="false" />
+          <Property Name="intUserBatchStatus" Type="Int32" Nullable="false" />
+          <Property Name="intDirectDepositCount" Type="Int32" />
+          <Property Name="intCheckCount" Type="Int32" />
+          <Property Name="ClosedByUserID" Type="Int32" />
+          <Property Name="ClosedDateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="fnPay_tblUserCompensationsYTD_Result">
+          <Property Type="String" Name="strBatchID" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="intUserID" Nullable="true" />
+          <Property Type="String" Name="strCompensationName" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="decHours" Nullable="true" Precision="18" Scale="5" />
+          <Property Type="Decimal" Name="decPay" Nullable="true" Precision="18" Scale="5" />
+          <Property Type="String" Name="strGLAccount" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="decPayYTD" Nullable="true" Precision="18" Scale="5" />
+          <Property Type="Int32" Name="intReportOrder" Nullable="true" />
+          <Property Type="Decimal" Name="decPayRate" Nullable="true" Precision="18" Scale="5" />
+        </ComplexType>
+        <ComplexType Name="fnPay_tblUserWithholdingsYTD_Result">
+          <Property Type="String" Name="strBatchID" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="intUserID" Nullable="true" />
+          <Property Type="String" Name="strWithHoldingsName" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="decWithholdingsAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="decBatchEffectivePay" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="strGLAccount" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="decWithholdingsYTD" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="intReportOrder" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="tblCompanyPayrollInformation">
+          <Key>
+            <PropertyRef Name="strCompanyName" />
+          </Key>
+          <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strAddress1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strAddress2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strFax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="strWebSite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollAddress1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollAddress2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strEIN" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollFax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollContactTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollContactPhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strPayrollEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtCompanyStartDate" Type="DateTime" Precision="0" />
+          <Property Name="strSICCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strNAICSCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strSeguroChoferilAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strDepartamentoDelTrabajoAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decDepartamentoDelTrabajoRate" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+        </EntityType>
+        <EntityType Name="tblSS_TransdefTimeOffRequest">
+          <Key>
+            <PropertyRef Name="strTransName" />
+          </Key>
+          <Property Name="strTransName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intTimeOffRequest" Type="Int32" Nullable="false" />
+          <Property Name="intWorkFlowID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tTransDef">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nTCode" Type="Int32" />
+          <Property Name="sTDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="pCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nIsAbsent" Type="Int32" />
+          <Property Name="nAttendaceCategory" Type="Int32" />
+          <Property Name="sAttendanceCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nParentCode" Type="Int32" />
+          <Property Name="sParentCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nAccrualType" Type="Int32" />
+          <Property Name="sAccrualType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sAccrualImportName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nAttendanceRevision" Type="Int32" />
+          <Property Name="nTardinessRevision" Type="Int32" />
+          <Property Name="nCountsForVacationAccrual" Type="Int32" />
+          <Property Name="nCountsForSickAccrual" Type="Int32" />
+          <Property Name="dblPayRateMultiplier" Type="Double" />
+          <Property Name="dblAdditionalPayAmount" Type="Double" />
+          <Property Name="nCountForCompensationAccruals" Type="Int32" />
+          <Property Name="sCountForCompensationAccruals" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nIsMoneyTrans" Type="Int32" />
+          <Property Name="nIsMoneyAmountFixed" Type="Int32" />
+          <Property Name="decMoneyAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="nAttendanceRevLetter" Type="Int32" />
+          <Property Name="nTardinessRevLetter" Type="Int32" />
+          <Property Name="nCompforCompensationAccrual" Type="Int32" />
+          <Property Name="sCompforCompensationAccrual" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decPayRateMultiplier" Type="Decimal" Precision="16" Scale="2" />
+          <Property Name="decPayRateOffset" Type="Decimal" Precision="16" Scale="2" />
+          <Property Name="nPayRateTransaction" Type="Int32" />
+          <Property Name="boolUseSickInFamily" Type="Boolean" Nullable="false" />
+          <Property Name="decMinimumAccrualTypeBalance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="decMaximumYearlyTaken" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="boolUseForTimesheetEditor" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSS_TimeOffRequest">
+          <Key>
+            <PropertyRef Name="intTORUniqueID" />
+          </Key>
+          <Property Name="intTORUniqueID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intUserID" Type="Int32" />
+          <Property Name="strTransType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bitSingleDay" Type="Boolean" />
+          <Property Name="dtStartDate" Type="DateTime" Precision="0" />
+          <Property Name="dtEndDate" Type="DateTime" Precision="0" />
+          <Property Name="dtDayStart" Type="DateTime" Precision="3" />
+          <Property Name="decDayHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="strRequestNote" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="intTORStatusID" Type="Int32" />
+          <Property Name="dtTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tPunchData">
+          <Key>
+            <PropertyRef Name="tpdID" />
+          </Key>
+          <Property Name="tpdID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DTPunchDate" Type="DateTime" Precision="0" />
+          <Property Name="DTPunchDateTime" Type="DateTime" Precision="0" />
+          <Property Name="g_id" Type="Int32" />
+          <Property Name="e_id" Type="Int32" />
+          <Property Name="e_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="e_idno" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="e_group" Type="Int16" />
+          <Property Name="e_user" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="e_mode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="e_type" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="e_result" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="b_Processed" Type="Boolean" />
+          <Property Name="b_Modified" Type="Boolean" />
+          <Property Name="nAdminID" Type="Int32" />
+          <Property Name="sModType" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="nJobCodeID" Type="Int32" />
+          <Property Name="sNote" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nPunchType" Type="Int32" />
+          <Property Name="intTerminalType" Type="Int32" />
+          <Property Name="DTPunchdate_Original" Type="DateTime" Precision="0" />
+          <Property Name="DTPunchDateTime_Original" Type="DateTime" Precision="0" />
+          <Property Name="DTPunchDateTime_Rounded" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblSS_TransdefTimeOffDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intTransId" Type="Int32" Nullable="false" />
+          <Property Name="sDocumentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intDocumentType" Type="Int32" />
+          <Property Name="intSubmissionType" Type="Int32" />
+          <Property Name="intTimeOffDays" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tDept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nCompanyID" Type="Int32" />
+          <Property Name="boolUSECFSEAssignment" Type="Boolean" Nullable="false" />
+          <Property Name="strCFSECode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decCFSECompanyPercent" Type="Decimal" Nullable="false" Precision="18" Scale="5" />
+        </EntityType>
+        <ComplexType Name="spSS_TransDefTimeOff_Result">
+          <Property Type="Int32" Name="TransId" Nullable="false" />
+          <Property Type="String" Name="TransName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="AccrualType" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="IsTimeOffTrans" Nullable="false" />
+          <Property Type="Boolean" Name="boolUseSickInFamily" Nullable="false" />
+          <Property Type="Decimal" Name="decMinimumAccrualTypeBalance" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="decMaximumYearlyTaken" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <EntityType Name="tPunchPair">
+          <Key>
+            <PropertyRef Name="tppID" />
+          </Key>
+          <Property Name="tppID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="e_id" Type="Int32" />
+          <Property Name="e_idno" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="e_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DTPunchDate" Type="DateTime" Precision="0" />
+          <Property Name="DTimeIn" Type="DateTime" Precision="0" />
+          <Property Name="DTimeOut" Type="DateTime" Precision="0" />
+          <Property Name="HoursWorked" Type="Double" />
+          <Property Name="sType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="pCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="b_Processed" Type="Boolean" />
+          <Property Name="DayID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="bTrans" Type="Boolean" />
+          <Property Name="sTCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sTDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sTimeIn" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="sTimeOut" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="nWeekID" Type="Int64" />
+          <Property Name="nIsTransAbsent" Type="Int32" />
+          <Property Name="nPunchDateDayOfWeek" Type="Int32" />
+          <Property Name="nHRAttendanceCat" Type="Int32" />
+          <Property Name="nHRProcessedCode" Type="Int32" />
+          <Property Name="nHRReportCode" Type="Int32" />
+          <Property Name="nJobCodeID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tAuditInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DTTimeStamp" Type="DateTime" Precision="3" />
+          <Property Name="nAdminID" Type="Int32" />
+          <Property Name="sAdminName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sAdminAction" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sRecordAffected" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nUserIDAffected" Type="Int32" />
+          <Property Name="sUserNameAffected" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="sFieldName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PrevValue" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="NewValue" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="nWeekID" Type="Int64" />
+          <Property Name="sNote" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblTAEDetail">
+          <Key>
+            <PropertyRef Name="intTAEDetailID" />
+          </Key>
+          <Property Name="intTAEDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="strBatchID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strBatchDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strCompensationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="decPayRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="decHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="intEditType" Type="Int32" />
+          <Property Name="dtPunchDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="decPay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="strCompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intCompanyID" Type="Int32" />
+          <Property Name="intDepartmentID" Type="Int32" />
+          <Property Name="intSubdepartmentID" Type="Int32" />
+          <Property Name="intEmployeeType" Type="Int32" />
+          <Property Name="intTAESignID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblTAESignature">
+          <Key>
+            <PropertyRef Name="intTAESignID" />
+          </Key>
+          <Property Name="intTAESignID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="intUserID" Type="Int32" Nullable="false" />
+          <Property Name="strUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intMonth" Type="Int32" Nullable="false" />
+          <Property Name="intYear" Type="Int32" Nullable="false" />
+          <Property Name="dtEmployeeDateTime" Type="DateTime" Precision="3" />
+          <Property Name="strEmployeeEntry" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="bitEmployeeSigned" Type="Boolean" />
+          <Property Name="dtSupervisorDateTime" Type="DateTime" Precision="3" />
+          <Property Name="strSupervisorEntry" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="bitSupervisorSigned" Type="Boolean" />
+          <Property Name="intSupervisorID" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TIMEAIDE_7_PSICOModelStoreContainer" CdmEntityContainer="TimeAideWindowContext">
+          <EntitySetMapping Name="tCompanies">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tCompany">
+              <MappingFragment StoreEntitySet="tCompany">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="nPayRuleID" ColumnName="nPayRuleID" />
+                <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tSchedModDailyDetails">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tSchedModDailyDetail">
+              <MappingFragment StoreEntitySet="tSchedModDailyDetail">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="nUserID" ColumnName="nUserID" />
+                <ScalarProperty Name="sUserName" ColumnName="sUserName" />
+                <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+                <ScalarProperty Name="sNote" ColumnName="sNote" />
+                <ScalarProperty Name="dPunchDate" ColumnName="dPunchDate" />
+                <ScalarProperty Name="dPunchIn1" ColumnName="dPunchIn1" />
+                <ScalarProperty Name="dPunchOut1" ColumnName="dPunchOut1" />
+                <ScalarProperty Name="dPunchIn2" ColumnName="dPunchIn2" />
+                <ScalarProperty Name="dPunchOut2" ColumnName="dPunchOut2" />
+                <ScalarProperty Name="dPunchIn3" ColumnName="dPunchIn3" />
+                <ScalarProperty Name="dPunchOut3" ColumnName="dPunchOut3" />
+                <ScalarProperty Name="dPunchIn4" ColumnName="dPunchIn4" />
+                <ScalarProperty Name="dPunchOut4" ColumnName="dPunchOut4" />
+                <ScalarProperty Name="nWorkDayType" ColumnName="nWorkDayType" />
+                <ScalarProperty Name="dblDayHours" ColumnName="dblDayHours" />
+                <ScalarProperty Name="nSupervisorID" ColumnName="nSupervisorID" />
+                <ScalarProperty Name="dModifiedDate" ColumnName="dModifiedDate" />
+                <ScalarProperty Name="nPunchNum" ColumnName="nPunchNum" />
+                <ScalarProperty Name="nPayWeekNum" ColumnName="nPayWeekNum" />
+                <ScalarProperty Name="nJobCodeID" ColumnName="nJobCodeID" />
+                <ScalarProperty Name="nSchedModPeriodSumm" ColumnName="nSchedModPeriodSumm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tSchedModPeriodSumms">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tSchedModPeriodSumm">
+              <MappingFragment StoreEntitySet="tSchedModPeriodSumm">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="nUserID" ColumnName="nUserID" />
+                <ScalarProperty Name="sUserName" ColumnName="sUserName" />
+                <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+                <ScalarProperty Name="sNote" ColumnName="sNote" />
+                <ScalarProperty Name="dStartDate" ColumnName="dStartDate" />
+                <ScalarProperty Name="dEndDate" ColumnName="dEndDate" />
+                <ScalarProperty Name="dblPeriodHours" ColumnName="dblPeriodHours" />
+                <ScalarProperty Name="nSupervisorID" ColumnName="nSupervisorID" />
+                <ScalarProperty Name="dModifiedDate" ColumnName="dModifiedDate" />
+                <ScalarProperty Name="nPayPeriodType" ColumnName="nPayPeriodType" />
+                <ScalarProperty Name="nPayWeekNum" ColumnName="nPayWeekNum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tSchedules">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tSchedule">
+              <MappingFragment StoreEntitySet="tSchedule">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="sDesc" ColumnName="sDesc" />
+                <ScalarProperty Name="nPunchNum" ColumnName="nPunchNum" />
+                <ScalarProperty Name="nPunchCode" ColumnName="nPunchCode" />
+                <ScalarProperty Name="bSunday" ColumnName="bSunday" />
+                <ScalarProperty Name="bMonday" ColumnName="bMonday" />
+                <ScalarProperty Name="bTuesday" ColumnName="bTuesday" />
+                <ScalarProperty Name="bWednesday" ColumnName="bWednesday" />
+                <ScalarProperty Name="bThursday" ColumnName="bThursday" />
+                <ScalarProperty Name="bFriday" ColumnName="bFriday" />
+                <ScalarProperty Name="bSaturday" ColumnName="bSaturday" />
+                <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+                <ScalarProperty Name="nShiftDiff" ColumnName="nShiftDiff" />
+                <ScalarProperty Name="sShiftDiffName" ColumnName="sShiftDiffName" />
+                <ScalarProperty Name="sShiftDiffCode" ColumnName="sShiftDiffCode" />
+                <ScalarProperty Name="nShiftDiffCount" ColumnName="nShiftDiffCount" />
+                <ScalarProperty Name="dShiftDiffStart" ColumnName="dShiftDiffStart" />
+                <ScalarProperty Name="dShiftDiffEnd" ColumnName="dShiftDiffEnd" />
+                <ScalarProperty Name="sShiftDiffName2" ColumnName="sShiftDiffName2" />
+                <ScalarProperty Name="sShiftDiffCode2" ColumnName="sShiftDiffCode2" />
+                <ScalarProperty Name="dShiftDiffStart2" ColumnName="dShiftDiffStart2" />
+                <ScalarProperty Name="dShiftDiffEnd2" ColumnName="dShiftDiffEnd2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tScheduleDayInfoes">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tScheduleDayInfo">
+              <MappingFragment StoreEntitySet="tScheduleDayInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+                <ScalarProperty Name="nDayofWeek" ColumnName="nDayofWeek" />
+                <ScalarProperty Name="bRight" ColumnName="bRight" />
+                <ScalarProperty Name="bOvernight" ColumnName="bOvernight" />
+                <ScalarProperty Name="dIn1Hr" ColumnName="dIn1Hr" />
+                <ScalarProperty Name="dOut1Hr" ColumnName="dOut1Hr" />
+                <ScalarProperty Name="dIn2Hr" ColumnName="dIn2Hr" />
+                <ScalarProperty Name="dOut2Hr" ColumnName="dOut2Hr" />
+                <ScalarProperty Name="dIn3Hr" ColumnName="dIn3Hr" />
+                <ScalarProperty Name="dOut3Hr" ColumnName="dOut3Hr" />
+                <ScalarProperty Name="dIn4Hr" ColumnName="dIn4Hr" />
+                <ScalarProperty Name="dOut4Hr" ColumnName="dOut4Hr" />
+                <ScalarProperty Name="nJobCodeID" ColumnName="nJobCodeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tusers">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tuser">
+              <MappingFragment StoreEntitySet="tuser">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="reg_date" ColumnName="reg_date" />
+                <ScalarProperty Name="datelimit" ColumnName="datelimit" />
+                <ScalarProperty Name="idno" ColumnName="idno" />
+                <ScalarProperty Name="badmin" ColumnName="badmin" />
+                <ScalarProperty Name="padmin" ColumnName="padmin" />
+                <ScalarProperty Name="company" ColumnName="company" />
+                <ScalarProperty Name="dept" ColumnName="dept" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="cantgate" ColumnName="cantgate" />
+                <ScalarProperty Name="timegate" ColumnName="timegate" />
+                <ScalarProperty Name="validtype" ColumnName="validtype" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="cancard" ColumnName="cancard" />
+                <ScalarProperty Name="cardnum" ColumnName="cardnum" />
+                <ScalarProperty Name="identify" ColumnName="identify" />
+                <ScalarProperty Name="seculevel" ColumnName="seculevel" />
+                <ScalarProperty Name="fpdata" ColumnName="fpdata" />
+                <ScalarProperty Name="fpimage" ColumnName="fpimage" />
+                <ScalarProperty Name="fpname" ColumnName="fpname" />
+                <ScalarProperty Name="face" ColumnName="face" />
+                <ScalarProperty Name="voice" ColumnName="voice" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="antipass_state" ColumnName="antipass_state" />
+                <ScalarProperty Name="antipass_lasttime" ColumnName="antipass_lasttime" />
+                <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+                <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+                <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+                <ScalarProperty Name="nGroupID" ColumnName="nGroupID" />
+                <ScalarProperty Name="nEmployeeType" ColumnName="nEmployeeType" />
+                <ScalarProperty Name="nStatus" ColumnName="nStatus" />
+                <ScalarProperty Name="sNotes" ColumnName="sNotes" />
+                <ScalarProperty Name="objPhoto" ColumnName="objPhoto" />
+                <ScalarProperty Name="nPunchClockID" ColumnName="nPunchClockID" />
+                <ScalarProperty Name="nPayrollRuleID" ColumnName="nPayrollRuleID" />
+                <ScalarProperty Name="nScheduleID" ColumnName="nScheduleID" />
+                <ScalarProperty Name="nSupervisorType" ColumnName="nSupervisorType" />
+                <ScalarProperty Name="sPwd" ColumnName="sPwd" />
+                <ScalarProperty Name="nCompanyRest" ColumnName="nCompanyRest" />
+                <ScalarProperty Name="nDeptRest" ColumnName="nDeptRest" />
+                <ScalarProperty Name="nCatRest" ColumnName="nCatRest" />
+                <ScalarProperty Name="bEmpRecordsView" ColumnName="bEmpRecordsView" />
+                <ScalarProperty Name="bEmpRecordsEdit" ColumnName="bEmpRecordsEdit" />
+                <ScalarProperty Name="bEmpReportsView" ColumnName="bEmpReportsView" />
+                <ScalarProperty Name="bPunchMaintView" ColumnName="bPunchMaintView" />
+                <ScalarProperty Name="bPunchMaintEdit" ColumnName="bPunchMaintEdit" />
+                <ScalarProperty Name="bPunchSuperView" ColumnName="bPunchSuperView" />
+                <ScalarProperty Name="bReptPeriod" ColumnName="bReptPeriod" />
+                <ScalarProperty Name="bReptHistorical" ColumnName="bReptHistorical" />
+                <ScalarProperty Name="bReptAudit" ColumnName="bReptAudit" />
+                <ScalarProperty Name="bExportPayroll" ColumnName="bExportPayroll" />
+                <ScalarProperty Name="bPayRuleView" ColumnName="bPayRuleView" />
+                <ScalarProperty Name="bPayRuleEdit" ColumnName="bPayRuleEdit" />
+                <ScalarProperty Name="bSchedView" ColumnName="bSchedView" />
+                <ScalarProperty Name="bSchedEdit" ColumnName="bSchedEdit" />
+                <ScalarProperty Name="bCompanySettings" ColumnName="bCompanySettings" />
+                <ScalarProperty Name="bMonitor" ColumnName="bMonitor" />
+                <ScalarProperty Name="bEmployeeImport" ColumnName="bEmployeeImport" />
+                <ScalarProperty Name="bRestrictClock" ColumnName="bRestrictClock" />
+                <ScalarProperty Name="nRestrickClock" ColumnName="nRestrickClock" />
+                <ScalarProperty Name="nSupervisorViewOptions" ColumnName="nSupervisorViewOptions" />
+                <ScalarProperty Name="bHoursLostView" ColumnName="bHoursLostView" />
+                <ScalarProperty Name="bHoursLostEdit" ColumnName="bHoursLostEdit" />
+                <ScalarProperty Name="nSickRule" ColumnName="nSickRule" />
+                <ScalarProperty Name="nVacationRule" ColumnName="nVacationRule" />
+                <ScalarProperty Name="nEmployeeTypeRest" ColumnName="nEmployeeTypeRest" />
+                <ScalarProperty Name="sPwdHash" ColumnName="sPwdHash" />
+                <ScalarProperty Name="intPositionID" ColumnName="intPositionID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
+                <ScalarProperty Name="FirstLastName" ColumnName="FirstLastName" />
+                <ScalarProperty Name="SecondLastName" ColumnName="SecondLastName" />
+                <ScalarProperty Name="ShortFullName" ColumnName="ShortFullName" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="AutoShortFullName" ColumnName="AutoShortFullName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tAccrualTypes">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tAccrualType">
+              <MappingFragment StoreEntitySet="tAccrualTypes">
+                <ScalarProperty Name="intAccrualType" ColumnName="intAccrualType" />
+                <ScalarProperty Name="sAccrualTypeDesc" ColumnName="sAccrualTypeDesc" />
+                <ScalarProperty Name="sAccrualCodeID" ColumnName="sAccrualCodeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSS_CompensationBalances" FunctionName="TIMEAIDE_7_PSICOModel.Store.spSS_CompensationBalances">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.spSS_CompensationBalances_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="AccrualType" ColumnName="AccrualType" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="SearchDate" ColumnName="SearchDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tPunchDates">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tPunchDate">
+              <MappingFragment StoreEntitySet="tPunchDate">
+                <ScalarProperty Name="intPayrollLock" ColumnName="intPayrollLock" />
+                <ScalarProperty Name="nWeekID" ColumnName="nWeekID" />
+                <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+                <ScalarProperty Name="nAbsentStatus" ColumnName="nAbsentStatus" />
+                <ScalarProperty Name="dblOTHERS" ColumnName="dblOTHERS" />
+                <ScalarProperty Name="dblMEAL" ColumnName="dblMEAL" />
+                <ScalarProperty Name="nEmployeeTypeID" ColumnName="nEmployeeTypeID" />
+                <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+                <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+                <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+                <ScalarProperty Name="dblDOUBLE" ColumnName="dblDOUBLE" />
+                <ScalarProperty Name="dblONEHALF" ColumnName="dblONEHALF" />
+                <ScalarProperty Name="dblREGULAR" ColumnName="dblREGULAR" />
+                <ScalarProperty Name="bLocked" ColumnName="bLocked" />
+                <ScalarProperty Name="sHoursSummary" ColumnName="sHoursSummary" />
+                <ScalarProperty Name="sDaySchedule" ColumnName="sDaySchedule" />
+                <ScalarProperty Name="sExceptions" ColumnName="sExceptions" />
+                <ScalarProperty Name="sPunchSummary" ColumnName="sPunchSummary" />
+                <ScalarProperty Name="b_Processed" ColumnName="b_Processed" />
+                <ScalarProperty Name="sType" ColumnName="sType" />
+                <ScalarProperty Name="dblPunchHrs" ColumnName="dblPunchHrs" />
+                <ScalarProperty Name="DTPunchDate" ColumnName="DTPunchDate" />
+                <ScalarProperty Name="DayID" ColumnName="DayID" />
+                <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+                <ScalarProperty Name="e_group" ColumnName="e_group" />
+                <ScalarProperty Name="e_name" ColumnName="e_name" />
+                <ScalarProperty Name="e_idno" ColumnName="e_idno" />
+                <ScalarProperty Name="e_id" ColumnName="e_id" />
+                <ScalarProperty Name="tpdID" ColumnName="tpdID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tReportWeeks">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tReportWeek">
+              <MappingFragment StoreEntitySet="tReportWeek">
+                <ScalarProperty Name="dtUserReviewDate" ColumnName="dtUserReviewDate" />
+                <ScalarProperty Name="strUserReviewedName" ColumnName="strUserReviewedName" />
+                <ScalarProperty Name="intUserReviewedID" ColumnName="intUserReviewedID" />
+                <ScalarProperty Name="intUserReviewed" ColumnName="intUserReviewed" />
+                <ScalarProperty Name="nLocked" ColumnName="nLocked" />
+                <ScalarProperty Name="dblOTHERS" ColumnName="dblOTHERS" />
+                <ScalarProperty Name="dblMEAL" ColumnName="dblMEAL" />
+                <ScalarProperty Name="nWeekID" ColumnName="nWeekID" />
+                <ScalarProperty Name="sSupervisorName" ColumnName="sSupervisorName" />
+                <ScalarProperty Name="nReviewSupervisorID" ColumnName="nReviewSupervisorID" />
+                <ScalarProperty Name="nReviewStatus" ColumnName="nReviewStatus" />
+                <ScalarProperty Name="nPayPeriod" ColumnName="nPayPeriod" />
+                <ScalarProperty Name="sScheduleName" ColumnName="sScheduleName" />
+                <ScalarProperty Name="nScheduleID" ColumnName="nScheduleID" />
+                <ScalarProperty Name="sJobTitleName" ColumnName="sJobTitleName" />
+                <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+                <ScalarProperty Name="sEmployeeTypeName" ColumnName="sEmployeeTypeName" />
+                <ScalarProperty Name="nEmployeeType" ColumnName="nEmployeeType" />
+                <ScalarProperty Name="sCompanyName" ColumnName="sCompanyName" />
+                <ScalarProperty Name="nCompID" ColumnName="nCompID" />
+                <ScalarProperty Name="sDeptName" ColumnName="sDeptName" />
+                <ScalarProperty Name="nDept" ColumnName="nDept" />
+                <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+                <ScalarProperty Name="sHoursSummary" ColumnName="sHoursSummary" />
+                <ScalarProperty Name="dblDOUBLE" ColumnName="dblDOUBLE" />
+                <ScalarProperty Name="dblONEHALF" ColumnName="dblONEHALF" />
+                <ScalarProperty Name="dblREGULAR" ColumnName="dblREGULAR" />
+                <ScalarProperty Name="DTEndDate" ColumnName="DTEndDate" />
+                <ScalarProperty Name="DTStartDate" ColumnName="DTStartDate" />
+                <ScalarProperty Name="nPayWeekNum" ColumnName="nPayWeekNum" />
+                <ScalarProperty Name="sPayRuleName" ColumnName="sPayRuleName" />
+                <ScalarProperty Name="nPayRuleID" ColumnName="nPayRuleID" />
+                <ScalarProperty Name="e_name" ColumnName="e_name" />
+                <ScalarProperty Name="e_idno" ColumnName="e_idno" />
+                <ScalarProperty Name="e_id" ColumnName="e_id" />
+                <ScalarProperty Name="tpwID" ColumnName="tpwID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewPay_UserBatchStatus">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.viewPay_UserBatchStatus">
+              <MappingFragment StoreEntitySet="viewPay_UserBatchStatus">
+                <ScalarProperty Name="ClosedDateTime" ColumnName="ClosedDateTime" />
+                <ScalarProperty Name="ClosedByUserID" ColumnName="ClosedByUserID" />
+                <ScalarProperty Name="intCheckCount" ColumnName="intCheckCount" />
+                <ScalarProperty Name="intDirectDepositCount" ColumnName="intDirectDepositCount" />
+                <ScalarProperty Name="intUserBatchStatus" ColumnName="intUserBatchStatus" />
+                <ScalarProperty Name="intTemplateID" ColumnName="intTemplateID" />
+                <ScalarProperty Name="intBatchType" ColumnName="intBatchType" />
+                <ScalarProperty Name="strPayMethodType" ColumnName="strPayMethodType" />
+                <ScalarProperty Name="intPayMethodType" ColumnName="intPayMethodType" />
+                <ScalarProperty Name="strBatchTypeName" ColumnName="strBatchTypeName" />
+                <ScalarProperty Name="sSSN" ColumnName="sSSN" />
+                <ScalarProperty Name="strEmployeeType" ColumnName="strEmployeeType" />
+                <ScalarProperty Name="strSubdepartment" ColumnName="strSubdepartment" />
+                <ScalarProperty Name="strDepartment" ColumnName="strDepartment" />
+                <ScalarProperty Name="strCompany" ColumnName="strCompany" />
+                <ScalarProperty Name="intEmployeeTypeID" ColumnName="intEmployeeTypeID" />
+                <ScalarProperty Name="intSubdepartmentID" ColumnName="intSubdepartmentID" />
+                <ScalarProperty Name="intDepartmentID" ColumnName="intDepartmentID" />
+                <ScalarProperty Name="intCompanyID" ColumnName="intCompanyID" />
+                <ScalarProperty Name="dtEndDatePeriod" ColumnName="dtEndDatePeriod" />
+                <ScalarProperty Name="dtStartDatePeriod" ColumnName="dtStartDatePeriod" />
+                <ScalarProperty Name="decBatchNetPay" ColumnName="decBatchNetPay" />
+                <ScalarProperty Name="decBatchUserWithholdings" ColumnName="decBatchUserWithholdings" />
+                <ScalarProperty Name="decBatchUserCompensations" ColumnName="decBatchUserCompensations" />
+                <ScalarProperty Name="strZipCode" ColumnName="strZipCode" />
+                <ScalarProperty Name="strState" ColumnName="strState" />
+                <ScalarProperty Name="strCity" ColumnName="strCity" />
+                <ScalarProperty Name="sHomeAddressLine2" ColumnName="sHomeAddressLine2" />
+                <ScalarProperty Name="sHomeAddressLine1" ColumnName="sHomeAddressLine1" />
+                <ScalarProperty Name="strUserName" ColumnName="strUserName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strUserBatchStatus" ColumnName="strUserBatchStatus" />
+                <ScalarProperty Name="intPayWeekNum" ColumnName="intPayWeekNum" />
+                <ScalarProperty Name="decBatchTransactionHoursAmount" ColumnName="decBatchTransactionHoursAmount" />
+                <ScalarProperty Name="strStatusDescription" ColumnName="strStatusDescription" />
+                <ScalarProperty Name="decBatchDeductionAmount" ColumnName="decBatchDeductionAmount" />
+                <ScalarProperty Name="decBatchCompensationAmount" ColumnName="decBatchCompensationAmount" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="intBatchStatus" ColumnName="intBatchStatus" />
+                <ScalarProperty Name="dtBatchUpdates" ColumnName="dtBatchUpdates" />
+                <ScalarProperty Name="strCreateByName" ColumnName="strCreateByName" />
+                <ScalarProperty Name="intCreatedByID" ColumnName="intCreatedByID" />
+                <ScalarProperty Name="dtBatchCreated" ColumnName="dtBatchCreated" />
+                <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="fnPay_tblUserCompensationsYTD" FunctionName="TIMEAIDE_7_PSICOModel.Store.fnPay_tblUserCompensationsYTD">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.fnPay_tblUserCompensationsYTD_Result">
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+                <ScalarProperty Name="decHours" ColumnName="decHours" />
+                <ScalarProperty Name="decPay" ColumnName="decPay" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="decPayYTD" ColumnName="decPayYTD" />
+                <ScalarProperty Name="intReportOrder" ColumnName="intReportOrder" />
+                <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fnPay_tblUserWithholdingsYTD" FunctionName="TIMEAIDE_7_PSICOModel.Store.fnPay_tblUserWithholdingsYTD">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.fnPay_tblUserWithholdingsYTD_Result">
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+                <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+                <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+                <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+                <ScalarProperty Name="decWithholdingsYTD" ColumnName="decWithholdingsYTD" />
+                <ScalarProperty Name="intReportOrder" ColumnName="intReportOrder" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tblCompanyPayrollInformations">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblCompanyPayrollInformation">
+              <MappingFragment StoreEntitySet="tblCompanyPayrollInformation">
+                <ScalarProperty Name="decDepartamentoDelTrabajoRate" ColumnName="decDepartamentoDelTrabajoRate" />
+                <ScalarProperty Name="strDepartamentoDelTrabajoAccount" ColumnName="strDepartamentoDelTrabajoAccount" />
+                <ScalarProperty Name="strSeguroChoferilAccount" ColumnName="strSeguroChoferilAccount" />
+                <ScalarProperty Name="strNAICSCode" ColumnName="strNAICSCode" />
+                <ScalarProperty Name="strSICCode" ColumnName="strSICCode" />
+                <ScalarProperty Name="dtCompanyStartDate" ColumnName="dtCompanyStartDate" />
+                <ScalarProperty Name="strPayrollEmail" ColumnName="strPayrollEmail" />
+                <ScalarProperty Name="strPayrollContactPhone" ColumnName="strPayrollContactPhone" />
+                <ScalarProperty Name="strPayrollContactTitle" ColumnName="strPayrollContactTitle" />
+                <ScalarProperty Name="strPayrollContactName" ColumnName="strPayrollContactName" />
+                <ScalarProperty Name="strPayrollFax" ColumnName="strPayrollFax" />
+                <ScalarProperty Name="strEIN" ColumnName="strEIN" />
+                <ScalarProperty Name="strPayrollZipCode" ColumnName="strPayrollZipCode" />
+                <ScalarProperty Name="strPayrollState" ColumnName="strPayrollState" />
+                <ScalarProperty Name="strPayrollCity" ColumnName="strPayrollCity" />
+                <ScalarProperty Name="strPayrollCountry" ColumnName="strPayrollCountry" />
+                <ScalarProperty Name="strPayrollAddress2" ColumnName="strPayrollAddress2" />
+                <ScalarProperty Name="strPayrollAddress1" ColumnName="strPayrollAddress1" />
+                <ScalarProperty Name="strPayrollName" ColumnName="strPayrollName" />
+                <ScalarProperty Name="strContactName" ColumnName="strContactName" />
+                <ScalarProperty Name="strWebSite" ColumnName="strWebSite" />
+                <ScalarProperty Name="strEmail" ColumnName="strEmail" />
+                <ScalarProperty Name="strFax" ColumnName="strFax" />
+                <ScalarProperty Name="strPhone" ColumnName="strPhone" />
+                <ScalarProperty Name="strCountry" ColumnName="strCountry" />
+                <ScalarProperty Name="strZipCode" ColumnName="strZipCode" />
+                <ScalarProperty Name="strState" ColumnName="strState" />
+                <ScalarProperty Name="strCity" ColumnName="strCity" />
+                <ScalarProperty Name="strAddress2" ColumnName="strAddress2" />
+                <ScalarProperty Name="strAddress1" ColumnName="strAddress1" />
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tJobTitle">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tJobTitle">
+              <MappingFragment StoreEntitySet="tJobTitle">
+                <ScalarProperty Name="decCFSECompanyPercent" ColumnName="decCFSECompanyPercent" />
+                <ScalarProperty Name="strCFSECode" ColumnName="strCFSECode" />
+                <ScalarProperty Name="boolUSECFSEAssignment" ColumnName="boolUSECFSEAssignment" />
+                <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tEmployeeType">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tEmployeeType">
+              <MappingFragment StoreEntitySet="tEmployeeType">
+                <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSS_TransdefTimeOffRequest">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffRequest">
+              <MappingFragment StoreEntitySet="tblSS_TransdefTimeOffRequest">
+                <ScalarProperty Name="intWorkFlowID" ColumnName="intWorkFlowID" />
+                <ScalarProperty Name="intTimeOffRequest" ColumnName="intTimeOffRequest" />
+                <ScalarProperty Name="strTransName" ColumnName="strTransName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tTransDef">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tTransDef">
+              <MappingFragment StoreEntitySet="tTransDef">
+                <ScalarProperty Name="boolUseForTimesheetEditor" ColumnName="boolUseForTimesheetEditor" />
+                <ScalarProperty Name="decMaximumYearlyTaken" ColumnName="decMaximumYearlyTaken" />
+                <ScalarProperty Name="decMinimumAccrualTypeBalance" ColumnName="decMinimumAccrualTypeBalance" />
+                <ScalarProperty Name="boolUseSickInFamily" ColumnName="boolUseSickInFamily" />
+                <ScalarProperty Name="nPayRateTransaction" ColumnName="nPayRateTransaction" />
+                <ScalarProperty Name="decPayRateOffset" ColumnName="decPayRateOffset" />
+                <ScalarProperty Name="decPayRateMultiplier" ColumnName="decPayRateMultiplier" />
+                <ScalarProperty Name="sCompforCompensationAccrual" ColumnName="sCompforCompensationAccrual" />
+                <ScalarProperty Name="nCompforCompensationAccrual" ColumnName="nCompforCompensationAccrual" />
+                <ScalarProperty Name="nTardinessRevLetter" ColumnName="nTardinessRevLetter" />
+                <ScalarProperty Name="nAttendanceRevLetter" ColumnName="nAttendanceRevLetter" />
+                <ScalarProperty Name="decMoneyAmount" ColumnName="decMoneyAmount" />
+                <ScalarProperty Name="nIsMoneyAmountFixed" ColumnName="nIsMoneyAmountFixed" />
+                <ScalarProperty Name="nIsMoneyTrans" ColumnName="nIsMoneyTrans" />
+                <ScalarProperty Name="sCountForCompensationAccruals" ColumnName="sCountForCompensationAccruals" />
+                <ScalarProperty Name="nCountForCompensationAccruals" ColumnName="nCountForCompensationAccruals" />
+                <ScalarProperty Name="dblAdditionalPayAmount" ColumnName="dblAdditionalPayAmount" />
+                <ScalarProperty Name="dblPayRateMultiplier" ColumnName="dblPayRateMultiplier" />
+                <ScalarProperty Name="nCountsForSickAccrual" ColumnName="nCountsForSickAccrual" />
+                <ScalarProperty Name="nCountsForVacationAccrual" ColumnName="nCountsForVacationAccrual" />
+                <ScalarProperty Name="nTardinessRevision" ColumnName="nTardinessRevision" />
+                <ScalarProperty Name="nAttendanceRevision" ColumnName="nAttendanceRevision" />
+                <ScalarProperty Name="sAccrualImportName" ColumnName="sAccrualImportName" />
+                <ScalarProperty Name="sAccrualType" ColumnName="sAccrualType" />
+                <ScalarProperty Name="nAccrualType" ColumnName="nAccrualType" />
+                <ScalarProperty Name="sParentCode" ColumnName="sParentCode" />
+                <ScalarProperty Name="nParentCode" ColumnName="nParentCode" />
+                <ScalarProperty Name="sAttendanceCategory" ColumnName="sAttendanceCategory" />
+                <ScalarProperty Name="nAttendaceCategory" ColumnName="nAttendaceCategory" />
+                <ScalarProperty Name="nIsAbsent" ColumnName="nIsAbsent" />
+                <ScalarProperty Name="pCode" ColumnName="pCode" />
+                <ScalarProperty Name="sTDesc" ColumnName="sTDesc" />
+                <ScalarProperty Name="nTCode" ColumnName="nTCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSS_TimeOffRequest">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblSS_TimeOffRequest">
+              <MappingFragment StoreEntitySet="tblSS_TimeOffRequest">
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+                <ScalarProperty Name="dtTimestamp" ColumnName="dtTimestamp" />
+                <ScalarProperty Name="intTORStatusID" ColumnName="intTORStatusID" />
+                <ScalarProperty Name="strRequestNote" ColumnName="strRequestNote" />
+                <ScalarProperty Name="decDayHours" ColumnName="decDayHours" />
+                <ScalarProperty Name="dtDayStart" ColumnName="dtDayStart" />
+                <ScalarProperty Name="dtEndDate" ColumnName="dtEndDate" />
+                <ScalarProperty Name="dtStartDate" ColumnName="dtStartDate" />
+                <ScalarProperty Name="bitSingleDay" ColumnName="bitSingleDay" />
+                <ScalarProperty Name="strTransType" ColumnName="strTransType" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="intTORUniqueID" ColumnName="intTORUniqueID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSS_UpdateTimeOffRequestFromWeb" FunctionName="TIMEAIDE_7_PSICOModel.Store.spSS_UpdateTimeOffRequestFromWeb" />
+          <EntitySetMapping Name="tPunchData">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tPunchData">
+              <MappingFragment StoreEntitySet="tPunchData">
+                <ScalarProperty Name="DTPunchDateTime_Rounded" ColumnName="DTPunchDateTime_Rounded" />
+                <ScalarProperty Name="DTPunchDateTime_Original" ColumnName="DTPunchDateTime_Original" />
+                <ScalarProperty Name="DTPunchdate_Original" ColumnName="DTPunchdate_Original" />
+                <ScalarProperty Name="intTerminalType" ColumnName="intTerminalType" />
+                <ScalarProperty Name="nPunchType" ColumnName="nPunchType" />
+                <ScalarProperty Name="sNote" ColumnName="sNote" />
+                <ScalarProperty Name="nJobCodeID" ColumnName="nJobCodeID" />
+                <ScalarProperty Name="sModType" ColumnName="sModType" />
+                <ScalarProperty Name="nAdminID" ColumnName="nAdminID" />
+                <ScalarProperty Name="b_Modified" ColumnName="b_Modified" />
+                <ScalarProperty Name="b_Processed" ColumnName="b_Processed" />
+                <ScalarProperty Name="e_result" ColumnName="e_result" />
+                <ScalarProperty Name="e_type" ColumnName="e_type" />
+                <ScalarProperty Name="e_mode" ColumnName="e_mode" />
+                <ScalarProperty Name="e_user" ColumnName="e_user" />
+                <ScalarProperty Name="e_group" ColumnName="e_group" />
+                <ScalarProperty Name="e_idno" ColumnName="e_idno" />
+                <ScalarProperty Name="e_name" ColumnName="e_name" />
+                <ScalarProperty Name="e_id" ColumnName="e_id" />
+                <ScalarProperty Name="g_id" ColumnName="g_id" />
+                <ScalarProperty Name="DTPunchDateTime" ColumnName="DTPunchDateTime" />
+                <ScalarProperty Name="DTPunchDate" ColumnName="DTPunchDate" />
+                <ScalarProperty Name="tpdID" ColumnName="tpdID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSS_TransdefTimeOffDocument">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffDocument">
+              <MappingFragment StoreEntitySet="tblSS_TransdefTimeOffDocument">
+                <ScalarProperty Name="intTimeOffDays" ColumnName="intTimeOffDays" />
+                <ScalarProperty Name="intSubmissionType" ColumnName="intSubmissionType" />
+                <ScalarProperty Name="intDocumentType" ColumnName="intDocumentType" />
+                <ScalarProperty Name="sDocumentName" ColumnName="sDocumentName" />
+                <ScalarProperty Name="intTransId" ColumnName="intTransId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tDept">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tDept">
+              <MappingFragment StoreEntitySet="tDept">
+                <ScalarProperty Name="decCFSECompanyPercent" ColumnName="decCFSECompanyPercent" />
+                <ScalarProperty Name="strCFSECode" ColumnName="strCFSECode" />
+                <ScalarProperty Name="boolUSECFSEAssignment" ColumnName="boolUSECFSEAssignment" />
+                <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSS_TransDefTimeOff" FunctionName="TIMEAIDE_7_PSICOModel.Store.spSS_TransDefTimeOff">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.spSS_TransDefTimeOff_Result">
+                <ScalarProperty Name="TransId" ColumnName="TransId" />
+                <ScalarProperty Name="TransName" ColumnName="TransName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AccrualType" ColumnName="AccrualType" />
+                <ScalarProperty Name="IsTimeOffTrans" ColumnName="IsTimeOffTrans" />
+                <ScalarProperty Name="boolUseSickInFamily" ColumnName="boolUseSickInFamily" />
+                <ScalarProperty Name="decMinimumAccrualTypeBalance" ColumnName="decMinimumAccrualTypeBalance" />
+                <ScalarProperty Name="decMaximumYearlyTaken" ColumnName="decMaximumYearlyTaken" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tPunchPair">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tPunchPair">
+              <MappingFragment StoreEntitySet="tPunchPair">
+                <ScalarProperty Name="nJobCodeID" ColumnName="nJobCodeID" />
+                <ScalarProperty Name="nHRReportCode" ColumnName="nHRReportCode" />
+                <ScalarProperty Name="nHRProcessedCode" ColumnName="nHRProcessedCode" />
+                <ScalarProperty Name="nHRAttendanceCat" ColumnName="nHRAttendanceCat" />
+                <ScalarProperty Name="nPunchDateDayOfWeek" ColumnName="nPunchDateDayOfWeek" />
+                <ScalarProperty Name="nIsTransAbsent" ColumnName="nIsTransAbsent" />
+                <ScalarProperty Name="nWeekID" ColumnName="nWeekID" />
+                <ScalarProperty Name="sTimeOut" ColumnName="sTimeOut" />
+                <ScalarProperty Name="sTimeIn" ColumnName="sTimeIn" />
+                <ScalarProperty Name="sTDesc" ColumnName="sTDesc" />
+                <ScalarProperty Name="sTCode" ColumnName="sTCode" />
+                <ScalarProperty Name="bTrans" ColumnName="bTrans" />
+                <ScalarProperty Name="DayID" ColumnName="DayID" />
+                <ScalarProperty Name="b_Processed" ColumnName="b_Processed" />
+                <ScalarProperty Name="pCode" ColumnName="pCode" />
+                <ScalarProperty Name="sType" ColumnName="sType" />
+                <ScalarProperty Name="HoursWorked" ColumnName="HoursWorked" />
+                <ScalarProperty Name="DTimeOut" ColumnName="DTimeOut" />
+                <ScalarProperty Name="DTimeIn" ColumnName="DTimeIn" />
+                <ScalarProperty Name="DTPunchDate" ColumnName="DTPunchDate" />
+                <ScalarProperty Name="e_name" ColumnName="e_name" />
+                <ScalarProperty Name="e_idno" ColumnName="e_idno" />
+                <ScalarProperty Name="e_id" ColumnName="e_id" />
+                <ScalarProperty Name="tppID" ColumnName="tppID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tAuditInfo">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tAuditInfo">
+              <MappingFragment StoreEntitySet="tAuditInfo">
+                <ScalarProperty Name="sNote" ColumnName="sNote" />
+                <ScalarProperty Name="nWeekID" ColumnName="nWeekID" />
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="PrevValue" ColumnName="PrevValue" />
+                <ScalarProperty Name="sFieldName" ColumnName="sFieldName" />
+                <ScalarProperty Name="sUserNameAffected" ColumnName="sUserNameAffected" />
+                <ScalarProperty Name="nUserIDAffected" ColumnName="nUserIDAffected" />
+                <ScalarProperty Name="sRecordAffected" ColumnName="sRecordAffected" />
+                <ScalarProperty Name="sAdminAction" ColumnName="sAdminAction" />
+                <ScalarProperty Name="sAdminName" ColumnName="sAdminName" />
+                <ScalarProperty Name="nAdminID" ColumnName="nAdminID" />
+                <ScalarProperty Name="DTTimeStamp" ColumnName="DTTimeStamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTAEDetail">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblTAEDetail">
+              <MappingFragment StoreEntitySet="tblTAEDetail">
+                <ScalarProperty Name="intTAESignID" ColumnName="intTAESignID" />
+                <ScalarProperty Name="intEmployeeType" ColumnName="intEmployeeType" />
+                <ScalarProperty Name="intSubdepartmentID" ColumnName="intSubdepartmentID" />
+                <ScalarProperty Name="intDepartmentID" ColumnName="intDepartmentID" />
+                <ScalarProperty Name="intCompanyID" ColumnName="intCompanyID" />
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+                <ScalarProperty Name="decPay" ColumnName="decPay" />
+                <ScalarProperty Name="dtPunchDate" ColumnName="dtPunchDate" />
+                <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+                <ScalarProperty Name="decHours" ColumnName="decHours" />
+                <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+                <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+                <ScalarProperty Name="strUserName" ColumnName="strUserName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+                <ScalarProperty Name="intTAEDetailID" ColumnName="intTAEDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTAESignature">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblTAESignature">
+              <MappingFragment StoreEntitySet="tblTAESignature">
+                <ScalarProperty Name="intSupervisorID" ColumnName="intSupervisorID" />
+                <ScalarProperty Name="bitSupervisorSigned" ColumnName="bitSupervisorSigned" />
+                <ScalarProperty Name="strSupervisorEntry" ColumnName="strSupervisorEntry" />
+                <ScalarProperty Name="dtSupervisorDateTime" ColumnName="dtSupervisorDateTime" />
+                <ScalarProperty Name="bitEmployeeSigned" ColumnName="bitEmployeeSigned" />
+                <ScalarProperty Name="strEmployeeEntry" ColumnName="strEmployeeEntry" />
+                <ScalarProperty Name="dtEmployeeDateTime" ColumnName="dtEmployeeDateTime" />
+                <ScalarProperty Name="intYear" ColumnName="intYear" />
+                <ScalarProperty Name="intMonth" ColumnName="intMonth" />
+                <ScalarProperty Name="strUserName" ColumnName="strUserName" />
+                <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+                <ScalarProperty Name="intTAESignID" ColumnName="intTAESignID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

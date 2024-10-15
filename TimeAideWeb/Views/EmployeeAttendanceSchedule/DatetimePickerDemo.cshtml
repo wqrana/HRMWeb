@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Demo";
+    Layout = "";
+}
+@*<link href="~/Content/Themes/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/Themes/assets/css/font-awesome.min.css" rel="stylesheet" />
+               <link href="~/Content/Themes/assets/css/line-awesome.min.css" rel="stylesheet" />
+                   <link href="~/Content/Themes/assets/css/font-awesome.min.css" rel="stylesheet" />
+           <link href="~/Content/Themes/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+*@
+<link href="~/Content/Themes/assets/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Themes/assets/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+<div class="main-wrapper">
+    <!-- Header Menu -->
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+        <!-- Page Content -->
+        <div class="content container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="datetime-local" id="pickDateTime" value="2018-06-12T19:30" />
+                </div>
+            </div>
+
+            <hr />
+            <footer>
+                <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/Content/Themes/assets/js/jquery-3.2.1.min.js"></script>
+    @*<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="~/Content/Themes/assets/js/moment.min.js"></script>
+        <script src="~/Content/Themes/assets/js/popper.min.js"></script>
+        <script src="~/Content/Themes/assets/js/bootstrap.min.js"></script>
+        <script src="~/Content/Themes/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="~/Content/Themes/assets/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="~/Content/Themes/assets/js/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+
+    @*<script src="~/Content/Themes/assets/js/bootstrap.min.js"></script>
+    <script src="~/Content/Themes/assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+*@
+<script src="~/Content/Themes/assets/js/jquery-3.2.1.min.js"></script>
+<script src="~/Content/Themes/assets/js/moment.min.js"></script>
+<script src="~/Content/Themes/assets/js/popper.min.js"></script>
+<script src="~/Content/Themes/assets/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+<script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+<script>
+    //JS for Applicant main page
+
+    $(document).ready(function () {
+        debugger;
+
+        //$('#pickDateTime').datetimepicker({
+        //    format: "DD/MM/YYYY hh:mm A"
+        //});
+
+        //$('#pickDateTime').datetimepicker({
+        //    format: "DD/MM/YYYY hh:mm"
+
+        //});
+    });
+</script>

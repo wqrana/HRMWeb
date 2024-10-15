@@ -1,0 +1,123 @@
+﻿@model TimeAide.Web.Models.TAWinTimeOffDocument
+@using TimeAide.Data;
+<style>
+    .showSection {
+        display: block;
+    }
+
+    .hideSection {
+        display: none;
+    }
+</style>
+<div id="addEdit_Timeoffdocument_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Add/Edit- Time-off document</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Document Name: <span class="text-danger">*</span></label>
+
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.sDocumentName, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Document Type: <span class="text-danger">*</span></label>
+
+                            <div class="col-md-5">
+                                @{
+                                    var documentType = DataHelper.TimeOffDocumentType.
+                                                    Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+                                }
+                                @Html.DropDownList("intDocumentType", documentType, "Please select", new { @class = "form-control" })
+
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Submission Type: <span class="text-danger">*</span></label>
+
+                            <div class="col-md-5 ">
+                                @{
+                                    var submissionType = DataHelper.TimeOffSubmissionType.
+                                                    Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+                                }
+                                @Html.DropDownList("intSubmissionType", submissionType, "Please select", new { @class = "form-control" })
+
+                            </div>
+                            @{
+                                var showHideSection = Model.intSubmissionType == 3 ? "showSection" : "hideSection";
+                            }
+                            <div class="col-md-3 pl-0 @showHideSection" id="divTimeOffDays">
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend pt-2 pr-2">
+                                        >
+                                    </div>
+                                    @Html.EditorFor(model => model.intTimeOffDays, new { htmlAttributes = new { @class = "form-control" } })
+                                    <div class="input-group-append pt-2 pl-2">
+                                        day(s)
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveTimeOffDocument" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#intSubmissionType").change(function () {
+            var val = $(this).val();
+            if (val == 3) {
+                $("#divTimeOffDays").removeClass("hideSection").addClass("showSection");
+            }
+            else {
+                $("#divTimeOffDays").removeClass("showSection").addClass("hideSection");
+                $("#intTimeOffDays").val(0);
+            }
+        });
+
+        $("#btnSaveTimeOffDocument").click(function () {
+            debugger;
+            var isValidatedFields = 0;
+            var dataObj = new Object();
+            dataObj.Id = @Model.Id;
+            dataObj.intTransId = $("#SelectedTransId").val();
+            dataObj.sDocumentName = $("#sDocumentName").val();
+            dataObj.intDocumentType = $("#intDocumentType").val();
+            dataObj.intSubmissionType = $("#intSubmissionType").val();
+            dataObj.intTimeOffDays = $("#intTimeOffDays").val();
+            isValidatedFields += dataObj.sDocumentName.trim().length > 0 ? 1 : 0;
+            isValidatedFields += dataObj.intDocumentType.trim().length > 0 ? 1 : 0;
+            isValidatedFields += dataObj.intSubmissionType.trim().length > 0 ? 1 : 0;
+            if (isValidatedFields != 3) {
+                showAlertAutoHide("", "Error", "Missing required field(s).");
+                return;
+            }
+            saveTransDefTimeOffDocument(dataObj);
+        });
+    });
+</script>

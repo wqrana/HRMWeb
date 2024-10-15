@@ -1,0 +1,214 @@
+﻿@model TimeAide.Web.Models.Employment
+ 
+<div class="form-horizontal" style="width:100%">
+    @*<div class="form-group row" style="margin:0px">
+            <div class="col-md-12 row">
+                <div class="col-md-6">
+                    <h3 class="card-title pull-left">
+                        Hiring Record
+                    </h3>
+                </div>
+            </div>
+        </div>*@
+    <div class="form-group row" style="margin:0px">
+        <div class="alert" style="display:none;" id="EmploymentAlert">
+            <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+            <strong>Alert!</strong><span class="ml-1"></span>
+        </div>
+    </div>
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="col-md-6 p-0">
+            @*<div class="panel panel-default" style="width:49%;margin-left:10px">*@
+            <div class="panel panel-default" style="margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            Hired
+                        </div>
+                        @if ((Model.CanAddNew || Model.CanEdit) && (ViewBag.AllowAdd || ViewBag.AllowEdit))
+                        {
+                            <div class="col-md-6">
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        @if (Model.CanAddNew && ViewBag.AllowAdd)
+                                        {
+                                            <a a href="javascript:;" data-toggle="modal" id="anchorAddEmployment" onclick="fnAddEmployment(@ViewBag.UserInformationId);" class="dropdown-item" data-id="@ViewBag.UserInformationId"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                        }
+                                        @if (Model.CanEdit && ViewBag.AllowEdit)
+                                        {
+                                            <a a href="javascript:;" data-toggle="modal" onclick="fnEditEmployment(@Model.Id);" id="anchorEditEmployment" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            <a a href="javascript:;" data-toggle="modal" onclick="fnDeleteEmployment(@Model.Id);" id="anchorDeleteEmployment" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                            <a href="javascript:getEmploymentContactView(@Model.Id)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Contract</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Hire Date:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblOriginalHire"> @Html.DisplayFor(model => model.OriginalHireDate)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Re-Hire Date:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblEffectiveHire">@Html.DisplayFor(model => model.EffectiveHireDate)</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Probation Start:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblProbationStart"> @Html.DisplayFor(model => model.ProbationStartDate)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Probation End:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblProbationEnd">@Html.DisplayFor(model => model.ProbationEndDate)</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Employment Status:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            @if (Model.EmploymentStatus != null)
+                            {
+                                <span id="lblEmploymentStatus">  @Html.DisplayFor(model => model.EmploymentStatus.EmploymentStatusName)</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Years in Service:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span>  @Html.DisplayFor(model => model.YearsinService)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Contract:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            @{                                  
+                               var showAHideCSS = String.IsNullOrEmpty(Model.DocumentPath)==false ? "showDownload" : "hideDownload";                                
+                            }
+                            <div id="divDownloadContractDoc"class="@showAHideCSS">
+                                <a class="fa fa-download text-info" href="/Employment/DownloadContractDocument/@Model.Id" title="Download File">Download</a>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 p-0">
+            @*<div class="panel panel-default" style="width:49%;margin-left:10px">*@
+            <div class="panel panel-default pb-3" style="margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            Termination
+                        </div>
+                        @if (Model.CanEdit && (ViewBag.AllowAdd || ViewBag.AllowEdit))
+                        {
+                            <div class="col-md-6">
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        @if (Model.CanEdit)
+                                        {
+                                            @*<a a href="javascript:;" data-toggle="modal" onclick="fnCloseEmployment(@Model.Id);" id="anchorCloseEmployment" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Close</a>*@
+                                            <a href="javascript:deactivateUser()" class="dropdown-item"><i class="fa fa-user-times m-r-5"></i> Close</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Date
+                        </label>
+                        <div class="col-md-6 text-muted mt-2" style="width:100% !important">
+                            <span id="lblTermination">  @Html.DisplayFor(model => model.TerminationDate)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Type
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblTerminationType">  @Html.DisplayFor(model => model.TerminationType.TerminationTypeName)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Reason
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblTerminationReason">@Html.DisplayFor(model => model.TerminationReason.TerminationReasonName)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Eligibility
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblTerminationEligibility"> @Html.DisplayFor(model => model.TerminationEligibility.TerminationEligibilityName)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Exit Interview
+                        </label>
+                        @{ var isExitInterview = Model.IsExitInterview ?? false;}
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblExitInterview"> @Html.DisplayFor(model => isExitInterview)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Exit Interview Doc.
+                        </label>
+                        <div class="col-md-6 text-muted mt-1">
+                            @if (!string.IsNullOrEmpty(Model.ExitInterviewDocPath))
+                            {
+                                <a class="fa fa-download text-info" href="/Employment/DownloadExitInterviewDocument/@Model.Id" title="Download File">Download</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4" style="margin-left:10px">
+                            Notes
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblTerminationNotes"> @Html.DisplayFor(model => model.TerminationNotes)</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>

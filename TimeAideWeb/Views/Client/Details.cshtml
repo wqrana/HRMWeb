@@ -1,0 +1,248 @@
+﻿@model TimeAide.Web.Models.Client
+
+<div id="DetailPayroll_cmp_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Client - Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <!--Inline form layout -->
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.ClientName, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <!--<label class="col-md-2 col-form-label">System Id:</label>-->
+                            <div class="col-md-3 text-muted">
+                                <!--<input id="Gen_systemId" class="form-control" type="text">-->
+                                @Html.DisplayFor(model => model.ClientName, new { htmlAttributes = new { @class = "form-control text-muted" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollName, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <!--<label class="col-md-2 col-form-label">First Name:</label>-->
+                            <div class="col-md-2 text-muted">
+                                <!-- <input id="Gen_firstName" class="form-control" type="text">-->
+                                @Html.DisplayFor(model => model.PayrollName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <!--<label class="col-md-2 col-form-label">Initial:</label>-->
+                            @Html.LabelFor(model => model.CompanyStartDate, "StartDate", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @String.Format("{0:MM/dd/yyyy}", @Model.CompanyStartDate)
+
+                                <!--<input id="Gen_middleName" class="form-control" type="text">-->
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div id="" class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                TimeAide-Window
+                                <span class="pl-4">
+                                    @Html.DisplayFor(model => model.IsTimeAideWindow)
+                                </span>
+                                @{
+                                    var showAHide = "hideSection";
+                                    if (Model != null)
+                                    {
+                                        showAHide = Model.IsTimeAideWindow ? "showSection" : "hideSection";
+                                    }
+                                }
+                            </div>
+                            <div class="panel-body">
+                                <div id="divTimeAideWindowView" class="@showAHide p-2">
+                                    <div class="form-group row">
+
+                                        @Html.LabelFor(model => model.DBServerName, htmlAttributes: new { @class = "col-md-1 control-label pr-0" })
+                                        <div class="col-md-3 text-muted">
+                                            @Html.DisplayFor(model => model.DBServerName, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                        @Html.LabelFor(model => model.DBName, htmlAttributes: new { @class = "col-md-1 pr-0 control-label" })
+                                        <div class="col-md-3 text-muted">
+                                            @Html.DisplayFor(model => model.DBName, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                        @Html.LabelFor(model => model.DBUser, htmlAttributes: new { @class = "col-md-1 control-label" })
+                                        <div class="col-md-2 text-muted">
+                                            @Html.DisplayFor(model => model.DBUser, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        @*<div class="card">
+        <div class="card-body pb-0">*@
+                        <h6 class="card-title">Contact Detail</h6>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Address1, htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.Address2, htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.CountryId, "Country", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.Country.CountryName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.StateId, "State", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.State.StateName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.CityId, "City", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.City.CityName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
+                            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            @Html.LabelFor(model => model.WebSite, htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-4 text-muted">
+                                @Html.DisplayFor(model => model.WebSite, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.ContactName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <hr />
+                        <h6 class="card-title">Payroll Contact Detail</h6>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollAddress1, "Address1", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.PayrollAddress1, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollAddress2, "Address2", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.PayrollAddress2, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollZipCode, "Zip Code", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.PayrollZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollCountryId, "Country", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.PayrollCountry.CountryName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollStateId, "State", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.PayrollState.StateName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollCityId, "City", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.PayrollCity.CityName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollContactPhone, "Phone", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.PayrollContactPhone, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollFax, "Fax", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.PayrollFax, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollEmail, "Email", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.PayrollEmail, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollContactTitle, "Contact Title", htmlAttributes: new { @class = "col-md-1 control-label" })
+                            <div class="col-md-4 text-muted">
+                                @Html.DisplayFor(model => model.PayrollContactTitle, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.PayrollContactName, "Contact Name", htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-5 text-muted">
+                                @Html.DisplayFor(model => model.PayrollContactName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+
+                        <hr />
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.EIN, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.EIN, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.SICCode, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.SICCode, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.NAICSCode, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.NAICSCode, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.SeguroChoferilAccount, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.SeguroChoferilAccount, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.DepartamentoDelTrabajoAccount, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.DepartamentoDelTrabajoAccount, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.LabelFor(model => model.DepartamentoDelTrabajoRate, htmlAttributes: new { @class = "col-md-2 control-label" })
+                            <div class="col-md-2 text-muted">
+                                @Html.DisplayFor(model => model.DepartamentoDelTrabajoRate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="submit-section mt-4 mb-2">
+                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*</div>
+    </div>*@
+
+
+

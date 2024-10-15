@@ -1,0 +1,102 @@
+﻿<style>
+</style>
+<div id="employeePayCheckDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border border-secondary">
+            <div class="mt-2 p-2 mt-0">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Pay Check(s)</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body p-2">
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div id="" style="min-height:200px; max-height:250px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Pay Date</th>
+                                            <th>Pay Amt.</th>
+                                            <th>Pay Method</th>
+                                            <th>Check# </th>
+                                            <th>Bank </th>
+                                            <th>Account Type</th>
+                                            <th>Account#</th>
+                                            <th>Routing#</th>
+                                            <th>Deposit%</th>
+                                            <th>Deposit Amt.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td width="5%">
+                                                <div class="pull-right dropdown-action">
+                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                        <a href="javascript:getEmployeePayCheckEditData();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td> <a href="javascript:getEmployeePayCheckEditData(1);"><span class="fa fa-pencil"></span></a></td>
+                                            <td>11/18/2022</td>
+                                            <td>805.15</td>
+                                            <td>Direct Debit</td>
+                                            <td>1234</td>
+                                            <td>BPPR</td>
+                                            <td>Checking</td>
+                                            <td>12345668</td>
+                                            <td>546587878</td>
+                                            <td>100.00</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section pb-2 mt-0">
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divPayCheckEdit"></div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+    function getEmployeePayCheckEditData(id) {
+        // $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayroll/EmployeePayCheckEdit',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayCheckEdit").html(data);
+                $("#employeePayCheckEdit_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+</script>
+
+

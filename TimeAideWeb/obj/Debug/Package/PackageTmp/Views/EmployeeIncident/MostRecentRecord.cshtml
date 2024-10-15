@@ -1,0 +1,192 @@
+﻿@model TimeAide.Web.Models.EmployeeIncident
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Case Information
+                    </div>
+                    <div class="panel-body">
+                        @Html.Hidden("EmployeeIncidentDetailId", Model.Id)
+                        <div class="form-group row mb-0">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">OSHA Recordable:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.CheckBoxFor(model => model.IsOSHARecordable, new { @disabled = "disabled" })
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Case Classification:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.OSHACaseClassification.OSHACaseClassificationName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Completion Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CompletedDate)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Completed By:</label>
+                            <div class="col-md-10 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CompletedBy.ShortFullName)
+                            </div>
+
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Incident Type:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.IncidentType.IncidentTypeName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Establishment:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Location.LocationName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Incident Area:</label>
+                            <div class="col-md-2 text-muted mt-2 ">
+                                @Html.DisplayFor(m => m.IncidentArea.IncidentAreaName)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Incident Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.IncidentDate)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Incident Time:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @{var IncidentTime = Model.IncidentTime.HasValue ? Model.IncidentTime.Value.ToString("t"):""; }
+                                @Html.DisplayFor(m => IncidentTime)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Shift Start Time:</label>
+                            <div class="col-md-2 text-muted mt-2 ">
+                                @{var EmployeeBeganWorkTime = Model.EmployeeBeganWorkTime.HasValue ? Model.EmployeeBeganWorkTime.Value.ToString("t") : ""; }
+                                @Html.DisplayFor(m => EmployeeBeganWorkTime)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-3 col-form-label" style="margin-left:0px">
+                                Employee doing before incident:
+                            </label>
+                            <div class="col-md-8 text-muted mt-2">
+                                @Html.DisplayFor(m => m.EmployeeDoingBeforeIncident)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-3 col-form-label" style="margin-left:0px">
+                                How incident Occured:
+                            </label>
+                            <div class="col-md-8 text-muted mt-2">
+                                @Html.DisplayFor(m => m.HowIncidentOccured)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row mb-0">
+            <div class="col-md-6 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Injury Detail
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:EditEmployeeIncidentInjury();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add/Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">OSHA Injury Classification:</label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @Html.DisplayFor(m => m.OSHAInjuryClassification.OSHAInjuryClassificationName)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Affected Body Part:</label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @Html.DisplayFor(m => m.IncidentBodyPart.IncidentBodyPartName)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Injury/Illness Description:</label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @Html.DisplayFor(m => m.IncidentInjuryDescription.IncidentInjuryDescriptionName)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Injury/Illness Source:</label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @Html.DisplayFor(m => m.IncidentInjurySource.IncidentInjurySourceName)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Date of Death,If:</label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @Html.DisplayFor(m => m.DateOfDeath)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-5 col-form-label" style="margin-left:0px">Restricted From Work,Days:</label>
+                            <div class="col-md-1 text-muted mt-2 pl-0 pr-0">
+                                @Html.DisplayFor(m => m.RestrictedFromWorkDays)
+                            </div>
+                            <label class="col-md-5 col-form-label" style="margin-left:0px">Away From Work,Days:</label>
+                            <div class="col-md-1 text-muted mt-2 pl-0">
+                                @Html.DisplayFor(m => m.AwayFromWorkDays)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                       Treatment Detail
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:EditEmployeeIncidentTreatment();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i>Add/Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row mb-0">
+                            <label class="col-md-7 col-form-label" style="margin-left:0px">Physician/Health Care Professional:</label>
+                            <div class="col-md-5 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PhysicianName)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Treatment Facility:</label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @Html.DisplayFor(m => m.IncidentTreatmentFacility.TreatmentFacilityName)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Treated in Emergency Room:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @Html.CheckBoxFor(model => model.IsTreatedInEmergencyRoom , new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Hospitalized Overnight:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @Html.CheckBoxFor(model => model.IsHospitalizedOvernight, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-6 col-form-label" style="margin-left:0px">Hospitalized Days:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.HospitalizedDays)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+           
+        </div>
+        
+    </div>
+</div>
+
+

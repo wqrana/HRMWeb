@@ -1,0 +1,90 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeBenefitHistory>
+
+<div class="form-group row">
+    <div class="col-md-12 p-0">
+        <div class="panel panel-default" style="margin-left:5px">
+            <div class="panel-heading" style="padding-left:0px">
+
+
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table table-nowrap mb-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Benefit
+                                </th>
+                                <th>
+                                    Start Date
+                                </th>
+                                <th>
+                                    End Date
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Frequency
+                                </th>
+                                <th>
+                                    Notes
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @*@item.Benefit.BenefitName*@
+                                    @Html.DisplayFor(m=> item.Benefit.BenefitName)
+                                </td>
+                                <td>
+                                    @String.Format("{0:MM/dd/yyyy}", item.StartDate)
+                                </td>
+                                <td>
+                                    @String.Format("{0:MM/dd/yyyy}", item.ExpiryDate)
+                                </td>
+                                <td>
+                                    @String.Format("{0:0.00}", item.Amount)
+
+                                </td>
+                                <td>
+                                    @if (@item.PayFrequency != null)
+                                    {
+                                        @item.PayFrequency.PayFrequencyName
+                                    }
+                                </td>
+                                <td>
+                                    @item.Notes
+                                </td>
+
+                                <td width="10%">
+                                    <div class="pull-right dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                            <a href="javascript:createEditUserBenefit(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            <a href="javascript:getUserBenefitDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                            <a href="javascript:getUserBenefitDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                            @if ((bool)(ViewBag.Allow
+                                                ?? false))
+                                            {
+                                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

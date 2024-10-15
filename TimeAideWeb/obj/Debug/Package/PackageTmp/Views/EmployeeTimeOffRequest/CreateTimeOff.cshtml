@@ -1,0 +1,507 @@
+﻿@model TimeAide.Web.Models.EmployeeTimeOffRequest
+@Html.HiddenFor(m => m.UserInformationId)
+@Html.HiddenFor(m => m.EmployeeId)
+@{
+    var startDD = ViewBag.timeOffRequestStartDD;
+    var endDD = ViewBag.timeOffRequestEndDD;
+    var initDate = Model.StartDate.Value.ToString("MM/dd/yyyy");
+    var fromDateLimit = ((DateTime)ViewBag.timeOffRequestStartLimit).ToString("MM/dd/yyyy");
+    var defaultDayHours = (decimal)ViewBag.dayHours;
+    var showTimeOffDoc = TimeAide.Services.ApplicationConfigurationService.GetConfigurationStatus("ShowTimeOffDocument");
+    var isWholeDayTimeOff = TimeAide.Services.ApplicationConfigurationService.GetConfigurationStatus("UseWholeDayTimeOffRequest");
+    var timeoffCalendarStart = fromDateLimit;
+    var timeoffCalendarEnd = ((DateTime)ViewBag.timeOffRequestEndLimit).ToString("MM/dd/yyyy");
+}
+<div id="employeeTimeOffRequest_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Time Off Request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card tab-box mb-1">
+                        <div class="row user-tabs">
+                            <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                                <ul class="nav nav-tabs nav-tabs-bottom">
+                                    <li class="nav-item" id="timeOffInfoTab"><a href="#timeoff_DetailInfo" data-toggle="tab" class="nav-link active">Time Off</a></li>
+                                    @if (showTimeOffDoc)
+                                    {
+                                        <li class="nav-item" id="documentInfoTab" onclick=""><a href="#timeoff_DocumentInfo" data-toggle="tab" class="nav-link">Document(s)</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content pt-0">
+                        <div id="timeoff_DetailInfo" class="pro-overview tab-pane fade show active">
+                            <div class="row">
+                                <div class="col-md-12 d-flex">
+                                    <div class="card profile-box flex-fill mb-0">
+                                        <div class="card-body pt-1 pb-1">
+                                            <!--Start of Time Off-->
+                                            <div id="divRefreshingDetail" class="align-content-md-start">
+                                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">Time Off Type: <span class="text-danger">*</span></label>
+                                                        <div class="col-md-7 pr-0">
+                                                            @Html.DropDownList("TimeOffTypeId", null, "Select Time-Off Type", new { @class = "form-control" })
+
+                                                            <div class="font-weight-light text-info">
+                                                                License:<span id="spanLicenseTypeId" class="text-secondary font-weight-bold pr-1"></span>, Available Bal.:<span id="spanLicenseTypeBalance" class="text-secondary font-weight-bold pr-2">N/A</span><span><a href="javascript:getTimeOffTypeDetail();" title="Refresh Balance" class="fa fa fa-refresh text-success"></a></span>
+                                                                @*<span class="pl-4 pull-right"> <a href="javascript:viewTimeOffCalendar();" title="View Calendar" class="fa fa fa-calendar text-info"></a></span>*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1 pl-1">
+                                                            <a href="javascript:viewTimeOffCalendar();" title="View Calendar" class="fa fa-calendar text-info btn btn-white pt-2" style="height:40px;"></a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">From: <span class="text-danger">*</span></label>
+                                                        <div class="col-md-8">
+                                                            @*<div class="cal-icon">*@
+                                                            <input class="form-control datepicker" type="text" value="@initDate" id="StartDate" disabled>
+                                                            @*</div>*@
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">To: <span class="text-danger">*</span></label>
+                                                        <div class="col-md-8">
+                                                            @*<div class="cal-icon">*@
+                                                            <input class="form-control datepicker" type="text" value="@initDate" id="EndDate" disabled>
+                                                            @*</div>*@
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">Hour(s) in Day: <span class="text-danger">*</span></label>
+                                                        <div class="col-md-3">
+                                                            @if (isWholeDayTimeOff)
+                                                            {
+                                                                <input class="form-control" type="number" id="DayHours" value="@defaultDayHours" min="0.00" max="@defaultDayHours" readonly>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="form-control" type="number" id="DayHours" value="@defaultDayHours" min="0.00" max="@defaultDayHours">
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label pr-0">Number of Work-Day(s): <span class="text-danger"></span></label>
+                                                        <div class="col-md-3">
+                                                            <input class="form-control" type="text" readonly id="WorkDays">
+                                                        </div>
+                                                        <div class="col-md-5 p-0">
+                                                            <span class="text-danger" id="spanLessRangeAlert">Time-off period is on off-day(s), can't be requested.</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label pr-0">Requested Time(Hrs): <span class="text-danger"></span></label>
+                                                        <div class="col-md-3">
+                                                            <input class="form-control" type="text" readonly id="RequestedTime">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label pr-0">Remaining Time(Hrs): <span class="text-danger"></span></label>
+                                                        <div class="col-md-3">
+                                                            <input class="form-control" type="text" readonly id="RemainingTime">
+                                                        </div>
+                                                        <div class="col-md-5 p-0">
+                                                            <span class="text-danger" id="spanLessTimeAlert">Requested time is more than the available balance. Please see the calendar.</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">Reason: <span class="text-danger">*</span></label>
+                                                        <div class="col-md-8">
+                                                            <textarea rows="3" class="form-control" id="RequestReason"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="submit-section mt-1">
+                                                <div id="" class="align-content-md-start submit-in-processing" style="display:none;">
+                                                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                                                </div>
+                                                <button id="btnSaveTimeOffRequest" class="btn btn-primary submit-btn">Submit</button>
+                                                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                            </div>
+                                            <div id="divSubmissionAlert" class="alert alert-danger mt-1 mb-0 p-1" role="alert">
+                                                In order to submit the time off, please apply the changes in calendar.
+                                            </div>
+                                            <!--Time Off Detail End-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="timeoff_DocumentInfo" class="pro-overview tab-pane">
+                            <div class="row">
+                                <div class="col-md-12 d-flex">
+                                    <div class="card profile-box flex-fill mb-0">
+                                        <div class="card-body p-1" style="min-height:400px;">
+                                            <div id="divTimeOffTypeDocument">
+                                                <!--
+                                                <div class="panel panel-default" style="margin-left:0px;min-height:200px;">
+                                                    <div class="panel-heading" style="padding-left:5px">
+                                                        Request Document(s)
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-condensed table-sm table-striped  table-nowrap mb-0" id="tblPosition">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Name
+                                                                        </th>
+                                                                        <th>
+                                                                            Submission Type
+                                                                        </th>
+                                                                        <th>
+                                                                            Status
+                                                                        </th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                    <tr>
+                                                                        <td>
+                                                                            Request Doc 1
+                                                                        </td>
+                                                                        <td>
+                                                                            Mandatory
+                                                                        </td>
+
+                                                                        <td>
+                                                                            NA
+                                                                        </td>
+                                                                        <td width="10%">
+                                                                            <div class="pull-right dropdown-action">
+                                                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                                                    <a href="javascript:void(0);" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" style="margin-left:0px;min-height:200px;">
+                                                    <div class="panel-heading" style="padding-left:5px">
+                                                        Supporting Document(s)
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-condensed table-sm table-striped  table-nowrap mb-0" id="tblPosition">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Name
+                                                                        </th>
+                                                                        <th>
+                                                                            Submission Type
+                                                                        </th>
+                                                                        <th>
+                                                                            Status
+                                                                        </th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tr>
+                                                                    <td>
+                                                                        Supporting Doc 1
+                                                                    </td>
+                                                                    <td>
+                                                                        Optional
+                                                                    </td>
+
+                                                                    <td>
+                                                                        NA
+                                                                    </td>
+                                                                    <td width="10%">
+                                                                        <div class="pull-right dropdown-action">
+                                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                                                <a href="javascript:void(0);" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    Html.RenderAction("UploadDocumentFiles", "EmployeeTimeOffRequestDocument");
+}
+<script>
+    var timeOffReqUploadedDocData = [];
+    var timeOffTypeDocumentList = [];
+    $(document).ready(function () {
+
+        $("#spanLessTimeAlert").hide();
+        $("#spanLessRangeAlert").hide();
+        $("#divRefreshingDetail").hide();
+        $("#divSubmissionAlert").hide();
+        applyDatePickerRange();
+
+        $("#TimeOffTypeId").change(function () {
+            debugger;
+            getTimeOffTypeDetail();
+           // var accrualType = $('#TimeOffTypeId').val();
+            getTimeOffCalculationDetail();
+            var transTypeName = $("#TimeOffTypeId option:selected").text();
+            getTimeOffTypeDocumentList(transTypeName);
+            var transTypeAcc = $("#TimeOffTypeId").val();
+            if (transTypeAcc != "") {
+                $(".loading").show();
+                setTimeout( function () {
+                    debugger;
+                    viewTimeOffCalendar();
+                },2000);
+            }
+        });
+
+        //$("#StartDate").change(function () {
+        //   // $("#EndDate").val($(this).val());
+        //    var startDate = new Date($(this).val());
+        //    $("#EndDate").datepicker('setDate', startDate);
+        //    getTimeOffCalculationDetail();
+        //});
+        //$("#EndDate").change(function () {
+        //    debugger;
+        //    var endDate = new Date($(this).val());
+        //    var startDate = new Date($("#StartDate").val());
+        //    if (endDate < startDate) {
+        //        // $(this).val($("#StartDate").val());
+        //        $(this).datepicker('setDate', startDate);
+        //    }
+        //    getTimeOffCalculationDetail();
+        //});
+        $("#DayHours").change(function () {
+            debugger;
+            var newDayHours = $(this).val();
+            if (newDayHours >@defaultDayHours || newDayHours < 0) {
+                $(this).val(@defaultDayHours);
+            }
+
+           getTimeOffCalculationDetail();
+
+        });
+        $("#btnSaveTimeOffRequest").click(function () {
+           // var dayHours
+            var isRequired = checkMandatoryDocumentSubmissionRequired();
+            if (isRequired) {
+                showAlertAutoHide("", "Error", "Request type of mandatory document(s) are required to submit.");
+                return;
+            }
+            var workdays = $('#WorkDays').val();
+            var timeoffTrans = $("#TimeOffTypeId option:selected").text();
+            result = checkConditionalMandatoryDocumentSubmission(workdays)
+            if (result.length > 0) {
+                var msgText = timeoffTrans + " Time-Off Request of ( " + result[0].TimeoffDays+" ) or more days requires mandatory document(s).Please attach the document(s) before submitting/approval."
+                showAlertAutoHide("", "Info", msgText );
+                return;
+            }
+           // return; //need to removed after testing of conditional mandatory document
+            saveTimeOffRequestData();
+        });
+    });
+    function applyDatePickerRange() {
+         $('.datepicker').datepicker({
+            autoclose: true,
+
+            format: 'mm/dd/yyyy',
+            startDate: "@fromDateLimit",
+            endDate:"@endDD"
+        });
+    }
+    function viewTimeOffCalendar() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.UserInformationId = $('#UserInformationId').val();
+        dataObject.EmployeeId = $('#EmployeeId').val();
+        dataObject.AccrualType = $('#TimeOffTypeId').val();
+        $("#spanLicenseTypeId").text(dataObject.AccrualType);
+        if (dataObject.AccrualType == "") {
+            showAlertAutoHide("", "Info", "Please select the time-off Type");
+            return;
+        }
+        dataObject.StartDate = '@timeoffCalendarStart';
+        dataObject.EndDate = '@timeoffCalendarEnd';
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeTimeOffRequest/viewTimeOffCalendar',
+            data: JSON.stringify(dataObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divTimeOffCalendar").html(data);
+                $("#timeOffCalendar_modal").modal("show");
+                enableRequestSubmission(false);
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getTimeOffTypeDetail() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.UserInformationId = $('#UserInformationId').val();
+        dataObject.EmployeeId = $('#EmployeeId').val();
+        dataObject.AccrualType = $('#TimeOffTypeId').val();
+        $("#spanLicenseTypeId").text(dataObject.AccrualType);
+        if (dataObject.AccrualType == "" || dataObject.AccrualType == "NO") {
+            $("#spanLicenseTypeBalance").text("N/A");
+            return;
+        }
+        $.ajax({
+            url: "/EmployeeTimeOffRequest/AjaxGetTimeOffDetail",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data.timeOffTypeData);
+                    $("#spanLicenseTypeBalance").text(data.timeOffTypeData.Balance + " Hrs");
+
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+    function getTimeOffCalculationDetail() {
+        debugger;
+        $("#divRefreshingDetail").show();
+        $("#spanLessTimeAlert").hide();
+        $("#spanLessRangeAlert").hide();
+        var dataObject = new Object();
+        dataObject.UserInformationId = $('#UserInformationId').val();
+        dataObject.EmployeeId = $('#EmployeeId').val();
+        dataObject.AccrualType = $('#TimeOffTypeId').val();
+        dataObject.StartDate = $('#StartDate').val();
+        dataObject.EndDate = $('#EndDate').val();
+        dataObject.DayHours = $('#DayHours').val();
+        if (dataObject.AccrualType == "" ) {
+            return;
+        }
+        $.ajax({
+            url: "/EmployeeTimeOffRequest/AjaxGetTimeOffCalculation",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data.timeOffCalcData);
+                    //$("#spanLicenseTypeBalance").text(data.timeOffTypeData.Balance + " Hrs");
+                    $("#WorkDays").val(data.timeOffCalcData.WorkingDays);
+                    $("#RequestedTime").val(data.timeOffCalcData.RequestedTime);
+                    if (data.timeOffCalcData.WorkingDays <= 0) {
+                        $("#spanLessRangeAlert").show();
+                    }
+                    if (dataObject.AccrualType == "NO") {
+                        $("#RemainingTime").val("N/A");
+                    }
+                    else {
+                        $("#RemainingTime").val(data.timeOffCalcData.RemainingTime);
+                        if (data.timeOffCalcData.RemainingTime < 0) {
+                            $("#spanLessTimeAlert").show();
+                            // $("#btnSaveTimeOffRequest").attr("disabled", true);
+                            enableRequestSubmission(false)
+                        }
+                        else {
+                           // $("#btnSaveTimeOffRequest").removeAttr("disabled");
+                            enableRequestSubmission(true)
+                        }
+                    }
+                    $("#divRefreshingDetail").hide();
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+    function getTimeOffTypeDocumentList(timeOffTypeName) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeOffRequestDocument/GetTimeOffTypeDocument',
+            data: { "timeOffTypeName": timeOffTypeName },
+            success: function (data) {
+                debugger;
+                $("#divTimeOffTypeDocument").html(data);
+
+            },
+            error: function () {
+            }
+        });
+    }
+    function enableRequestSubmission(isEnabled) {
+        if (!isEnabled) {
+            
+            $("#btnSaveTimeOffRequest").attr("disabled", true);
+            $("#divSubmissionAlert").show();
+        }
+        else {
+            $("#btnSaveTimeOffRequest").removeAttr("disabled");
+            $("#divSubmissionAlert").hide();
+        }
+    }
+</script>
+
+

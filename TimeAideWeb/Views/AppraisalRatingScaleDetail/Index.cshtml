@@ -1,0 +1,215 @@
+﻿@model IEnumerable<TimeAide.Web.Models.AppraisalRatingScaleDetail>
+<div class="form-group row">
+    <label class="col-md-2 col-form-label" style="margin-left:10px">
+        Scale Name:
+    </label>
+    <div class="col-md-4 text-muted mt-2">
+        @ViewBag.ScaleName
+        <input type="hidden" id="SelectedAppraisalRatingScaleId" , value="@ViewBag.AppraisalRatingScaleId" />      
+    </div>
+    <label class="col-md-2 col-form-label" style="margin-left:10px">
+        Max Value:
+    </label>
+    <div class="col-md-3 text-muted mt-2">
+        @ViewBag.MaxValue
+        <input type="hidden" id="SelectedAppraisalRatingScaleMaxVal" , value="@ViewBag.MaxValue" />
+
+    </div>
+   </div>
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0">
+            <tr>
+                <th>
+                    Rating
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Abbrivation
+                </th>
+                <th>
+                    Value
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td width="10%">
+                        @Html.DisplayFor(modelItem => item.RatingLevel.RatingLevelName)
+                    </td>
+                    <td width="30%">
+                        @Html.DisplayFor(modelItem => item.RatingName)
+                    </td>
+                    <td width="35%">
+                        @Html.DisplayFor(modelItem => item.RatingDescription)
+                    </td>
+                    <td width="15%">
+                        @Html.DisplayFor(modelItem => item.RatingAbbreviation)
+                    </td>
+                    <td width="10%">
+                        @Html.DisplayFor(modelItem => item.RatingValue)
+                    </td>
+                    <td width="10%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditAppraisalRatingScaleDetail(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                <a href="javascript:getAppraisalRatingScaleDetailDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+        });
+        function createEditAppraisalRatingScaleDetail(scaleDetailId) {
+            debugger;
+            var ActionMethod = scaleDetailId == 0 ? "Create" : "Edit";
+            var ScaleId = $('#SelectedAppraisalRatingScaleId').val();
+            if (ScaleId != 0) {
+                $.ajax({
+                    type: "get",
+                    url: '/AppraisalRatingScaleDetail/' + ActionMethod,
+                    data: { "id": scaleDetailId },
+
+                    success: function (data) {
+                        // debugger;
+                        //console.log(data);
+                        $("#divCreateEditDelPopUp").html(data);
+                        $("#AppraisalRatingScaleDetailCreateEdit_modal").modal("show");
+
+
+                    },
+                    error: function () {
+                        alert(data.ErrorMessage);
+                    }
+                });
+            }
+            else {
+                showAlertAutoHide("#appraisalIndexPageAlert", "Error", " Please first select the Scale");
+            }
+        }
+        function saveAppraisalRatingScaleDetailData() {
+            debugger;
+            var alertID = "#appraisalRatingScaleDetailCreateEditAlert";
+            var isRequiredValidated = 0;
+            var isValidated = true;
+            var message = "";
+            var dataObj = new Object();
+            dataObj.id = $('#AppraisalRatingScaleDetailId').val();
+            dataObj.AppraisalRatingScaleId = $('#SelectedAppraisalRatingScaleId').val();
+            dataObj.RatingLevelId = $('#RatingLevelId').val();
+            dataObj.RatingValue = $('#RatingValue').val();
+            dataObj.RatingName = $('#RatingName').val();
+            dataObj.RatingAbbreviation = $('#RatingAbbreviation').val();
+            dataObj.RatingDescription = $('#RatingDescription').val();
+            var scaleMaxVal = $('#SelectedAppraisalRatingScaleMaxVal').val(); 
+            //--------------------------------------------------------
+            if (dataObj != null) {
+                isRequiredValidated += dataObj.RatingLevelId.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.RatingValue.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.RatingName.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.RatingAbbreviation.trim().length > 0 ? 1 : 0;
+                if (isRequiredValidated != 4) {
+                    isValidated = false;
+                    message = " Missing Required field(s)";
+                }
+                else if (Number(dataObj.RatingValue) > Number(scaleMaxVal)) {
+                    isValidated = false;
+                    message = " Rating value is greater than Max value";
+                }
+            }
+            if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+            if (isValidated) {
+                // ajax call for saving data
+                $.ajax({
+                    type: "POST",
+                    url: "/AppraisalRatingScaleDetail/CreateEdit",
+                    data: JSON.stringify(dataObj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        //debugger;
+                        if (data.status == "Success") {
+                            $("#AppraisalRatingScaleDetailCreateEdit_modal").modal("hide");
+                            showAlertAutoHide("#appraisalIndexPageAlert", data.status, data.message);
+                            //location.reload(true);
+                            getAppraisalRatingScaleDetail(dataObj.AppraisalRatingScaleId);
+                        }
+                        else {
+                            showAlertAutoHide(alertID, data.status, data.message);
+                        }
+                    }
+                    ,
+                    error: function (request, status, error) {
+                        alert('Error in deleting parent alert data');
+                        return false;
+                    }
+                });
+            }
+        }
+
+        function getAppraisalRatingScaleDetailDeleteData(scaleDetailId) {
+            if (scaleDetailId != '') {
+
+                $.ajax({
+                    type: "get",
+                    url: '/AppraisalRatingScaleDetail/Delete',
+                    data: { "id": scaleDetailId },
+
+                    success: function (data) {
+                        //debugger;
+                        $("#divCreateEditDelPopUp").html(data);
+                        $("#appraisalRatingScaleDetailDelete_modal").modal("show");
+
+                    },
+                    error: function () {
+                        // displayWarningMessage(data.ErrorMessage);
+                    }
+                });
+            }
+        }
+        function deleteAppraisalRatingScaleDetail(scaleDetailId) {
+            debugger;
+            alertID = "#appraisalRatingScaleDetailDeleteAlert"
+            if (scaleDetailId != '') {
+                $.ajax({
+                    type: "Post",
+                    url: "/AppraisalRatingScaleDetail/ConfirmDelete",
+                    data: { "id": scaleDetailId },
+                    dataType: "json",
+                    success: function (data) {
+                        //debugger;
+                        if (data.status == "Success") {
+                            $("#appraisalRatingScaleDetailDelete_modal").modal("hide");
+                            showAlertAutoHide("#appraisalIndexPageAlert", data.status, data.message);
+                            getAppraisalRatingScaleDetail(scaleDetailId);
+                            //location.reload(true);
+                        }
+                        else {
+                            showAlertAutoHide(alertID, data.status, data.message);
+                        }
+                    }
+                    ,
+                    error: function (request, status, error) {
+                        showAlertAutoHide(alertID, "Error", error);
+                        return false;
+                    }
+                });
+            }
+        }
+    </script>

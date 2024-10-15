@@ -1,0 +1,89 @@
+﻿@model TimeAide.Web.Models.EmployeeAccrualBalance
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="employeeAccrualBalanceCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;"> Accrual Balance - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                @Html.Hidden("EmployeeAccrualBalanceId", Model.Id)
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Inital Balance </div>
+                            <div class="panel-body">
+                                <div id="divInitBalance">
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Accrual Type:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.DropDownList("AccrualTypeId", null, "Please select", new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2">Start Date:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(model => model.BalanceStartDate, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2"> Accrued Hours:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(model => model.AccruedHours, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        </div>
+                                        @*<label class="col-md-2 col-form-label" style="margin-left:0px">Accrual Days:</label>
+                                            <div class="col-md-4">
+                                                <input type="text" id="AccrualDays" class="form-control" disabled />
+                                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnsaveEmployeeAccrualBalance" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+
+
+        $("#btnsaveEmployeeAccrualBalance").click(function () {
+            debugger;
+            saveEmployeeAccrualBalanceData();
+        });
+
+    });
+
+</script>
+
+
+
+

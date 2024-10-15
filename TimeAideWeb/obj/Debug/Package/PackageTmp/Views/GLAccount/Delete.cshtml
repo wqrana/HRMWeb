@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.GLAccount
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GLAccountName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GLAccountName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GLAccountDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GLAccountDescription)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            GLAccount Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GLAccountType.GLAccountTypeName)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

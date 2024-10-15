@@ -1,0 +1,115 @@
+﻿@model TimeAide.Web.Models.Company
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsDefaultPortalPicture)
+    @Html.HiddenFor(model => model.PortalPictureFilePath)
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CompanyCode, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompanyCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CompanyDescription, "Description", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompanyDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.EIN, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.EIN, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EIN, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3">
+            @Html.LabelFor(model => model.CompanyLogo, "Company Logo:", htmlAttributes: new { @class = "control-label" })
+        </label>
+        <div class="col-md-8">
+            <input class="form-control" type="file" id="uploadCompanyLogo" accept=".jpg,.png">
+        </div>
+        <div id="divUploadingCompanyLogo" class="align-content-md-center">
+            <span class="fa fa-upload">Logo Uploading...</span><img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label pr-0">Portal Statement:<span class="text-danger"></span></label>
+        <div class="col-md-8">
+
+            @Html.TextAreaFor(m => m.PortalWelcomeStatement, new
+            {
+                rows = "5",
+                style = "resize:none;width:450px;",
+                @class = "form-control richtext-editor"
+            })
+        </div>
+
+    </div>
+    <div class="submit-section">
+        <input type="hidden" id="popupTargetDdl" />
+        <button id="savecompany" type="button" onclick="fnSaveCompany('Create');" class="btn btn-primary submit-btn">Save</button>
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+}
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+@Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    $(document).ready(function () {
+        $("#divUploadingCompanyLogo").hide();
+
+        $('.richtext-editor').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['']],
+                ['insert', ['link']],
+                ['view', []],
+            ],
+
+            height: 200, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            //  disableDragAndDrop: true
+
+        });
+        $('div.note-popover').css("display", "none");
+        setTimeout(function () {
+            debugger;
+            $('.richtext-editor').summernote('fontName', 'Arial');
+            $('.richtext-editor').summernote('fontSizeUnit', 'pt');
+            $('.richtext-editor').summernote('fontSize', 14);
+            $('.richtext-editor').summernote('justifyLeft');
+
+
+        }, 500);
+    });
+</script>

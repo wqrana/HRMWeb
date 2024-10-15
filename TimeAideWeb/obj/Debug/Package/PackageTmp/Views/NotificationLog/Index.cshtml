@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TimeAide.Web.Models.NotificationLog>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserInformationName)
+        </th>
+        <th>
+            Notification Type
+        </th>
+        <th>
+            Notification Role
+        </th>
+        <th>
+            Notification Message
+        </th>
+        <th>
+            Days Before
+        </th>
+        <th>
+            Expiring in
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserInformationName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NotificationType.NotificationTypeName)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.NotificationScheduleDetail.NotificationRole.NotificationRoleName)*@
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NotificationScheduleDetail.NotificationMessage.NotificationMessageName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NotificationScheduleDetail.DaysBefore)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpiringDays)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

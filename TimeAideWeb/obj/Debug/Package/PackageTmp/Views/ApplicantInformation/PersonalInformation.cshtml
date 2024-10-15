@@ -1,0 +1,88 @@
+﻿@model TimeAide.Web.Models.ApplicantInformation
+<div style="padding:5px; padding-top:0px;">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="panel panel-default mb-0" style="width:100%;margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Personal Information
+                    <div class="pull-right dropdown-action" style="height:20px;">
+                        @if (!ViewBag.IsHired)
+                        {
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                <a href="javascript:editPersonalInformation();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                <div class="panel-body">
+
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            First Name:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @Html.DisplayFor(model => model.FirstName)
+                        </div>
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            Initial:
+                        </label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @Html.DisplayFor(model => model.MiddleInitial)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            1st LastName:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.DisplayFor(model => model.FirstLastName)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            2nd LastName:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @Html.DisplayFor(model => model.SecondLastName)
+                        </div>
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            SSN:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @TimeAide.Services.UserInformationService.MaskSsn(Model.SSNEncrypted)
+                            @*@Html.DisplayFor(model => model.SSN)*@
+                        </div>
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            Birth Date:
+                        </label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @Html.DisplayFor(model => model.BirthDate)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            Gender:
+                        </label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @Html.DisplayFor(model => model.Gender.GenderName)
+                        </div>
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            Disability:
+                        </label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @Html.DisplayFor(model => model.Disability.DisabilityName)
+                        </div>
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            CV:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @Html.DisplayFor(model => model.ResumeFilePath)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

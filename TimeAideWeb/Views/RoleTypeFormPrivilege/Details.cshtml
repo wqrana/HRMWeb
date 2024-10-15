@@ -1,0 +1,57 @@
+﻿@model TimeAide.Web.Models.RoleTypeFormPrivilege
+
+@{
+    ViewBag.Title = "Details - Role Form Privilege";
+}
+
+<h2>Details - Role Form Privilege</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+
+        <dt>
+            @Html.Label("Form")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Form.FormName)
+        </dd>
+
+        <dt>
+            @Html.Label("Privilege")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Privilege.Name)
+        </dd>
+
+        <dt>
+            @Html.Label("Role")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Role.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company.CompanyName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.ClientName)
+        </dd>
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.RolePrivilegeId }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>

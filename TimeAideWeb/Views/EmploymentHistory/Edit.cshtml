@@ -1,0 +1,303 @@
+﻿@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.EmploymentHistory
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.UserInformationId)
+    <input id="EmploymentHistoryId" name="EmploymentHistoryId" type="hidden" value="@Model.Id">
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row">
+            <div class="col-md-5">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Start Date:<span class="text-danger">*</span>
+                    </label>
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row" style="display:none;">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Company:
+                    </label>
+                    <div class="col-md-7">
+                        @(Html.DisplayFor(model => model.Company.CompanyName))
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Location:
+                    </label>
+                    <div class="col-md-7">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.Location>("LocationId", null, Model.LocationId, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Department: <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-md-7">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.Department>("DepartmentId", null, Model.DepartmentId, htmlAttributes: new { @class = "form-control searchableDDL" }))
+                        @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        SubDepartment:
+                    </label>
+                    <div class="col-md-7">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.SubDepartment>("SubDepartmentId", null, Model.SubDepartmentId,Model.DepartmentId, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.SubDepartmentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Position:
+                    </label>
+                    @*<div class="col-md-7">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.Position>("PositionId", null, Model.PositionId, htmlAttributes: new { @class = "form-control searchableDDL" }))
+                            @Html.ValidationMessageFor(model => model.PositionId, "", new { @class = "text-danger" })
+                        </div>*@
+                    <div class="col-md-7">
+                        @{
+                            var showplus = SecurityHelper.AllowAdd(typeof(TimeAide.Web.Models.Position).Name);
+                        }
+                        <div class="input-group">
+                            @Html.DropDownList("PositionId", null, "Please select", new { @class = "form-control searchableDDL" })
+                            @if (showplus)
+                            {
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                </div>
+                            }
+                            </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Employee Type:
+                    </label>
+                    <div class="col-md-7">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.EmployeeType>("EmployeeTypeId", null, Model.EmployeeTypeId, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.EmployeeTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Employment Type:
+                    </label>
+                    <div class="col-md-7">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.EmploymentType>("EmploymentTypeId", null, Model.EmploymentTypeId, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.EmploymentTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="col-md-12">
+                    @*@Html.ListBox("SupervisorId", (IEnumerable<SelectListItem>)ViewBag.SupervisorId, new { @class = "form-control", style = "width:100%;" })*@
+                    @*<div class="input-group">
+                            <span id="lblSupervisorId">  @Html.DisplayFor(model => model.SelectedSupervisorByName)</span>
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" onclick="fnAddSupervisers(@Model.UserInformationId);">+</button>
+                            </div>
+                        </div>*@
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmploymenttabSupervisor">
+                 
+
+                                <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+                            <thead>
+                                <tr>
+                                    <th>
+                                        FirstName
+                                    </th>
+                                    <th>
+                                        LastName
+                                    </th>
+                                    <th>
+                                        Department
+                                    </th>
+                                    <th>
+                                        Position
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model.UserInformation.EmployeeUserSupervisor)
+                            {
+                                var lastName = (item.SupervisorUser.FirstLastName ?? "") + " " + (item.SupervisorUser.SecondLastName ?? "");
+                                <tr>
+
+                                    @{
+                                        var activeEmployment = TimeAide.Services.EmploymentService.GetActiveEmployment(item.SupervisorUserId);
+                                        TimeAide.Web.Models.EmploymentHistory activeEmploymentHistory = null;
+                                        if (activeEmployment != null)
+                                        {
+                                            activeEmploymentHistory = TimeAide.Services.EmploymentHistoryService.GetActiveEmploymentHistory(item.SupervisorUserId, activeEmployment.Id);
+
+                                        }
+                                    }
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SupervisorUser.FirstName)
+                                    </td>
+                                    <td>
+                                        @lastName
+                                    </td>
+                                    @*<td>
+                        @Html.DisplayFor(modelItem => item.SupervisorUser.Department.DepartmentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupervisorUser.Position.PositionName)
+                    </td>*@
+
+                                    <td>
+                                        @if (activeEmploymentHistory != null && activeEmploymentHistory.Department != null)
+                                        {
+                                            <span>@activeEmploymentHistory.Department.DepartmentName</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (activeEmploymentHistory != null && activeEmploymentHistory.Position != null)
+                                        {
+                                            <span>@activeEmploymentHistory.Position.PositionName</span>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+                            @if (Model.UserInformation.EmployeeUserSupervisor.Count == 0)
+                {
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+
+                }
+                        
+
+
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12" style="text-align:center">
+                    <button class="btn btn-primary submit-btn" type="button" onclick="fnAddSupervisers(@Model.UserInformationId);">Add Supervisor</button>
+                </div>
+            </div>
+        </div>
+        <div class="submit-section">
+            <button type="button" class="btn btn-primary submit-btn" id="btnUpdateEmploymentHistory">Save</button>
+            <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+    </div>
+}
+
+<div class="modal" id="employmeeSupervisersModal" role="dialog" aria-labelledby="employmeeSupervisersModalLabel">
+    <div class="modal-dialog" role="document" style="width: 80%; max-width: 80% !important;">
+        <div class="modal-content">
+            <div id='employmeeSupervisersModalContent'></div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            //$("input[id*='DiscountType']").each(function (i, el) {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+        $(".searchableDDL").each(function () {
+            $(this).select2();
+            // $(".select2-container").css("width", "100%");
+        });
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#SupervisorId").val('@Model.SelectedSupervisorId'.trim().split(','));
+        $('#SupervisorId').select2();
+    });
+    function fnAddSupervisers(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeSupervisor/CreateEdit1',
+            contentType: "application/json; charset=utf-8",
+            data: { "userId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#employmeeSupervisersModalContent').html(data);
+                $('#employmeeSupervisersModal').modal(options);
+                $('#employmeeSupervisersModal').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    $(document).ready(function () {
+        $('#DepartmentId').change(function (e) {
+            debugger;
+            var departmentId = $(this).val();
+            LoadSubDepartmentDropdown(departmentId, '#SubDepartmentId', null);
+        })
+    });
+
+    function LoadSubDepartmentDropdown(departmentId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/SubDepartment/SubDepartmentByDepartment',
+            data: { 'departmentId': departmentId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+</script>
+
+@*<style>
+        .modal-dialog {
+            width: 70%;
+            max-width: 70% !important;
+        }
+    </style>*@

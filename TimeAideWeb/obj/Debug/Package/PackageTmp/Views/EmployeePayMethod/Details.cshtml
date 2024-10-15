@@ -1,0 +1,124 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-1">
+            <div class="col-md-4 p-0">
+                <!-- <div class="panel panel-default" style="width:49%;margin-left:10px">-->
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Pay Method
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a id="" href="javascript:editPayMethod();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.HiddenFor(m=>m.PayMethodTypeId,new { id="hdnPayMethodTypeId"})
+                    <div class="panel-body">                        
+                        <div class="form-group row mb-1">
+                            <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                Pay Method:
+                            </label>                            
+                            <div id="divPayMethod" class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PayMethodType.Name)
+                            </div>
+                        </div>                        
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divAddEditDelPayAccount">
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        getEmployeePayAccountDetail();
+        
+    });
+    function getEmployeePayAccountDetail() {
+        debugger;
+        //var payMethodTypeId = $("#hdnPayMethodTypeId").val();
+        //if (payMethodTypeId == "" || payMethodTypeId == "1") {
+        //    $("#divEmployeePayAccountDetail").html('');
+        //    return;
+        //}
+
+         $.ajax({
+            type: "get",
+             url: '/EmployeePayMethod/IndexByUser',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeePayAccountDetail").html(data);
+                
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function editPayMethod() {
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayMethod/EditPayMethod',
+            data: { "id": @Model.Id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divAddEditDelPayAccount").html(data);
+                $("#employeepayMethodCreateEdit_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+
+    }
+    function savePayMethodData() {
+        var obj = new Object();
+        obj.PayMethodTypeId = $("#PayMethodTypeId").val();
+        obj.Id = UserInformationId = @Model.Id;
+
+        $.ajax({
+            url: "/EmployeePayMethod/EditPayMethod",
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    $("#hdnPayMethodTypeId").val(obj.PayMethodTypeId);
+                    var name = $("#PayMethodTypeId option:selected").text();
+                    $("#divPayMethod").text(name);
+                    showAlertAutoHide("", "Success", data.message);
+                    //getEmployeePayAccountDetail();
+                    $("#employeepayMethodCreateEdit_modal").modal("hide");
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }  
+    
+    
+    
+</script>

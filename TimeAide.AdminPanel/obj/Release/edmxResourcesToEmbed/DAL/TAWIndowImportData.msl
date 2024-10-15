@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TAWinImportDataContextStoreContainer" CdmEntityContainer="TA7_ImportData_Context">
+    <EntitySetMapping Name="tblBatches">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblBatch">
+        <MappingFragment StoreEntitySet="tblBatch">
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+          <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+          <ScalarProperty Name="dtBatchCreated" ColumnName="dtBatchCreated" />
+          <ScalarProperty Name="intCreatedByID" ColumnName="intCreatedByID" />
+          <ScalarProperty Name="strCreateByName" ColumnName="strCreateByName" />
+          <ScalarProperty Name="dtBatchUpdates" ColumnName="dtBatchUpdates" />
+          <ScalarProperty Name="intBatchStatus" ColumnName="intBatchStatus" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="intBatchType" ColumnName="intBatchType" />
+          <ScalarProperty Name="intTemplateID" ColumnName="intTemplateID" />
+          <ScalarProperty Name="ClosedByUserID" ColumnName="ClosedByUserID" />
+          <ScalarProperty Name="ClosedDateTime" ColumnName="ClosedDateTime" />
+          <ScalarProperty Name="intPaymentStatusId" ColumnName="intPaymentStatusId" />
+          <ScalarProperty Name="strPaymentStatusByName" ColumnName="strPaymentStatusByName" />
+          <ScalarProperty Name="dtPaymentStatusDate" ColumnName="dtPaymentStatusDate" />
+          <ScalarProperty Name="varPaymentConfirmation" ColumnName="varPaymentConfirmation" />
+          <ScalarProperty Name="strPaymentConfirmationRptName" ColumnName="strPaymentConfirmationRptName" />
+          <ScalarProperty Name="varCompanyPayrollSummary" ColumnName="varCompanyPayrollSummary" />
+          <ScalarProperty Name="strPayrollSummaryRptName" ColumnName="strPayrollSummaryRptName" />
+          <ScalarProperty Name="intFederalTaxDepositScheduleId" ColumnName="intFederalTaxDepositScheduleId" />
+          <ScalarProperty Name="intFederalTaxDepositStatusId" ColumnName="intFederalTaxDepositStatusId" />
+          <ScalarProperty Name="decFederalTaxDepositAmount" ColumnName="decFederalTaxDepositAmount" />
+          <ScalarProperty Name="dtFederalTaxDepositDate" ColumnName="dtFederalTaxDepositDate" />
+          <ScalarProperty Name="strFederalTaxEFTPSNo" ColumnName="strFederalTaxEFTPSNo" />
+          <ScalarProperty Name="dtFederalTaxStatusDate" ColumnName="dtFederalTaxStatusDate" />
+          <ScalarProperty Name="strFederalTaxStatusByName" ColumnName="strFederalTaxStatusByName" />
+          <ScalarProperty Name="varFederalTaxConfirmation" ColumnName="varFederalTaxConfirmation" />
+          <ScalarProperty Name="strFederalTaxRptName" ColumnName="strFederalTaxRptName" />
+          <ScalarProperty Name="intHaciendaTaxDepositScheduleId" ColumnName="intHaciendaTaxDepositScheduleId" />
+          <ScalarProperty Name="intHaciendaTaxDepositStatusId" ColumnName="intHaciendaTaxDepositStatusId" />
+          <ScalarProperty Name="decHaciendaTaxDepositAmount" ColumnName="decHaciendaTaxDepositAmount" />
+          <ScalarProperty Name="dtHaciendaTaxDepositDate" ColumnName="dtHaciendaTaxDepositDate" />
+          <ScalarProperty Name="strHaciendaTaxReceiptNo" ColumnName="strHaciendaTaxReceiptNo" />
+          <ScalarProperty Name="dtHaciendaTaxStatusDate" ColumnName="dtHaciendaTaxStatusDate" />
+          <ScalarProperty Name="strHaciendaTaxStatusByName" ColumnName="strHaciendaTaxStatusByName" />
+          <ScalarProperty Name="varHaciendaTaxConfirmation" ColumnName="varHaciendaTaxConfirmation" />
+          <ScalarProperty Name="strHaciendaTaxRptName" ColumnName="strHaciendaTaxRptName" />
+          <ScalarProperty Name="intFUTATaxDepositScheduleId" ColumnName="intFUTATaxDepositScheduleId" />
+          <ScalarProperty Name="intFUTATaxDepositStatusId" ColumnName="intFUTATaxDepositStatusId" />
+          <ScalarProperty Name="decFUTATaxDepositAmount" ColumnName="decFUTATaxDepositAmount" />
+          <ScalarProperty Name="dtFUTATaxDepositDate" ColumnName="dtFUTATaxDepositDate" />
+          <ScalarProperty Name="strFUTATaxReceiptNo" ColumnName="strFUTATaxReceiptNo" />
+          <ScalarProperty Name="dtFUTATaxStatusDate" ColumnName="dtFUTATaxStatusDate" />
+          <ScalarProperty Name="strFUTATaxStatusByName" ColumnName="strFUTATaxStatusByName" />
+          <ScalarProperty Name="varFUTATaxConfirmation" ColumnName="varFUTATaxConfirmation" />
+          <ScalarProperty Name="strFUTATaxRptName" ColumnName="strFUTATaxRptName" />
+          <ScalarProperty Name="intACHSentCount" ColumnName="intACHSentCount" />
+          <ScalarProperty Name="ACHFileName" ColumnName="ACHFileName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPayrollImportFileTemplates">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblPayrollImportFileTemplate">
+        <MappingFragment StoreEntitySet="tblPayrollImportFileTemplate">
+          <ScalarProperty Name="intTemplateId" ColumnName="intTemplateId" />
+          <ScalarProperty Name="sTemplateName" ColumnName="sTemplateName" />
+          <ScalarProperty Name="dtCreationDate" ColumnName="dtCreationDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPayrollImportFileTemplateDetails">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblPayrollImportFileTemplateDetail">
+        <MappingFragment StoreEntitySet="tblPayrollImportFileTemplateDetail">
+          <ScalarProperty Name="intTemplateDetailId" ColumnName="intTemplateDetailId" />
+          <ScalarProperty Name="intTemplateId" ColumnName="intTemplateId" />
+          <ScalarProperty Name="intFieldIndex" ColumnName="intFieldIndex" />
+          <ScalarProperty Name="sFieldName" ColumnName="sFieldName" />
+          <ScalarProperty Name="sFieldNameAsValue" ColumnName="sFieldNameAsValue" />
+          <ScalarProperty Name="sFieldMapping" ColumnName="sFieldMapping" />
+          <ScalarProperty Name="sMappingTable" ColumnName="sMappingTable" />
+          <ScalarProperty Name="sMappingColumn" ColumnName="sMappingColumn" />
+          <ScalarProperty Name="sColumnDataType" ColumnName="sColumnDataType" />
+          <ScalarProperty Name="dtCreationDate" ColumnName="dtCreationDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCompanyBatchWithholdings">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompanyBatchWithholding">
+        <MappingFragment StoreEntitySet="tblCompanyBatchWithholdings">
+          <ScalarProperty Name="strGLContributionPayable" ColumnName="strGLContributionPayable" />
+          <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+          <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+          <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCompanyBatchWithholdings_ManualEntry">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompanyBatchWithholdings_ManualEntry">
+        <MappingFragment StoreEntitySet="tblCompanyBatchWithholdings_ManualEntry">
+          <ScalarProperty Name="strGLContributionPayable" ColumnName="strGLContributionPayable" />
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="strNote" ColumnName="strNote" />
+          <ScalarProperty Name="intSupervisorID" ColumnName="intSupervisorID" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+          <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+          <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCompanySchedulesProcesseds">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompanySchedulesProcessed">
+        <MappingFragment StoreEntitySet="tblCompanySchedulesProcessed">
+          <ScalarProperty Name="intPayWeekNumber" ColumnName="intPayWeekNumber" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="intPayrollScheduleID" ColumnName="intPayrollScheduleID" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchWithholdings">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchWithholding">
+        <MappingFragment StoreEntitySet="tblUserBatchWithholdings">
+          <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+          <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+          <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchWithholdings_ManualEntry">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchWithholdings_ManualEntry">
+        <MappingFragment StoreEntitySet="tblUserBatchWithholdings_ManualEntry">
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="strNote" ColumnName="strNote" />
+          <ScalarProperty Name="intSupervisorID" ColumnName="intSupervisorID" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+          <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+          <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchCompensations">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchCompensation">
+        <MappingFragment StoreEntitySet="tblUserBatchCompensations">
+          <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="decPay" ColumnName="decPay" />
+          <ScalarProperty Name="decHours" ColumnName="decHours" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+          <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchCompensations_ManualEntry">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatchCompensations_ManualEntry">
+        <MappingFragment StoreEntitySet="tblUserBatchCompensations_ManualEntry">
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="strNote" ColumnName="strNote" />
+          <ScalarProperty Name="intSupervisorID" ColumnName="intSupervisorID" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="decPay" ColumnName="decPay" />
+          <ScalarProperty Name="decHours" ColumnName="decHours" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+          <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewPay_UserRecord">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.viewPay_UserRecord">
+        <MappingFragment StoreEntitySet="viewPay_UserRecord">
+          <ScalarProperty Name="SecondLastName" ColumnName="SecondLastName" />
+          <ScalarProperty Name="FirstLastName" ColumnName="FirstLastName" />
+          <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="dTerminationDate" ColumnName="dTerminationDate" />
+          <ScalarProperty Name="strPositionName" ColumnName="strPositionName" />
+          <ScalarProperty Name="intPositionID" ColumnName="intPositionID" />
+          <ScalarProperty Name="strEIN" ColumnName="strEIN" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="dblBaseCompensationRate" ColumnName="dblBaseCompensationRate" />
+          <ScalarProperty Name="sFullPartTimeCode" ColumnName="sFullPartTimeCode" />
+          <ScalarProperty Name="sRegTempCode" ColumnName="sRegTempCode" />
+          <ScalarProperty Name="dblHourlyRate" ColumnName="dblHourlyRate" />
+          <ScalarProperty Name="dOriginalHiredDate" ColumnName="dOriginalHiredDate" />
+          <ScalarProperty Name="dBirthDate" ColumnName="dBirthDate" />
+          <ScalarProperty Name="sMaritalStatus" ColumnName="sMaritalStatus" />
+          <ScalarProperty Name="sSex" ColumnName="sSex" />
+          <ScalarProperty Name="sHomePhoneHum" ColumnName="sHomePhoneHum" />
+          <ScalarProperty Name="sHomeZipCode" ColumnName="sHomeZipCode" />
+          <ScalarProperty Name="sHomeState" ColumnName="sHomeState" />
+          <ScalarProperty Name="sHomeCity" ColumnName="sHomeCity" />
+          <ScalarProperty Name="sHomeAddressLine2" ColumnName="sHomeAddressLine2" />
+          <ScalarProperty Name="sHomeAddressLine1" ColumnName="sHomeAddressLine1" />
+          <ScalarProperty Name="sSSN" ColumnName="sSSN" />
+          <ScalarProperty Name="dCompanySeniorityDate" ColumnName="dCompanySeniorityDate" />
+          <ScalarProperty Name="nScheduleID" ColumnName="nScheduleID" />
+          <ScalarProperty Name="nPayrollRuleID" ColumnName="nPayrollRuleID" />
+          <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+          <ScalarProperty Name="nEmployeeType" ColumnName="nEmployeeType" />
+          <ScalarProperty Name="nGroupID" ColumnName="nGroupID" />
+          <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+          <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+          <ScalarProperty Name="sScheduleName" ColumnName="sScheduleName" />
+          <ScalarProperty Name="sPayrollRuleName" ColumnName="sPayrollRuleName" />
+          <ScalarProperty Name="sEmployeeTypeName" ColumnName="sEmployeeTypeName" />
+          <ScalarProperty Name="sJobTitleName" ColumnName="sJobTitleName" />
+          <ScalarProperty Name="sDeptName" ColumnName="sDeptName" />
+          <ScalarProperty Name="sCompanyName" ColumnName="sCompanyName" />
+          <ScalarProperty Name="sNotes" ColumnName="sNotes" />
+          <ScalarProperty Name="nStatus" ColumnName="nStatus" />
+          <ScalarProperty Name="idno" ColumnName="idno" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="strStatusName" ColumnName="strStatusName" />
+          <ScalarProperty Name="intPayrollUserStatus" ColumnName="intPayrollUserStatus" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spPay_Create_CompanyBatch" FunctionName="TAWinImportDataContext.Store.spPay_Create_CompanyBatch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TAWinImportDataContext.spPay_Create_CompanyBatch_Result">
+          <ScalarProperty Name="ErrorNumber" ColumnName="ErrorNumber" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="tblUserBatches">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblUserBatch">
+        <MappingFragment StoreEntitySet="tblUserBatch">
+          <ScalarProperty Name="intPayMethodType" ColumnName="intPayMethodType" />
+          <ScalarProperty Name="intEmployeeTypeID" ColumnName="intEmployeeTypeID" />
+          <ScalarProperty Name="intSubdepartmentID" ColumnName="intSubdepartmentID" />
+          <ScalarProperty Name="intDepartmentID" ColumnName="intDepartmentID" />
+          <ScalarProperty Name="intCompanyID" ColumnName="intCompanyID" />
+          <ScalarProperty Name="dtEndDatePeriod" ColumnName="dtEndDatePeriod" />
+          <ScalarProperty Name="dtStartDatePeriod" ColumnName="dtStartDatePeriod" />
+          <ScalarProperty Name="intUserBatchStatus" ColumnName="intUserBatchStatus" />
+          <ScalarProperty Name="intPayWeekNum" ColumnName="intPayWeekNum" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spPay_Compute_UserBatch" FunctionName="TAWinImportDataContext.Store.spPay_Compute_UserBatch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TAWinImportDataContext.spPay_Compute_UserBatch_Result">
+          <ScalarProperty Name="ErrorNumber" ColumnName="ErrorNumber" />
+          <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="tblCompensationItems">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblCompensationItem">
+        <MappingFragment StoreEntitySet="tblCompensationItems">
+          <ScalarProperty Name="boolFICASSCCExempt" ColumnName="boolFICASSCCExempt" />
+          <ScalarProperty Name="boolCovidCompensation" ColumnName="boolCovidCompensation" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="intImportType" ColumnName="intImportType" />
+          <ScalarProperty Name="boolEnabled" ColumnName="boolEnabled" />
+          <ScalarProperty Name="intComputationType" ColumnName="intComputationType" />
+          <ScalarProperty Name="intCompensationType" ColumnName="intCompensationType" />
+          <ScalarProperty Name="strDescription" ColumnName="strDescription" />
+          <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblWithholdingsItems">
+      <EntityTypeMapping TypeName="TAWinImportDataContext.tblWithholdingsItem">
+        <MappingFragment StoreEntitySet="tblWithholdingsItems">
+          <ScalarProperty Name="strGLContributionPayable" ColumnName="strGLContributionPayable" />
+          <ScalarProperty Name="boolCompanyContribution" ColumnName="boolCompanyContribution" />
+          <ScalarProperty Name="boolUserWithholding" ColumnName="boolUserWithholding" />
+          <ScalarProperty Name="boolIs401kPlan" ColumnName="boolIs401kPlan" />
+          <ScalarProperty Name="boolIsLoan" ColumnName="boolIsLoan" />
+          <ScalarProperty Name="strGLAccount_Contributions" ColumnName="strGLAccount_Contributions" />
+          <ScalarProperty Name="strContributionsName" ColumnName="strContributionsName" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="intWithholdingsTaxType" ColumnName="intWithholdingsTaxType" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="decMinimumSalaryLimit" ColumnName="decMinimumSalaryLimit" />
+          <ScalarProperty Name="decMaximumSalaryLimit" ColumnName="decMaximumSalaryLimit" />
+          <ScalarProperty Name="decCompanyAmount" ColumnName="decCompanyAmount" />
+          <ScalarProperty Name="decCompanyPercent" ColumnName="decCompanyPercent" />
+          <ScalarProperty Name="decEmployeeAmount" ColumnName="decEmployeeAmount" />
+          <ScalarProperty Name="decEmployeePercent" ColumnName="decEmployeePercent" />
+          <ScalarProperty Name="intComputationType" ColumnName="intComputationType" />
+          <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+          <ScalarProperty Name="strDescription" ColumnName="strDescription" />
+          <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

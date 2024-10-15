@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeAppraisalSkill>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0">
+        <thead>
+        <tr>
+            <th>
+                Skill
+            </th>
+            <th>
+                Rating
+            </th>
+            <th>
+                Value
+            </th>
+            <th>
+                Comments
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td><a href="javascript:createEditEmployeeAppraisalSkill(@item.Id);">@item.AppraisalSkill.SkillName</a></td>
+                <td>@item.SkillRatingName</td>
+                <td>@item.SkillRatingValue/<span style="font-size:10px">@item.SkillScaleMaxValue</span></td>
+                <td>@item.ReviewerComments</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:createEditEmployeeAppraisalSkill(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            <a href="javascript:getEmployeeAppraisalSkillDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                            @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                            {
+                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                            }
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+        }
+
+    </table>
+  </div>

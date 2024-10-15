@@ -1,0 +1,268 @@
+﻿@model TimeAide.Web.Models.ChangeRequestEmailNumbers
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="panel panel-default" style="width:49%;margin-left:10px">
+            <div class="panel-heading" style="padding-left:10px">Old Numbers</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Home Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.HomeNumber
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Mobile
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.CelNumber
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Fax Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.FaxNumber
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Other Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.OtherNumber
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Work Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.WorkNumber
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Work Extension
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.WorkExtension
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="width:49%;margin-left:10px">
+            <div class="panel-heading" style="padding-left:10px">New Number</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Home Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewHomeNumber))
+                        {
+                            <span>
+                                @Model.UserContactInformation.HomeNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewHomeNumber
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Mobile
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewCelNumber))
+                        {
+                            <span>
+                                @Model.UserContactInformation.CelNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewCelNumber
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Fax Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewFaxNumber))
+                        {
+                            <span>
+                                @Model.UserContactInformation.FaxNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewFaxNumber
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Other Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewOtherNumber))
+                        {
+                            <span>
+                                @Model.UserContactInformation.OtherNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.OtherNumber
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Work Number
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewWorkNumber))
+                        {
+                            <span>
+                                @Model.UserContactInformation.WorkNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewWorkNumber
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Work Extension
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewWorkExtension))
+                        {
+                            <span>
+                                @Model.UserContactInformation.WorkExtension
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewWorkExtension
+                            </span>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="panel panel-default" style="width:49%;margin-left:10px">
+            <div class="panel-heading" style="padding-left:10px">Old Emails</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Work Email
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.WorkEmail
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Personal Email
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.PersonalEmail
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Other Email
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.OtherEmail
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="width:49%;margin-left:10px">
+            <div class="panel-heading" style="padding-left:10px">New Emails</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Work Email
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewWorkEmail))
+                        {
+                            <span>
+                                @Model.UserContactInformation.WorkEmail
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewWorkEmail
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Personal Email
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewPersonalEmail))
+                        {
+                            <span>
+                                @Model.UserContactInformation.PersonalEmail
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewPersonalEmail
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Other Email
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewOtherEmail))
+                        {
+                            <span>
+                                @Model.UserContactInformation.OtherEmail
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewOtherEmail
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+

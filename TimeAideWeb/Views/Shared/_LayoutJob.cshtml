@@ -1,0 +1,62 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TimeAide</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/content/Themes/assets/img/favicon.png">
+
+    @Styles.Render("~/content/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-theme")
+    <script src="~/Scripts/toastr.js"></script>
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header Menu -->
+        @Html.Partial("_HeaderBarJob")
+        <!-- Sidebar -->
+        <!-- Page Wrapper -->
+        <div class="page-wrapper">
+            <!-- Page Content -->
+            <div class="content container-fluid">
+                @RenderBody()
+
+                <hr />
+                <footer>
+                    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/appCommon-js.js?version=1.0"></script>
+
+    <style type="text/css">
+        .panel {
+            margin-bottom: 10px !important;
+            background-color: #ffffff !important;
+            border: 1px solid transparent !important;
+            border-color: #ddd !important;
+            border-radius: 4px !important;
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .panel-heading {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
+    </style>
+
+
+</body>
+</html>

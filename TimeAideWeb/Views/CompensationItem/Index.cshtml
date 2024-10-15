@@ -1,0 +1,92 @@
+﻿@model IEnumerable<TimeAide.Web.Models.CompensationItem>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CompensationType.CompensationTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompensationName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ComputationTypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsEnabled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImportTypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GLAccount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsCovidCompensation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsFICASSCCExempt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GLLookupField)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompensationType.CompensationTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompensationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComputationTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEnabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImportTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GLAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCovidCompensation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFICASSCCExempt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GLLookupField)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+        
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

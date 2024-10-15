@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.EmployeeAppraisal
+<div class="form-group row">
+    <label class="col-md-2 col-form-label" style="margin-left:0px">Result:</label>
+    <div class="col-md-2 text-muted mt-2">
+        @Html.DisplayFor(m => m.AppraisalResult.ResultName)
+    </div>
+    <label class="col-md-2 col-form-label" style="margin-left:0px">Overall Score:</label>
+    <div class="col-md-2 text-muted mt-2">
+        @Html.DisplayFor(m => m.AppraisalOverallScore)
+        /<span style="font-size:10px">@Html.DisplayFor(m => m.AppraisalTotalMaxValue)</span>
+    </div>
+    <label class="col-md-2 col-form-label" style="margin-left:0px">Overall (%):</label>
+    <div class="col-md-2 text-muted mt-2">
+        @Html.DisplayFor(m => m.AppraisalOverallPct)
+    </div>
+
+</div>
+<div class="form-group row mb-0">
+    <label class="col-md-2 col-form-label" style="margin-left:0px">Reviewer Comments:</label>
+    <div class="col-md-4 text-muted mt-2">
+        @Html.DisplayFor(m => m.AppraisalReviewerComments)
+    </div>
+    <label class="col-md-2 col-form-label" style="margin-left:0px">Employee Comments:</label>
+    <div class="col-md-4 text-muted mt-2">
+        @Html.DisplayFor(m => m.AppraisalEmployeeComments)
+    </div>
+</div>

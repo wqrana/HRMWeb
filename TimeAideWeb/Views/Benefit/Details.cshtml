@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.Benefit
+
+<div style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BenefitName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BenefitName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BenefitDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BenefitDescription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

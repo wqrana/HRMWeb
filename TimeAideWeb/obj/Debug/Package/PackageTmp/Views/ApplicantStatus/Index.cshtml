@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TimeAide.Web.Models.ApplicantStatus>
+@Html.Partial("_IndexPageHeaderView")
+
+<thead>
+    <tr>
+        <th>Action</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicantStatusName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UseAsHire)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UseAsApply)
+        </th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td width="7%">
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+        <td>
+            @* @Html.DisplayFor(modelItem => item.Id)*@
+            <a href="javascript:void(0);" id="anchorDetail" data-id="@item.Id">@item.Id</a>
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicantStatusName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.CheckBoxFor(model => item.UseAsHire, new { @disabled = "disabled" })
+
+        </td>
+        <td>
+            @Html.CheckBox("UseAsApply", item.UseAsApply??false, new { @disabled = "disabled" })
+        </td>
+
+    </tr>
+    }
+</tbody>
+    @Html.Partial("_IndexPageFooterView")
+

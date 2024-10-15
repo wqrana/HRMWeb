@@ -1,0 +1,198 @@
+﻿@model TimeAide.Models.ViewModel.EmployeeAccrualRuleViewModel
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="employeeAccrualRuleCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Employee Accrual Rule - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Employee Accrual Rule</div>
+                            <div class="panel-body">
+                                @Html.HiddenFor(m=>m.EmployeeAccrualRuleId)
+                                <div class="form-group row">
+
+                                    <label class="col-md-2 col-form-label mt-2">Accrual Type:<span class="text-danger">*</span></label>
+
+                                    <div class="col-md-4 mt-2">
+
+                                        @Html.DropDownList("AccrualTypeId", null, "Please select", new { @class = "form-control" })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2"> Accrual Rule:<span class="text-danger">*</span></label>
+                                    <div class="col-md-4 mt-2">
+                                        @Html.DropDownList("AccrualRuleId", null, "Please select", new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label mt-2">Start Date:<span class="text-danger">*</span></label>
+                                    <div class="col-md-4 mt-2">
+                                        @Html.EditorFor(model => model.StartOfRuleDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Daily Hrs.:<span class="text-danger">*</span></label>
+                                    <div class="col-md-4 mt-2">
+
+                                        @Html.EditorFor(model => model.AccrualDailyHours, new { htmlAttributes = new { @class = "form-control"} })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Add Initial Balance <span class="pl-2 pt-1"><input id="IsInitBalance" type="checkbox" checked /></span></div>
+                            <div class="panel-body">
+                                <div id="divInitBalance">
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Accrual Type:</label>
+                                        <div class="col-md-4 mt-2">
+                                            <input type="text" id="BalanceAccrualType" class="form-control" disabled />
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2">Start Date:</label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(model => model.BalanceStartDate, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2"> Accrued Hours:</label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(model => model.AccruedHours, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        </div>
+                                        @*<label class="col-md-2 col-form-label" style="margin-left:0px">Accrual Days:</label>
+                                            <div class="col-md-4">
+                                                <input type="text" id="AccrualDays" class="form-control" disabled />
+                                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnsaveEmployeeAccrualRule" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $("#AccruedHours").val(0);
+        $("#AccrualTypeId").change(function () {
+            debugger;
+            var accrualTypeId = $("#AccrualTypeId").val();
+            var accrualTypeName = $("#AccrualTypeId option:selected").text();
+            $("#BalanceAccrualType").val(accrualTypeName);
+            LoadDropDownListData('AjaxGetAccrualTypeRules', accrualTypeId, '#AccrualRuleId', null);
+            checkForRequiredDefaultAccrualBalance(accrualTypeId);
+        });
+
+        $("#StartOfRuleDate").blur(function () {
+            debugger;
+            var state = $("#IsInitBalance").is(":checked");
+            if (state == true) {
+                $("#BalanceStartDate").val($(this).val());
+            }
+        });
+
+        $("#IsInitBalance").change(function () {
+            debugger;
+            var state = $(this).is(":checked");
+            showHideInitialBalance(state);
+        })
+        $("#btnsaveEmployeeAccrualRule").click(function () {
+            debugger;
+            var initBalanceState = $("#IsInitBalance").is(":checked");
+            if (initBalanceState == true) {
+                var balanceStartDate = $('#BalanceStartDate').val();
+                var accruedHours = $('#AccruedHours').val();
+                if (balanceStartDate == "" || accruedHours == "") {
+                    var message = "Initial Balance, missing Start Date/Accrued Hours";
+                    showAlertAutoHide("", 'Error', message);
+                   
+                }
+            }
+            //return;
+            saveEmployeeAccrualRuleData(initBalanceState);
+        })
+        //popup master data
+
+
+
+    });
+    function showHideInitialBalance(state) {
+        switch (state) {
+            case true:
+                $("#divInitBalance").show();
+                var ruleDate = $("#StartOfRuleDate").val();
+                $("#BalanceStartDate").val(ruleDate);
+                $("#AccruedHours").val(0);
+                break;
+            case false:
+                $("#divInitBalance").hide();
+                $("#BalanceStartDate").val(null);
+                $("#AccruedHours").val(null);
+                break;
+        }
+    }
+    function checkForRequiredDefaultAccrualBalance(accrualTypeId) {
+        var userId = $("#userID").val();
+        $.ajax({
+            type: "get",
+            url: "/EmployeeLicenseAndBalance/AjaxCheckForAccrualInitalBalance",
+            data: { "id": userId, "accrualTypeId": accrualTypeId },
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data == true) {
+                    $("#IsInitBalance").prop('checked', true);
+                    $("#IsInitBalance").attr("disabled", true);
+                    showHideInitialBalance(true);
+
+                }
+                else {
+                    $("#IsInitBalance").removeAttr("disabled");
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                showAlertAutoHide(alertID, "Error", error);
+                return false;
+            }
+        });
+    }
+</script>
+
+

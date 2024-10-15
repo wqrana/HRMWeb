@@ -1,0 +1,76 @@
+﻿
+@model TimeAide.Web.Models.ApplicantQAnswerOption
+<div id="applicantQAnswerCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="border:thin; border-style:solid">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Answer - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0 pl-1 pr-1">
+
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "ApplicantQAnswerOptionId" })
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label pr-0">@Html.DisplayNameFor(m=>m.AnswerOptionName): <span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.AnswerOptionName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>                           
+
+                        </div>                      
+
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+                    <button id="btnSaveApplicantQAnswerOption" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#btnSaveApplicantQAnswerOption").click(function () {
+            debugger;
+            var isRequiredValidated = 0;
+            var isValidated = true;
+            var message = "";
+            var dataObj = new Object();
+            dataObj.Id = $("#ApplicantQAnswerOptionId").val();
+            dataObj.AnswerOptionName = $("#AnswerOptionName").val();
+            
+            if (dataObj != null) {
+                isRequiredValidated += dataObj.AnswerOptionName.trim().length > 0 ? 1 : 0;               
+
+                if (isRequiredValidated != 1) {
+                    isValidated = false;
+                    message = " Missing Required field(s)";
+                }
+            }
+
+            if (!isValidated) showAlertAutoHide("", 'Error', message);
+
+            if (isValidated)
+            {
+                saveApplicantQAnswerOption(dataObj);
+            }
+
+        });
+    });
+
+</script>

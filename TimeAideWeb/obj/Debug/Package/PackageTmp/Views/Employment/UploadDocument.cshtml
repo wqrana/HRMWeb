@@ -1,0 +1,136 @@
+﻿@model TimeAide.Web.Models.Employment
+
+<div class="mt-2 p-1">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Upload - Contract</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <hr>
+</div>
+<div class="modal-body pt-0">
+    @Html.HiddenFor(model => model.UserInformationId)
+    <div class="alert" style="display:none;" id="ContractDocAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    <input id="Employment_Id" name="EmploymentId" type="hidden" value="@Model.Id">
+    <input id="UserInformation_Id" name="EmploymentId" type="hidden" value="@Model.UserInformationId">
+    <div class="row">
+        <div class="col-md-12 p-0">
+            <div class="form-group row">
+                <div class="col-sm-2 ">
+                </div>
+                <div class="col-sm-4" style="margin-right:-100px;margin-left:50px;">
+
+                    <label>Contract:</label>
+                </div>
+               
+                <div class="col-sm-5 text-muted">
+                    @Html.DisplayFor(m => m.DocumentName)
+                </div>
+                <div class="col-sm-1 ">
+                </div>
+
+            </div>
+            @*<div class="form-group row">
+                    <label class="col-sm-5 col-form-label">Document Note:</label>
+                    <div class="col-sm-7 text-muted">
+                        @Html.DisplayFor(m => m.DocumentNote)
+                    </div>
+
+                </div>*@
+            <div class="form-group row">
+
+                <input class="form-control" type="file" id="uploadContractFile" accept=".doc,.docx,.pdf,.jpg,.png" style="margin-left: 30px; margin-right: 30px">
+
+            </div>
+        </div>
+
+    </div>
+    <div class="submit-section mt-1">
+        <button id="btnContractFile" class="btn btn-primary submit-btn">Upload</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnContractFile").click(function () {
+            debugger;
+            var id = $('#Employment_Id').val();
+            uploadEmployeeDoc(id);
+        });
+
+    });
+    function uploadEmployeeDoc(id) {
+
+        debugger;
+        alertID = "#ContractDocAlert"
+        var isProceed = true;
+        var formData = new FormData();
+        //var id = $('#EmploymentId').val();
+
+        formData.append("EmploymentId", id);
+
+        var totalFiles = document.getElementById("uploadContractFile").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadContractFile").files[0];
+            formData.append("ContractDocFile", file);
+
+        }
+        else {
+            isProceed = false;
+            showAlertAutoHide(alertID, "Error", "Please choose the User Education Document");
+        }
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/Employment/UploadDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        $('#myModal').modal('hide');
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        var userInformationId = $('#UserInformation_Id').val();
+                        $("#divDownloadContractDoc").removeClass("hideDownload").addClass("showDownload");
+                        fnRefreshEmployeeDocuments(userInformationId)
+                        //retreiveEmployeeEducationTab();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                },
+                error: function (error) {
+
+                    showAlertAutoHide(alertID, "Error", error);
+
+                }
+            });
+        }
+    }
+    function fnRefreshEmployeeDocuments(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Employment/IndexByUser',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                //debugger;
+                $('#divEmploymentInformation').html(html);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

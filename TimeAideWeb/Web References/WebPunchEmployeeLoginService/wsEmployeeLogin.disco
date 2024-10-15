@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://tawqc.timeaide.com:9001/wsEmployeeLogin.asmx?wsdl" docRef="http://tawqc.timeaide.com:9001/wsEmployeeLogin.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://tawqc.timeaide.com:9001/wsEmployeeLogin.asmx" xmlns:q1="http://cloudaide.timeaide.com/wsEmployeeLogin" binding="q1:wsEmployeeLoginSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://tawqc.timeaide.com:9001/wsEmployeeLogin.asmx" xmlns:q2="http://cloudaide.timeaide.com/wsEmployeeLogin" binding="q2:wsEmployeeLoginSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

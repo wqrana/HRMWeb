@@ -1,0 +1,59 @@
+﻿@model IEnumerable<TimeAide.Web.ViewModel.DashboardNotificationListViewModel>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblNotification">
+
+       
+        <thead>
+            <tr>
+                
+                <th>Record Name</th>                
+                <th>Record Type</th>
+                <th>Notification Date</th>
+                <th>Status</th>
+                <th>Expiry Date</th>
+
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+
+            var empStatusBgClass = "bg-inverse-danger";
+            if (item.RecordStatus == "Notifying")
+            {
+              empStatusBgClass = "bg-inverse-warning";
+            }
+
+
+        <tr>
+
+            @*<td>
+                <a href="/UserInformation/Details/@item.UserInformationId" title="View Detail"> @Html.DisplayFor(modelItem => item.EmployeeId)</a>
+            </td>*@         
+
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordType)
+            </td>
+            <td style="text-align:center;">
+                @Html.DisplayFor(modelItem => item.NotificationDate)
+            </td>
+            <td>
+                <span class="badge @empStatusBgClass">@item.RecordStatus</span>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpirationDate)
+
+            </td>
+
+
+        </tr>
+        }
+
+    </table>
+</div>
+
+
+

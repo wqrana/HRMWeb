@@ -1,0 +1,23 @@
+﻿@model TimeAide.Web.Models.EmployeeStatus
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeStatusName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeStatusName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeStatusDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeStatusDescription)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

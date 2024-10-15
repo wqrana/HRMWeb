@@ -1,0 +1,131 @@
+﻿@model TimeAide.Web.Models.EmployeeDocument
+
+<div class="mt-2 p-1">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Upload - Employee Document</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <hr>
+</div>
+<div class="modal-body pt-0">
+
+    @Html.HiddenFor(model => model.UserInformationId)
+    <div class="alert" style="display:none;" id="employeeDocumentAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    @Html.HiddenFor(m => m.Id, new { id = "employeeDocumentId" })
+    <div class="row">
+        <div class="col-md-12 p-0">
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Document:</label>
+                <div class="col-sm-7 text-muted">
+                    @Html.DisplayFor(m => m.Document.DocumentName)
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Document Note:</label>
+                <div class="col-sm-7 text-muted">
+                    @Html.DisplayFor(m => m.DocumentNote)
+                </div>
+
+            </div>
+            <div class="form-group row">
+
+                <input class="form-control" type="file" id="uploadEmployeeDocumentFile" accept=".doc,.docx,.pdf,.jpg,.png" style="width:95%;margin-left:20px">
+
+            </div>
+        </div>
+
+    </div>
+    <div class="submit-section mt-1">
+
+        <button id="btnEmployeeDocumentFile" class="btn btn-primary submit-btn">Upload</button>
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnEmployeeDocumentFile").click(function () {
+            debugger;
+            var id = $('#employeeDocumentId').val();
+            uploadEmployeeDoc(id);
+        });
+
+    });
+
+    function uploadEmployeeDoc(id) {
+
+        //debugger;
+        alertID = "#employeeDocumentAlert"
+        var isProceed = true;
+        var formData = new FormData();
+        //var id = $('#employeeDocumentId').val();
+
+        formData.append("employeeDocumentId", id);
+
+        var totalFiles = document.getElementById("uploadEmployeeDocumentFile").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadEmployeeDocumentFile").files[0];
+            formData.append("EmployeeDocumentFile", file);
+
+        }
+        else {
+            isProceed = false;
+            showAlertAutoHide(alertID, "Error", "Please choose the Employee Document");
+        }
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/EmployeeDocument/UploadDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        $('#myModal').modal('hide');
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        var userInformationId = $('#UserInformationId').val();
+                        fnRefreshEmployeeDocuments(userInformationId)
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                },
+                error: function (error) {
+
+                    showAlertAutoHide(alertID, "Error", error);
+
+                }
+            });
+        }
+    }
+
+    function fnRefreshEmployeeDocuments(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDocument/IndexByUser',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                //debugger;
+                $('#divEmployeeDocument').html(html);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

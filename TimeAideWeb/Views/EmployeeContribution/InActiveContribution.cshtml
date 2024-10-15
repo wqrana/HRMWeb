@@ -1,0 +1,108 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeContribution>
+<div style="font-size: 90%;">
+    <div class="table-responsive">
+        <table class="table" id="tblInactiveEmployeeContributions">
+            <thead>
+                <tr>
+                    <th>
+                        Contribution
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Enabled)
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    <th>
+                        End
+                    </th>
+                    <th>
+                        Money Amount
+                    </th>
+
+                    <th>
+                        Period Entry
+                    </th>
+                    <th>
+                        CC GL Expense/Debit
+                    </th>
+                    <th>
+                        CC GL Payable/Credit
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyContribution.CompanyContributionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Enabled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MoneyAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodEntry.CompensationPeriodEntryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GLContributionAccount.GLAccountName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GLContributionPayableAccount.GLAccountName)
+                    </td>
+                    <td>
+                        @if ((ViewBag.AllowAdd || ViewBag.AllowEdit))
+                        {
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:EditEmployeeContribution(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a href="javascript:getEmployeeContributionDetail(@item.Id);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                    <a href="javascript:getEmployeeContributionTimeline(@item.CompanyContributionId);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Contribution Timeline</a>
+                                    <a href="javascript:getEmployeeContributionDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                    @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblInactiveEmployeeContributions').DataTable({
+            /*searching: false,*/
+            sDom: '<"top"i>rt<"bottom"flp><"clear">',
+            /*"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],*/
+            "bLengthChange": false,
+            "pageLength": 5,
+            "bInfo": false
+        });
+    });
+</script>
+<style>
+    .paginate_button {
+        padding: unset !important
+    }
+</style>

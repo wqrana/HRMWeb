@@ -1,0 +1,89 @@
+﻿@using TimeAide.Data;
+@model IEnumerable<TimeAide.Web.Models.ApplicantInterviewQuestion>
+@Html.Partial("_IndexPageHeaderView")
+<div id="divAnswerListPopup"></div>
+<thead>
+    <tr>
+        <th>Action</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QuestionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicantAnswerTypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsPositionSpecific)
+        </th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td width="7%">
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+            <td>
+                @* @Html.DisplayFor(modelItem => item.Id)*@
+                <a href="javascript:void(0);" id="anchorDetail" data-id="@item.Id">@item.Id</a>
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @{
+                    var answerType = DataHelper.ApplicantAnswerType.Where(w => w.Key == item.ApplicantAnswerTypeId).Select(s => s.Value).FirstOrDefault();
+                    var isShowEditOption = false;
+                    switch (item.ApplicantAnswerTypeId)
+                    {
+                        case 2:
+                        case 3:
+                            isShowEditOption = true;
+                            break;
+
+                    }
+                }
+                @answerType
+                @if (isShowEditOption)
+                {
+                <a href="javascript:createEditAnwser(@item.Id);" style="display:inline;font-size:smaller;" class="pl-1" title="Edit Answer List"><span class="fa fa-pencil"></span>Add/Edit Answer(s)</a>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPositionSpecific)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<script>
+    function createEditAnwser(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/ApplicantInterviewQuestion/ApplicantQAnswerIndex',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divAnswerListPopup").html(data);
+                $("#applicantQAIndex_modal").modal("show");
+
+            },
+            error: function () {
+                alert("Error Loading ajax List");
+            }
+        });
+    }
+</script>

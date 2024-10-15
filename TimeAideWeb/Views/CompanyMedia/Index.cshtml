@@ -1,0 +1,238 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@{
+    ViewBag.Title = "Company Media";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isMediaAdmin = (bool)ViewBag.IsMediaAdmin;
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Company Media</h3>
+        </div>
+
+        <div class="col-auto float-right ml-auto">
+            @if (isMediaAdmin || SecurityHelper.IsSuperAdmin)
+            {
+                <a href="javascript:addEditCompanyMedia(0);" class="btn add-btn"><i class="fa fa-plus"></i> Add Media</a>
+            }
+            @Html.Hidden("PageNo", 1)
+            @Html.Hidden("PageSize", 12)
+
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus">
+            <input id="MediaTitle" type="text" class="form-control floating">
+            <label class="focus-label">Media Title</label>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-md-2">
+        <a href="javascript:getMediaList();" class="btn btn-success btn-block"> Search </a>
+    </div>
+</div>
+<div id="divMediaGridHeaderBar">
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label style="text-align:left;">
+                Show
+                <select id="mediaGridPageLen" class="custom-select custom-select-sm form-control form-control-sm" style="display:inline-block;width:auto;">
+                    <option value="12">12</option>
+                    <option value="24">24</option>
+                    <option value="48">48</option>
+                    <option value="96">96</option>
+                </select> entries
+            </label>
+        </div>
+
+    </div>
+</div>
+<div id="divLoadingMedia" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div id="divLayoutView">
+
+</div>
+<div id="divCompanyMediaPopup">
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("#divLoadingMedia").hide();
+       
+        getMediaList();
+
+        $('#MediaTitle').on("keyup", function (e) {
+            debugger;
+            if (e.which == 13) {
+                getMediaList();
+            }
+        });
+        $('#mediaGridPageLen').on("change", function () {
+            debugger;
+            var newPageSize = $(this).val();
+            $('#PageSize').val(newPageSize);
+            getMediaGridPageData(1);
+        });
+
+    });
+    function getMediaGridPageData(page) {
+        debugger;
+        var currentPage = $('#PageNo').val();
+        if (page == -1) {
+            currentPage--;
+        }
+        else if (page == 0) {
+            currentPage++;
+        }
+        else {
+            currentPage = page;
+        }
+        $('#PageNo').val(currentPage);
+        getMediaList();
+    }
+    function getMediaList() {
+        $("#divLoadingMedia").show();
+        debugger;
+        var filterObject = new Object();
+        filterObject.PageSize = $('#PageSize').val();
+        filterObject.PageNo = $('#PageNo').val();
+        filterObject.SearchText = $('#MediaTitle').val();
+        $.ajax({
+            type: "POST",
+            url: '/CompanyMedia/IndexByGridView',
+            data: JSON.stringify(filterObject),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+
+                $("#divLayoutView").html(data);
+                $("#divLoadingMedia").hide();
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function addEditCompanyMedia(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/CompanyMedia/AddEditCompanyMedia',
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCompanyMediaPopup").html(data);
+                $("#addEditCompanyMedia_modal").modal("show");
+
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+    function saveCompanyMediaData(dataObject) {
+        debugger;
+        var isProceed = true;
+        var formData = new FormData();
+        // var pictureSrc = $('#companyPortalImageEdit').attr("src");
+
+        formData.append("Id", dataObject.Id);
+        formData.append("Name", dataObject.Name);
+        formData.append("IsDefaultMedia", dataObject.IsDefaultMedia);
+        formData.append("IsAllCompanies", dataObject.IsAllCompanies);
+        formData.append("MediaType", dataObject.MediaType);
+        formData.append("MediaLink", dataObject.MediaLink);
+        formData.append("MediaFile", dataObject.MediaFile);
+        formData.append("MediaPoster", dataObject.MediaPoster);
+        formData.append("ActionType", dataObject.ActionType);
+        $("#divUploadingMedia").show();
+        $("#btnSaveCompanyMedia").attr('disabled', 'disabled');
+        
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/CompanyMedia/AddEditSaveCompanyMedia',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        debugger;
+                        $('#addEditCompanyMedia_modal').modal('hide');
+                        getMediaList();
+                        showAlertAutoHide("", data.status, data.message);
+                        $("#divUploadingMedia").hide();
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                        $("#divUploadingMedia").hide();
+                        $("#btnSaveCompanyMedia").removeAttr('disabled');
+                    }
+                },
+                error: function (error) {
+                    showAlertAutoHide("", "Error", error);
+                }
+            });
+        }
+    }
+    function getCompanyMediaDeleteData(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/CompanyMedia/DeleteCompanyMedia',
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCompanyMediaPopup").html(data);
+                $("#companyMediaDelete_modal").modal("show");
+
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function deleteCompanyMedia(id) {
+        $.ajax({
+            type: "Post",
+            url: "/CompanyMedia/ConfirmDelete",
+            data: { "id": id },
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+                    $("#companyMediaDelete_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    getMediaList();
+                }
+                else {
+                    showAlertAutoHide(alertID, data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                showAlertAutoHide(alertID, "Error", error);
+                return false;
+            }
+        });
+    }
+    function isValidUrl(s) {
+        var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/
+        return regexp.test(s);
+    }
+</script>
+

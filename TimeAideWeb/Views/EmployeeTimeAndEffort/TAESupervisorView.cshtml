@@ -1,0 +1,440 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.EmployeeTimeAndEffortViewModel>
+@using TimeAide.Web.Models;
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+
+    .table-avatar {
+        align-items: center;
+        display: inline-flex;
+        font-size: small;
+        font-weight: 400;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        white-space: pre-wrap;
+    }
+
+    /* .div-punch-info {
+        background-color: aliceblue;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .div-emp-info {
+        width: 200px;
+        height: 60px;
+    }*/
+    .div-sup-approval {
+        font-size: smaller;
+        /*font-weight: bold;*/
+        /*font-family: 'Times New Roman', Times, serif;*/
+    }
+    .div-effort-info {
+        border-left: 1px groove #cbc6c6;
+        border-bottom: 1px groove #cbc6c6;
+        font-size: small;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+        height: 40px;
+        text-align: center;
+        padding-left: 1px;
+        overflow: hidden;
+    }
+
+    .div-effort-info-footer {
+        border-left: 1px groove #cbc6c6;
+        border-bottom: 1px groove #cbc6c6;
+        font-size: medium;
+        font-style:italic;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+        height: 40px;
+        text-align: center;
+        padding-left: 1px;
+        overflow: hidden;
+    }
+    
+    .div-effort-detail {
+        border-bottom: 1px groove #cbc6c6;
+        font-size: small;
+        font-weight: normal;
+        font-family: 'Times New Roman', Times, serif;
+        height: 40px;
+        text-align: left;
+        padding-left: 1px;
+        overflow: hidden;
+    }
+
+    .div-effort-detail-footer {
+        border-bottom: 1px groove #cbc6c6;
+        font-size: small;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+        height: 40px;
+        text-align: left;
+        padding-left: 1px;
+        overflow: hidden;
+    }
+    .div-effort-detail-footer-total {
+        border-bottom: 1px groove #cbc6c6;
+        font-size: medium;
+        font-weight: bold;
+        font-style:italic;
+        font-family: 'Times New Roman', Times, serif;
+        height: 40px;
+        text-align: left;
+        padding-left: 1px;
+        overflow: hidden;
+    }
+
+    .div-responsive {
+        width: 100%;
+        height: 600px;
+        overflow: scroll;
+        border: 1px solid #777777;
+    }
+
+        .div-responsive table {
+            border-spacing: 0;
+        }
+
+        .div-responsive th {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 100px;
+            min-width: 100px;
+            position: sticky;
+            top: 0;
+            background: #727272;
+            color: #e0e0e0;
+            font-weight: bolder;
+            font-size: large;
+        }
+
+        .div-responsive td {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            border-bottom: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 100px;
+            min-width: 100px;
+            height: 70px;
+        }
+
+            .div-responsive th:nth-child(1),
+            .div-responsive td:nth-child(1) {
+                position: sticky;
+                left: 0;
+                width: 350px;
+                min-width: 350px;
+            }
+
+            /*  .div-responsive th:nth-child(2),
+            .div-responsive td:nth-child(2) {
+                position: sticky;
+                left: 0;
+                width: 150px;
+                min-width: 150px;
+            }*/
+
+
+            .div-responsive td:nth-child(1) {
+                background: #dee2e6;
+            }
+            .div-responsive td:nth-child(2) {
+                background: #f2f5fb;
+            }
+        .div-responsive th:nth-child(1) {
+            z-index: 2;
+        }
+</style>
+@Html.Hidden("TAEIds", (string)ViewBag.SelectedTAEIds)
+@if (Model.Count() > 0)
+{
+    <div class="div-responsive">
+        <table class="table-main" id="tblTimeAEffort">
+            <thead>
+                <tr class="">
+                    <th></th>
+                    <th>Total</th>
+                    @*<th></th>*@
+                    @foreach (var effortDate in ViewBag.EffortDateRange as List<DateTime>)
+                    {
+                        <th>@effortDate.ToShortDateString()</th>
+                    }
+                    <th style="display:none;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var itemSeq = 0;}
+                @foreach (var empTAERecord in Model)
+                {
+                    itemSeq++;
+
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-6 pr-0">
+                                    <h3 class="table-avatar">
+                                        <a class="avatar avatar-xs" href="javascript:void();"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                        <a href="javascript:void();">@Html.DisplayFor(m => empTAERecord.EmployeeName)</a>
+                                    </h3>
+                                    @* <span class="pl-1 font-weight-lighter">ID: @Html.DisplayFor(m => empTAERecord.EmployeeId)</span>*@
+                                    @{
+                                        var empStsCss = "bg-inverse-success";
+                                        var empSts = "Approved";
+                                        var supStsCss = "bg-inverse-success";
+                                        var supSts = "Approved";
+                                        if (!empTAERecord.IsEmployeeApproved)
+                                        {
+                                            empStsCss = "bg-inverse-danger";
+                                            empSts = "Unapproved";
+
+                                        }
+                                        if (!empTAERecord.IsSupervisorApproved)
+                                        {
+                                            supStsCss = "bg-inverse-danger";
+                                            supSts = "Unapproved";
+                                        }
+                                    }
+                                    @*<span class="font-weight-lighter pull-right">Emp:<span class="badge @empStsCss">@empSts</span></span>*@
+                                <div class="div-sup-approval">
+                                    <span class="">ID: @Html.DisplayFor(m => empTAERecord.EmployeeId)</span>
+                                    <span class="d-block">
+                                        Supervisor:<span class="badge @supStsCss">@supSts</span>
+                                        <a href="javascript:individualTAEApproval('@empTAERecord.TAEId')" class="d-inline-block pl-1 fa fa-pencil" title="Click to change the supervisor status"></a>
+                                    </span>
+                                    <span class="d-block">Employee:<span class="badge @empStsCss pl-2">@empSts</span></span>
+
+                                    @*<span class="d-block">Supervisor:
+
+            <span class="" style="border:1px thin black">
+                <a href="javascript:individualTAEApproval('@empTAERecord.TAEId')" class="@supStsCss d-inline-block" title="Click to change the supervisor status" ><span class="small">@supSts</span> </a>
+            </span>
+        </span>*@
+                                </div>
+                                    
+                                </div>
+                                <div class="col-6">
+                                    @{
+                                        var effortTypeTotalHrs = new Dictionary<string, decimal>();
+                                    }
+                                    @foreach (var effortType in empTAERecord.EffortTypeRange)
+                                    {
+                                        effortTypeTotalHrs.Add(effortType, 0);
+
+                                        <div class="div-effort-info">
+                                            @effortType
+                                        </div>
+                                    }
+                                    <div class="div-effort-info-footer">
+                                        Total:
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td id="td_tot_@itemSeq">
+
+                        </td>
+                        @foreach (var effortDetail in empTAERecord.TimeAndEffortDetail)
+                        {
+                            <td>
+                                @{ var totalEffortPct = 0;
+                                    var totalEfforHrs = effortDetail.EffortInfo.Sum(s => s.EffortHrs);
+
+                                    if (totalEfforHrs > 0)
+                                    {
+                                        totalEffortPct = 100;
+                                    }
+                                }
+
+                                @foreach (var item in effortDetail.EffortInfo)
+                                {
+
+                                    effortTypeTotalHrs[item.EffortTypeName] += item.EffortHrs;
+                                    decimal effortPct = 0;
+                                    if (totalEfforHrs > 0 && item.EffortHrs > 0)
+                                    {
+                                        effortPct = Math.Round((item.EffortHrs / totalEfforHrs) * 100, 2);
+                                    }
+
+                                    <div class="div-effort-detail">
+                                        @item.EffortHrs
+                                        <span class="pull-right">@effortPct%</span>
+                                    </div>
+                                }
+                                <div class="div-effort-detail-footer">
+                                    @totalEfforHrs
+                                    <span class="pull-right">@totalEffortPct%</span>
+                                </div>
+                            </td>
+                        }
+                        <td id="td_@itemSeq" style="display:none">
+                            @{
+
+                                decimal grandTotal = effortTypeTotalHrs.Sum(s => s.Value);
+                                //decimal grandPct = 0;
+                            }
+                            @foreach (var effortTypeTot in effortTypeTotalHrs)
+                            {
+                                decimal totPct = 0;
+                                if (grandTotal > 0 && effortTypeTot.Value > 0)
+                                {
+                                    totPct = Math.Round((effortTypeTot.Value / grandTotal) * 100, 2);
+                                    //grandPct += totPct;
+                                }
+                                <div class="div-effort-detail-footer">
+                                    @effortTypeTot.Value
+                                    <span class="pull-right">@totPct%</span>
+
+                                </div>
+                            }
+                        <div class="div-effort-detail-footer">
+
+                            @{
+                                var grandPct = 0;
+                                if (grandTotal > 0) 
+                                { 
+                                    grandPct = 100; 
+                                }
+                            }
+                            @grandTotal
+                            <span class="pull-right">@grandPct%</span>
+
+                        </div>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+}
+else { 
+ <h4 class="text-info">
+     No Data Found!
+ </h4>
+}
+@*
+    <div class="div-responsive" style="display:none;">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblScheduleCalendarPrint">
+            <thead>
+                <tr class="">
+                    <th></th>
+                    @foreach (var calDate in Model.CalendarDateRange)
+                    {
+                        <th>@calDate.ToString("ddd MM/dd ")</th>
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var calDetail in Model.CalendarDetail.OrderBy(o => o.EmployeeSchedule.sUserName))
+                {
+                    <tr>
+                        <td>
+                            <div class="">
+                                <h2 class="">
+                                    @Html.DisplayFor(m => calDetail.EmployeeSchedule.sUserName)
+                                </h2>
+                                <div class="mb-1 pl-5 font-weight-normal font-italic">Period Hrs: @Html.DisplayFor(m => calDetail.EmployeeSchedule.dblPeriodHours)</div>
+                            </div>
+                        </td>
+                        @foreach (var calDate in Model.CalendarDateRange)
+                        {
+
+                            var scheduleDateData = calDetail.EmployeeScheduleDetail.Where(w => w.dPunchDate == calDate).FirstOrDefault();
+
+                            <td>
+                                @if (scheduleDateData != null)
+                                {
+                                    var PunchIn1 = (scheduleDateData.dPunchIn1 == null) ? "" : scheduleDateData.dPunchIn1.Value.ToString("hh:mm tt");
+                                    if (scheduleDateData.nPunchNum < 1) { PunchIn1 = ""; }
+
+                                    var PunchOut1 = (scheduleDateData.dPunchOut1 == null) ? "" : scheduleDateData.dPunchOut1.Value.ToString("hh:mm tt");
+                                    if (scheduleDateData.nPunchNum < 2) { PunchOut1 = ""; }
+
+                                    var PunchIn2 = (scheduleDateData.dPunchIn2 == null) ? "" : scheduleDateData.dPunchIn2.Value.ToString("hh:mm tt");
+                                    if (scheduleDateData.nPunchNum < 4) { PunchIn2 = ""; }
+
+                                    var PunchOut2 = (scheduleDateData.dPunchOut2 == null) ? "" : scheduleDateData.dPunchOut2.Value.ToString("hh:mm tt");
+                                    if (scheduleDateData.nPunchNum < 4) { PunchOut2 = ""; }
+
+                                    var dayPunchInOut1 = "";
+                                    var dayPunchInOut2 = "";
+                                    if (PunchIn1 != "") { dayPunchInOut1 += PunchIn1; }
+                                    if (PunchOut1 != "") { dayPunchInOut1 += " - " + PunchOut1; }
+                                    if (PunchIn2 != "") { dayPunchInOut2 += PunchIn2; }
+                                    if (PunchOut2 != "") { dayPunchInOut2 += " - " + PunchOut2; }
+                                    var shortWorkTyeName = AttendenceScheduleMasterDDV.WorkDayTypes.Where(w => w.Id == (scheduleDateData.nWorkDayType ?? 0)).FirstOrDefault().ShortName;
+
+                                    if (scheduleDateData.nWorkDayType == 0) { dayPunchInOut1 = shortWorkTyeName; dayPunchInOut2 = ""; scheduleDateData.dblDayHours = 0; }
+
+
+                                    <div class="">
+
+                                        <div class="mb-1 font-weight-bold small">@Html.DisplayFor(m => shortWorkTyeName)</div>
+                                        <div class="mb-1 font-weight-normal small">P#:(@Html.DisplayFor(m => scheduleDateData.nPunchNum))</div>
+                                        <div class="mb-1 font-weight-normal small">Hrs:(@Html.DisplayFor(m => scheduleDateData.dblDayHours))</div>
+                                        <div class="mb-1 small">@Html.DisplayFor(m => dayPunchInOut1)</div>
+                                        <div class="mb-1 small">@Html.DisplayFor(m => dayPunchInOut2)</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="">
+
+                                    </div>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+*@
+<script>
+    $(document).ready(function () {
+        $("#spanTotalRec").text(@Model.Count());
+        var totalRec = '@Model.Count()';
+        for (var i = 1; i <= Number(totalRec); i++) {
+            $("#td_tot_" + i).html($("#td_" + i).html());
+        }
+        var fileNameAndTitle = "Time & Effort";
+        $('#tblScheduleCalendarPrint').DataTable({
+            "paging": false,
+            "info": false,
+            "sorting": false,
+            buttons: [
+                {
+                    extend: 'excel'
+                },
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    filename: function () {
+                        return fileNameAndTitle;
+                    },
+                    title: fileNameAndTitle,
+                    customize: function (doc) {
+                        //pageMargins [left, top, right, bottom]
+                       // doc.pageMargins = [15, 20, 15, 20];
+                    }
+                },
+            ]
+        });
+
+    });
+</script>

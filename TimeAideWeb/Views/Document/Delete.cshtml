@@ -1,0 +1,53 @@
+﻿@model TimeAide.Web.Models.Document
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentDescription)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IsExpirable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsExpirable)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentRequiredById)
+        </dt>
+
+        <dd>
+            @if (Model.DocumentRequiredBy != null)
+            {
+                @Html.DisplayFor(model => model.DocumentRequiredBy.DocumentRequiredByName)
+            }
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            Notification Schedule
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NotificationSchedule.NotificationScheduleName)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

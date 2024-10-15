@@ -1,0 +1,190 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.AccrualRuleTier
+<div id="acrualRuleTierDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Accrual Rule Tier - Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">TierNo: <span class="text-danger"></span></label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(model => model.TierNo)
+                            </div>
+                            <label class="col-md-2 col-form-label">Tier Desc.: <span class="text-danger"></span></label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @Html.DisplayFor(model => model.TierDescription)
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Years: <span class="text-danger"></span></label>
+                            <label class="col-md-1 col-form-label pl-0 pr-0">From: <span class="text-danger"></span></label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(model => model.YearsWorkedFrom)
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">To: <span class="text-danger"></span></label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(model => model.YearsWorkedTo)
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Waiting Period?: <span class="text-danger"></span></label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @Html.DisplayFor(model => model.WaitingPeriodType)
+                            </div>
+                            <div class="col-md-3 text-muted mt-2">
+
+                                @Html.DisplayFor(model => model.WaitingPeriodLength)
+
+                                <span class="pt-2 pl-1">Month(s)</span>
+
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="form-group row">
+
+                            <label class="col-md-2 col-form-label pr-0">Excess Max: <span class="text-danger"></span></label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @{
+                                    var excessMaxType = DataHelper.AccuralExcessMaxType.Where(w => w.Key == Model.AllowedMaxHoursTypeId)
+                                                                                        .Select(s => s.Value).FirstOrDefault();
+                                }
+                                @excessMaxType
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">Max Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(model => model.AllowedMaxHours)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Excess Code: <span class="text-danger"></span></label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @{ 
+                                    var AccrualTypeExcessCode = ViewBag.AccrualTypeExcessCode as string;
+                                }
+                                @Html.DisplayFor(model => AccrualTypeExcessCode)
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Accrued Reset: <span class="text-danger"></span></label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @{
+                                    var resetType = DataHelper.AccuredResetType.Where(w => w.Key == Model.ResetAccruedHoursTypeId)
+                                                                .Select(s => s.Value).FirstOrDefault();
+
+                                }
+                                @resetType
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">Reset Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(model => model.ResetHours)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Reset Date: <span class="text-danger"></span></label>
+                            <div class="col-md-2 pr-0 text-muted mt-2">
+                                @Html.DisplayFor(model => model.ResetDate)
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label pr-0">Min. Worked Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2 pt-2 text-muted mt-2">
+                                @Html.DisplayFor(model => model.MinWorkedHoursType)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Accrual Hrs: <span class="text-danger"></span></label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(model => model.AccrualHours)
+                            </div>
+                        </div>
+                        @if (Model.MinWorkedHoursType == true)
+                        {
+                            <div id="" class="panel panel-default" style="margin-left:5px">
+                                <div class="panel-heading" style="padding-left:10px">
+                                    Min. Hours-worked Tier(s)
+                                </div>
+                                <div class="panel-body">
+
+                                    <div id="" style="min-height:100px; max-height:175px; overflow-y:auto">
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed table-sm  table-nowrap mb-0" id="tblWorkedHoursTier">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th>TierNo</th>
+                                                        <th>Desc.</th>
+                                                        <th>Min. Hrs </th>
+                                                        <th>Max Hrs</th>
+                                                        <th>Accrual Hrs.</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        var minWorkhrTiers = Model.AccrualRuleWorkedHoursTiers.Where(w => w.DataEntryStatus == 1);
+                                                    }
+                                                    @foreach (var item in minWorkhrTiers)
+                                                    {
+                                                        <tr>
+
+
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.TierNo)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(m => item.TierDescription)
+                                                            </td>
+                                                            <td>
+
+                                                                @Html.DisplayFor(m => item.TierWorkedHoursMin)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(m => item.TierWorkedHoursMax)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(m => item.AccrualHours)
+                                                            </td>
+
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+</script>
+
+
+

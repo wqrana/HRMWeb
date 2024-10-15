@@ -1,0 +1,127 @@
+﻿
+@model TimeAide.Web.Models.ApplicantInterviewQuestion
+<div id="applicantQAnswerPopup_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border:thin; border-style:solid">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Answer</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0 pl-1 pr-1">
+
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "ApplicantQuestionId" })
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Q: <span class="text-danger"></span></label>
+                            <div class="col-md-10 pt-2 text-secondary">
+                                @Html.DisplayFor(m => m.QuestionName)
+                            </div>
+
+                        </div>
+                        @if (Model.ApplicantAnswerTypeId == 1)
+                        {
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label pr-0">Yes: <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    <input type="radio" id="qId_@Model.Id" name="yesNoOption" value="Yes" />
+                                </div>
+                                <label class="col-md-1 col-form-label pr-0">No: <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    <input type="radio" id="qId_@Model.Id" name="yesNoOption" value="No" />
+                                </div>
+                            </div>
+                        }
+                        @if (Model.ApplicantAnswerTypeId == 2)
+                        {
+                            var optionList = Model.ApplicantQAnswerOptions.Where(w => w.DataEntryStatus == 1);
+                            
+                            foreach (var option in optionList)
+                            {
+                               
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    @*<label class="col-md-1 col-form-label pr-0">@optionSeq</label>*@
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend pr-2 pt-3">
+                                            <input type="checkbox" id="qId_@Model.Id" name="selectAllApplyOption" value="@option.Id" />
+                                        </div>
+                                        <input type="text" id="answerOption_@option.Id" class="form-control" value="@option.AnswerOptionName" disabled />
+
+                                    </div>
+                                    </div>
+                                </div>
+                                }
+                                }
+                                @if (Model.ApplicantAnswerTypeId == 3)
+                                {
+                                    var optionList = Model.ApplicantQAnswerOptions.Where(w => w.DataEntryStatus == 1);
+                                    
+                                    foreach (var option in optionList)
+                                    {
+                                      
+                            <div class="form-group row">
+                                <div class="col-md-12">
+
+                                    <div class="input-group ">
+                                        <div class="input-group-prepend pr-2 pt-3">
+                                            <input type="radio" id="qId_@Model.Id" name="selectOneOption" value="@option.Id" />
+                                        </div>
+                                        <input type="text" id="answerOption_@option.Id" value="@option.AnswerOptionName" class="form-control" disabled />
+
+                                    </div>
+                                    </div>
+                                </div>
+
+                                }
+                                }
+                                @if (Model.ApplicantAnswerTypeId == 4)
+                                {
+                            <div class="form-group row">
+                                <div class="col-md-12">
+
+                                    <div class="input-group ">
+                                        <div class="input-group-prepend pr-2 pt-3">
+                                            <span style="font-weight:bold;">Date:</span>
+                                        </div>
+                                        <input type="datetime" id="qId_@Model.Id" name="SelectDateOPtion" class="form-control" />
+                                    </div>
+                                </div>                               
+                            </div>
+                                }
+                                @if (Model.ApplicantAnswerTypeId == 5)
+                                {
+                                    <div class="form-group row">                                        
+                                        <div class="col-md-12">
+                                            <input type="text" id="qId_@Model.Id" name="OpenAnswerOption" class="form-control" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                </div>
+
+                <div class="submit-section mt-1">
+                    <button id="btnSaveApplicantQAnswerOption" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+       
+
+</script>

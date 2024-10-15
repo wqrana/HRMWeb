@@ -1,0 +1,37 @@
+﻿@model TimeAide.Web.Models.AppraisalGoal
+
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GoalName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoalName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GoalDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoalDescription)
+        </dd>
+
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppraisalRatingScaleId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppraisalRatingScale.ScaleName)
+        </dd>
+
+    </dl>
+
+</div>
+@Html.Partial("_DeleteViewFooter")

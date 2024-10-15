@@ -1,0 +1,482 @@
+﻿@model TimeAide.Web.Models.CompanyWithholding
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.HiddenFor(model => model.SelectedCompensations)
+    
+    <div class="form-group row">
+        <div class="col-md-6">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.WithHoldingName, "Withholding Name", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.WithHoldingName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WithHoldingName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.WitholdingComputationTypeId, "Withholding Type", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.WitholdingComputationType>("WitholdingComputationTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.WitholdingComputationTypeId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.WitholdingPrePostTypeId, "Pre/Post Tax Deduct", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.WitholdingPrePostType>("WitholdingPrePostTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.WitholdingPrePostTypeId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.WithholdingTaxTypeId, "TaxType", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.WithholdingTaxType>("WithholdingTaxTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.WithholdingTaxTypeId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.IsDeleted, "Is Deleted", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsDeleted)
+                        @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.GLAccountId, "WH GL Expense", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @(Html.CustomDropDownList<TimeAide.Web.Models.GLAccount>("GLAccountId", null, null, false,2, htmlAttributes: new { @class = "form-control" }))
+                    @Html.ValidationMessageFor(model => model.GLAccountId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Employee Withholdings/Deductions</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.EmployeeWithholdingPercentage, "Deduct %:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.EmployeeWithholdingPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithholdingPercentage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.EmployeeWithholdingAmount, "Deduct Amount($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.EmployeeWithholdingAmount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithholdingAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Compensation Limits</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.MaximumSalaryLimit, "Compensation Top($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.MaximumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MaximumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.MinimumSalaryLimit, "Compensation Min($):", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.MinimumSalaryLimit, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MinimumSalaryLimit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Employee Loan @Html.EditorFor(model => model.IsLoan)</div>
+                <div class="panel-body">
+
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyWithholdingLoan.LoanDescription, "Loan Desc:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyWithholdingLoan.LoanDescription, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyWithholdingLoan.LoanDescription, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyWithholdingLoan.LoanAmount, "Default Amount", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyWithholdingLoan.LoanAmount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyWithholdingLoan.LoanAmount, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">401K/ 1165(e) Settings</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.CompanyWithholding401K.Is401K1165eStTaxExempted) St Tax Exempt C401K/1165(e)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyWithholding401K.Withholding401KTypeId, "401K WH Type", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.Withholding401KType>("Withholding401KTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.CompanyWithholding401K.Withholding401KTypeId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyWithholding401K.EEMaxYearlyAmount, "Employee Yearly Max:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyWithholding401K.EEMaxYearlyAmount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyWithholding401K.EEMaxYearlyAmount, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.CompanyWithholding401K.ERMaxYearlyAmount, "Employee Yearly Min:", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7">
+                            @Html.EditorFor(model => model.CompanyWithholding401K.ERMaxYearlyAmount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyWithholding401K.ERMaxYearlyAmount, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="col-md-12 row">
+                        <div class="col-md-8">
+                            Excluded Compensations
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a a href="javascript:;" data-toggle="modal" id="anchorEmploymentPrivilege" onclick="fnCompanyWithholding();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i>Add</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div id="divSupervisedEmployees">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="col-md-12 row">
+                        <div class="col-md-8">
+                            PR Pay Export
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body" style="padding-left: 5px;">
+                    <div class="table-responsive" style="padding-left:2px">
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction1, "Custom Deduction 1", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction1)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction1, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction2, "Custom Deduction 2", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction2)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction2, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction3, "Custom Deduction 3", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction3)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction3, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction4, "Custom Deduction 4", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction4)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction4, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction5, "Custom Deduction 5", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction5)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.CustomDeduction5, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsWithholding, "IsWithholding", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsWithholding)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsWithholding, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsFICA, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsFICA)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsFICA, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsSocialSecurity, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsSocialSecurity)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsSocialSecurity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsMedicalInsurance, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsMedicalInsurance)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsMedicalInsurance, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsDisability, htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsDisability)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsDisability, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsChauffeurInsurance, "CHOFERIL/ Chauffeur Insurance", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsChauffeurInsurance)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsChauffeurInsurance, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsOtherDeduction, "Other Deduction", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsOtherDeduction)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsOtherDeduction, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsHealthCoverageContribution, "Health Coverage Contribution", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsHealthCoverageContribution)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsHealthCoverageContribution, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.Charitable_Contribution, "Charitable Contribution", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.Charitable_Contribution)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.Charitable_Contribution, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsMoneySaving, "Money Saving", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsMoneySaving)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsMoneySaving, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsMedicarePlus, "Medicare Plus", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsMedicarePlus)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsMedicarePlus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsCoda401K, "401K/Coda", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsCoda401K)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsCoda401K, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CompanyWithholdingPRPayExport.IsCodaExemptSalary, "Exempt Salary", htmlAttributes: new { @class = "control-label col-md-8" })
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.CompanyWithholdingPRPayExport.IsCodaExemptSalary)
+                                    @Html.ValidationMessageFor(model => model.CompanyWithholdingPRPayExport.IsCodaExemptSalary, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+</div>
+    <div id='ExclusionModal' class='modal'>
+        <div id='ExclusionModaldialog' class="modal-dialog">
+            <div class="modal-content">
+                <div id='ExclusionModalContent'></div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    #myModaldialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 65% !important;
+        width: 65% !important;
+        top: -25px !important;
+    }
+
+    .form-control {
+        height: unset
+    }
+
+    .form-group {
+        margin-bottom: .5rem;
+    }
+
+    .form-control {
+        line-height: 1.0;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadCreateCompensationExclusion('');
+        $("#CompanyWithholdingLoan_LoanDescription").prop('disabled', true);
+        $("#CompanyWithholdingLoan_LoanAmount").prop('disabled', true);
+        $('#CompanyWithholdingLoan_LoanDescription').rules('remove', 'required');
+        $('#CompanyWithholdingLoan_LoanAmount').rules('remove', 'required');
+
+    });
+    $('#IsLoan').change(function () {
+        if ($(this).is(':checked')) {
+            $("#CompanyWithholdingLoan_LoanDescription").prop('disabled', false);
+            $("#CompanyWithholdingLoan_LoanAmount").prop('disabled', false);
+        } else {
+            $("#CompanyWithholdingLoan_LoanDescription").prop('disabled', true);
+            $("#CompanyWithholdingLoan_LoanDescription").val('');
+            $("#CompanyWithholdingLoan_LoanAmount").prop('disabled', true);
+            $("#CompanyWithholdingLoan_LoanAmount").val('');
+        }
+    });
+    function LoadCreateCompensationExclusion(id) {
+        $.ajax({
+            type: "GET",
+            url: '/CompanyWithholdingCompensationExclusion/CreateIndex',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": id },
+            datatype: "html",
+            success: function (html) {
+                $('#divSupervisedEmployees').empty()
+                $('#divSupervisedEmployees').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnCompanyWithholding() {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/CompanyWithholdingCompensationExclusion/CreateCompensationExclusion',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#ExclusionModalContent').html(data);
+                $('#ExclusionModal').modal(options);
+                $('#ExclusionModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function saveCompanyWithholdingData() { }
+</script>

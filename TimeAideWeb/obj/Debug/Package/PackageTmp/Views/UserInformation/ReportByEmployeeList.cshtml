@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.UserInformationViewModel>
+
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblByEmployee">
+        <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+        <thead>
+            <tr>
+                <th width="10%" class="no-sort">
+                    <div class="checkbox">
+                        <input type="checkbox" id="chkSelAllEmp" />
+                    </div>
+                </th>
+
+                <th width="25%">
+                    EmployeeID
+                </th>
+                <th width="50%">Employee Name</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div class="checkbox">
+                        
+                            <input type="checkbox" name="chkSelEmp" value="@item.EmployeeId"/>
+                        
+                    </div>
+                </td>
+                <td>@Html.DisplayFor(m=> item.EmployeeId)</td>
+                <td>@Html.DisplayFor(m=> item.ShortFullName)</td>
+            </tr>
+            
+        }
+        </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#tblByEmployee').dataTable({
+            "searching": true,
+            "paging": false,
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }]
+
+        });
+
+        $('#chkSelAllEmp').on("change", function () {
+            debugger;
+            var isChecked = $(this).is(":checked");
+            selectUnselectAll(isChecked);
+        });
+
+    });
+    function selectUnselectAll(status) {
+        $("input[name='chkSelEmp']").each(function () {
+            debugger;
+            var checkBoxVal = $(this).val();
+            $(this).prop("checked", status);
+
+        });
+    }
+</script>

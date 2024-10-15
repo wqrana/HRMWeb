@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.ActionType
+
+<div style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionTypeName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionTypeDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionTypeDescription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

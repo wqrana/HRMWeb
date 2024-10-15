@@ -1,0 +1,122 @@
+﻿@model TimeAide.Web.Models.EmployeeSupervisorViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>EmployeeSupervisor</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-4">
+                @Html.ListBoxFor(model => model.UserId, Model.Users, new { @class = "form-control" })
+            </div>
+            <div class="col-md-4">
+                @Html.ListBoxFor(model => model.SupervisedUserId, Model.SupervisedUsers, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" onclick="SelectAllUsers()" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        function SelectAllUsers() {
+            $('#SupervisedUserId option').prop('selected', true);
+        }
+        (function () {
+            $('#btnRight').click(function (e) {
+                var selectedOpts = $('#UserId option:selected');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+                $('#SupervisedUserId').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+            $('#btnAllRight').click(function (e) {
+                var selectedOpts = $('#UserId option');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+                $('#SupervisedUserId').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+            $('#btnLeft').click(function (e) {
+                var selectedOpts = $('#SupervisedUserId option:selected');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+                $('#UserId').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+            $('#btnAllLeft').click(function (e) {
+                var selectedOpts = $('#SupervisedUserId option');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+                $('#UserId').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+        }(jQuery));
+    </script>
+    <style type="text/css">
+        .col-md-3 {
+            /*  width: 8% !important;
+            margin-top: 30px;*/
+        }
+
+        .subject-info-box-1,
+        .subject-info-box-2 {
+            float: left;
+            width: 45%;
+        }
+
+        select[multiple] {
+            height: 200px;
+            padding: 0;
+        }
+
+        option {
+            padding: 4px 10px 4px 10px;
+        }
+
+            option:hover {
+                background: #EEEEEE;
+            }
+
+
+        .subject-info-arrows {
+            float: left;
+            width: 10%;
+        }
+    </style>
+}

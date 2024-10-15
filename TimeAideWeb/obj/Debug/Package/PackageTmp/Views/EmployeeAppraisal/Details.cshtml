@@ -1,0 +1,298 @@
+﻿@model TimeAide.Web.Models.EmployeeAppraisal
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Appraisal Information
+                    </div>
+                    <div class="panel-body">
+                        @Html.Hidden("EmployeeAppraisalDetailId", Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Review Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.AppraisalReviewDate)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Due Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.AppraisalDueDate)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Next Appraisal:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.NextAppraisalDueDate)
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Template:</label>
+                            @Html.Hidden("AppraisalTemplateDetailId", Model.AppraisalTemplateId)
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.AppraisalTemplate.TemplateName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Evaluation From:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.EvaluationStartDate)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Evaluation To:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.EvaluationEndDate)
+                            </div>
+
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Position:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Position.PositionName)
+                            </div>
+                            <div style="display:none;">
+                                <label class="col-md-2 col-form-label" style="margin-left:0px">Company:</label>
+                                <div class="col-md-2 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.Company.CompanyName)
+                                </div>
+                            </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:0px">Department:</label>
+                                <div class="col-md-2 text-muted mt-2 ">
+                                    @Html.DisplayFor(m => m.Department.DepartmentName)
+                                </div>
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row mb-0">
+            <div class="col-md-4 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Appraisal Goal(s) List
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditEmployeeAppraisalGoal(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divEmployeeAppraisalGoals" style="max-height:160px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Goal
+                                            </th>
+                                            <th>
+                                                Rating
+                                            </th>
+                                            <th>
+                                                Value
+                                            </th>
+                                            <th>
+                                                Comments
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @if (Model.EmployeeAppraisalGoals != null)
+                                    {
+                                        foreach (var item in Model.EmployeeAppraisalGoals.Where(w=>w.DataEntryStatus==1))
+                                        {
+                                            <tr>
+
+                                                <td><a href="javascript:createEditEmployeeAppraisalGoal(@item.Id);">@item.AppraisalGoal.GoalName</a></td>
+                                                <td>@item.GoalRatingName</td>
+                                                <td>@item.GoalRatingValue/<span style="font-size:10px">@item.GoalScaleMaxValue</span></td>
+                                                <td>@item.ReviewerComments</td>
+                                                <td width="10%">
+                                                    <div class="pull-right dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                            <a href="javascript:createEditEmployeeAppraisalGoal(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a href="javascript:getEmployeeAppraisalGoalDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Appraisal Skill(s) List
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditEmployeeAppraisalSkill(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divEmployeeAppraisalSkills" style="max-height:160px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Rating
+                                            </th>
+                                            <th>
+                                                Value
+                                            </th>
+                                            <th>
+                                                Comments
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @if (Model.EmployeeAppraisalSkills != null)
+                                    {
+                                        foreach (var item in Model.EmployeeAppraisalSkills.Where(w=>w.DataEntryStatus==1))
+                                        {
+                                            <tr>
+
+                                                <td><a href="javascript:createEditEmployeeAppraisalSkill(@item.Id);">@item.AppraisalSkill.SkillName</a></td>
+                                                <td>@item.SkillRatingName</td>
+                                                <td>@item.SkillRatingValue/<span style="font-size:10px">@item.SkillScaleMaxValue</span></td>
+                                                <td>@item.ReviewerComments</td>
+                                                <td width="10%">
+                                                    <div class="pull-right dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                            <a href="javascript:createEditEmployeeAppraisalSkill(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                                                            <a href="javascript:getEmployeeAppraisalSkillDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="col-md-4 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Appraisal Document(s) List
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditEmployeeAppraisalDocument(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divEmployeeAppraisalDocuments" style="max-height:160px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Document Name
+                                            </th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    @if (Model.EmployeeAppraisalDocuments != null)
+                                    {
+                                        foreach (var item in Model.EmployeeAppraisalDocuments)
+                                        {
+                                            <tr>
+
+                                                <td>@item.AppraisalDocumentName</td>
+
+                                                <td width="10%">
+                                                    <div class="pull-right dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                            <a href="javascript:createEditEmployeeAppraisalDocument(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a href="javascript:getEmployeeAppraisalDocumentDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                                            <a href="javascript:downloadEmployeeAppraisalDocument(@item.Id)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Doc</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group row mb-0">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Appraisal Result
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:EditEmployeeAppraisalResult();" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divEmployeeAppraisalResult">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:0px">Result:</label>
+                                <div class="col-md-2 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.AppraisalResult.ResultName)
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:0px">Overall Score:</label>
+                                <div class="col-md-2 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.AppraisalOverallScore)
+                                    /<span style="font-size:10px">@Html.DisplayFor(m => m.AppraisalTotalMaxValue)</span>
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:0px">Overall (%):</label>
+                                <div class="col-md-2 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.AppraisalOverallPct)
+                                </div>
+
+                            </div>
+                            <div class="form-group row mb-0">
+                                <label class="col-md-2 col-form-label" style="margin-left:0px">Reviewer Comments:</label>
+                                <div class="col-md-4 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.AppraisalReviewerComments)
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:0px">Employee Comments:</label>
+                                <div class="col-md-4 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.AppraisalEmployeeComments)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

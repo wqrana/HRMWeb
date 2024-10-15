@@ -1,0 +1,25 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Job Portal Error";
+    Layout = "~/Views/Shared/_LayoutJob.cshtml";
+
+}
+
+<div class="error-box">
+    <h3 class="text-danger"><i class="fa fa-warning"></i> Error processing request. Please contact your system administrator!</h3>
+    @if (Model.Exception != null)
+    {
+        <p class="text-danger">@Html.Raw(Model.Exception.Message)</p>
+
+        <!-- <p class="text-info ">URI: "/@Html.DisplayFor(m => m.ControllerName)/@Html.DisplayFor(m => m.ActionName)"</p>-->
+    }
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        //  $('#jobError_modal').modal("show");
+
+    });
+</script>

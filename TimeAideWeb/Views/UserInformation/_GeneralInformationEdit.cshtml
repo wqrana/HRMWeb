@@ -1,0 +1,276 @@
+﻿
+@using TimeAide.Common.Helpers;
+  
+<div id="general_info_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            @*<div class="modal-header">
+                    <h5 class="modal-title">Edit General Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>*@
+            <div class="mt-2 p-2 mt-0">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit- General Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                @*<div class="card">
+                    <div class="card-body pb-0">*@
+
+                <div class="alert" style="display:none;" id="GenInfoEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <!--Inline form layout -->
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Employee Id:<span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @if (SessionHelper.IsTimeAideWindowClient)
+                                {
+
+                                    <input id="Gen_employeeId" class="form-control" type="text" disabled>
+                                }
+                                else
+                                {
+                                    <input id="Gen_employeeId" class="form-control" type="text">
+                                }
+
+                            </div>
+
+                            <label class="col-md-2 col-form-label">First Name:<span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                <input id="Gen_firstName" maxlength="20" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+
+                            </div>
+                            <label class="col-md-1 col-form-label pl-0 pr-0">Initial:</label>
+                            <div class="col-md-1 pl-0">
+                                <input id="Gen_middleName" maxlength="2" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">1st LastName:<span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                <input id="gen_firstLastName" maxlength="20" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                            </div>
+
+                            <label class="col-md-2 col-form-label">2nd LastName:<span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                <input id="gen_secondLastName" minlength="3" maxlength="20" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                            </div>
+                            <label class="col-md-1 col-form-label pl-0 pr-0">ShortName:<span class="text-danger">*</span></label>
+                            <div class="col-md-3 pl-0">
+                                <input id="gen_shortFullName" maxlength="50" onkeydown="return /[a-zA-Z]/i.test(event.key)" class="form-control" type="text">
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+
+                            <label class="col-md-2 col-form-label">SSN:</label>
+
+                            <div class="col-md-2">
+                                <input id="gen_SSN" class="form-control" type="text">
+                            </div>
+                            <label class="col-md-2 col-form-label">Birth Date:</label>
+                            <div class="col-md-2">
+                                <input id="gen_birthDate" class="form-control" type="datetime">
+                            </div>
+
+                            <label class="col-md-1 col-form-label pl-0 pr-0">BirthPlace:</label>
+                            <div class="col-md-3 pl-0">
+                                <input type="text" class="form-control" id="gen_birthPlace" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Gender:</label>
+                            <div class="col-md-2">
+                                @*@Html.DropDownList("GenderId", null, "- Please select -", new { @class = "form-control" })*@
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.Gender>("GenderId", null, htmlAttributes: new { @class = "form-control" }))
+
+                            </div>
+                            <label class="col-md-2 col-form-label">Marital Status:</label>
+                            <div class="col-md-2">
+                                @*@Html.DropDownList("MaritalStatusId", null, "- Please select -", new { @class = "form-control" })*@
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.MaritalStatus>("MaritalStatusId", null, htmlAttributes: new { @class = "form-control" }))
+
+                            </div>
+                            <label class="col-md-1 col-form-label pl-0 pr-0">Ethnicity:</label>
+
+                            <div class="col-md-3 pl-0">
+                                @Html.DropDownList("EthnicityId", null, "- Please select -", new { @class = "form-control" })
+                                @*@(Html.CustomDropDownList<TimeAide.Web.Models.Ethnicity>("EthnicityId", null, htmlAttributes: new { @class = "form-control" }))*@
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label pr-0">Disability:</label>
+                            <div class="col-md-2 pl-0 pr-0">
+                                @Html.DropDownList("DisabilityId", null, "- Please select -", new { @class = "form-control" })
+                                @*@(Html.CustomDropDownList<TimeAide.Web.Models.Disability>("DisabilityId", null, htmlAttributes: new { @class = "form-control" }))*@
+
+                            </div>
+                            <label class="col-md-2 col-form-label">Veteran Status:</label>
+                            <div class="col-md-7 pl-0">
+                                @Html.ListBox("VeteranStatusId", (IEnumerable<SelectListItem>)ViewBag.VeteranStatusId, new { @class = "form-control" })
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    @*
+                        <!--Vertical align -->
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>System Id <span class="text-danger"></span></label>
+                                        <input id="Gen_systemId" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>First Name <span class="text-danger"></span></label>
+                                        <input id="Gen_firstName" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Initial<span class="text-danger"></span></label>
+                                        <input id="Gen_middleName" class="form-control" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>1st LastName<span class="text-danger"></span></label>
+                                        <input id="gen_firstLastName" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>2nd LastName<span class="text-danger"></span></label>
+                                        <input id="gen_secondLastName" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Birth Date</label>
+                                        <input id="gen_birthDate" class="form-control" type="datetime">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>SSN</label>
+                                        <input id="gen_SSNEnd" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Gender</label>
+                                        @Html.DropDownList("GenderId", null, "- Please select -", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Birth Place</label>
+                                        <input type="text" class="form-control" id="gen_birthPlace" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Marital Status</label>
+                                        @Html.DropDownList("MaritalStatusId", null, "- Please select -", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Ethnicity</label>
+                                        @Html.DropDownList("EthnicityId", null, "- Please select -", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Disability</label>
+                                        @Html.DropDownList("DisabilityId", null, "- Please select -", new { @class = "form-control" })
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label>Veteran Status</label>
+                                        @Html.ListBox("VeteranStatusId", (IEnumerable<SelectListItem>)ViewBag.VeteranStatusId, new { @class = "form-control" })
+
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                    *@
+                </div>
+                <!--End form layout-->
+
+
+            </div>
+
+            <div class="submit-section pb-2 mt-0">
+
+                <button id="btnSaveGeneralInfo" class="btn btn-primary submit-btn">Save</button>
+                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*</div>
+    </div>*@
+<script>
+
+    var currentYear = (new Date).getFullYear();
+    var currentMonth = (new Date).getMonth();
+    var currentDay = (new Date).getDate();
+
+    $('input[id=gen_birthDate]').datetimepicker({
+      
+            format: 'MM/DD/YYYY',
+
+
+            maxDate: new Date(currentYear, currentMonth, currentDay)
+       
+
+    });
+
+
+
+    $(document).ready(function () {
+        debugger;
+        $('#Gen_firstName,#gen_firstLastName,#gen_secondLastName')
+            .change(function () {
+                debugger;
+                var first = $('#Gen_firstName').val();
+                var firstLast = $('#gen_firstLastName').val();
+                var secondLast = $('#gen_secondLastName').val();
+                var shortName = first + ' ' + firstLast + ' ' + secondLast;
+                $('#gen_shortFullName').val(shortName);
+            });
+
+    });
+</script>

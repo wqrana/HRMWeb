@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.CFSECode
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal" style="padding:10px">
+        @Html.AntiForgeryToken()
+        @Html.Partial("_CreatePageTitleView")
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="control-label"> CFSE Code Name </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CFSECodeName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CFSECodeName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="control-label"> CFSE Code Description </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CFSECodeDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CFSECodeDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.UserInformationViewModel>
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblDashboardEmployee">
+           
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>                      
+                        EmployeeID
+                    </th>
+                    <th>Status</th>
+                   
+                    <th>
+                        Name
+                    </th>
+                                       
+                    <th>
+                        Company
+                    </th>
+                                       
+                    @*<th>
+                        Position
+                    </th>*@
+
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                
+                var empStatusBgClass = "bg-inverse-danger";
+                if (item.EmployeeStatusId == 1)
+                {
+                    empStatusBgClass = "bg-inverse-success";
+                }
+
+                else if (item.EmployeeStatusId == 2)
+                {
+                    empStatusBgClass = "bg-inverse-warning";
+                }
+
+
+                <tr>
+                    <td width="10%">
+                        <div class="pull-left dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                <a class="dropdown-item" href="/UserInformation/Details/@item.Id"><i class="fa fa-eye m-r-5"></i> Detail</a>
+                                <a class="dropdown-item" href="javascript:getEmployeeDashboardPopup(@item.Id);"><i class="la la-dashboard m-r-5"></i>Dashboard</a>                               
+                            </div>
+                        </div>
+                    </td>
+                   
+                    <td>
+                        <a href="/UserInformation/Details/@item.Id" title="View Detail"> @Html.DisplayFor(modelItem => item.EmployeeId)</a>
+                    </td>
+                    <td>
+                        <span class="badge @empStatusBgClass">@item.EmployeeStatusName</span>
+                    </td>
+                  
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortFullName)
+                    </td>
+
+                  
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>                    
+                   
+                    @*<td>
+                        
+                        @Html.DisplayFor(modelItem => item.Position.PositionName)
+
+
+                    </td>*@
+                                       
+
+                </tr>
+            }
+
+        </table>
+    </div>
+
+

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TimeAide.Web.Models.RoleTypeFormPrivilege>
+
+@{
+    ViewBag.Title = "List - Role Type Form Privilege";
+}
+
+<h2>List of RoleType Form Privilege</h2>
+
+<p>
+    @Html.ActionLink("Add Role Type Form Privilege", "Create")
+    @Html.ActionLink("Create Matrix", "CreateMatrix")
+    @Html.ActionLink("Create Matrix", "CreateMatrix2")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.Label("Form")
+        </th>
+        <th>
+            @Html.Label("Privilege")
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Company.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Form.FormName)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Privilege.PrivilegeName)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Company.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Client.ClientName)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+}
+
+</table>

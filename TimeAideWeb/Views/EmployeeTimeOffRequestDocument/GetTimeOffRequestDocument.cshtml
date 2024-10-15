@@ -1,0 +1,150 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeTimeOffRequestDocument>
+@{
+    var requestDocList = Model.Where(w => w.DocumentType == "Request");
+
+    var supportingDocList = Model.Where(w => w.DocumentType == "Supporting");
+
+}
+
+<div class="panel panel-default" style="margin-left:0px;min-height:200px;">
+    <div class="panel-heading" style="padding-left:5px">
+        Request Document(s)
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-condensed table-sm table-striped  table-nowrap mb-0" id="tblRequestDoc">
+                <thead>
+                    <tr>
+                        <th style="display:none;"></th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Submission Type
+                        </th>
+                        <th></th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in requestDocList)
+                {
+                    var timeOffDaysCondStr = "";
+
+                <tr>
+                    <td style="display:none;"> @Html.DisplayFor(m => item.Id)</td>
+                    <td>
+                        @Html.DisplayFor(m => item.DocumentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.SubmissionType)
+                    </td>
+                    <td>
+                        @if (item.SubmissionType == "Conditional Mandatory")
+                        {
+                            timeOffDaysCondStr = string.Format("> {0} day(s)", item.TimeoffDays);
+                        }
+                        @timeOffDaysCondStr
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Status)
+                    </td>
+                    <td width="10%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                @if (item.Status == "Submitted")
+                                {
+                                    <a href="javascript:openDownloadDocumentPopup(@item.Id);" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download</a>
+                                }
+                                @if (item.EmployeeTimeOffRequest.ChangeRequestStatusId == 1)
+                                {
+                                    <a href="javascript:openUploadDocumentPopup(@item.Id);" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" style="margin-left:0px;min-height:200px;">
+    <div class="panel-heading" style="padding-left:5px">
+        Supporting Document(s)
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-condensed table-sm table-striped  table-nowrap mb-0" id="tblSupportingDoc">
+                <thead>
+                    <tr>
+                        <th style="display:none;"></th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Submission Type
+                        </th>
+                        <th></th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in supportingDocList)
+                {
+                    var timeOffDaysCondStr = "";
+                <tr>
+                    <td style="display:none;"> @Html.DisplayFor(m => item.Id)</td>
+                    <td>
+                        @Html.DisplayFor(m => item.DocumentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.SubmissionType)
+                    </td>
+                    <td>
+                        @if (item.SubmissionType == "Conditional Mandatory")
+                        {
+                            timeOffDaysCondStr = string.Format("> {0} day(s)", item.TimeoffDays);
+                        }
+                        @timeOffDaysCondStr
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Status)
+                    </td>
+                    <td width="10%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                @if (item.Status == "Submitted")
+                                {
+                                    <a href="javascript:openDownloadDocumentPopup(@item.Id);" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Download</a>
+                                }
+                                @if (item.EmployeeTimeOffRequest.ChangeRequestStatusId == 1)
+                                {
+                                    <a href="javascript:openUploadDocumentPopup(@item.Id);" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<div class="submit-section pb-2 mt-0">
+    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+</div>
+<script>
+    $(document).ready(function () {
+     
+    });
+   
+    
+</script>

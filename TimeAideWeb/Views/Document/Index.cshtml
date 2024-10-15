@@ -1,0 +1,59 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Document>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsExpirable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SelfServiceDisplay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SelfServiceUpload)
+        </th>
+        <th>
+            Applies To
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsExpirable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SelfServiceDisplay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SelfServiceUpload)
+            </td>
+            <td>
+                @if (item.DocumentRequiredBy != null)
+                {
+                    @Html.DisplayFor(modelItem => item.DocumentRequiredBy.DocumentRequiredByName)
+                }
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

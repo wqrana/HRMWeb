@@ -1,0 +1,95 @@
+﻿@model TimeAide.Data.tReportWeek
+@if (Model != null)
+{
+    foreach (var item in Model.tPunchDate)
+    {
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                User ID
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.e_id)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                User Name
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.e_name)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                Punch Date
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.DTPunchDate)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                Punchs
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.sPunchSummary)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                Hours
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.sHoursSummary)
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                    Exceptions
+                </div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.sExceptions)
+                </div>
+            </div>*@
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                Reg Hrs
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.dblREGULAR)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                One&Half Hrs
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.dblONEHALF)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                Double Hrs
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.dblDOUBLE)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%;">
+                Meal
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.dblMEAL)
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-4" style="font-weight: bold;text-align: left;margin-left: 1%">
+                    Others
+                </div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.dblOTHERS)
+                </div>
+            </div>*@
+    }
+}

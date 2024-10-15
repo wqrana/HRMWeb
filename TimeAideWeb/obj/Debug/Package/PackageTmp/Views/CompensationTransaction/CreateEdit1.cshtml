@@ -1,0 +1,260 @@
+﻿<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div class="form-horizontal" style="padding:10px;">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Employee Supervisor - Add/Edit</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <input type="hidden" id="SelectedEmployeeSupervisorId" , value="@ViewBag.EmployeeSupervisorId" />
+    <div class="alert" style="display:none;" id="employeeSupervisorCreateEditAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="custom-header">Available Supervisor</div>
+        </div>
+        <div class="col-md-6">
+            <div class="custom-header">Supervisors</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <table id="searchTable" class="display compact" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="display: none">
+                        </th>
+                        <th>
+                            Emp. Id
+                        </th>
+                        <th style="width:40%">
+                            Name
+                        </th>
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Position
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TimeAide.Web.Models.UserInformation each in ViewBag.SupervisorListObject)
+                    {
+                        <tr>
+                            <td style="display: none">
+                                @Html.HiddenFor(modelItem => each.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.ShortFullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.Department.DepartmentName)
+                            </td>
+                            <td>
+                                @* @Html.DisplayFor(modelItem => item.SupervisoryLevel.SupervisoryLevelName)*@
+                                @Html.DisplayFor(modelItem => each.Position.PositionName)
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table id="selectedPropsTable" class="display compact" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="display:none">
+                        </th>
+                        <th>
+                            Emp. Id
+                        </th>
+                        <th style="width:40%">
+                            Name
+                        </th>
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Position
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TimeAide.Web.Models.EmployeeSupervisor each in ViewBag.SelectedSupervisorListObject)
+                    {
+                        <tr>
+                            <td style="display: none">
+                                @Html.HiddenFor(modelItem => each.SupervisorUser.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.SupervisorUser.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.SupervisorUser.ShortFullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.SupervisorUser.Department.DepartmentName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.SupervisorUser.Position.PositionName)
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="submit-section">
+        <button id="btnSaveemployeeSupervisors" class="btn btn-dark submit-btn">Select</button>
+        <button id="btnCancel" class="btn btn-dark  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var table1 = $('#searchTable').DataTable(
+            {
+                "pageLength": 25,
+                "columnDefs": [
+                    { "width": 0, "targets": 0, "bSortable": false }
+
+                ],
+                "fixedColumns": true
+            }
+        );
+        var table2 = $('#selectedPropsTable').DataTable(
+            {
+                "pageLength": 25,
+                "columnDefs": [
+                    { "width": 0, "targets": [0] },
+                    { "bSortable": false, targets: [0] }
+
+                ],
+                "fixedColumns": true
+            }
+        );
+        $("#searchTable").on('click', "tr", function () {
+            debugger
+            var row = table1.row(this);
+            var rowNode = row.node();
+            row.remove().draw();
+            table2.row.add(rowNode).draw();
+        });
+
+        $("#selectedPropsTable").on('click', "tr", function () {
+            debugger
+            //var row = table2.row($(this).parents('tr'));
+            var row = table2.row(this);
+            var rowNode = row.node();
+            row.remove().draw();
+
+            table1.row.add(rowNode).draw();
+        });
+        $("#btnSaveemployeeSupervisors").click(function () {
+            var selectedCredentialsStr = '';
+            $('#selectedPropsTable tr').each(function () {
+                var customerId = $(this).find("td:first").find("input").each(function () {
+                    //alert(this.value);
+                    selectedCredentialsStr += this.value + ',';
+                });
+            });
+            saveemployeeSupervisorData(selectedCredentialsStr);
+        })
+    });
+    function UnSelectAllSupervisors() {
+        debugger
+        $('#EmployeeSupervisorList').multiSelect('deselect_all');
+    }
+    function SelectAllSupervisors() {
+        debugger
+        $('#EmployeeSupervisorList').multiSelect('select_all');
+    }
+    function saveemployeeSupervisorData(selectedCredentialStr) {
+        debugger;
+        alertID = "#employeeSupervisorCreateEditAlert"
+        var userId = $("#SelectedEmployeeSupervisorId").val();
+        var model = { "id": userId, "selectedCredentialIds": selectedCredentialStr }
+        if (userId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/EmployeeSupervisor/CreateEdit1',
+                data: JSON.stringify(model),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    debugger;
+                    $("#tblEmploymentSupervisor tbody").empty();
+                    for (var i in data.newSupervisorList) {
+                        var eachNewSupervisor = data.newSupervisorList[i];
+                        $('#tblEmploymentSupervisor tr:last').after('<tr><td>' + eachNewSupervisor.FirstName + '</td><td>'
+                            + (eachNewSupervisor.FirstLastName || "") + " " + (eachNewSupervisor.SecondLastName || "")
+                            + '</td ><td>' + eachNewSupervisor.CompanyName || " " + '</td><td>' + eachNewSupervisor.DepartmentName || " "
+                            + '</td><td>' + eachNewSupervisor.EmployeeTypeName || " "
+                            + '</td><td>' + eachNewSupervisor.PositionName || " " + '</td></tr > ');
+                    }
+                    //if (data.status == "Success") {
+                    $("#divDdlPopup").modal("hide");
+                    //    LoadEmployeeSupervises(userId);
+                    //}
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger
+                    alert("error in saveemployeeSupervisorData");
+                }
+            });
+        }
+    }
+</script>
+<style>
+    .modal-md {
+        min-width: 20% !important;
+        margin: 0 auto;
+    }
+
+    .custom-header {
+        text-align: center;
+        padding: 3px;
+        background: #000;
+        color: #fff;
+    }
+
+    .ms-container {
+        width: 100%;
+    }
+
+    .ms-selectable {
+        width: 49% !important;
+    }
+
+    .ms-selection {
+        width: 49% !important;
+    }
+</style>
+
+<style>
+    .modal-dialog {
+        width: 80%;
+        max-width: 80% !important;
+    }
+</style>

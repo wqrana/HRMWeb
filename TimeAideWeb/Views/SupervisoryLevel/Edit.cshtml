@@ -1,0 +1,29 @@
+﻿@model TimeAide.Web.Models.SupervisoryLevel
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SupervisoryLevelName, htmlAttributes: new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.SupervisoryLevelName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupervisoryLevelName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SupervisoryLevelDescription, htmlAttributes: new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.SupervisoryLevelDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupervisoryLevelDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}

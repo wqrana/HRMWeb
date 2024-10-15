@@ -1,0 +1,149 @@
+﻿@model TimeAide.Web.Models.JobPostingDetail
+
+<div id="JobPostingCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Job Posting - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "JobPostingDetailId" })
+                        @Html.HiddenFor(m => m.SelectedLocationIds)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Position: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("PositionId", null, "Please select", new { @class = "form-control searchableDDL" })
+                            </div>
+                            <label class="col-md-2 col-form-label">Department: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("DepartmentId", null, "Please select", new { @class = "form-control searchableDDL" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Location: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @*@Html.DropDownList("LocationId", null, "Please select", new { @class = "form-control searchableDDL" })*@
+                                @*@Html.DropDownList("LocationId", null, "Please select", new { @class = "form-control searchableDDL" })*@
+                                @Html.ListBox("LocationId", (IEnumerable<SelectListItem>)ViewBag.LocationId, new { @class = "form-control" })
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">No of Vacancies: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.NoOfVacancies, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Experience: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.Experience, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Employment Type: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("EmploymentTypeId", null, "Please select", new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-2 col-form-label">Salary From: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.SalaryFrom, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Salary To: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.SalaryTo, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Post Date: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.JobPostingStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Expiry Date: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.JobPostingExpiringDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Job Status: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("JobPostingStatusId", null, "Please select", new { @class = "form-control" })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Home Address (Required)?: <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsHomeAddress", Model.IsHomeAddress ?? false)
+                            </div>
+                            <label class="col-md-5 col-form-label">Mailing Address (Required)?: <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsMailingAddress", Model.IsMailingAddress ?? false)
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Availability (Required)?: <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsAvailablity", Model.IsAvailablity ?? false)
+                            </div>
+                            <label class="col-md-5 col-form-label">Previous Employment(Required)?: <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsPreviousEmployment", Model.IsPreviousEmployment ?? false)
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Education (Required)?: <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsEducation", Model.IsEducation ?? false)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveJobPosting" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //popup master data
+        debugger;
+        //$("#SelectedLocationIds").val("1,2,3,4");
+        $('.searchableDDL').select2();        
+        $("#JobPostingStartDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#JobPostingExpiringDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        var selectedIds = $("#SelectedLocationIds").val().split(",");
+        $('#LocationId').val(selectedIds);
+        $('#LocationId').select2();
+        $("#btnSaveJobPosting").click(function () {
+            saveJobPostingData();
+        });
+
+
+    });
+
+</script>
+
+
+
+

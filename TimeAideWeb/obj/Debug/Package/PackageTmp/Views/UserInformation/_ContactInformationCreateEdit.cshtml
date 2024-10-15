@@ -1,0 +1,62 @@
+﻿
+<div id="contact_info_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Contact Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+                    <div class="card">
+                        <div class="card-body">
+                          
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Contact Medium <span class="text-danger">*</span></label>
+                                        @* @Html.DropDownList("ContactMediumId", null, "- Please select -", new { @class = "form-control" })*@
+                                        @*<select id="contactMedium" class="form-control">
+        <option>Phone</option>
+        <option>Email</option>
+        <option>Mobile</option>
+        <option>Fax</option>
+        <option>Other</option>
+        </select>*@
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Contact Type <span class="text-danger">*</span></label>
+                                        @*<select id="contactType" class="form-control">
+            <option>Offical</option>
+            <option>Personal</option>
+
+        </select>*@
+                                        @*@Html.DropDownList("ContactTypeId", null, "- Please select -", new { @class = "form-control" })*@
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Contact<span class="text-danger">*</span></label>
+                                        <input id="contactText" class="form-control" type="text">
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button id="btnContactInfoSave" class="btn btn-primary submit-btn">Save</button>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+

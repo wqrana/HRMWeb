@@ -1,0 +1,452 @@
+﻿<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        /*z-index: 1100;*/
+    }
+</style>
+<div class="form-horizontal" style="padding:10px;">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Members of Role  @ViewBag.RoleName</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <input type="hidden" id="SelectedRoleId" , value="@ViewBag.RoleId" />
+    <div class="alert" style="display:none;" id="RoleCreateEditAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    <div class="row" style="margin-bottom:20px">
+        <div class="col-md-6">
+            <div class="custom-header">Available Employees</div>
+        </div>
+        <div class="col-md-6">
+            <div class="custom-header">Members of Role @ViewBag.RoleName</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <table id="searchTable" class="display compact" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="display: none">
+                        </th>
+                        <th>
+                            Emp. Id
+                        </th>
+                        <th style="width:40%">
+                            Name
+                        </th>
+                        <th>Login Email</th>
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            Position
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TimeAide.Web.Models.UserInformation each in ViewBag.AvailableEmployees)
+                    {
+                        TimeAide.Web.Models.Employment employment = TimeAide.Services.EmploymentService.GetActiveEmployment(each.Id);
+                        TimeAide.Web.Models.EmploymentHistory employmentHistory = null;
+                        if (employment != null)
+                        {
+                            employmentHistory = TimeAide.Services.EmploymentHistoryService.GetActiveEmploymentHistory(each.Id, employment.Id);
+                        }
+                        <tr>
+                            <td style="display: none">
+                                @Html.HiddenFor(modelItem => each.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.ShortFullName)
+                            </td>
+                            <td>
+                                @if (TimeAide.Web.Extensions.UserManagmentService.IsUserRegistered(each))
+                                {
+                                    <a href="mailto:@each.ActiveUserContactInformation.LoginEmail">@each.ActiveUserContactInformation.LoginEmail</a>
+                                }
+                                else
+                                {
+                                    <a a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@each.Id,'Account');" data-id="@each.Id">Create Login</a>
+                                }
+                            </td>
+                            <td>
+                                @if (employmentHistory != null && employmentHistory.Department != null)
+                                {
+                                    <span>@employmentHistory.Department.DepartmentName</span>
+                                }
+                            </td>
+                            <td>
+                                @if (employmentHistory != null && employmentHistory.Position != null)
+                                {
+                                    <span>@employmentHistory.Position.PositionName</span>
+                                }
+                            </td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table id="selectedPropsTable" class="display compact" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="display:none">
+                        </th>
+                        <th>
+                            Emp. Id
+                        </th>
+                        <th style="width:40%">
+                            Name
+                        </th>
+                        <th>Login Email</th>
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            Position
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TimeAide.Web.Models.UserInformationRole each in ViewBag.SelectedRoleMembers)
+                    {
+                        TimeAide.Web.Models.Employment employment = TimeAide.Services.EmploymentService.GetActiveEmployment(each.Id);
+                        TimeAide.Web.Models.EmploymentHistory employmentHistory = null;
+                        if (employment != null)
+                        {
+                            employmentHistory = TimeAide.Services.EmploymentHistoryService.GetActiveEmploymentHistory(each.Id, employment.Id);
+                        }
+                        <tr>
+                            <td style="display: none">
+                                @Html.HiddenFor(modelItem => each.UserInformation.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.UserInformation.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => each.UserInformation.ShortFullName)
+                            </td>
+                            <td>
+                                @if (TimeAide.Web.Extensions.UserManagmentService.IsUserRegistered(each.UserInformation))
+                                {
+                                    <a href="mailto:@each.UserInformation.ActiveUserContactInformation.LoginEmail">@each.UserInformation.ActiveUserContactInformation.LoginEmail</a>
+                                }
+                                else
+                                {
+                                    <a a href="javascript:void(0);" id="anchorUserContactInformation" onclick="fnAddEmployeeSystemAccess(@each.UserInformation.Id,'Account');" data-id="@each.Id">Create Login</a>
+                                }
+                            </td>
+                            <td>
+                                @if (employmentHistory != null && employmentHistory.Department != null)
+                                {
+                                    <span>@employmentHistory.Department.DepartmentName</span>
+                                }
+                            </td>
+                            <td>
+                                @if (employmentHistory != null && employmentHistory.Position != null)
+                                {
+                                    <span>@employmentHistory.Position.PositionName</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="submit-section">
+        <button id="btnSaveRoleMembers" class="btn btn-primary submit-btn">Save</button>
+        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+    </div>
+</div>
+<style>
+    table.dataTable tbody tr.selected {
+        background-color: #b0bed9
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 8px 10px
+    }
+
+    table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {
+        border-top: 1px solid #ddd
+    }
+
+    table.dataTable.row-border tbody tr:first-child th, table.dataTable.row-border tbody tr:first-child td, table.dataTable.display tbody tr:first-child th, table.dataTable.display tbody tr:first-child td {
+        border-top: none
+    }
+
+    table.dataTable.cell-border tbody th, table.dataTable.cell-border tbody td {
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd
+    }
+
+    table.dataTable.cell-border tbody tr th:first-child, table.dataTable.cell-border tbody tr td:first-child {
+        border-left: 1px solid #ddd
+    }
+
+    table.dataTable.cell-border tbody tr:first-child th, table.dataTable.cell-border tbody tr:first-child td {
+        border-top: none
+    }
+
+    table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+        background-color: #f9f9f9
+    }
+
+        table.dataTable.stripe tbody tr.odd.selected, table.dataTable.display tbody tr.odd.selected {
+            background-color: #acbad4
+        }
+
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+        background-color: #f6f6f6
+    }
+
+        table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:hover.selected {
+            background-color: #aab7d1
+        }
+
+    table.dataTable.order-column tbody tr > .sorting_1, table.dataTable.order-column tbody tr > .sorting_2, table.dataTable.order-column tbody tr > .sorting_3, table.dataTable.display tbody tr > .sorting_1, table.dataTable.display tbody tr > .sorting_2, table.dataTable.display tbody tr > .sorting_3 {
+        background-color: #fafafa
+    }
+
+    table.dataTable.order-column tbody tr.selected > .sorting_1, table.dataTable.order-column tbody tr.selected > .sorting_2, table.dataTable.order-column tbody tr.selected > .sorting_3, table.dataTable.display tbody tr.selected > .sorting_1, table.dataTable.display tbody tr.selected > .sorting_2, table.dataTable.display tbody tr.selected > .sorting_3 {
+        background-color: #acbad5
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
+        background-color: #f1f1f1
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd > .sorting_2 {
+        background-color: #f3f3f3
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_3, table.dataTable.order-column.stripe tbody tr.odd > .sorting_3 {
+        background-color: whitesmoke
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_1 {
+        background-color: #a6b4cd
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_2 {
+        background-color: #a8b5cf
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_3, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_3 {
+        background-color: #a9b7d1
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column.stripe tbody tr.even > .sorting_1 {
+        background-color: #fafafa
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_2, table.dataTable.order-column.stripe tbody tr.even > .sorting_2 {
+        background-color: #fcfcfc
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_3, table.dataTable.order-column.stripe tbody tr.even > .sorting_3 {
+        background-color: #fefefe
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_1 {
+        background-color: #acbad5
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_2 {
+        background-color: #aebcd6
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_3, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_3 {
+        background-color: #afbdd8
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_1, table.dataTable.order-column.hover tbody tr:hover > .sorting_1 {
+        background-color: #eaeaea
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_2, table.dataTable.order-column.hover tbody tr:hover > .sorting_2 {
+        background-color: #ececec
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_3, table.dataTable.order-column.hover tbody tr:hover > .sorting_3 {
+        background-color: #efefef
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_1, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_1 {
+        background-color: #a2aec7
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_2, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_2 {
+        background-color: #a3b0c9
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_3, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_3 {
+        background-color: #a5b2cb
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #111
+    }
+</style>
+<style>
+    .custom-header {
+        text-align: center;
+        padding: 3px;
+        background: #000;
+        color: #fff;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var table1 = $('#searchTable').DataTable(
+            {
+                "pageLength": 25,
+                "columnDefs": [
+                    { "width": 0, "targets": 0, "bSortable": false }
+
+                ],
+                "fixedColumns": true
+            }
+        );
+        var table2 = $('#selectedPropsTable').DataTable(
+            {
+                "pageLength": 25,
+                "columnDefs": [
+                    { "width": 0, "targets": [0] },
+                    { "bSortable": false, targets: [0] }
+
+                ],
+                "fixedColumns": true
+            }
+        );
+        $("#searchTable").on('dblclick', "tr", function () {
+            debugger
+            var row = table1.row(this);
+            var rowNode = row.node();
+            row.remove().draw();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table1.$('tr.selected').removeClass('selected');
+                table2.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            table2.row.add(rowNode).draw();
+        });
+        $("#searchTable").on('click', "tr", function () {
+            debugger
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table1.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        $("#selectedPropsTable").on('click', "tr", function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table2.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+        $("#selectedPropsTable").on('dblclick', "tr", function () {
+            debugger
+            var row = table2.row(this);
+            var rowNode = row.node();
+            row.remove().draw();
+            //if ($(this).hasClass('selected')) {
+            //    $(this).removeClass('selected');
+            //}
+            //else {
+            //    table1.$('tr.selected').removeClass('selected');
+            //    table2.$('tr.selected').removeClass('selected');
+            //    $(this).addClass('selected');
+            //}
+            table1.row.add(rowNode).draw();
+        });
+
+        $("#btnSaveRoleMembers").click(function () {
+            debugger
+            var selectedMembersStr = '';
+            $('#selectedPropsTable tr').each(function () {
+                var customerId = $(this).find("td:first").find("input").each(function () {
+                    //alert(this.value);
+                    selectedMembersStr += this.value + ',';
+                });
+            });
+            saveRoleMembers(selectedMembersStr);
+        })
+    });
+    function saveRoleMembers(selectedMembersStr) {
+        debugger;
+        alertID = "#RoleCreateEditAlert"
+        var roleId = $("#SelectedRoleId").val();
+        if (roleId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/Role/AddRemoveMembers',
+                data: {
+                    "roleId": roleId,
+                    "selectedMemberIds": selectedMembersStr
+                },
+
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#myModalNew").modal("hide");
+                        //LoadSupervisedEmployees(role);
+                        toastr.success('Changes updated successfully.', "Success!");
+                    }
+                },
+                error: function () {
+                    //alert("error in saveemployeeSupervisorData");
+                    toastr.error("There was an error in uploading information", "Error!");
+                }
+            });
+        }
+    }
+    function fnAddEmployeeSystemAccess(id, viewType) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        var model = {
+            "id": id,
+            "viewType": viewType,
+        }
+        $.ajax({
+            type: "GET",
+            url: '/UserInformation/EmployeeSystemAccess',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": id, "viewType": viewType },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $("#userRegisterModal").css('z-index', '1030 !important');
+                $('#userRegisterModalContent').html(data);
+                $('#userRegisterModal').modal(options);
+                $('#userRegisterModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

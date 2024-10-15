@@ -1,0 +1,116 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.AuditLogListViewModel>
+@{
+}
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblAuditLogList">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    Date/Time
+                </th>
+                <th>
+                    Emp. Id
+                </th>
+                <th>
+                    Emp. Name
+                </th>
+                <th>Action</th>
+                <th>
+                    Record Type
+                </th>
+                <th>
+                    Field Name
+                </th>
+                <th>Old Value</th>
+                <th>New Value</th>
+                <th> Sup. Id</th>
+                <th> Sup. Name</th>
+                @*<th>Remarks</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td>
+                        @{ 
+                            var logDte = item.CreatedDate.ToString("MM/dd/yyyy hh:mm:ss.fff");
+                        }
+                        @Html.DisplayFor(modelItem => logDte)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActionType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecordType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FieldName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OldValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupervisorEmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupervisorName)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+        @*@Html.Partial("_IndexPageFooterView")*@
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Bootstrap date-picker for datetime field
+        $('#tblAuditLogList').dataTable({
+            "searching": true,
+            "order": [[0, 'desc']]
+        });
+    });
+
+    $('*[id*=anchorAuditLogDetail]').click(function () {
+        debugger;
+        var $buttonClicked = $(this);
+        var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/AuditLog/AuditLogDetail',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    });
+</script>
+
+
+
+

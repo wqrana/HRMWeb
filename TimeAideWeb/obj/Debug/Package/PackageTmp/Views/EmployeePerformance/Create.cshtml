@@ -1,0 +1,174 @@
+﻿@model TimeAide.Web.Models.EmployeePerformance
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+    
+</style>
+<div id="employeePerformanceCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Performance - Create</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeePerformanceCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <!--<div class="panel panel-default" style="width:49%;margin-left:5px">-->
+                            <div class="panel-heading" style="padding-left:10px">General</div>
+                            <div class="panel-body mt-2">
+                                @Html.HiddenFor(m => m.Id, new { id = "EmployeePerformanceId" })
+
+                                <div class="form-group row">
+
+                                    <label class="col-md-4 col-form-label" style="margin-left:5px">
+                                        Date:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-7">
+                                        @Html.EditorFor(model => model.ReviewDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Review By: <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-7">
+                                        @Html.DropDownList("SupervisorId", null, "Please select", new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Description: <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            @Html.DropDownList("PerformanceDescriptionId", null, "Please select", new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <!-- <div class="panel panel-default" style="width:49%;margin-left:5px">-->
+                            <div class="panel-heading" style="padding-left:10px">Result</div>
+                            <div class="panel-body mt-2">
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Result:
+                                    </label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            @Html.DropDownList("PerformanceResultId", null, "Please select", new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Action Taken:
+                                    </label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            @Html.DropDownList("ActionTakenId", null, "Please select", new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Expiry Date:
+                                    </label>
+                                    <div class="col-md-7">
+                                        @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Summary:
+                                    </label>
+                                    <div class="col-md-7">
+                                        @Html.EditorFor(model => model.ReviewSummary, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Notes:
+                                    </label>
+                                    <div class="col-md-7">
+                                        @Html.TextAreaFor(model => model.ReviewNote, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnSaveEmployeePerformance" class="btn btn-primary submit-btn">Save</button>
+                        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+     
+        //$("#ReviewDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        //$("#ExpiryDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+
+        $("#btnSaveEmployeePerformance").click(function () {
+            saveUserPerformanceData();
+        })               
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        }); 
+       
+
+    });
+  
+</script>
+

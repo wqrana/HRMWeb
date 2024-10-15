@@ -1,0 +1,197 @@
+﻿@model IEnumerable<TimeAide.Web.Models.AuditLogDetail>
+<div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+    <h4 style="display: inline;">Audit Log Detail</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+
+</div>
+
+<br />
+<div>
+    <div class="table-responsive">
+        <a href="javascript:void(0);" style="margin-left:20px" id="anchorChangeHistoryDownload" onclick="DownloadChangeHistoryExcel()"><i class="fa fa-file-excel-o"></i> Export to Excel</a>
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexListChangeHistory">
+            <thead>
+                <tr>
+                    <th>
+                        Column Name
+                    </th>
+                    <th>
+                        Old Value
+                    </th>
+                    <th>
+                        New Value
+                    </th>
+                    <th>
+                        Supervisor
+                    </th>
+                    <th>
+                        Activity Date/Time
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.ReferenceObject != null)
+                {
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @ViewBag.UserInformation.FullName
+                    </td>
+                    <td>
+                        @ViewBag.ReferenceObject.CreatedDate
+                    </td>
+                </tr>
+                }
+                @foreach (var item in Model)
+                {
+                <tr>
+                    @if(item.ColumnName=="nReviewSupervisorID")
+                        {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ColumnName)
+                    </td>
+                    <td>
+                        @TimeAide.Services.UserInformationService.GetTimesheetApprovalStatus(item.OldValue)
+                    </td>
+                    <td>
+                        @TimeAide.Services.UserInformationService.GetTimesheetApprovalStatus(item.NewValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AuditLog.CreatedByUser.FullName)
+                    </td>
+                    <td>
+                        @item.CreatedDate
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.AuditLog.Remarks))
+                            {
+                        <a href="javascript:;" onclick="fnViewRemars('@item.AuditLog.Remarks');">View Remars</a>
+                            }
+                    </td>
+                        }
+                        else
+                        {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ColumnName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OldValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AuditLog.CreatedByUser.FullName)
+                    </td>
+                    <td>
+                        @item.CreatedDate
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.AuditLog.Remarks))
+                            {
+                        <a href="javascript:;" onclick="fnViewRemars('@item.AuditLog.Remarks');">View Remars</a>
+                            }
+                    </td>
+                        }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!--<div class="submit-section">
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>-->
+    @*<button onclick="$(this).closest('.modal').modal('hide'); return false;">Cancel</button>*@
+    <!--</div>-->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="remarksModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="max-width:50%;width:48%">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="padding:0px;display:block">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h5 class="modal-title">Remarks</h5>
+                    <button type="button" class="close" onclick="CloseRemarksPopup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="divRemarksModalCenterContent">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+<style>
+    .modal-dialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 90% !important;
+        width: 90% !important;
+    }
+</style>
+<script src="~/Scripts/jquery.table2excel.js"></script>
+<script type="text/javascript">
+    function fnViewRemars(remarks) {
+        var options = { "backdrop": "static", keyboard: true };
+        debugger
+        $('#divRemarksModalCenterContent').html(remarks);
+        $('#remarksModalCenter').modal(options);
+        $('#remarksModalCenter').modal('show');
+    }
+    function CloseRemarksPopup() {
+        $('#remarksModalCenter').modal('hide');
+    }
+    function DownloadChangeHistoryExcel() {
+        debugger
+        var table = $('#tblIndexListChangeHistory');
+        if (table && table.length) {
+            var preserveColors = (table.hasClass('table2excel_with_colors') ? true : false);
+            $(table).table2excel({
+                exclude: ".noExl",
+                name: "Excel Document Name",
+                filename: "ChangeHistory_"+ "@ViewBag.TableName" +"_("+"@ViewBag.RefrenceId"+")"+ new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xls",
+                fileext: ".xls",
+                exclude_img: true,
+                exclude_links: true,
+                exclude_inputs: true,
+                preserveColors: preserveColors
+            });
+        }
+    }
+
+</script>
+
+

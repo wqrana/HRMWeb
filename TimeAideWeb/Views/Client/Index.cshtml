@@ -1,0 +1,157 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Client>
+
+@{
+    ViewBag.Title = "Clients";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .showSection {
+        display: block;
+    }
+
+    .hideSection {
+        display: none;
+    }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Clients</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">User Management</li>
+                <li class="breadcrumb-item active">Client</li>
+
+            </ul>
+        </div>
+
+
+        @if ((bool)(ViewBag.AllowAdd ?? false))
+        {
+
+            <div class="col-auto float-right ml-auto">
+                @*@Html.ActionLink("Add", "Create", null, new { @class = "btn add-btn" })*@
+                <!-- <a href="/Client/Create" class="btn add-btn"><i class="fa fa-plus"></i> Add Client</a>-->
+                <a href="#CreateEditPayroll_cmp_modal" onclick="javascript:CreateOrEdit(this);" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn add-btn ActionLink" data-id='0'><i class="fa fa-plus"></i> Add Client</a>
+            </div>
+        }
+    </div>
+</div>
+<!-- /Page Header -->
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblClient">
+            <!--<table class="datatable table table-striped table-nowrap mb-0">-->
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ClientName)
+                    </th>
+                    <th>
+
+                        @Html.DisplayNameFor(model => model.PayrollName)
+                    </th>
+                    <th>
+                        Payroll Country
+                    </th>
+                    <th>
+                        Payroll State
+                    </th>
+                    <th>
+                        Payroll City
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fax)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.WebSite)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ContactName)
+                    </th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-left">
+                        @*@if ((bool)(ViewBag.AllowEdit ?? false))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                            }
+                            @if ((bool)(ViewBag.AllowView ?? false))
+                            {
+                                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                            }
+                            @if ((bool)(ViewBag.AllowDelete ?? false))
+                            {
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            }*@
+
+
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                <a class="dropdown-item" onclick="javascript:CreateOrEdit(this);" href="#CreateEditPayroll_cmp_modal" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                <a class="dropdown-item" href="#" onclick="javascript:ClientDetails(@item.Id);"><i class="fa fa-eye m-r-5"></i> Detail</a>
+                                <a class="dropdown-item" href="#" onclick="javascript:ClientDelete(@item.Id);"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <!--<a href="/Client/Details/@item.Id">@item.Id</a>-->
+                        <a href="#" onclick="javascript:ClientDetails(@item.Id);">@item.Id</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PayrollName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PayrollCountry.CountryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PayrollState.StateName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PayrollCity.CityName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fax)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WebSite)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactName)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<div id="clientPopupView"></div>
+@{Html.RenderAction("CreateEditPop");}
+<script src="~/Scripts/Client/clientMain-js.js?version=1.0"></script>

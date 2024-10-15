@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.ApplicantReferenceSource
+
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ReferenceSourceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReferenceSourceName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+   
+</div>
+@Html.Partial("_DeleteViewFooter")

@@ -1,0 +1,239 @@
+﻿@model TimeAide.Web.Models.TransactionConfiguration
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px;">
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.ConfigurationName, "Name", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ConfigurationName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ConfigurationName, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.IsMoneyTrans, "Money Value Trans?", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.IsMoneyTrans, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.IsMoneyTrans, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.ConfigurationCode, "Trans. Code", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ConfigurationCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ConfigurationCode, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.IsMoneyAmountFixed, "Money Amount Fixed?", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.IsMoneyAmountFixed, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.IsMoneyAmountFixed, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.ConfigurationDescription, "Description", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ConfigurationDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ConfigurationDescription, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.MoneyAmount, "Default Money Amount", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.MoneyAmount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MoneyAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.ProcessCodeId, "Process Code", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.ProcessCode>("ProcessCodeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.ProcessCodeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.PrimaryTransactionId, "Primary Transaction", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.PrimaryTransaction>("PrimaryTransactionId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.PrimaryTransactionId, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.PayTransaction, "Pay Transaction", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.PayTransaction, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PayTransaction, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.IsAbsent, "Count as Absent", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.IsAbsent)
+            @Html.ValidationMessageFor(model => model.IsAbsent, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.PayRateMultiplierId, "Rate Multiplier", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4" style="padding-right:unset">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.PayRateMultiplier>("PayRateMultiplierId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.PayRateMultiplierId, "", new { @class = "text-danger" })
+        </div>
+        @*<div class="col-md-1" style="padding-left:unset">
+            @Html.EditorFor(model => model.PayRateMultiplierId, new { htmlAttributes = new { @class = "form-control" } })
+        </div>*@
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.AccrualTypeId, "Accrual Type", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.AccrualType>("AccrualTypeId", null,null,false,null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.AccrualTypeId, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.PayRateOffset, "Pay Offset", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.PayRateOffset, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PayRateOffset, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.AttendanceRevision, "Attendance Revision", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-1">
+            @Html.EditorFor(model => model.AttendanceRevision)
+            @Html.ValidationMessageFor(model => model.AttendanceRevision, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.AttendanceRevisionLetter, "Attendance Letters", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-1">
+            @Html.EditorFor(model => model.AttendanceRevisionLetter)
+            @Html.ValidationMessageFor(model => model.AttendanceRevisionLetter, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-4">
+            @Html.Label("Pay = (Rate Multiplier) * (Pay Rate) + Offset", htmlAttributes: new { @class = "control-label" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.TardinessRevision, "Tardiness Revision", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-1">
+            @Html.EditorFor(model => model.TardinessRevision)
+            @Html.ValidationMessageFor(model => model.TardinessRevision, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.TardinessRevisionLetter, "Tardiness Letters", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-1">
+            @Html.EditorFor(model => model.TardinessRevisionLetter)
+            @Html.ValidationMessageFor(model => model.TardinessRevisionLetter, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.VacationAccrualTypeId, "Count for Vacation Accrual", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.VacationAccrualType>("VacationAccrualTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.VacationAccrualTypeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.SickAccrualTypeId, "Count for Sick Accrual", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.SickAccrualType>("SickAccrualTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.SickAccrualTypeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.CompensationAccrualTypeId, "Count for Compensation Accruals", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-4">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationAccrualType>("CompensationAccrualTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.CompensationAccrualTypeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+</div>
+}
+
+<style>
+    .modal-dialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 70% !important;
+        width: 70% !important;
+    }
+    .form-control {
+       height: unset
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        SetViewIsMoneyTrans();
+        $('#IsMoneyTrans').change(function () {
+            SetViewIsMoneyTrans();
+        });
+
+        SetViewPayTransaction();
+        $('#PayTransaction').change(function () {
+            SetViewPayTransaction();
+        });
+
+        
+    });
+    function SetViewIsMoneyTrans(isUsedBySystem) {
+        if ($('#IsMoneyTrans').is(':checked')) {
+            $("#IsMoneyAmountFixed").removeAttr("disabled");
+            $("#MoneyAmount").removeAttr("disabled");
+        }
+        else {
+            $("#IsMoneyAmountFixed").attr("disabled", "disabled");
+            $("#MoneyAmount").attr("disabled", "disabled");
+        }
+    }
+    function SetViewPayTransaction(isUsedBySystem) {
+        if ($('#PayTransaction').is(':checked')) {
+            $("#PayRateMultiplierId").removeAttr("disabled");
+            $("#PayRateOffset").removeAttr("disabled");
+        }
+        else {
+            $("#PayRateMultiplierId").attr("disabled", "disabled");
+            $("#PayRateOffset").attr("disabled", "disabled");
+        }
+    }
+</script>

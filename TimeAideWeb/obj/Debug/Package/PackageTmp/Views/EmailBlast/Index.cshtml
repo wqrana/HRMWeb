@@ -1,0 +1,186 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmailBlast>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Email Template
+        </th>
+        <th>
+            Recipients
+        </th>
+        <th>
+            Sent on
+        </th>
+        <th>
+            Is Draft
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailTemplate.EmailSubject)
+            </td>
+            <th>
+                <div class="dropdown dropdown-action">
+                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                        <a href="javascript:fnShowEmailBlastDetail(@item.Id);" class="dropdown-item"><i class="fa fa- m-r-5"></i> Show Detail</a>
+                    </div>
+                </div>
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.SentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSavedAsDraft)
+            </td>
+            <td>
+                <div class="dropdown dropdown-action">
+                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+
+                        @if ((bool)(ViewBag.AllowEdit ?? false))
+                        {
+                            if (item.IsSavedAsDraft)
+                            {
+                                if ((bool)(ViewBag.AllowEdit ?? false))
+                                {
+                                    <a href="javascript:fnEdit(@item.Id,'Edit');" class="dropdown-item"><i class="fa fa-history m-r-5"></i>Edit</a>
+                                }
+                                <a href="javascript:fnViewSendEmailBlast(@item.Id);" class="dropdown-item"><i class="fa fa-history m-r-5"></i>Send</a>
+                                if ((bool)(ViewBag.AllowDelete ?? false))
+                                {
+                                    <a href="javascript:void(0);" id="anchorDelete" class="dropdown-item" data-id="@item.Id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                }
+                            }
+                            else
+                            {
+                                <a href="javascript:fnViewSendEmailBlast(@item.Id);" class="dropdown-item"><i class="fa fa-history m-r-5"></i>Resend</a>
+
+                                <a href="javascript:fnEdit(@item.Id,'Clone');" class="dropdown-item"><i class="fa fa-history m-r-5"></i>Clone</a>
+                            }
+                        }
+                        @if ((bool)(ViewBag.AllowView ?? false))
+                        {
+                            <a href="javascript:void(0);" id="anchorDetail" class="dropdown-item" data-id="@item.Id"><i class="fa fa-eye m-r-5"></i> Detail</a>
+                        }
+
+                        @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                        {
+                            @*<a href="javascript:void(0);" id="anchorChangeHistory" class="dropdown-item" data-id="@item.Id"><i class="fa fa-history"></i> Change History</a>*@
+                            <a href="javascript:void(0);" onclick="ShowEmailBlastChangeHistory(@item.Id)" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                        }
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<div id='EmailBlastDetail_modal' class='modal'>
+    <div id='myModaldialog' class="modal-dialog" style="width:80%;min-width:80%">
+        <div class="modal-content">
+            <div id='EmailBlastDetailContent'></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function fnShowEmailBlastDetail(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmailBlast/IndexEmailBlastDetail',
+            contentType: "application/json; charset=utf-8",
+            data: { "emailBlastId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#EmailBlastDetailContent').html(data);
+                $('#EmailBlastDetail_modal').modal(options);
+                $('#EmailBlastDetail_modal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnViewSendEmailBlast(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+        type: "GET",
+            url: '/EmailBlast/SendEmailBlastDetails',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#EmailBlastDetailContent').html(data);
+            $('#EmailBlastDetail_modal').modal(options);
+            $('#EmailBlastDetail_modal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+        });
+    }
+    function fnEdit(id,editType) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmailBlast/EditEmailBlast',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": id, "editType": editType },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#EmailBlastDetailContent').html(data);
+                $('#EmailBlastDetail_modal').modal(options);
+                $('#EmailBlastDetail_modal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function ShowEmailBlastChangeHistory(recordId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmailBlast/EmailBlastChangeHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "refrenceId": recordId },
+            datatype: "json",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    
+</script>

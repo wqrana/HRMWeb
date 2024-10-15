@@ -1,0 +1,121 @@
+﻿@model TimeAide.Web.Models.EmployeeAppraisal
+
+<div id="EmployeeAppraisalCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Employee Appraisal - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeAppraisalCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+
+
+                        @Html.Hidden("EmployeeAppraisalId", Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Review Date: <span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.AppraisalReviewDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Due Date:</label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.AppraisalDueDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Next Appraisal:</label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.NextAppraisalDueDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"> Template:<span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                <div class="input-group">
+                                    @Html.DropDownList("EmployeeAppraisalTemplateId", null, "Click Icon for Select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button id="btnOpenAppraisalTemplatePopUp" class="btn btn-secondary" type="button"><i class="fa fa-pencil"></i></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <label class="col-md-2 col-form-label">Evaluation From:<span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.EvaluationStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Evaluation To:<span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.EvaluationEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Position:<span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.DropDownList("EmployeeAppraisalPositionId", null, "Please select", new { @class = "form-control" })
+                            </div>
+                            <div style="display:none;">
+                                <label class="col-md-2 col-form-label">Company:<span class="text-danger">*</span></label>
+                                <div class="col-md-2">
+                                    @Html.DropDownList("EmployeeAppraisalCompanyID", null, "Please select", new { @class = "form-control" })
+                                </div>
+                             </div>
+                                <label class="col-md-2 col-form-label">Department:<span class="text-danger">*</span></label>
+                                <div class="col-md-2">
+                                    @Html.DropDownList("EmployeeAppraisalDepartmentId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                            </div>
+
+                        </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEmployeeAppraisal" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#EmployeeAppraisalTemplateId").attr("disabled", true);
+
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+
+        $("#btnOpenAppraisalTemplatePopUp").click(function () {
+            debugger;
+            var positionId = $('#EmployeeAppraisalPositionId').val();
+            if (positionId == 0 || positionId == null) {
+                showAlertAutoHide('#employeeAppraisalCreateEditAlert', 'Error', "Please Select the Position");
+                return;
+            }
+            openAppraisalTemplateSelectionPopUp(positionId);
+        });
+
+        $("#btnSaveEmployeeAppraisal").click(function () {
+            saveEmployeeAppraisalData();
+        });
+
+
+    });
+
+</script>
+
+

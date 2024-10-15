@@ -1,0 +1,289 @@
+﻿@model TimeAide.Web.ViewModel.CityListView
+@{
+    Layout = "~/Views/Shared/_LayoutMasterData.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col-sm-12">
+                <h3 class="page-title">@ViewBag.LabelPlural</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">Master Data</li>
+                    <li class="breadcrumb-item active">@ViewBag.Label</li>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-horizontal" style="padding:10px">
+
+        <div class="form-group row">
+            <div class="col-md-1">
+                @Html.LabelFor(model => model.IndexCountryId, "Country ", htmlAttributes: new { @class = "control-label",Style= "margin-top: 10px;" })
+            </div>
+            <div class="col-md-2">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("IndexCountryId", null, Model.IndexCountryId, false, null, htmlAttributes: new { @class = "form-control" }))
+            </div>
+            <div class="col-md-1">
+                @Html.LabelFor(model => model.IndexStateId, "State ", htmlAttributes: new { @class = "control-label", Style = "margin-top: 10px;" })
+            </div>
+            <div class="col-md-2">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.State>("IndexStateId", null, Model.IndexStateId, false, Model.IndexCountryId, htmlAttributes: new { @class = "form-control" }))
+            </div>
+            <div class="col-md-4">
+                <div class="col-auto float-right ml-auto">
+                    <button type="submit" class="btn btn-primary submit-btn" style="height: 38px;min-width: 150px;margin-right: 6px;padding:0px">Search</button>
+                    @if ((bool)(ViewBag.AllowAdd ?? false))
+                    {
+                        <a href="javascript:void(0);" class="anchorAdd btn add-btn">+ Add @ViewBag.Label</a>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <br />
+        <br />
+        <div class="form-group row">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexList">
+                    <thead>
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                City
+                            </th>
+                            <th>
+                                City Code
+                            </th>
+                            <th>
+                                State
+                            </th>
+                            <th>
+                                Country
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Cities)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CityName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CityCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State.StateName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State.Country.CountryName)
+                                </td>
+                                <td>
+                                    @Html.Partial("_IndexPageButtonsView", item)
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <footer>
+        <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+    </footer>
+}
+<script type="text/javascript">
+
+    function Search() {
+        var model = {
+        }
+        debugger
+        $('input, select, textarea').each(
+            function (index) {
+                var input = $(this);
+                model[input.attr('name')] = input.val();
+            }
+        );
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+            type: "POST",
+            url: '/@ViewBag.FormName/IndexByState',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(model),
+            datatype: "json",
+            success: function (data) {
+                //location.reload(true);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    $('*[id*=anchorDetail]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Details',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+    $('*[id*=anchorEdit]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Edit',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+   $('*[id*=anchorDelete]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Delete',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+$(".anchorAdd").click(function () {
+    debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Create',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+</script>
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#IndexCountryId').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#IndexStateId', null);
+        })
+    });
+
+    function LoadStateDropdown(contryId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/State/AjaxGetCountryState',
+            data: { 'countryId': contryId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+
+
+</script>

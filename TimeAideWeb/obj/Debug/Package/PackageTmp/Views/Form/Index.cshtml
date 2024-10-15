@@ -1,0 +1,44 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Form>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.Label("Form Name")
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Url)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Label)
+        </th>
+        <th>
+            @Html.Label("Module")
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FormName)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Module.Code)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

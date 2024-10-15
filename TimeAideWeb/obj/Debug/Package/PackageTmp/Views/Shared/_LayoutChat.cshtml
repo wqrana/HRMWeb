@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TimeAide</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/content/Themes/assets/img/favicon.png">
+    @Styles.Render("~/content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-theme")
+    @Scripts.Render("~/bundles/3rdParty")
+    <script src="~/signalr/hubs"></script>
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header Menu -->
+        @Html.Partial("_HeaderBar")
+        <!-- Sidebar -->
+        @if (Request.IsAuthenticated)
+        {
+            @Html.Partial("_SideBarChat")
+        }
+        <!-- Page Wrapper -->
+        <div class="page-wrapper">
+            <!-- Page Content -->
+            <div class="content container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <div id='myModal' class='modal'>
+        <div id='myModaldialog' class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+
+    <div id='divDdlPopup' class='modal control'>
+        <div class="modal-dialog" id="divDdlPopupdialog">
+            <div class="modal-content">
+                <div id='divDdlPopupContent'></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="divAdhocReportPopup">
+
+    </div>
+</body>
+</html>

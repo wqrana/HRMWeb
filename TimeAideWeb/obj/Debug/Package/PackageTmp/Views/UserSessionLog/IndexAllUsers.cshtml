@@ -1,0 +1,62 @@
+﻿@model TimeAide.Web.ViewModel.UserSessionLogViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutMasterData.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">All Active Users</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Settings / Application Access </li>
+                <li class="breadcrumb-item active">All Active Users</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p><a id="displayActiveUsers" href="javascript:void(0)" class="btn btn-success btn-md">Refresh List</a></p>
+        <p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                </tbody>
+            </table>
+        </p>
+    </div>
+</div>
+<hr />
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+
+
+
+

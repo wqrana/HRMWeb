@@ -1,0 +1,371 @@
+﻿@model TimeAide.Web.ViewModel.RoleFormPrivilegeMatrixViewModel1
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+@{ /**/
+                /**/
+
+                ViewBag.Title = "Role Form Privileges"; }
+
+@*<h2 style="text-align: center;">List of Role Form Privilege</h2>*@
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Role Form Privileges</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Settings</li>
+                <li class="breadcrumb-item">Application Access</li>
+                <li class="breadcrumb-item active">Role Form Privilege</li>
+            </ul>           
+        </div>       
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+<div class="form-horizontal" style="padding:10px">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group row">
+        <div class="col-sm-4 col-md-2 pr-0">
+            <div class="form-group form-focus select-focus">
+                @*@Html.DropDownList("PositionId", null, "All", new { @class = "select floating searchableDDL" })*@
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Role>("RoleId", null, Model.RoleId, false, null, htmlAttributes: new { @class = "select floating autoLoading" }))
+                <label class="focus-label">Role Name</label>
+            </div>
+            @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+        </div>
+        @*<div class="col-md-2" style="flex: 0 0 19.4%;max-width: 19.4%;">
+                @Html.HiddenFor(model => model.RoleTypeID)
+                @Html.LabelFor(model => model.RoleId, "Role", htmlAttributes: new { @class = "control-label" })
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Role>("RoleId", null, Model.RoleId, false, null, htmlAttributes: new { @class = "form-control", style = "width:150px;display:inline" }))
+                @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+            </div>*@
+        <div class="col-sm-6 col-md-3 pr-0">
+            <div class="form-group form-focus select-focus">
+                @*@Html.DropDownList("PositionId", null, "All", new { @class = "select floating searchableDDL" })*@
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Module>("ModuleId", null, Model.ModuleId, false, null, htmlAttributes: new { @class = "select floating searchableDDL autoLoading" }, placeHolder: "All"))
+                <label class="focus-label">Module Name</label>
+            </div>
+            @Html.ValidationMessageFor(model => model.ModuleId, "", new { @class = "text-danger" })
+        </div>
+        @*<div class="col-md-2" style="flex: 0 0 20.4%;max-width: 20.4%;">
+                @Html.LabelFor(model => model.ModuleId, "Module", htmlAttributes: new { @class = "control-label" })
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Module>("ModuleId", null, Model.ModuleId, false, null, htmlAttributes: new { @class = "select floating searchableDDL", style = "width:150px;display:inline" }))
+                <div>
+                    @Html.ValidationMessageFor(model => model.ModuleId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        <div class="col-sm-6 col-md-3 pr-0">
+            <div class="form-group form-focus select-focus">
+                @*@Html.DropDownList("PositionId", null, "All", new { @class = "select floating searchableDDL" })*@
+                @Html.EditorFor(model => model.FormName, new { htmlAttributes = new { @class = "form-control floating" } })
+                <label class="focus-label">Form Name</label>
+            </div>
+            @Html.ValidationMessageFor(model => model.FormName, "", new { @class = "text-danger" })
+        </div>
+        @*<div class="col-md-2" style="flex: 0 0 20.4%;max-width: 20.4%;">
+                @Html.LabelFor(model => model.FormName, "Form", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FormName, new { htmlAttributes = new { @class = "form-control", style = "width:150px;display:inline" } })
+                @Html.ValidationMessageFor(model => model.FormName, "", new { @class = "text-danger" })
+            </div>*@
+        <div class="col-md-4" style="flex: 0 0 20.4%;max-width: 20.4%;">
+            <input type="button" value="Load" name="LoadData" id="LoadData" class="btn btn-primary submit-btn" style="min-width: 100px;padding: 5px 10px" />
+          
+        </div>
+    </div>
+    <div id="divLoadingMatrix" class="align-content-md-center">
+        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+    </div>
+
+    <table class="table" id="tblRoleFormPrivilegeList">
+        <thead>
+            <tr>
+                <th style="text-align:center">
+                    <div>
+                        Select All Form
+                    </div>
+                    <input type="checkbox" class="selectAllRow">
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th style="text-align:center">
+                    <div>
+                        Select All
+                    </div>
+                    <input type="checkbox">
+                </th>
+                @if (Model.Role == null || Model.Role.RoleTypeId != 4 || (Model.Module != null && Model.Module.ModuleName == "ChangeRequest"))
+                {
+
+                    <th style="text-align:center">
+                        <div>
+                            Select All
+                        </div>
+                        <input type="checkbox">
+                    </th>
+                    <th style="text-align:center">
+                        <div>
+                            Select All
+                        </div>
+                        <input type="checkbox">
+
+                    </th>
+                    <th style="text-align:center">
+                        <div>
+                            Select All
+                        </div>
+                        <input type="checkbox">
+                    </th>
+                    <th style="text-align:center">
+                        <div>
+                            Select All
+                        </div>
+                        <input type="checkbox">
+                    </th>
+                }
+                    <th style="text-align:center">
+                        @if (Model.RoleFormPrivileges != null && Model.RoleFormPrivileges.Count > 0)
+                        {
+                            <input type="submit" value="Save All" name="CreateMatrix" id="CreateMatrix" class="btn btn-primary submit-btn" style="min-width: 100px;padding: 5px 10px;" tooltip="Save the bulk records" />
+                        }
+                    </th>
+            </tr>
+            <tr>
+                <td style="text-align:center">
+                    Select Row
+                </td>
+                <th style="text-align:left">
+
+                    @Html.Label("Module")
+                </th>
+                <th style="text-align:left">
+                    @Html.Label("Form Name")
+                </th>
+                <th style="text-align:center">
+                    @Html.Label("Allow View")
+                </th>
+                @if (Model.Role == null || Model.Role.RoleTypeId != 4 || (Model.Module != null && Model.Module.ModuleName == "ChangeRequest"))
+                {
+                    <th style="text-align:center">
+                        @Html.Label("Allow Add")
+                    </th>
+                    <th style="text-align:center">
+                        @Html.Label("Allow Edit")
+                    </th>
+                    <th style="text-align:center">
+                        @Html.Label("Allow Delete")
+                    </th>
+                    <th style="text-align:center">
+                        @Html.Label("Allow Change History")
+                    </th>
+                }
+                <th style="text-align:center">
+
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @if (Model.RoleFormPrivileges != null)
+            {
+                for (int i = 0; i < Model.RoleFormPrivileges.Count; i++) //foreach (var item in Model.RoleFormPrivileges)
+                {
+                    <tr>
+                        <td style="text-align:center">
+                            <input type="checkbox" class="selectAllRow">
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.RoleFormPrivileges[i].Form.Module.ModuleName)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].Form.Module.ModuleName)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].Form.Module.ModuleLabel)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.RoleFormPrivileges[i].Form.Label)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].Form.Label)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].Form.FormName)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].FormId)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].RolePrivilegeId)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].RoleId)
+                        </td>
+
+                        <td style="text-align:center">
+                            @Html.CheckBoxFor(modelItem => Model.RoleFormPrivileges[i].AllowView)
+                            @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].AllowView)
+                        </td>
+                        @if (Model.Role.RoleTypeId != 4 || (Model.Module != null && Model.Module.ModuleName == "ChangeRequest"))
+                        {
+                            <td style="text-align:center">
+                                @Html.CheckBoxFor(modelItem => Model.RoleFormPrivileges[i].AllowAdd)
+                                @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].AllowAdd)
+
+                            </td>
+                            <td style="text-align:center">
+                                @Html.CheckBoxFor(modelItem => Model.RoleFormPrivileges[i].AllowEdit)
+                                @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].AllowEdit)
+                            </td>
+
+                            <td style="text-align:center">
+                                @Html.CheckBoxFor(modelItem => Model.RoleFormPrivileges[i].AllowDelete)
+                                @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].AllowDelete)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.CheckBoxFor(modelItem => Model.RoleFormPrivileges[i].AllowChangeHistory)
+                                @Html.HiddenFor(modelItem => Model.RoleFormPrivileges[i].AllowChangeHistory)
+                            </td>
+                        }
+                        <td>
+                            <input id='RoleFormPrivileges_Save_+@i' value="Save" name="RoleFormPrivileges[@i].Save" onclick="SaveRow(@i)" type="button" class="btn btn-primary submit-btn" style="min-width: 100px;padding: 0px 5px;font-size: 13px;" tooltip="Save the record">
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+}
+@section Scripts {
+
+}
+
+<style>
+    /*.container-fluid {
+        padding-right: unset;
+        padding-left: unset;
+    }
+
+    .page-wrapper > .content {
+        padding: unset;
+    }*/
+</style>
+
+<script type="text/javascript">
+    function SelectedIndexChanged() {
+        //Form post
+        document.demoForm.submit();
+    }
+</script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var groupColumn = 2;
+        //$('#tblRoleFormPrivilegeList').dataTable({
+        //    "searching": false,
+        //    "paging": false,
+        //    "scrollX": true
+        //});
+        $("#divLoadingMatrix").hide();
+        $("#LoadData").click(function () {
+            loadRoleFormPrivilegeData(this);
+        });
+        $(".autoLoading").change(function () {
+            debugger;
+            //this.form.submit();
+            loadRoleFormPrivilegeData(this);
+        });       
+        $("#FormName").blur(function () {
+            //this.form.submit();
+            loadRoleFormPrivilegeData(this);
+        });
+
+        $('.searchableDDL').select2();
+
+        $("#FormName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/RoleFormPrivilege/GetAutocompleteFormNames",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        response(data);
+                    },
+                    minLength: 2
+                })
+            }
+        });
+    });
+    $("th input[type='checkbox']").on("change", function () {
+        debugger
+        var cb = $(this),          //checkbox that was changed
+            th = cb.parent(),      //get parent th
+            col = th.index() + 1;  //get column index. note nth-child starts at 1, not zero
+        $("tbody td:nth-child(" + col + ") input").prop("checked", this.checked);  //select the inputs and [un]check it
+        if (col == 1) {
+            debugger
+            $("tbody td:nth-child(" + 4 + ") input").prop("checked", this.checked);
+            $("tbody td:nth-child(" + 5 + ") input").prop("checked", this.checked);
+            $("tbody td:nth-child(" + 6 + ") input").prop("checked", this.checked);
+            $("tbody td:nth-child(" + 7 + ") input").prop("checked", this.checked);
+        }
+    });
+    $('table').on('change', '.selectAllRow', function (e) {
+        $(this).closest('tr').find("input").prop('checked', this.checked);
+    });
+
+    function SaveRow(index) {
+        debugger
+        var model = {
+            RolePrivilegeId: $('#RoleFormPrivileges_' + index + '__RolePrivilegeId').val(),
+            FormId: $('#RoleFormPrivileges_' + index + '__FormId').val(),
+            RoleId: $('#RoleFormPrivileges_' + index + '__RoleId').val(),
+            AllowAdd: $('#RoleFormPrivileges_' + index + '__AllowAdd').is(":checked"),
+            AllowEdit: $('#RoleFormPrivileges_' + index + '__AllowEdit').is(":checked"),
+            AllowDelete: $('#RoleFormPrivileges_' + index + '__AllowDelete').is(":checked"),
+            AllowView: $('#RoleFormPrivileges_' + index + '__AllowView').is(":checked"),
+            AllowChangeHistory: $('#RoleFormPrivileges_' + index + '__AllowChangeHistory').is(":checked"),
+        }
+
+        //e.preventDefault();
+
+        $.ajax({
+            type: 'post',
+            url: '/RoleFormPrivilege/SaveRoleFormPrivilege',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                if (html == '"Success"') {
+                    toastr.success('Selected record saved successfully.', "Success!");
+                }
+                else {
+                    toastr.error('There  was as error while saving selected record.', "Error!");
+                }
+
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                //errorObject[0].OriginalHireDate
+                //"The Hire Date field is required."
+                //var $ul = $('div.validation-summary-valid.text-danger > ul');
+                //$ul.empty();
+
+                //$.each(errorObject, function (idx, errorMessage) {
+                //    //$ul.append('<li>' + errorMessage + '</li>');
+                //    //alert(idx);
+                //    //alert(errorMessage);
+                //    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                //});
+            }
+        });
+    }
+    function loadRoleFormPrivilegeData(e) {
+        debugger;
+        var roleId = $("#RoleId").val();
+        if (roleId == "") {
+            showAlertAutoHide("Error", "Please select the role.")
+            return;
+        }
+        e.form.submit();
+        $("#divLoadingMatrix").show();
+    }
+</script>

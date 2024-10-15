@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TimeAide.Web.ViewModel.DashboardNotificationListViewModel>
+
+<span class="badge badge-info font-weight-bolder" style="font-size:large">@ViewBag.MonthTitle</span>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblNotification">
+
+        
+        <thead>
+            <tr>
+                <th>EmployeeID</th>
+                <th>Employee Name</th>
+                <th>Record Name</th>
+                <th>Record Type</th>
+                <th>Expiry Date</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+
+                <tr>
+
+                    <td>
+                        <a href="/UserInformation/Details/@item.UserInformationId" title="View Detail"> @Html.DisplayFor(modelItem => item.EmployeeId)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecordName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecordType)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExpirationDate)
+
+                    </td>
+
+
+                </tr>
+            }
+    </tbody>
+    </table>
+</div>
+
+
+
+

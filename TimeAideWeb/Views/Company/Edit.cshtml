@@ -1,0 +1,175 @@
+﻿@model TimeAide.Web.Models.Company
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IsDefaultPortalPicture)
+    @Html.HiddenFor(model => model.PortalPictureFilePath)
+    @Html.HiddenFor(model => model.DefaultLetterSigneeId, new { id = "hdnDefaultLetterSigneeId" })
+    @Html.HiddenFor(model => model.DefaultLetterTemplateId, new { id = "hdnDefaultLetterTemplateId" })
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CompanyCode, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompanyCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.CompanyDescription, "Description", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompanyDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.EIN, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.EIN, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EIN, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3">
+            @Html.LabelFor(model => model.CompanyLogo, "Company Logo:", htmlAttributes: new { @class = "control-label" })
+        </label>
+        <div class="col-md-8">
+
+            @if (Model.CompanyLogo != null && Model.CompanyLogo.Length > 0)
+            {
+                var base64 = Convert.ToBase64String(Model.CompanyLogo);
+                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                <div id="divShowLogoImage">
+                    <img src='@imgsrc' style="max-width:100px;max-height:100px" id="imgCompanyLogo" />
+                    <br />
+                    <button type="button" id="btnChangeLogo" class="btn btn-link">Change Logo</button>
+                </div>
+                <div id="divUploadLogoImage" style="display:none">
+                    <input class="form-control" type="file" id="uploadCompanyLogo" accept=".jpg,.png">
+                    <button type="button" id="btnCancelChangeLogo" class="btn btn-link">Cancel</button>
+                </div>
+            }
+            else
+            {
+                <input class="form-control" type="file" id="uploadCompanyLogo" accept=".jpg,.png">
+            }
+            <div id="divUploadingCompanyLogo" class="align-content-md-center">
+                <span class="fa fa-upload">Logo Uploading...</span><img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label pr-0">Portal Statement:<span class="text-danger"></span></label>
+        <div class="col-md-8">
+            @Html.TextAreaFor(m => m.PortalWelcomeStatement, new
+            {
+                rows = "5",
+                style = "resize:none;width:450px;",
+                @class = "form-control richtext-editor"
+            })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.DefaultLetterSigneeId, "Letter Signee", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            <select id="DefaultLetterSigneeId" name="DefaultLetterSigneeId" class="form-control">
+                <option value="">Please select</option>
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.DefaultLetterTemplateId, "Letter Template", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            <select id="DefaultLetterTemplateId" name="DefaultLetterTemplateId" class="form-control">
+                <option value="">Please select</option>
+            </select>
+
+        </div>
+    </div>
+    <div class="submit-section">
+        <input type="hidden" id="popupTargetDdl" />
+        <button id="editcompany" type="button" onclick="fnSaveCompany('Edit');" class="btn btn-primary submit-btn">Save</button>
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+}
+@Scripts.Render("~/bundles/jqueryval")
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+<script>
+    $(document).ready(function () {
+        
+
+        LoadLetterSigneeDDL('#DefaultLetterSigneeId', $("#hdnDefaultLetterSigneeId").val(), @Model.Id);
+        LoadLetterTemplateDDL('#DefaultLetterTemplateId', $("#hdnDefaultLetterTemplateId").val(), @Model.Id);
+
+        $("#divUploadingCompanyLogo").hide();
+        $("#btnCancelChangeLogo").click(function () {
+            debugger
+            $("#divShowLogoImage").show();
+            $("#divUploadLogoImage").hide();
+
+        });
+
+        $("#btnChangeLogo").click(function () {
+            debugger
+            $("#divShowLogoImage").hide();
+            $("#divUploadLogoImage").show();
+        });
+    });
+
+    $('.richtext-editor').summernote({
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['']],
+            ['insert', ['link']],
+            ['view', []],
+        ],
+
+        height: 200, // set editor height
+        minHeight: null, // set minimum height of editor
+        maxHeight: null, // set maximum height of editor
+        focus: false, // set focus to editable area after initializing summernote
+        //  disableDragAndDrop: true
+
+    });
+    $('div.note-popover').css("display", "none");
+    setTimeout(function () {
+        debugger;
+        $('.richtext-editor').summernote('fontName', 'Arial');
+        $('.richtext-editor').summernote('fontSizeUnit', 'pt');
+        $('.richtext-editor').summernote('fontSize', 14);
+        $('.richtext-editor').summernote('justifyLeft');
+
+
+    }, 500);  
+</script>

@@ -1,0 +1,112 @@
+﻿@model TimeAide.Web.Models.NotificationScheduleDetail
+<div id="NotificationScheduleDetailCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Notification Schedule Detail- Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="NotificationScheduleDetailCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "NotificationScheduleDetailId" })
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.DaysBefore, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.DaysBefore, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DaysBefore, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.SelectedEmployeeGroupId, "Empoyee Group", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.ListBox("EmployeeGroupId", (IEnumerable<SelectListItem>)ViewBag.NotificationRoleId, new { @class = "form-control", style = "width:100%;" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.NotificationMessageId, "Notification Message", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.NotificationMessage>("NotificationMessageId", null, htmlAttributes: new { @class = "form-control" }))
+                                @Html.ValidationMessageFor(model => model.NotificationMessageId, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ExcludeUser, "Exclude User", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.ExcludeUser, new { htmlAttributes = new { @class = "" } })
+                                @Html.ValidationMessageFor(model => model.ExcludeUser, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ExcludeSupervisor, "Exclude Immediate Supervisor", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.ExcludeSupervisor, new { htmlAttributes = new { @class = "" } })
+                                @Html.ValidationMessageFor(model => model.ExcludeSupervisor, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.NotificationScheduleId, "Notification Schedule", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.DisplayFor(model => model.NotificationSchedule.NotificationScheduleName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveNotificationScheduleDetail" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        @*$("#EmployeeGroupId").val('@Model.SelectedCompanyId'.trim().split(','));*@
+        $('#EmployeeGroupId').select2();
+        $("#btnSaveNotificationScheduleDetail").click(function () {
+            saveNotificationScheduleDetailData();
+        });
+
+
+    });
+
+</script>
+
+
+
+
+
+
+
+
+

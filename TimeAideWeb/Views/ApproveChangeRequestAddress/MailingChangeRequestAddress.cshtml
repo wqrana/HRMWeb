@@ -1,0 +1,174 @@
+﻿@model TimeAide.Web.Models.ChangeRequestAddress
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="panel panel-default" style="width:49%;margin-left:10px">
+            <div class="panel-heading" style="padding-left:10px">Old Mailing Address</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Address 1
+                    </label>
+                    <div class="col-lg text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.MailingAddress1
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Address 2
+                    </label>
+                    <div class="col-lg text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.MailingAddress2
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Country
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.MailingCountry.CountryName
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        State
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.MailingState.StateName
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        City
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.MailingCity.CityName
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Zip Code
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @Model.UserContactInformation.MailingZipCode
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="width:49%;margin-left:10px">
+            <div class="panel-heading" style="padding-left:10px">New Mailing Address</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Address 1
+                    </label>
+                    <div class="col-lg text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewAddress1))
+                        {
+                            <span>
+                                @Model.UserContactInformation.MailingAddress1
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewAddress1
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Address 2
+                    </label>
+                    <div class="col-lg text-muted mt-2">
+                        @if (String.IsNullOrEmpty(Model.NewAddress2))
+                        {
+                            <span>
+                                @Model.UserContactInformation.MailingAddress2
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewAddress2
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Country
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewCountry == null)
+                        {
+                            <span>
+                                @Model.UserContactInformation.MailingCountry.CountryName
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewCountry.CountryName
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        State
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewState == null)
+                        {
+                            <span>
+                                @Model.UserContactInformation.MailingState.StateName
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewState.StateName
+                            </span>
+                        }
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        City
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewCity == null)
+                        {
+                            <span>
+                                @Model.UserContactInformation.MailingCity.CityName
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewCity.CityName
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2 col-form-label" style="margin-left:10px">
+                        Zip Code
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (String.IsNullOrEmpty(Model.NewZipCode))
+                        {
+                            <span>
+                                @Model.UserContactInformation.MailingZipCodeFormatted
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewZipCodeFormatted
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

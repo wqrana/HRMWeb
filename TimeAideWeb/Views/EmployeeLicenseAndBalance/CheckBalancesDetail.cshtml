@@ -1,0 +1,91 @@
+﻿<div id="employeeCheckBalances_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Check Balances</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+               
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="form-group row">
+                            <div class="form-group form-focus">
+                                <input id="BalanceDate" type="datetime" class="form-control floating" value="@DateTime.Today">
+                                <label class="focus-label">Check Balance Date</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th>
+                                                Accrual Type
+                                            </th>
+                                            <th>
+                                                Accrued Hours
+                                            </th>
+                                           
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                           
+                                           
+                                            <td>SA</td>
+                                            <td>21</td>
+                                           
+
+                                        </tr>
+                                        <tr>
+                                           
+                                            
+                                            <td>VA</td>
+                                            <td>35</td>
+                                         
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                       
+
+                    </div>
+
+
+                </div>
+
+                <div class="submit-section mt-1">
+                   
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Closed</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        //$("#DateCompleted").datetimepicker({ format: 'MM/DD/YYYY' });
+
+    });
+
+</script>
+
+

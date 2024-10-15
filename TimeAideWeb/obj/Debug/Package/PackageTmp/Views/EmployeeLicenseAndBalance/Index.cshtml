@@ -1,0 +1,443 @@
+﻿<style>
+    .rowZeroMargin {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+</style>
+
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-6 p-0">
+                <!-- <div class="panel panel-default" style="width:49%;margin-left:10px">-->
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Accrual Rules
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                <a href="javascript:addEditEmployeeAccrualRule(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add Accrual Rule</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divEmpAccrualRule">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Initial Balances
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                <a href="javascript:addEditEmployeeAccrualBalance(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Add Initial Balance</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divEmpAccrualBalance">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divEmployeeLicensesCreateEdit">
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var userId = $("#userID").val();
+        retrieveEmployeeAccrualRule(userId);
+        retrieveEmployeeAccrualBalance(userId);
+    });
+
+    function retrieveEmployeeAccrualRule(userId) {
+        $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeeLicenseAndBalance/AccrualRuleDetail',
+            data: { "id": userId },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmpAccrualRule").html(data);
+                $("#divLoadingLicensesTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function addEditEmployeeAccrualRule(id) {
+        // divEmployeeLicensesCreateEdit
+        var action = id == 0 ? "CreateAccrualRule" : "EditAccrualRule";
+        $.ajax({
+            type: "get",
+            url: '/EmployeeLicenseAndBalance/' + action,
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeLicensesCreateEdit").html(data);
+                $("#employeeAccrualRuleCreateEdit_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function addEmployeeDefaultAccrualRules() {
+        // divEmployeeLicensesCreateEdit
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeLicenseAndBalance/CreateDefaultAccrualRules',
+            
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeLicensesCreateEdit").html(data);
+                $("#employeeDefaultAccrualRuleCreate_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function saveEmployeeAccrualRuleData(isInitBalance) {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.UserInformationId = $("#userID").val();
+        dataObj.EmployeeAccrualRuleId = $('#EmployeeAccrualRuleId').val();
+        dataObj.AccrualTypeId = $('#AccrualTypeId').val();
+        dataObj.AccrualRuleId = $('#AccrualRuleId').val();
+        dataObj.StartOfRuleDate = $('#StartOfRuleDate').val();
+        dataObj.AccrualDailyHours = $('#AccrualDailyHours').val();
+        if (isInitBalance == true) {
+            dataObj.BalanceStartDate = $('#BalanceStartDate').val();
+            dataObj.AccruedHours = $('#AccruedHours').val();
+        }
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.AccrualTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccrualRuleId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.StartOfRuleDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccrualDailyHours.trim().length > 0 ? 1 : 0;
+           
+
+            if (isRequiredValidated != 4) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/EmployeeLicenseAndBalance/CreateEditAccrualRule",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#employeeAccrualRuleCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);
+                        retrieveEmployeeAccrualRule(dataObj.UserInformationId);
+                        if (isInitBalance == true) {
+                            retrieveEmployeeAccrualBalance(dataObj.UserInformationId);
+                        }
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in CreateEditAccrualRule action call');
+                    return false;
+                }
+            });
+        }
+    }
+    function saveEmployeeDefaultAccrualRulesData(accrualRulesData) {
+        debugger;
+        var alertID = "#";
+        var userId = $("#userID").val();
+        var dataObj = new Object();
+        dataObj.EmployeeAccrualRules = accrualRulesData;
+       
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/EmployeeLicenseAndBalance/CreateDefaultAccrualRules",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#employeeDefaultAccrualRuleCreate_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);
+                        retrieveEmployeeAccrualRule(userId);
+                        retrieveEmployeeAccrualBalance(userId);                        
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in CreateDefaultAccrualRule action call');
+                    return false;
+                }
+            });
+     }
+    function getEmployeeAccrualRuleDeleteData(id) {
+        $.ajax({
+            type: "get",
+            url: '/EmployeeLicenseAndBalance/AccrualRuleDelete',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeLicensesCreateEdit").html(data);
+                $("#employeeAccrualRuleDelete_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function deleteEmployeeAccrualRule(id) {
+        $.ajax({
+            type: "Post",
+            url: "/EmployeeLicenseAndBalance/ConfirmAccrualRuleDelete",
+            data: { "id": id },
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+                    $("#employeeAccrualRuleDelete_modal").modal("hide");
+                    showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                    var userId = $("#userID").val();
+                    retrieveEmployeeAccrualRule(userId);
+                    // location.reload(true);
+                }
+                else {
+                    showAlertAutoHide(alertID, data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                showAlertAutoHide(alertID, "Error", error);
+                return false;
+            }
+        });
+    }
+    function retrieveEmployeeAccrualBalance(userId) {
+        $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeeLicenseAndBalance/AccrualBalanceDetail',
+            data: { "id": userId },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmpAccrualBalance").html(data);
+                $("#divLoadingLicensesTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function addEditEmployeeAccrualBalance(id) {
+        // divEmployeeLicensesCreateEdit
+        var action = id == 0 ? "CreateAccrualBalance" : "EditAccrualBalance";
+        $.ajax({
+            type: "get",
+            url: '/EmployeeLicenseAndBalance/' + action,
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeLicensesCreateEdit").html(data);
+                $("#employeeAccrualBalanceCreateEdit_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function saveEmployeeAccrualBalanceData() {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.UserInformationId = $("#userID").val();
+        dataObj.EmployeeAccrualBalanceId = $('#EmployeeAccrualBalanceId').val();
+        dataObj.AccrualTypeId = $('#AccrualTypeId').val();
+        dataObj.BalanceStartDate = $('#BalanceStartDate').val();
+        dataObj.AccruedHours = $('#AccruedHours').val();
+        
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.AccrualTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.BalanceStartDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccruedHours.trim().length > 0 ? 1 : 0;
+          
+
+            if (isRequiredValidated != 3) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/EmployeeLicenseAndBalance/CreateEditAccrualBalance",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#employeeAccrualBalanceCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);
+                        retrieveEmployeeAccrualBalance(dataObj.UserInformationId);
+                        
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in CreateEditAccrualRule action call');
+                    return false;
+                }
+            });
+        }
+    }
+    function getEmployeeAccrualBalanceDeleteData(id) {
+        $.ajax({
+            type: "get",
+            url: '/EmployeeLicenseAndBalance/AccrualBalanceDelete',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeeLicensesCreateEdit").html(data);
+                $("#employeeAccrualBalanceDelete_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function deleteEmployeeAccrualBalance(id) {
+        $.ajax({
+            type: "Post",
+            url: "/EmployeeLicenseAndBalance/ConfirmAccrualBalanceDelete",
+            data: { "id": id },
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+                    $("#employeeAccrualBalanceDelete_modal").modal("hide");
+                    showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                    var userId = $("#userID").val();
+                    retrieveEmployeeAccrualBalance(userId);
+                    // location.reload(true);
+                }
+                else {
+                    showAlertAutoHide(alertID, data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                showAlertAutoHide(alertID, "Error", error);
+                return false;
+            }
+        });
+    }
+    function ShowEmployeeLicensesChangeHistory(id, tableName) {
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeLicenseAndBalance/EmployeeLicensesChangeHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "id": id, "tableName": tableName },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);               
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function LoadDropDownListData(action, parentId, targetElement, selectedValue) {
+        parentId = parentId == "" ? "0" : parentId;
+        $.ajax({
+            url: '/EmployeeLicenseAndBalance/' + action + '/' + parentId,
+            //data: JSON.stringify(model), //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+</script>

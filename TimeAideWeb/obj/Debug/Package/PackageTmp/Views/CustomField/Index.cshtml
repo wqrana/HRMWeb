@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TimeAide.Web.Models.CustomField>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FieldDisplayOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomFieldName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomFieldDescription)
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsExpirable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FieldDisplayOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomFieldName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomFieldDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomFieldType.CustomFieldTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsExpirable)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

@@ -1,0 +1,312 @@
+﻿@model TimeAide.Web.Models.PayrollRule
+<div class="row">
+    <div class="col-md-12 d-flex">
+        <div class="card profile-box flex-fill">
+            <div class="card-body pb-0">
+                <div id="">
+                    <div style="padding:0px">
+                        <div style="font-size: 90%;">
+                            <div class="form-group row">
+                                <div class="col-md-8 p-0">
+                                    <div class="panel panel-default" style="margin-left:0px">
+                                        <div class="panel-heading" style="padding-left:10px">
+                                            Punches
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group row mb-0">
+                                                <div class="col-md-6 pr-1">
+                                                    <div class="form-group row pt-2">
+                                                        <label class="col-md-5 col-form-label pr-0" style="margin-left:5px">
+                                                            Round Methods
+                                                        </label>
+                                                        <div class="col-md-6 pr-0">
+                                                            @Html.DropDownList("RoundingMethodTypeVal", null, "Please select", new { @class = "form-control" })
+                                                        </div>  
+                                                    </div>                                                    
+                                                    <div class="panel panel-default punch-rounding" style="margin-left:0px">
+                                                        <div class="panel-heading" style="padding-left:5px">
+                                                            Punch Rounding
+
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="form-group row">
+                                                                <label class="col-md-11 col-form-label" style="margin-left:5px">
+                                                                    Punch Rounding Time Period
+                                                                </label>
+                                                                <div class="col-md-11 pr-0 ml-1">
+                                                                    @Html.DropDownList("PunchRoundingPeriodVal", null, "Please select", new { @class = "form-control" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel panel-default sch-based-rounding" style="margin-left:0px">
+                                                        <div class="panel-heading" style="padding-left:5px">
+                                                            Schedule-based Rounding
+
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Round in Punches:
+                                                                </label>
+                                                                <div class="col-md-3 pt-2">
+                                                                    @Html.CheckBoxFor(m => m.IsRoundIn, new { id = "IsRoundInAE" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                                    If early, max. no. of mins. to round:
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.RoundInEarlyMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                                    If late, Max. No. of Min. to round:
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.RoundInLateMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Round out Punches:
+                                                                </label>
+                                                                <div class="col-md-3 pt-2">
+                                                                    @Html.CheckBoxFor(m => m.IsRoundOut, new { id = "IsRoundOutAE" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                                    If early, max. no. of mins. to round:
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.RoundOutEarlyMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                                    If late, Max. No. of Min. to round:
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.RoundOutLateMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 pl-0">
+                                                    <div class="panel panel-default pt-2" style="margin-left:2px">
+                                                        <div class="panel-heading" style="padding-left:5px">
+                                                            In Exceptions
+
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Early In Exception?
+                                                                </label>
+                                                                <div class="col-md-3 pt-2">
+                                                                    @Html.CheckBoxFor(m => m.IsEarlyInException, new { id = "IsEarlyInExceptionAE" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Early In Minutes:>
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.EarlyInExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Late In Exception?
+                                                                </label>
+                                                                <div class="col-md-3 pt-2">
+                                                                    @Html.CheckBoxFor(m => m.IsLateInException, new { id = "IsLateInExceptionAE" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Late In Minutes:>
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.LateInExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel panel-default" style="margin-left:2px">
+                                                        <div class="panel-heading" style="padding-left:5px">
+                                                            Out Exceptions
+
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Early Out Exception?
+                                                                </label>
+                                                                <div class="col-md-3 pt-2">
+                                                                    @Html.CheckBoxFor(m => m.IsEarlyOutException, new { id = "IsEarlyOutExceptionAE" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Early Out Minutes:>
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.EarlyOutExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Late Out Exception?
+                                                                </label>
+                                                                <div class="col-md-3 pt-2">
+                                                                    @Html.CheckBoxFor(m => m.IsLateOutException, new { id = "IsLateOutExceptionAE" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                                    Late Out Minutes:>
+                                                                </label>
+                                                                <div class="col-md-3 pt-2 pr-0">
+                                                                    @Html.EditorFor(m => m.LateOutExceptionMinute, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 p-0">
+                                    <div class="panel panel-default" style="margin-left:5px">
+                                        <div class="panel-heading" style="padding-left:10px">
+                                            Overtime
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group row">
+                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                    Daily Scheduled Hrs.:
+                                                </label>
+                                                <div class="col-md-3 pt-2">
+                                                    @Html.EditorFor(m => m.DailyScheduledHour, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                    Weekly Scheduled Hrs.:
+                                                </label>
+                                                <div class="col-md-3 pt-2">
+                                                    @Html.EditorFor(m => m.WeeklyScheduledHour, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-4 col-form-label" style="margin-left:5px">Overtime: <span class="text-danger"></span></label>
+                                                <label class="col-md-3 col-form-label">PR Law <span class="text-danger"></span></label>
+                                                <div class="col-md-1 pt-2">
+                                                    <input type="radio" id="IsPRLawOvertime" name="overtimeType" value="PRLaw" checked />
+                                                </div>
+                                                <label class="col-md-2 col-form-label">No <span class="text-danger"></span></label>
+                                                <div class="col-md-1 pt-2 pl-1">
+                                                    <input type="radio" id="IsNoOvertime" name="overtimeType" value="No" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                    Computation Parameters
+                                                </label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                    Law-Day OT Hrs.:
+                                                </label>
+                                                <div class="col-md-3 pt-2">
+                                                    @Html.EditorFor(m => m.LawDailyRegularHour, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row mb-0">
+                                                <label class="col-md-5 col-form-label" style="margin-left:5px">
+                                                    24-Hrs Law Type:
+                                                </label>
+
+                                            </div>
+                                            <div class="form-group row">
+
+                                                <div class="col-md-11 pt-2" style="margin-left:5px">
+                                                    @Html.DropDownList("T24HourLawTypeVal", null, "Please select", new { @class = "form-control" })
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                    Use 40-Hrs Law?:
+                                                </label>
+                                                <div class="col-md-3 pt-2">
+                                                    @Html.CheckBoxFor(m => m.IsUseLawWeeklyHour, new { id = "IsUseLawWeeklyHourAE" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                    Law Weekly OT:
+                                                </label>
+                                                <div class="col-md-3 pt-2">
+                                                    @Html.EditorFor(m => m.LawWeeklyRegularHour, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row mb-0">
+                                                <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                    Use Seveenth Day Law?:
+                                                </label>
+                                                <div class="col-md-3 pt-2">
+                                                    @Html.CheckBoxFor(m => m.IsUseSeventhDayLaw, new { id = "IsUseSeventhDayLawAE" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        if ('@Model.IsNoOvertime'=="True") {
+            $("#IsNoOvertime").prop("checked", true);
+        }
+        else {
+            $("#IsPRLawOvertime").prop("checked", true);
+        }
+        setOvertimeSectionFieldsName();
+        setPunchesFieldsSetting();
+        setOvertimeFieldsSetting();
+        $("#RoundingMethodTypeVal").change(function () {
+            setPunchesFieldsSetting();
+        })
+        $('input[name="overtimeType"]').change(function () {
+            setOvertimeFieldsSetting();
+            setAdditionalSettingFieldsSetting();
+        })
+    });
+
+    function setOvertimeSectionFieldsName() {
+        debugger;
+        $("#LawDailyRegularHour").attr("name", "OvertimeCompParmFields");
+        $("#T24HourLawTypeVal").attr("name", "OvertimeCompParmFields");
+        $("#IsUseLawWeeklyHourAE").attr("name", "OvertimeCompParmFields");
+        $("#LawWeeklyRegularHour").attr("name", "OvertimeCompParmFields");
+        $("#IsUseSeventhDayLawAE").attr("name", "OvertimeCompParmFields");     
+
+    }
+   
+</script>

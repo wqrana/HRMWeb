@@ -1,0 +1,627 @@
+﻿@model TimeAide.Web.ViewModel.EmployeePrivilegeViewModel
+<div class="form-horizontal" style="padding:10px;width:100%">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Profile - @Model.ViewType</h4>
+        <button class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div>
+            <input id="UserContactInformationId__" name="UserContactInformationId_" type="hidden" value="@Model.Id">
+            <input id="UserInformationId" name="UserInformationId" type="hidden" value="@Model.UserInformationId">
+            <input id="txtViewType" name="txtViewType" type="hidden" value="@Model.ViewType">
+        </div>
+        @if (Model.ViewType == "Access Level")
+        {
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        @Html.LabelFor(model => model.RoleId, "Role Type:", htmlAttributes: new { @class = "control-label" })
+                    </label>
+                    <div class="col-md-7" style="width:100% !important">
+                        @(Html.CustomDropDownList<TimeAide.Web.Models.RoleType>("ddlRoleTypeId", null, Model.RoleTypeId, htmlAttributes: new { @class = "form-control" }))
+                        @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        @Html.LabelFor(model => model.RoleId, "Role Id:", htmlAttributes: new { @class = "control-label" })
+                    </label>
+                    <div class="col-md-7" style="width:100% !important">
+                        @Html.DropDownList("RoleId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        }
+        @if (Model.ViewType == "Access Restrictions")
+        {
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">Company:</label>
+                    <div class="col-md-7">
+                        @Html.ListBox("CompanyId", (SelectList)ViewBag.CompanyId, new { @class = "form-control" })
+                    </div>
+                    <div style="display:none">
+                        @Html.ListBox("hdnCompanyId", (SelectList)ViewBag.CompanyId, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">Department:</label>
+                    <div class="col-md-7">
+                        @Html.ListBox("DepartmentId", (SelectList)ViewBag.DepartmentId, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">SubDepartment:</label>
+                    <div class="col-md-7">
+                        @Html.ListBox("SubDepartmentId", (IEnumerable<SelectListItem>)ViewBag.SubDepartmentId, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Employee Type
+                    </label>
+                    <div class="col-md-7">
+                        @Html.ListBox("EmployeeTypeId", (SelectList)ViewBag.EmployeeTypeId, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        @if (Model.ViewType == "Notification")
+        {
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Email for Notification
+                    </label>
+                    <div class="col-md-7">
+                        @Html.DropDownList("NotificationEmailAddressTypeId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NotificationEmail, "", new { @class = "text-danger" })
+                        
+                        <span id="spanDeleteNotification" class="float-right"><a href="javascript:deleteNotificationEmail();" title="Remove Email for Notification"><i class="fa fa-trash-o m-r-5 text-danger"></i></a></span>
+                        
+                    </div>
+                </div>               
+            </div>
+        }
+        @if (Model.ViewType == "Account")
+        {
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Email for Login
+                    </label>
+                    <div class="col-md-7">
+                        @Html.DropDownList("LoginEmailAddressTypeId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LoginEmail, "", new { @class = "text-danger" })
+
+                    </div>
+
+                </div>
+                @if (ViewBag.LoginEmailAddressTypeId == null || ViewBag.LoginEmailAddressTypeId.Items.Count == 0)
+                {
+                    <div class="form-group row">
+                        <div class="alert alert-danger alert-dismissible fade show danger " role="alert">
+                            <strong>Alert!</strong> Selected employee does not have any email, please add employee emails in employee contact information
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        @if (Model.ViewType == "LockAccount")
+        {
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                        Lock Account
+                    </label>
+                    <div class="col-md-7">
+                        @Html.CheckBoxFor(model => model.LockAccount)
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.ViewType == "Member Of")
+        {
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" style="margin-left:10px">Employee Group:</label>
+                    <div class="col-md-7">
+                        @Html.ListBox("EmployeeGroupId", (SelectList)ViewBag.EmployeeGroupId, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12" style="text-align:center">
+            <div class="submit-section">
+                @if (Model.ViewType == "Account")
+                {
+                    if ((ViewBag.LoginEmailAddressTypeId == null || ViewBag.LoginEmailAddressTypeId.Items.Count > 0) && ViewBag.IsActiveEmployee)
+                    {
+                        <button type="button" id="btnAddEmployeeUserLogin" class="btn btn-primary submit-btn">Send Registration Email</button>
+                        <button type="button" id="btnRegistrUser" class="btn btn-primary submit-btn">Manual User Registration</button>
+                        if (!string.IsNullOrEmpty(ViewBag.LoginEmail))
+                        {
+                            @*<button type="button" id="btnDeleteUser" onclick="confirmDeleteUser();" class="btn btn-primary submit-btn">Delete Login email</button>*@
+                            <a href="javascript:confirmDeleteUser();" data-id="@Model.Id"><i class="fa fa-trash-o m-r-5 text-danger"></i></a>
+                        }
+                    }
+                    <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+                }
+                else
+                {
+                    <button type="button" id="btnAddEmployeeUserLogin" class="btn btn-primary submit-btn">Update</button>
+                    <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirmUserDelete_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div style="text-align:center;" class="alert alert-danger alert-dismissible fade show danger">
+                <h5 class="modal-title">Delete Login email confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="divconfirmPunch" style="display: inline;">Are you sure to delete login email? </p>
+            </div>
+            <div id="divLoadingUserDelete" class="align-content-md-start">
+                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="DeleteLoginEmail();">Yes</button>
+                @*<button type="button" class="btn btn-primary punch-btn" style="font-size:80%" onclick="webPunch();">Yes</button>*@
+                <button type="button" class="btn btn-secondary" onclick="CloseConfirmationModal();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+    var viewTypeJS = '@Model.ViewType';
+    
+    if (viewTypeJS == 'Notification')
+    {
+        var notificationEmail = $("#NotificationEmailAddressTypeId").val();
+        if (notificationEmail.length == 0) {
+            $("#spanDeleteNotification").hide();
+        }
+        
+    }
+
+    if (viewTypeJS == 'Access Restrictions')
+    {
+
+        $("#CompanyId").val('@Model.SelectedCompanyId'.trim().split(','));
+
+        /*$('#DepartmentId').select2();*/
+
+
+        $('#CompanyId').select2({ placeholder: "None" }).on("change", function (e) {
+            var selectedCompanyStr = $('#CompanyId').val();
+            var isAll = selectedCompanyStr[0];
+            if (isAll == '0') {
+                $("#CompanyId > option").each(function () {
+                    if (this.value != '0')
+                        $('#CompanyId option[value=' + this.value + ']').prop('selected', false);
+                });
+            }
+            LoadDepartment(null, '' + selectedCompanyStr + '', '#DepartmentId');
+            LoadSubDepartment('', '', '' + selectedCompanyStr + '', '#SubDepartmentId');
+            LoadEmployeeType('', '' + selectedCompanyStr + '', '#EmployeeTypeId');
+            
+        }).on("select2:selecting", function (e) {
+                var selectedCompanyStr = $('#CompanyId').val();
+                var isAll = selectedCompanyStr[0];
+                if (isAll == '0') {
+                    if (e.params.args.data.id != '0')
+                        e.preventDefault();
+                }
+                if (e.params.args.data.id == '0') {
+                    $("#CompanyId > option").each(function () {
+                        if (this.value!='0')
+                         $('#CompanyId option[value=' + this.value + ']').remove();
+                    });
+                }
+
+        }).on("select2:unselecting", function (e) {
+                var selectedCompanyStr = $('#CompanyId').val();
+                var isAll = selectedCompanyStr[0];
+                if (isAll == '0') {
+                    if (e.params.args.data.id != '0')
+                        e.preventDefault();
+                }
+                if (e.params.args.data.id == '0') {
+                    $('#CompanyId option[value="0"]').remove();
+                    var selectedOpts = $("#hdnCompanyId option");
+                    $("#CompanyId").append($(selectedOpts).clone());
+                }
+            });
+
+        $('#DepartmentId').select2().on("change", function (e) {
+            debugger
+            var selectedCompanyStr = $('#CompanyId').val();
+            var selectedDepartmentStr = $('#DepartmentId').val();
+            LoadSubDepartment('' + selectedDepartmentStr + '', '' + selectedCompanyStr + '', '#SubDepartmentId');
+        });
+        $('#EmployeeTypeId').select2({ placeholder: "None" });
+        $('#SubDepartmentId').select2({ placeholder: "None" });
+        debugger
+        LoadDepartment('@Model.SelectedDepartmentId'.trim().split(','),'@Model.SelectedCompanyId', '#DepartmentId');
+        LoadSubDepartment('@Model.SelectedSubDepartmentId'.trim().split(','),'@Model.SelectedDepartmentId', '@Model.SelectedCompanyId', '#SubDepartmentId');
+        LoadEmployeeType('@Model.SelectedEmployeeTypeId'.trim().split(','), '@Model.SelectedCompanyId', '#EmployeeTypeId');
+    }
+
+    if (viewTypeJS == 'Member Of') {
+
+        $("#EmployeeGroupId").val('@Model.SelectedEmployeeGroupId'.trim().split(','));
+        $('#EmployeeGroupId').select2();
+    }
+
+    if (viewTypeJS == 'Access Level') {
+        $('#ddlRoleTypeId').change(function (e) {
+            var roleTypeId = $(this).val();
+            LoadRoleDropdown(roleTypeId, '#RoleId', null);
+        })
+        LoadRoleDropdown(@Model.RoleTypeId, '#RoleId', @Model.RoleId);
+    }
+
+    $(".select2-container").css("width", "100%");
+    if (viewTypeJS == 'Account' )
+    {
+        if ('@ViewBag.IsActiveEmployee'=='False') {
+            toastr.warning("Selected employee is inactive or closed", "Alert!");
+        }
+        else if ('@(ViewBag.LoginEmailAddressTypeId!=null && ViewBag.LoginEmailAddressTypeId.Items.Count == 0)'=='True') {
+            toastr.warning("Selected employee does not have any email, please add employee emails in employee contact information", "Alert!");
+        }
+
+    }
+
+});
+
+function LoadRoleDropdown(roleTypeId, targetElement, selectedValue) {
+    $.ajax({
+        url: '/Role/AjaxGetRoleByRoleType',
+        data: { 'roleTypeId': roleTypeId }, //dataString,
+        type: 'GET',
+        success: function (res) {
+            var data = res;
+            $(targetElement + ' option').remove();
+            var option = '<option value=""> Please Select </option>';
+            $(targetElement).append(option);
+            $(data).each(function () {
+                var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                $(targetElement).append(option);
+            });
+            // if (selectedValue != null)
+            $(targetElement).val(selectedValue == null ? "" : selectedValue);
+        },
+        error: function (xhr, status, error) {
+            //displayErrorMessage('Error during retrieving Data:' + error);
+        }
+    });
+    $(targetElement+ " select").val(@Model.RoleId);
+}
+
+$("#btnAddEmployeeUserLogin").click(function () {
+    var viewTypeJS = '@Model.ViewType';
+    if (viewTypeJS == 'Access Restrictions') {
+        var selectedCompanyIdList = [];
+        var selectedCompanyIdStr = "";
+        $('#CompanyId option:selected').each(function () {
+            selectedCompanyIdList.push($(this).val());
+        });
+        if (selectedCompanyIdList.length > 0) {
+            selectedCompanyIdStr = selectedCompanyIdList.join(",");
+        }
+
+        var selectedEmployeeTypeIdList = [];
+        var selectedEmployeeTypeIdStr = "";
+        $('#EmployeeTypeId option:selected').each(function () {
+            selectedEmployeeTypeIdList.push($(this).val());
+        });
+        if (selectedEmployeeTypeIdList.length > 0) {
+            selectedEmployeeTypeIdStr = selectedEmployeeTypeIdList.join(",");
+        }
+
+        var selectedDepartmentIdList = [];
+        var selectedDepartmentIdStr = "";
+        $('#DepartmentId option:selected').each(function () {
+            selectedDepartmentIdList.push($(this).val());
+        });
+        if (selectedDepartmentIdList.length > 0) {
+            selectedDepartmentIdStr = selectedDepartmentIdList.join(",");
+        }
+
+        var selectedSubDepartmentIdList = [];
+        var selectedSubDepartmentIdStr = "";
+        $('#SubDepartmentId option:selected').each(function () {
+            selectedSubDepartmentIdList.push($(this).val());
+        });
+        if (selectedSubDepartmentIdList.length > 0) {
+            selectedSubDepartmentIdStr = selectedSubDepartmentIdList.join(",");
+        }
+    }
+    if (viewTypeJS == 'Member Of') {
+        var selectedEmployeeGroupIdList = [];
+        var selectedEmployeeGroupIdStr = "";
+        $('#EmployeeGroupId option:selected').each(function () {
+            selectedEmployeeGroupIdList.push($(this).val());
+        });
+        if (selectedEmployeeGroupIdList.length > 0) {
+            selectedEmployeeGroupIdStr = selectedEmployeeGroupIdList.join(",");
+        }
+    }
+    var model = {
+        UserInformationId: $('#UserInformationId').val(),
+        Id: $('#UserContactInformationId__').val(),
+        RoleId: $('#RoleId  :selected').val(),
+        LoginEmail: $('#LoginEmailAddressTypeId  :selected').text(),
+        NotificationEmail: $('#NotificationEmailAddressTypeId').val(),
+        SelectedCompanyId: selectedCompanyIdStr,
+        SelectedEmployeeGroupId: selectedEmployeeGroupIdStr,
+        SelectedSubDepartmentId: selectedSubDepartmentIdStr,
+        SelectedDepartmentId: selectedDepartmentIdStr,
+        SelectedEmployeeTypeId: selectedEmployeeTypeIdStr,
+        ViewType: $('#txtViewType').val(),
+    }
+
+    if (viewTypeJS == 'Account') {
+        if (model.LoginEmail == '- Please select -') {
+            model["LoginEmail"] = '';
+        }
+        else {
+        }
+    }
+    if (viewTypeJS == 'LockAccount') {
+        model["LockAccount"] = $('#LockAccount').is(':checked');
+    }
+    $.ajax({
+        type: 'post',
+        url: '/UserInformation/EmployeeSystemAccess',
+        data: JSON.stringify(model),
+        contentType: 'application/json; charset=utf-8',
+        dataType: "html",
+        success: function (html) {
+            $('#divEmployeeSystemAccess').html(html);
+            if ($('#userRegisterModal').length)
+                $('#userRegisterModal').modal('hide');
+            else
+                $('#myModal').modal('hide');
+            toastr.success(viewTypeJS + ' information updated successfully.', "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            var responseText = jQuery.parseJSON(xhr.responseText)
+            var errorObject = jQuery.parseJSON(responseText.errors)
+
+            $.each(errorObject, function (idx, errorMessage) {
+                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+            });
+        }
+    });
+});
+$("#btnRegistrUser").click(function () {
+    var viewTypeJS = '@Model.ViewType';
+    var model = {
+
+        UserInformationId: $('#UserInformationId').val(),
+        Id: $('#UserContactInformationId__').val(),
+        LoginEmail: $('#LoginEmailAddressTypeId  :selected').text(),
+        ViewType: $('#txtViewType').val()+'Register',
+    }
+
+    if (model.LoginEmail == '- Please select -') {
+        model["LoginEmail"] = '';
+    }
+
+    $.ajax({
+        type: 'post',
+        url: '/UserInformation/EmployeeSystemAccess',
+        data: JSON.stringify(model),
+        contentType: 'application/json; charset=utf-8',
+        dataType: "html",
+        success: function (html) {
+            $('#divEmployeeSystemAccess').html(html);
+
+            if ($('#userRegisterModal').length)
+                $('#userRegisterModal').modal('hide');
+            else
+                $('#myModal').modal('hide');
+            toastr.success(viewTypeJS + ' information updated successfully.', "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            var responseText = jQuery.parseJSON(xhr.responseText)
+            var errorObject = jQuery.parseJSON(responseText.errors)
+
+            $.each(errorObject, function (idx, errorMessage) {
+                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+            });
+        }
+    });
+});
+
+
+function LoadDepartment(currentSelection,selectedClientStr, targetElement) {
+    if (currentSelection == null || currentSelection.length == 0) {
+        currentSelection = $(targetElement).val();
+    }
+    $(targetElement).select2("enable", false);
+    $.ajax({
+        url: '/Department/AjaxGetDepartmentByCompnay',
+        data: { 'companyIds': selectedClientStr }, //dataString,
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
+            $(targetElement + ' option').remove();
+            $(data).each(function () {
+                var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                $(targetElement).append(option);
+            });
+            debugger
+            $(targetElement).val(currentSelection);
+            $(targetElement).select2('destroy');
+            var placeHolderText = 'None';
+            /*currentSelection = currentSelection.filter(myFilter);*/
+            if ($('#CompanyId').val().length > 0) {
+                placeHolderText = 'All';
+            }
+            $(targetElement).select2({
+                placeholder: placeHolderText,
+                allowClear: true
+            });
+            debugger
+            /*$(targetElement).val(currentSelection);*/
+            $(targetElement).select2("enable");
+        },
+        error: function (xhr, status, error) {
+            //displayErrorMessage('Error during retrieving Data:' + error);
+        }
+    });
+}
+
+function LoadSubDepartment(currentSelection, selectedDepartmentId, selectedCompanyId, targetElement) {
+    if (currentSelection == null || currentSelection.length == 0) {
+        currentSelection = $(targetElement).val();
+    }
+    $(targetElement).select2("enable", false);
+    $.ajax({
+        url: '/SubDepartment/AjaxGetSubDepartmentByDepartmentAndCompany',
+        data: { 'selectedDepartmentId': selectedDepartmentId, 'selectedCompanyId': selectedCompanyId }, //dataString,
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
+            $(targetElement + ' option').remove();
+            $(data).each(function () {
+                var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                $(targetElement).append(option);
+            });
+            debugger
+            $(targetElement).val(currentSelection == null ? "" : currentSelection);
+            $(targetElement).select2('destroy');
+            var placeHolderText = 'None';
+            /*currentSelection = currentSelection.filter(myFilter);*/
+            if ($('#CompanyId').val().length > 0) {
+                placeHolderText = 'All';
+            }
+            $(targetElement).select2({
+                placeholder: placeHolderText,
+                allowClear: true
+            });
+            
+            $(targetElement).select2("enable");
+        },
+        error: function (xhr, status, error) {
+            //displayErrorMessage('Error during retrieving Data:' + error);
+        }
+    });
+    }
+
+function LoadEmployeeType(currentSelection,selectedClientStr, targetElement) {
+    if (currentSelection == null || currentSelection.length == 0) {
+        currentSelection = $(targetElement).val();
+    }
+    $(targetElement).select2("enable", false);
+    $.ajax({
+        url: '/EmployeeType/AjaxGetEmployeeTypeByCompnay',
+        data: { 'companyIds': selectedClientStr }, //dataString,
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
+            $(targetElement + ' option').remove();
+            $(data).each(function () {
+                var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                $(targetElement).append(option);
+            });
+            debugger
+            $(targetElement).val(currentSelection == null ? "" : currentSelection);
+            $(targetElement).select2('destroy');
+            var placeHolderText = 'None';
+            /*currentSelection = currentSelection.filter(myFilter);*/
+            if ($('#CompanyId').val().length > 0) {
+                placeHolderText = 'All';
+            }
+            $(targetElement).select2({
+                placeholder: placeHolderText,
+                allowClear: true
+            });
+            
+            $(targetElement).select2("enable");
+        },
+        error: function (xhr, status, error) {
+            //displayErrorMessage('Error during retrieving Data:' + error);
+        }
+    });
+    }
+    function deleteNotificationEmail() {
+        $('#NotificationEmailAddressTypeId').val(null);
+        $("#btnAddEmployeeUserLogin").trigger("click");
+       
+    }
+function confirmDeleteUser() {
+    $("#divLoadingUserDelete").hide();
+    $('#confirmUserDelete_modal').modal('show');
+}
+function DeleteLoginEmail() {
+    var viewTypeJS = '@Model.ViewType';
+    var model = {
+
+        UserInformationId: $('#UserInformationId').val(),
+        Id: $('#UserContactInformationId__').val(),
+        LoginEmail: $('#LoginEmailAddressTypeId  :selected').text(),
+        ViewType: $('#txtViewType').val() + 'Register',
+        LockAccount : $('#LockAccount').is(':checked')
+    }
+
+$.ajax({
+    type: 'post',
+    url: '/UserInformation/DeleteLoginEmail',
+    data: JSON.stringify(model),
+    contentType: 'application/json; charset=utf-8',
+    dataType: "html",
+    success: function (html) {
+        $('#divEmployeeSystemAccess').html(html);
+
+        if ($('#userRegisterModal').length)
+            $('#userRegisterModal').modal('hide');
+        else
+            $('#myModal').modal('hide');
+        $('#confirmUserDelete_modal').modal('hide');
+        toastr.success(viewTypeJS + ' information updated successfully.', "Alert", { closeButton: true, positionClass: "toast-top-center", timeOut: 0, extendedTImeout: 0 });
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+        var responseText = jQuery.parseJSON(xhr.responseText)
+        var errorObject = jQuery.parseJSON(responseText.errors)
+
+        $.each(errorObject, function (idx, errorMessage) {
+            $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+        });
+    }
+});
+}
+function CloseConfirmationModal() {
+    $('#confirmUserDelete_modal').modal('hide');
+}
+    //function myFilter(elm) {
+    //    return (elm != null && elm !== false && elm !== "");
+    //}
+</script>
+
+<style>
+    .modal-dialog {
+        width: 50%;
+        max-width: 80% !important;
+    }
+</style>

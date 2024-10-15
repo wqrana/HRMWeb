@@ -1,0 +1,74 @@
+﻿@model TimeAide.Web.Models.NotificationScheduleDetail
+
+@{
+    ViewBag.Label = "Notification Schedule Detail";
+}
+<div id="NotificationScheduleDetailDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="NotificationScheduleDetailDeleteAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                @Html.HiddenFor(model => model.Id, new { id = "NotificationScheduleDetailId" })
+
+                <dl class="dl-horizontal">
+
+                    <dt>
+                        Days Before
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.DaysBefore)
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>
+                        Employee Group
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.SelectedNotificationEmployeeGroupNames)
+                    </dd>
+                </dl>
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteAppraisalRatingScaleDetail" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteAppraisalRatingScaleDetail").click(function () {
+            var id = $("#AppraisalRatingScaleDetailDeleteId").val();
+            deleteAppraisalRatingScaleDetail(id);
+        })
+
+    } );
+</script>
+
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>

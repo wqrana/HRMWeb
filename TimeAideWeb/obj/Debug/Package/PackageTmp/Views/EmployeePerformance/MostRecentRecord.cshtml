@@ -1,0 +1,123 @@
+﻿@model TimeAide.Web.Models.EmployeePerformance
+
+<div style="padding:0px;padding-top:0px;"> 
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-6 p-0">
+                <!-- <div class="panel panel-default" style="width:49%;margin-left:10px">-->
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">General</div>
+                    <div class="panel-body">
+                        @Html.Hidden("EmployeePerformanceDetailId", Model == null ? 0 : Model.Id)
+
+                        <div class="form-group row">
+
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Date:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+
+
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.ReviewDate);
+                                }
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Review By:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.Supervisor.FullName)</span>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Description:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.PerformanceDescription.PerformanceDescriptionName)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Document Name:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id="">   @Html.DisplayFor(model => model.DocName)</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                  </div>
+                </div>
+            <div class="col-md-6 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <!--<div class="panel panel-default" style="width:49%;margin-left:10px">-->
+                    <div class="panel-heading" style="padding-left:10px">Result</div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Result:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.PerformanceResult.PerformanceResultName)</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Action Taken:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.ActionTaken.ActionTakenName)</span>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Expiry Date:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.ExpiryDate);
+                                }
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Summary:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.ReviewSummary)</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Notes:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.ReviewNote)</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+</div>

@@ -1,0 +1,50 @@
+﻿@model TimeAide.Web.Models.ApplicantInterviewAnswer
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnswerName, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.AnswerName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AnswerName, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnswerMaxValue, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.AnswerMaxValue, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AnswerMaxValue, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnswerValue, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.AnswerValue, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AnswerValue, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    @Html.Partial("_CreatePageFooterView")
+</div>
+        }

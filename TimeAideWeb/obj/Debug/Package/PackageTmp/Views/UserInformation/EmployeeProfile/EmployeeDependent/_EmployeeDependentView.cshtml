@@ -1,0 +1,53 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.UserInformation
+<div class="card-body">
+    <h3 class="card-title">
+        Family Info
+        @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.EmployeeDependentPrivilege.AllowView)
+        {
+            <a href="#" class="edit-icon" onclick="btnEmployeeDependentChangeRequest(-1)"><i class="fa fa-pencil"></i></a>
+
+        }
+    </h3>
+    <div class="table-responsive">
+        <table class="table table-nowrap">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Relationship</th>
+                    <th>Date of Birth</th>
+                    <th>Phone</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var eachDependent in Model.EmployeeDependent)
+                {
+                    <tr>
+                        <td>@eachDependent.FirstName</td>
+                        <td>
+                            @if (eachDependent.Relationship != null)
+                            {
+                                <span>@eachDependent.Relationship.RelationshipName</span>
+                            }
+                        </td>
+                        <td>@String.Format("{0:MM/dd/yyyy}", eachDependent.BirthDate)</td>
+                        <td></td>
+                        <td class="text-right">
+                            @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.EmployeeDependentPrivilege.AllowView)
+                            {
+                                <a href="#" class="edit-icon" id="btnEmployeeDependentChangeRequest" onclick="btnEmployeeDependentChangeRequest(@eachDependent.Id)"><i class="fa fa-pencil"></i></a>
+                            }
+                            
+                            @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.EmployeeDependentPrivilege.AllowDelete)
+                            {
+                                <a href="#" class="delete-icon" data-toggle="modal" onclick="btnEmployeeDependentDeleteChangeRequest(@eachDependent.Id)"><i class="fa fa-trash"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

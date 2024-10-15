@@ -1,0 +1,759 @@
+﻿@using TimeAide.Web.Models
+@model TimeAide.Web.Models.BaseSchedule
+<div style="padding:5px; padding-top:0px;">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="panel panel-default mb-0" style="width:100%;margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Schedule Info.
+                    <div class="pull-right dropdown-action" style="height:20px;" id="generalInfoMenu">
+
+                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:createEditBaseSchedule(@Model.Id);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    @Html.Hidden("BaseScheduleDetailId", Model.Id)
+                    <div class="form-group row">
+                        <label class="col-md-1 col-form-label" style="margin-left:10px">
+                            Name:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.DisplayFor(model => model.Name)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Description:
+                        </label>
+                        <div class="col-md-4 text-muted mt-2">
+                            @Html.DisplayFor(model => model.Description)
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            No-Of-Punch:
+                        </label>
+                        <div class="col-md-2 text-muted mt-2">
+                            @Html.DisplayFor(model => model.NoOfPunch)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:0px">Total Schedule Hrs:</label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @Html.DisplayFor(m => m.TotalScheduleHours)
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:0px">All-Companies:</label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @{
+                                var IsAllCompanies = !Model.CompanyId.HasValue;
+                            }
+                            @Html.DisplayFor(m => IsAllCompanies)
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row mb-0">
+            <div class="panel panel-default mb-0" style="width:100%;margin-left:5px">
+                <div class="panel-heading" style="padding-left:10px">
+                    Day Info.
+                    <div class="pull-right dropdown-action" style="height:20px;" id="availInfoMenu">
+
+                        <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:createEditBaseSchedule(@Model.Id);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-sm custom-table table-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @{ 
+                                            var workingDayCls = "text-blue font-weight-bold";
+                                            var isWorkingDay = Model.IsSunday ? workingDayCls : "";
+                                        }
+                                        @Html.CheckBox("IsSundayShift", Model.IsSunday, new { @disabled = "disabled", @id = "IsSundayShiftChk" })
+                                        <span class="@isWorkingDay"> Sunday </span>
+                                        
+                                        <div>
+                                            @{
+                                                BaseScheduleDayInfo dayInfoSunday = Model.BaseScheduleDayInfos == null ? null : Model.BaseScheduleDayInfos.Where(w => w.DayOfWeek == 1).FirstOrDefault();
+                                            }
+                                            No-Of-Punch:<span class="pl-1" style="font-weight:lighter">@Html.DisplayFor(m => dayInfoSunday.NoOfPunch)</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        @{
+                                           
+                                           isWorkingDay = Model.IsMonday ? workingDayCls : "";
+                                        }
+                                        @Html.CheckBox("IsMondayShift", Model.IsMonday, new { @disabled = "disabled", @id = "IsMondayShiftChk" })
+
+                                        <span class="@isWorkingDay"> Monday </span>
+                                        <div>
+                                            @{
+                                                BaseScheduleDayInfo dayInfoMonday = Model.BaseScheduleDayInfos == null ? null : Model.BaseScheduleDayInfos.Where(w => w.DayOfWeek == 2).FirstOrDefault();
+                                            }
+                                            No-Of-Punch:<span class="pl-1" style="font-weight:lighter">@Html.DisplayFor(m => dayInfoMonday.NoOfPunch)</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsTuesdayShift", Model.IsTuesday, new { @disabled = "disabled", @id = "IsTuesdayShiftChk" })
+                                        @{
+
+                                            isWorkingDay = Model.IsTuesday ? workingDayCls : "";
+                                        }
+                                        <span class="@isWorkingDay"> Tuesday </span>
+                                        <div>
+                                            @{
+                                                BaseScheduleDayInfo dayInfoTuesday = Model.BaseScheduleDayInfos == null ? null : Model.BaseScheduleDayInfos.Where(w => w.DayOfWeek == 3).FirstOrDefault();
+                                            }
+                                            No-Of-Punch:<span class="pl-1" style="font-weight:lighter">@Html.DisplayFor(m => dayInfoTuesday.NoOfPunch)</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsWednesdayShift", Model.IsWednesday, new { @disabled = "disabled", @id = "IsWednesdayShiftChk" })
+                                        
+                                        @{
+
+                                            isWorkingDay = Model.IsWednesday ? workingDayCls : "";
+                                        }
+                                        <span class="@isWorkingDay"> Wednesday </span>
+                                        <div>
+                                            @{
+                                                BaseScheduleDayInfo dayInfoWednesday = Model.BaseScheduleDayInfos == null ? null : Model.BaseScheduleDayInfos.Where(w => w.DayOfWeek == 4).FirstOrDefault();
+                                            }
+                                            No-Of-Punch:<span class="pl-1" style="font-weight:lighter">@Html.DisplayFor(m => dayInfoWednesday.NoOfPunch)</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsThursdayShift", Model.IsThursday, new { @disabled = "disabled", @id = "IsWednesdayShiftChk" })
+                                        
+                                        @{
+
+                                            isWorkingDay = Model.IsThursday ? workingDayCls : "";
+                                        }
+                                        <span class="@isWorkingDay"> Thursday </span>
+                                        <div>
+                                            @{
+                                                BaseScheduleDayInfo dayInfoThursday = Model.BaseScheduleDayInfos == null ? null : Model.BaseScheduleDayInfos.Where(w => w.DayOfWeek == 5).FirstOrDefault();
+                                            }
+                                            No-Of-Punch:<span class="pl-1" style="font-weight:lighter">@Html.DisplayFor(m => dayInfoThursday.NoOfPunch)</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsFridayShift", Model.IsFriday, new { @disabled = "disabled", @id = "IsFridayShiftChk" })
+                                        @{
+
+                                            isWorkingDay = Model.IsFriday ? workingDayCls : "";
+                                        }
+                                        <span class="@isWorkingDay"> Friday </span>
+                                        
+                                        <div>
+                                            @{
+                                                BaseScheduleDayInfo dayInfoFriday = Model.BaseScheduleDayInfos == null ? null : Model.BaseScheduleDayInfos.Where(w => w.DayOfWeek == 6).FirstOrDefault();
+                                            }
+                                            No-Of-Punch:<span class="pl-1" style="font-weight:lighter">@Html.DisplayFor(m => dayInfoFriday.NoOfPunch)</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("IsSaturdayShift", Model.IsSaturday, new { @disabled = "disabled", @id = "IsSaturdayShiftChk" })
+                                        
+                                        @{
+
+                                            isWorkingDay = Model.IsSaturday ? workingDayCls : "";
+                                        }
+                                        <span class="@isWorkingDay"> Saturday </span>
+                                        <div>
+                                            @{
+                                                BaseScheduleDayInfo dayInfoSaturday = Model.BaseScheduleDayInfos == null ? null : Model.BaseScheduleDayInfos.Where(w => w.DayOfWeek == 6).FirstOrDefault();
+                                            }
+                                            No-Of-Punch:<span class="pl-1" style="font-weight:lighter">@Html.DisplayFor(m => dayInfoSaturday.NoOfPunch)</span>
+                                        </div>
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+                            <tr>
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <th>In 1</th>
+                                            <td>
+                                                @{
+                                                    var timeInOut = "";
+                                                    timeInOut = dayInfoSunday == null ? "" : dayInfoSunday.TimeIn1.Value.ToString("h:mm tt");
+                                                }
+                                                @timeInOut
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoSunday == null ? "" : dayInfoSunday.TimeOut1.Value.ToString("h:mm tt");
+                                                    if (dayInfoSunday != null)
+                                                    {
+                                                        if (dayInfoSunday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>In 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoSunday == null ? "" : dayInfoSunday.TimeIn2.Value.ToString("h:mm tt");
+                                                    if (dayInfoSunday != null)
+                                                    {
+                                                        if (dayInfoSunday.NoOfPunch == 2 || dayInfoSunday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoSunday == null ? "" : dayInfoSunday.TimeOut2.Value.ToString("h:mm tt");
+                                                    if (dayInfoSunday != null)
+                                                    {
+                                                        if (dayInfoSunday.NoOfPunch == 2 || dayInfoSunday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-primary" style="font-style:italic">
+                                            <th>Hrs</th>
+                                            <td>
+                                                @{
+                                                    var shiftHours = dayInfoSunday == null ? 0 : dayInfoSunday.ShiftHours;
+                                                }
+                                                @shiftHours
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <th>In 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoMonday == null ? "" : dayInfoMonday.TimeIn1.Value.ToString("h:mm tt");
+                                                }
+                                                @timeInOut
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoMonday == null ? "" : dayInfoMonday.TimeOut1.Value.ToString("h:mm tt");
+                                                    if (dayInfoMonday != null)
+                                                    {
+                                                        if (dayInfoMonday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>In 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoMonday == null ? "" : dayInfoMonday.TimeIn2.Value.ToString("h:mm tt");
+                                                    if (dayInfoMonday != null)
+                                                    {
+                                                        if (dayInfoMonday.NoOfPunch == 2 || dayInfoMonday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoMonday == null ? "" : dayInfoMonday.TimeOut2.Value.ToString("h:mm tt");
+                                                    if (dayInfoMonday != null)
+                                                    {
+                                                        if (dayInfoMonday.NoOfPunch == 2 || dayInfoMonday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-primary" style="font-style:italic">
+                                            <th>Hrs</th>
+                                            <td>
+                                                @{
+                                                    shiftHours = dayInfoMonday == null ? 0 : dayInfoMonday.ShiftHours;
+                                                }
+                                                @shiftHours
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <th>In 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoTuesday == null ? "" : dayInfoTuesday.TimeIn1.Value.ToString("h:mm tt");
+                                                }
+                                                @timeInOut
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoTuesday == null ? "" : dayInfoTuesday.TimeOut1.Value.ToString("h:mm tt");
+                                                    if (dayInfoTuesday != null)
+                                                    {
+                                                        if (dayInfoTuesday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>In 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoTuesday == null ? "" : dayInfoTuesday.TimeIn2.Value.ToString("h:mm tt");
+                                                    if (dayInfoTuesday != null)
+                                                    {
+                                                        if (dayInfoTuesday.NoOfPunch == 2 || dayInfoTuesday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoTuesday == null ? "" : dayInfoTuesday.TimeOut2.Value.ToString("h:mm tt");
+                                                    if (dayInfoTuesday != null)
+                                                    {
+                                                        if (dayInfoTuesday.NoOfPunch == 2 || dayInfoTuesday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-primary" style="font-style:italic">
+                                            <th>Hrs</th>
+                                            <td>
+                                                @{
+                                                    shiftHours = dayInfoTuesday == null ? 0 : dayInfoTuesday.ShiftHours;
+                                                }
+                                                @shiftHours
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <th>In 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoWednesday == null ? "" : dayInfoWednesday.TimeIn1.Value.ToString("h:mm tt");
+                                                }
+                                                @timeInOut
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoWednesday == null ? "" : dayInfoWednesday.TimeOut1.Value.ToString("h:mm tt");
+                                                    if (dayInfoWednesday != null)
+                                                    {
+                                                        if (dayInfoWednesday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>In 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoWednesday == null ? "" : dayInfoWednesday.TimeIn2.Value.ToString("h:mm tt");
+                                                    if (dayInfoWednesday != null)
+                                                    {
+                                                        if (dayInfoWednesday.NoOfPunch == 2 || dayInfoWednesday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoWednesday == null ? "" : dayInfoWednesday.TimeOut2.Value.ToString("h:mm tt");
+                                                    if (dayInfoWednesday != null)
+                                                    {
+                                                        if (dayInfoWednesday.NoOfPunch == 2 || dayInfoWednesday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-primary" style="font-style:italic">
+                                            <th>Hrs</th>
+                                            <td>
+                                                @{
+                                                    shiftHours = dayInfoWednesday == null ? 0 : dayInfoWednesday.ShiftHours;
+                                                }
+                                                @shiftHours
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <th>In 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoThursday == null ? "" : dayInfoThursday.TimeIn1.Value.ToString("h:mm tt");
+                                                }
+                                                @timeInOut
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoThursday == null ? "" : dayInfoThursday.TimeOut1.Value.ToString("h:mm tt");
+                                                    if (dayInfoThursday != null)
+                                                    {
+                                                        if (dayInfoThursday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>In 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoThursday == null ? "" : dayInfoThursday.TimeIn2.Value.ToString("h:mm tt");
+                                                    if (dayInfoThursday != null)
+                                                    {
+                                                        if (dayInfoThursday.NoOfPunch == 2 || dayInfoThursday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoThursday == null ? "" : dayInfoThursday.TimeOut2.Value.ToString("h:mm tt");
+                                                    if (dayInfoThursday != null)
+                                                    {
+                                                        if (dayInfoThursday.NoOfPunch == 2 || dayInfoThursday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-primary" style="font-style:italic">
+                                            <th>Hrs</th>
+                                            <td>
+                                                @{
+                                                    shiftHours = dayInfoThursday == null ? 0 : dayInfoThursday.ShiftHours;
+                                                }
+                                                @shiftHours
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <th>In 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoFriday == null ? "" : dayInfoFriday.TimeIn1.Value.ToString("h:mm tt");
+                                                }
+                                                @timeInOut
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoFriday == null ? "" : dayInfoFriday.TimeOut1.Value.ToString("h:mm tt");
+                                                    if (dayInfoFriday != null)
+                                                    {
+                                                        if (dayInfoFriday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>In 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoFriday == null ? "" : dayInfoFriday.TimeIn2.Value.ToString("h:mm tt");
+                                                    if (dayInfoFriday != null)
+                                                    {
+                                                        if (dayInfoFriday.NoOfPunch == 2 || dayInfoFriday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoFriday == null ? "" : dayInfoFriday.TimeOut2.Value.ToString("h:mm tt");
+                                                    if (dayInfoFriday != null)
+                                                    {
+                                                        if (dayInfoFriday.NoOfPunch == 2 || dayInfoFriday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-primary" style="font-style:italic">
+                                            <th>Hrs</th>
+                                            <td>
+                                                @{
+                                                    shiftHours = dayInfoFriday == null ? 0 : dayInfoFriday.ShiftHours;
+                                                }
+                                                @shiftHours
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <th>In 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoSaturday == null ? "" : dayInfoSaturday.TimeIn1.Value.ToString("h:mm tt");
+                                                }
+                                                @timeInOut
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 1</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoSaturday == null ? "" : dayInfoSaturday.TimeOut1.Value.ToString("h:mm tt");
+                                                    if (dayInfoSaturday != null)
+                                                    {
+                                                        if (dayInfoSaturday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>In 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoSaturday == null ? "" : dayInfoSaturday.TimeIn2.Value.ToString("h:mm tt");
+                                                    if (dayInfoSaturday != null)
+                                                    {
+                                                        if (dayInfoSaturday.NoOfPunch == 2 || dayInfoSaturday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Out 2</th>
+                                            <td>
+                                                @{
+                                                    timeInOut = "";
+                                                    timeInOut = dayInfoSaturday == null ? "" : dayInfoSaturday.TimeOut2.Value.ToString("h:mm tt");
+                                                    if (dayInfoSaturday != null)
+                                                    {
+                                                        if (dayInfoSaturday.NoOfPunch == 2 || dayInfoSaturday.NoOfPunch == 1)
+                                                        {
+                                                            timeInOut = "";
+                                                        }
+                                                    }
+                                                }
+                                                @timeInOut
+
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-primary" style="font-style:italic">
+                                            <th>Hrs</th>
+                                            <td>
+                                                @{
+                                                    shiftHours = dayInfoSaturday == null ? 0 : dayInfoSaturday.ShiftHours;
+                                                }
+                                                @shiftHours
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+
+</script>
+

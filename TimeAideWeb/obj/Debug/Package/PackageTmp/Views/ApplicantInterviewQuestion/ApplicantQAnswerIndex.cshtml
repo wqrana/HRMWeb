@@ -1,0 +1,187 @@
+﻿@model TimeAide.Web.Models.ApplicantInterviewQuestion
+<div id="applicantQAIndex_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Answer List</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">@Html.DisplayNameFor(m => m.QuestionName): <span class="text-danger"></span></label>
+                            <div class="col-md-10 mt-2 text-muted">
+                                @Html.DisplayFor(model => model.QuestionName)
+                            </div>
+
+                        </div>
+
+                        <div id="" class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:10px">
+                                Answer Option(s)
+                                <div class="pull-right dropdown-action" style="height:20px;">
+
+                                    <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                        <a id="" href="javascript:createEditAnswerOption(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="divLoadingQAList" class="align-content-md-center">
+                                    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                                </div>
+                                <div id="divQuestionAnswerList">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">                   
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divCreateEditAnswerOption">    
+</div>
+<script>   
+
+    $(document).ready(function () {
+        $("#divLoadingQAList").hide();
+        getApplicantQAnswerList(@Model.Id);
+    });
+       
+    function getApplicantQAnswerList(questionId) {
+        debugger;
+        $("#divLoadingQAList").show();
+        $.ajax({
+            type: "get",
+            url: '/ApplicantInterviewQuestion/ApplicantQAnswerList',
+            data: { "id": questionId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divQuestionAnswerList").html(data);
+                $("#divLoadingQAList").hide();
+            },
+            error: function () {
+                alert("Error Loading ajax List");
+            }
+        });
+    }
+    function createEditAnswerOption(id) {
+        
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/ApplicantInterviewQuestion/ApplicantQAnswerCreateEdit',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditAnswerOption").html(data);
+                $("#applicantQAnswerCreateEdit_modal").modal("show");
+
+            },
+            error: function () {
+                alert("Error Loading ajax List");
+            }
+        });
+    }
+    function saveApplicantQAnswerOption(dataObject) {
+        dataObject.ApplicantInterviewQuestionId = @Model.Id;
+        if (dataObject != null) {
+
+            $.ajax({
+                type: "POST",
+                url: "/ApplicantInterviewQuestion/ApplicantQAnswerCreateEdit",
+                data: JSON.stringify(dataObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#applicantQAnswerCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        getApplicantQAnswerList(dataObject.ApplicantInterviewQuestionId);
+                    }
+                    else {
+                        showAlertAutoHide('', data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+    function getAnswerOptionDeleteData(id) {
+
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/ApplicantInterviewQuestion/ApplicantQAnswerDelete',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditAnswerOption").html(data);
+                $("#applicantQAnswerDelete_modal").modal("show");
+
+            },
+            error: function () {
+                alert("Error Loading ajax List");
+            }
+        });
+    }
+    function deleteAnswerOption(id) {
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/ApplicantInterviewQuestion/ApplicantQAnswerConfirmDelete",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#applicantQAnswerDelete_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        getApplicantQAnswerList(@Model.Id);
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide("", "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+</script>
+
+
+

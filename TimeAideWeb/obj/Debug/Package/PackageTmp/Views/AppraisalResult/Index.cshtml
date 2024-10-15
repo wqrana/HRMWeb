@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TimeAide.Web.Models.AppraisalResult>
+@Html.Partial("_IndexPageHeaderView")
+
+<thead>
+    <tr>
+        <th>Action</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResultName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResultDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td width="7%">
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+        <td>
+            @* @Html.DisplayFor(modelItem => item.Id)*@
+            <a href="javascript:void(0);" id="anchorDetail" data-id="@item.Id">@item.Id</a>
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResultName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResultDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+    </tr>
+    }
+</tbody>
+    @Html.Partial("_IndexPageFooterView")
+

@@ -1,0 +1,390 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeDocument>
+<div style="font-size: 90%;">
+    <div class="form-group row" style="margin:0px">
+        <div class="panel panel-default" style="width:100%;">
+            <div class="panel-heading" style="padding-left:10px">
+                <div class="row">
+                    <div class="col-md-6">
+                        Documents
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <table class="table" id="tblEmployeeDocumentsIndex">
+                    <thead>
+                        <tr>
+                            <th>
+                                Document
+                            </th>
+                            <th>
+                                Document Name
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DocumentNote)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExpirationDate)
+                            </th>
+                            <th>
+                                Submited
+                            </th>
+                            <th>
+                                Submission Date
+                            </th>
+                            <th>
+                                Record
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Document.DocumentName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DocumentName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DocumentNote)
+                                </td>
+                                <td>
+                                    @if (item.Document.IsExpirable)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.ExpirationDate)
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!String.IsNullOrEmpty(item.DocumentPath))
+                                    {
+                                        <div>Yes</div>
+                                    }
+                                    else
+                                    {
+                                        <div>No</div>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.SubmissionDate.HasValue)
+                                    {
+                                        <div>@String.Format("{0:MM/dd/yyyy}", item.SubmissionDate)</div>
+                                    }
+                                    else
+                                    {
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Document != null && item.Document.DocumentRequiredBy != null)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.Document.DocumentRequiredBy.DocumentRequiredByName)
+                                    }
+                                </td>
+                                <td>
+                                    @if ((ViewBag.AllowAdd || ViewBag.AllowEdit))
+                                    {
+                                        <div class="pull-right dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                                @if (@item.Id > 0)
+                                                {
+                                                    <a a href="javascript:;" data-toggle="modal" onclick="fnEditEmployeeDocument(@item.Id,@item.DocumentId,@item.UserInformationId);" id="anchorEditEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    <a a href="javascript:;" data-toggle="modal" onclick="fnDeleteEmployeeDocument(@item.Id);" id="anchorDeleteEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-trash m-r-5"></i> Clear</a>
+                                                }
+                                                else
+                                                {
+                                                    <a a href="javascript:;" data-toggle="modal" onclick="fnEditEmployeeDocument(@item.Id,@item.DocumentId,@item.UserInformationId);" id="anchorEditEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Submit</a>
+                                                }
+                                                @if (!string.IsNullOrEmpty(item.DocumentPath))
+                                                {
+                                                    <a href="javascript:downloadDocument(@item.Id)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Document</a>
+                                                }
+                                                <a href="javascript:getEmployeeDocumentUploadHistory(@item.Id,@item.DocumentId)" class="dropdown-item"><i class="fa fa-file m-r-5"></i> Upload History</a>
+                                                @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                                {
+                                                    <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                    @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divDocumentUpoadHistory">
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var indexColumns = $("#tblEmployeeDocumentsIndex > thead > tr:first > th").length;
+        //alert(indexColumns);
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns - 2; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        //alert(exportColumns);
+
+        debugger
+        var fileNameAndTitle = 'Employee Document - Checklist';
+        var fileTitle = $('#ShortFullNameSpan').text();
+        $('#tblEmployeeDocumentsIndex').DataTable({
+            searching: false,
+            sDom: '<"top"i>rt<"bottom"flp><"clear">',
+            /*"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],*/
+            "bLengthChange": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+
+                    extend: 'excelHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileNameAndTitle,
+                    title: fileTitle,
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                //{
+                //    extend: 'pageLength',
+                //    className: 'btn-primary',
+                //},
+            ],
+        });
+    });
+</script>
+<script>
+    function fnDeleteEmployeeDocument(id) {
+
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDocument/Delete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnDeleteEmploymentDocument").click(function (e) {
+                    var model = {
+                        Id: id,
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmployeeDocument/Delete',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divEmployeeDocument').html(html);
+                            //fnMostRecentEmploymentHistory($('#UserInformationId').val());
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (jqXHR, exception) {
+                            alert("Error - Dynamic content load failed.");
+                            alert('Uncaught Error.\n' + jqXHR.responseText);
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+    function fnAddEmploymentDocument(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDocument/AddByUser',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnEditEmployeeDocument(id, documentId, userInformationId) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDocument/EditEmployeeDocument',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id, "documentId": documentId, "userInformationId": userInformationId },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function getUserEmployeeDocView(educationId) {
+        debugger;
+        var id = educationId == null ? $("#EmployeeEducationDetailId").val() : educationId;
+        if (id != 0) {
+
+            $.ajax({
+                type: "get",
+                url: '/EmployeeDocument/UploadDocument',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                }
+            });
+        }
+        else {
+            showAlertAutoHide("#userDetailAlert", "Error", "Record doesn't exists!");
+        }
+    }
+    function downloadDocument(id) {
+        debugger;
+        //var id = $('#userID').val();
+        $.ajax({
+            url: "/EmployeeDocument/AjaxCheckDocument",
+            type: "POST",
+            data: {
+                "userID": id
+            },
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    //$("#processing-spinner").hide();
+                    window.location.href = "/EmployeeDocument/DownloadDocument/" + id;
+                }
+                else {
+                    showAlertAutoHide('#userDetailAlert', data.status, data.message);
+                }
+            }
+            ,
+            error: function (data) {
+                showAlertDismissable("#userDetailAlert", "Error", data);
+
+            }
+        });
+
+    }
+    function getEmployeeDocumentUploadHistory(employeeDocumentId, documentId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDocument/EmployeeDocumentUploadHistory',
+            data: { "id": employeeDocumentId, "documentId": documentId },
+            success: function (data) {
+                debugger;
+                $("#divDocumentUpoadHistory").html(data);
+                $("#DocumentUpoadHistory_modal").modal("show");
+            },
+            error: function () {
+            }
+        });
+    }
+</script>
+
+<style type="text/css">
+    .panel {
+        margin-bottom: 20px !important;
+        background-color: #ffffff !important;
+        border: 1px solid transparent !important;
+        border-color: #ddd !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .panel-heading {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+</style>

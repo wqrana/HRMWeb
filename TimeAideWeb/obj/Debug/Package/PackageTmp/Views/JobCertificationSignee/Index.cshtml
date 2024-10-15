@@ -1,0 +1,169 @@
+﻿@model IEnumerable<TimeAide.Web.Models.JobCertificationSignee>
+
+@Html.Partial("_IndexPageHeaderView")
+
+<thead>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Position)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.Signature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th>Action</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Position)
+        </td>
+
+        <td>
+            @if (item.Signature != null && item.Signature.Length > 0)
+            {
+                var base64 = Convert.ToBase64String(item.Signature);
+                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                <img src='@imgsrc' style="max-width:150px;max-height:75px" class="thumbnail" />
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<script>
+
+    function fnSaveJobCertificationSignee(actionMethod, droppedFiles) {
+        debugger;
+        var $buttonClicked = $(this);
+        var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        var model = {
+            Id : $('#Id').val(),
+            Name: $('#Name').val(),
+            Position: $('#Position').val(),
+            IsAllCompanies: $('#IsAllCompaniesAE').is(":checked")
+        }
+        if(model.Name.trim().length == 0) {
+            showAlertAutoHide("", "Error", "Missing Required field(s).");
+            return;
+        }
+        var formData = new FormData();
+        formData.append("JobCertificationSigneeId", model.Id == "" ? 0 : model.Id);
+        formData.append("Name", model.Name);
+        formData.append("Position", model.Position);
+        formData.append("IsAllCompanies", model.IsAllCompanies);
+        let isValid=true;
+        var totalFiles = document.getElementById("uploadSignature").files.length;
+
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadSignature").files[0];
+            if (file.size > 51200) {
+                showAlertAutoHide("", "Error", "File size is exceeding the 50KB limit.");
+                isValid=false;
+            }
+            formData.append("SignatureFile", file);
+        }
+        else if (droppedFiles) {
+            Array.prototype.forEach.call(droppedFiles, function (eachFile) {
+                if (eachFile.size > 51200) {
+                    showAlertAutoHide("", "Error", "File size is exceeding the 50KB limit.");
+                    isValid = false;
+                }
+                formData.append("SignatureFile", eachFile);
+            });
+        }
+        if (!isValid)
+            return;
+
+        $.ajax({
+            type: "post",
+            url: '/JobCertificationSignee/AjaxCreateOrEdit',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    $('#myModal').modal('hide');
+                   // uploadSignature(data.id);
+                    setTimeout(function () { location.reload(true); }, 1000);
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function uploadSignature(id) {
+        debugger;
+        var formData = new FormData();
+        formData.append("JobCertificationSigneeId", id);
+
+        var totalFiles = document.getElementById("uploadSignature").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadSignature").files[0];
+            formData.append("SignatureFile", file);
+            $.ajax({
+                type: "POST",
+                url: '/JobCertificationSignee/UploadSignature',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                    }
+                    else {
+                    }
+                },
+                error: function (error) {
+                }
+            });
+
+        }
+    }
+</script>
+
+<style>
+    .thumbnail:hover {
+        position: relative;
+        top: -25px;
+        left: -35px;
+        width: 500px;
+        height: 500px;
+        display: block;
+        z-index: 999;
+    }
+</style>

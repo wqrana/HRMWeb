@@ -1,0 +1,118 @@
+﻿@model TimeAide.Web.Models.EmployeeIncident
+
+<div id="EmployeeIncidentInjuryEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;"> Incident Injury Detail - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="employeeIncidentInjuryEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.Hidden("EmployeeIncidentId", Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label">OSHA Injury Classification:</label>
+                            <div class="col-md-6">
+                                @Html.DropDownList("OSHAInjuryClassificationId", null, "Please Select", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label">Affected Body Part:</label>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    @Html.DropDownList("IncidentBodyPartId", null, "Please select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label">Injury/Illness Description:</label>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    @Html.DropDownList("IncidentInjuryDescriptionId", null, "Please select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label">Injury/Illness Source:</label>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    @Html.DropDownList("IncidentInjurySourceId", null, "Please select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label"> Date of Death, If:<span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.DateOfDeath, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label"> Restricted From Work, Days:<span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.RestrictedFromWorkDays, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label"> Away From Work, Days:<span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.AwayFromWorkDays, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEmployeeIncidentInjury" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        //$('*[id*=Date]').each(function () {
+        //    $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        //});      
+        $('#DateOfDeath').datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#btnSaveEmployeeIncidentInjury").click(function () {
+            saveEmployeeIncidentInjuryData();
+        });
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        }); 
+    });
+
+</script>
+
+

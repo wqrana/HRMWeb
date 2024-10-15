@@ -1,0 +1,31 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PayType>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PayTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayTypeDescription)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayTypeDescription)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

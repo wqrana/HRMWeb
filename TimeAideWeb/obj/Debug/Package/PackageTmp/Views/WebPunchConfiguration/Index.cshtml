@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TimeAide.Web.Models.WebPunchConfiguration>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PunchServiceUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PunchServiceCompanyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.APIKey)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PunchServiceCompanyPassword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UseGPSCoordinates)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UseJobCode)
+        </th>
+        <th>Action</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PunchServiceUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PunchServiceCompanyId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.APIKey)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PunchServiceCompanyPassword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UseGPSCoordinates)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UseJobCode)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+

@@ -1,0 +1,1027 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@model TimeAide.Web.ViewModel.CompanyPortalViewModel
+@{
+    ViewBag.Title = "Company Portal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+   
+    .companyportal-img-wrap.edit-img {
+        border-radius: 5%;
+        margin: 0px;
+        position: relative;
+    }
+
+    .companyportal-img-wrap {
+        height: 100px;
+        position: absolute;
+        width: 175px;
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .messagetd {
+        width: 60px;
+        max-height: 10px;
+    }
+    video {
+        width: 100%;
+        height: 180px;
+    }
+    iframe {
+        width: 100%;
+        height: 180px;
+    } 
+</style>
+<link href="~/Content/Themes/assets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/summernote/dist/summernote.js"></script>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Company Portal</h3>
+
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="welcome-box mb-1 pb-1">
+            @*<div class="welcome-img">
+                    <img alt="" src="/Content/Themes/assets/img/logo.png">
+                </div>*@
+            <div class="companyportal-img-wrap edit-img">
+                <!--<img class="inline-block" src="~/Images/no-profile-image.jpg" alt="user" id="profileMainPicture" >-->
+                @Html.HiddenFor(m => m.IsDefaultCompanyProfilePicture)
+                @Html.HiddenFor(m => m.DefaultProfilePictureCompanyId)
+               
+                <img class="inline-block" src="@Model.CompanyProfilePicture" alt="No_Logo" id="companyPortalPicture" style="border-radius:5%;height:100px;width:175px;">
+                @if (Model.IsPortalAdmin || SecurityHelper.IsSuperAdmin)
+                {
+                    <div class="fileupload btn pt-0" style="right:10px;">
+                        <a href="" class="btn-text fa fa-pencil" data-toggle="modal" data-target="#upload_cmportalpicture_modal" title="Edit Picture"></a>
+                    </div>
+                }
+            </div>
+            <div class="welcome-det">
+                @*<h3>@Html.DisplayFor(m => m.CompanyName)</h3>*@
+                @* <p>Welcome to the @Html.DisplayFor(m => m.CompanyName) portal </p>*@
+                @*@Html.HiddenFor(m => m.PortalWelcomeStatement, new { id = "hdPortalWelcomeStatement" })
+                    <div style="max-width:800px; max-height:90px; overflow-y:auto" id="txtWelcomeStatement">@Html.Raw( Model.PortalWelcomeStatement) </div>
+                    @if (Model.IsPortalAdmin || SecurityHelper.IsSuperAdmin)
+                    {
+                        <a href="javascript:editCompanyPortalStatement()"><span class="fa fa-pencil pull-right" title="Edit Description"></span></a>
+                    }*@
+                @{
+                    var selfServicePrivileges = TimeAide.Services.RoleFormPrivilegeService.GetFormPrivileges("SelfService");
+                    var dashboardPrivileges = TimeAide.Services.RoleFormPrivilegeService.GetFormPrivileges("Dashboard");
+                }
+                @if (selfServicePrivileges.AllowAdd || selfServicePrivileges.AllowAdd)
+                {
+                    <div class="pl-3">
+                        <h4> Quick Links</h4>
+
+                        @if (SecurityHelper.IsUser && selfServicePrivileges.AllowAdd)
+                        {<p>
+                                <i class="fa fa-user-circle text-success mr-2"></i><a href="/UserDashboard/MyDashboard" style="font-size:smaller;">
+                                    Self Service
+                                </a>
+                            </p>
+                        }
+                        else
+                        {
+                            if (selfServicePrivileges.AllowAdd)
+                            {
+                                <p>
+                                    <i class="fa fa-user text-secondary mr-2"></i><a href="/UserDashboard/MyDashboard" style="font-size:smaller;">
+                                        Self Service
+                                    </a>
+                                </p>
+                            }
+                            if (dashboardPrivileges.AllowAdd)
+                            {
+                                <p>
+                                    <i class="la la-dashboard text-secondary mr-2"></i><a href="/UserDashboard/Index" style="font-size:smaller;">
+                                        Dashboard
+                                    </a>
+                                </p>
+                            }
+
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row p-0">
+    <div class="col-md-5 d-flex pl-0">
+        <div class="card flex-fill">
+            <div class="card-body pb-0 pr-2">
+                @if (Model.IsPortalAdmin || SecurityHelper.IsSuperAdmin)
+                {
+                    <a href="javascript:editCompanyPortalStatement()"><span class="fa fa-pencil pull-right" style="font-size:smaller;" title="Edit Description"></span></a>
+                }
+                <h4 class="card-title" style="margin-left:-10px;margin-right:-10px;">
+                    Company Statement
+
+                </h4>
+                @Html.HiddenFor(m => m.DefaultPortalStatementCompanyId)
+                @Html.HiddenFor(m => m.IsDefaultCompanyPortalStatement)
+                @Html.HiddenFor(m => m.PortalWelcomeStatement, new { id = "hdPortalWelcomeStatement" })
+                <div style="max-height:500px; overflow-y:auto" id="txtWelcomeStatement">@Html.Raw(Model.PortalWelcomeStatement) </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-7 pl-0 pr-0">
+        <div class="row p-0">
+            @{ 
+
+               
+                var showBanner = (SecurityHelper.IsSuperAdmin || TimeAide.Services.ApplicationConfigurationService.GetConfigurationStatus("ShowCompanyMediaBanner"));
+                var announcementSelectionSize = showBanner ? "col-md-7" : "col-md-12";
+            }
+            @if (showBanner)
+            {
+            <div class="col-md-5 d-flex pl-0 pr-1">
+                <div class="card card-table flex-fill mb-2">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0 pull-left">Media</h3>
+                        @if (TimeAide.Services.ApplicationConfigurationService.GetConfigurationStatus("ShowCompanyMedia"))
+                        {
+                          <a href="\CompanyMedia\Index" class="ml-2 fa fa-eye" title="Show Media"></a>
+
+                        <div class="pull-right dropdown-action">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="\CompanyMedia\Index" class="dropdown-item"><i class="fa fa-eye m-r-5"></i>Show Media</a>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    <div class="card-body p-1">
+                        <div class="align-content-center">
+                            @if (Model.CompanyMediaType == "F")
+                            {
+                                if (String.IsNullOrEmpty(Model.CompanyDefaultMediaPosterPath))
+                                {
+                                <video controls controlsList="nodownload" preload="auto" id="defaultMedia">
+                                    <source src="@Model.CompanyDefaultMediaPath" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                }
+                                else
+                                {
+                                <video controls controlsList="nodownload" preload="auto" id="defaultMedia" poster="@Model.CompanyDefaultMediaPosterPath">
+                                    <source src="@Model.CompanyDefaultMediaPath" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                }
+                            }
+                            @if (Model.CompanyMediaType == "L")
+                            {
+                                <iframe src="@Model.CompanyDefaultMediaPath" allow="autoplay" allowfullscreen></iframe>
+                            }
+
+                            <h5>
+                                @Model.CompanyDefaultMediaTitle
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            <div class="@announcementSelectionSize d-flex pl-0 pr-0">
+                <div class="card card-table flex-fill mb-2">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0 pull-left"> Announcements</h3>
+                        @if (Model.IsPortalAdmin || SecurityHelper.IsSuperAdmin)
+                        {
+                            <div class="pull-right dropdown-action">
+                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:createEditCompanyAnnouncement(0)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i>Add Announcement</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div id="divLoadingAnnouncementList" class="align-content-md-start">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                        </div>
+                        <div id="divCompanyAnnouncementList" style="max-height:300px; overflow-y:auto">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6 d-flex pl-0 pr-1">
+                <div class="card card-table flex-fill">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0 pull-left">Links</h3>
+                        @if (Model.IsPortalAdmin || SecurityHelper.IsSuperAdmin)
+                        {
+                            <div class="pull-right dropdown-action">
+                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:addEditCompanyConfigurableLink(0)" class="dropdown-item"><i class="fa fa-plus m-r-5"></i>Add Link</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div id="divLoadingCompanyConfigurableLinkList" class="align-content-md-start">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                        </div>
+                        <div id="divCompanyConfigurableLinkList" style="max-height:270px; overflow-y:auto">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex pl-0 pr-0">
+                <div class="card card-table flex-fill">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0 pull-left" id="notificationTypeList">Documents</h3>
+                        @if (Model.IsPortalAdmin || SecurityHelper.IsSuperAdmin)
+                        {
+                            <div class="pull-right dropdown-action">
+                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:addEditCompanyDocument(0)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i>Upload Document</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div id="divLoadingCompanyDocumentList" class="align-content-md-start">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                        </div>
+                        <div id="divCompanyDocumentList" style="max-height:270px; overflow-y:auto">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+            @Html.Partial("AddEditCompanyDocument")
+            @Html.Partial("UploadCompanyPortalPicture")
+            @{ var modelCAObj = new TimeAide.Web.ViewModel.CompanyAnnouncementViewModel();
+                var modelCPObj = new TimeAide.Web.ViewModel.CompanyPortalViewModel();
+                Html.RenderPartial("CreateEditCompanyAnnouncement", modelCAObj);
+                Html.RenderPartial("EditCompanyPortalStatement", modelCPObj);
+            }
+
+
+            <div id="divCompanyPortalPopup">
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#defaultMedia').bind('contextmenu', function () { return false; });
+        //$(window).scroll(function () {
+
+        //    debugger;
+        //    var media = document.getElementById("defaultMedia");
+        //    media.paused ? media.play() : media.pause();
+        //});
+
+        initRichTextEditor();
+
+        //setTimeout(function () {
+        //    $('div.note-popover').css("display", "none");
+        //    //$('div.note-popover').each(function () {
+        //    //    $(this).css("display", "none");
+        //    //});
+        //}, 100);
+        getCompanyAnnouncementList();
+        getCompanyDocumentList();
+        getCompanyConfigurableLinkList();
+        $('#btnSaveCompanyPortalStatement').click(function () {
+            saveCompanyPortalStatement();
+        });
+        $('#btnSaveCompanyAnnouncement').click(function () {
+            saveCompanyAnnouncementData();
+        });
+        $('#btnSaveCompanyDocument').click(function () {
+            saveCompanyDocumentData();
+        });
+
+        //on shown
+        $("#upload_cmportalpicture_modal").on('shown.bs.modal', function () {
+            debugger;
+            clearPPFileSelection();
+            document.getElementById("companyPortalPictureUpload").value = null;
+            var src = $('#companyPortalPicture').attr("src");
+            $('#companyPortalImageEdit').attr("src", src);
+            var isDefaultProfile = $("#IsDefaultCompanyProfilePicture").val();
+            if (isDefaultProfile == "True") {
+                $("#IsDefaultCompanyProfilePictureEdit").prop("checked", true);
+            }
+            else {
+                $("#IsDefaultCompanyProfilePictureEdit").prop("checked", false);
+            }
+        });
+
+        $("#companyPortalPictureUpload").change(function () {
+            debugger;
+            var file = $(this)[0].files[0];
+            console.log(file.name);
+            showSelectedImage(this);
+        });
+        $('#btnUploadPic').click(function () {
+            uploadCompanyPortalPicture();
+        });
+        //$('#btnDeletePicture').click(function () {
+        //    deleteCompanyPortalPicture();
+        //});
+    });
+    function showSelectedImage(input) {
+        debugger;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#companyPortalImageEdit').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    function uploadCompanyPortalPicture() {
+        debugger;
+        var isProceed = true;
+        var formData = new FormData();
+        // var pictureSrc = $('#companyPortalImageEdit').attr("src");
+        var totalFiles = document.getElementById("companyPortalPictureUpload").files.length;
+        var IsDefaultProfile = $("#IsDefaultCompanyProfilePictureEdit").is(":checked");
+        var DefaultCompanyId = $("#DefaultProfilePictureCompanyId").val();
+        if (totalFiles > 0) {
+            var file = document.getElementById("companyPortalPictureUpload").files[0];
+            formData.append("FileUpload", file);
+           
+            formData.append("IsDefaultProfile", IsDefaultProfile);
+            formData.append("DefaultCompanyId", DefaultCompanyId);
+
+        }
+        else {
+            isProceed = false;
+            showAlertAutoHide("", "Error", "Please choose the company portal picture");
+        }
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/CompanyPortal/AjaxUploadCompanyPortalPicture',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $('#companyPortalPicture').attr('src', data.picturePath + "?timestamp=" + new Date().getTime());
+                        $('#upload_cmportalpicture_modal').modal('hide');
+                        if (IsDefaultProfile) {
+                            $("#IsDefaultCompanyProfilePicture").val("True");
+                        }
+                        else {
+                            $("#IsDefaultCompanyProfilePicture").val("False");
+                        }
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                    else {
+                        showAlertDismissable("", data.status, data.message);
+                    }
+                },
+                error: function (error) {
+                    showAlertDismissable("#uploadPicAlert", "Error", error);
+                }
+            });
+        }
+    }
+    function deleteCompanyPortalPicture() {
+        debugger;
+        var isProceed = true;
+       
+        // var pictureSrc = $('#companyPortalImageEdit').attr("src");      
+        var DefaultCompanyId = $("#DefaultProfilePictureCompanyId").val();
+       
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/CompanyPortal/AjaxDeleteCompanyPortalPicture',
+                data: { "defaultCompanyId":DefaultCompanyId },
+                dataType: 'json',
+                
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $('#companyPortalPicture').attr('src', data.picturePath + "?timestamp=" + new Date().getTime());
+                        $('#upload_cmportalpicture_modal').modal('hide');
+                        //clearPPFileSelection();
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                },
+                error: function (error) {
+                    showAlertAutoHide("#", "Error", error);
+                }
+            });
+        }
+    }
+    function editCompanyPortalStatement() {
+        // $("#PortalWelcomeStatement").val($("#hdPortalWelcomeStatement").val());
+        $('.richtext-editor').summernote('code', $("#hdPortalWelcomeStatement").val());
+        var isDefaultPortal = $("#IsDefaultCompanyPortalStatement").val();
+        if (isDefaultPortal=="True") {
+            $("#IsDefaultCompanyPortalStatementEdit").prop("checked", true);
+        }        
+        $("#Edit_CmpPortalStatement_modal").modal("show");
+    }
+    function saveCompanyPortalStatement() {
+        debugger;
+        var alertID = "";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        //Fields value setting in object
+        var dataObj = new Object();
+        //dataObj.PortalWelcomeStatement = $('#PortalWelcomeStatement').val();
+        dataObj.PortalWelcomeStatement = $('.richtext-editor').summernote('code');
+        dataObj.IsDefaultCompanyPortalStatement = $("#IsDefaultCompanyPortalStatementEdit").is(":checked");
+        dataObj.DefaultPortalStatementCompanyId = $("#DefaultPortalStatementCompanyId").val();
+        if (dataObj != null) {
+            // isRequiredValidated += dataObj.PortalWelcomeStatement.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += $('.richtext-editor').summernote('isEmpty') ? 0 : 1;
+            if (isRequiredValidated != 1) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/CompanyPortal/EditCompanyPortalStatement",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#Edit_CmpPortalStatement_modal").modal("hide");
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        $("#hdPortalWelcomeStatement").val(dataObj.PortalWelcomeStatement);
+                        $("#txtWelcomeStatement").html(dataObj.PortalWelcomeStatement);
+                        if (dataObj.IsDefaultCompanyPortalStatement) {
+                            $("#IsDefaultCompanyPortalStatement").val("True");
+                        }
+                        else {
+                            $("#IsDefaultCompanyPortalStatement").val("False");
+                        }
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    errMessage='Error in updating statement data ' + error;
+                    showAlertAutoHide(alertID, 'Error', errMessage);
+                    return false;
+                }
+            });
+        }
+    }
+
+    function getCompanyAnnouncementList() {
+        $("#divLoadingAnnouncementList").show();
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/CompanyPortal/CompanyAnnouncementList',
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCompanyAnnouncementList").html(data);
+                //  $("#MyDashboard_modal").modal("show");
+                $("#divLoadingAnnouncementList").hide();
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function createEditCompanyAnnouncement(id) {
+        // id = 1;
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/CompanyPortal/CreateEditCompanyAnnouncement',
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                //  $("#divCompanyPortalPopup").html(data);
+                setCompanyAnnouncementData(data);
+                setTimeout(function () {
+                    $("#CreateEdit_CmpAnnouncement_modal").modal("show");
+                }, 1000);
+
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function setCompanyAnnouncementData(data) {
+        $('#CompanyAnnouncementId').val(data.CompanyAnnouncementId);
+        $('#AnnouncementName').val(data.AnnouncementName);
+        //  $('#AnnouncementMessage').val(data.AnnouncementMessage);
+        $('.textarea-editor').summernote('code', data.AnnouncementMessage);
+        $('#StartDate').val(convertTODate(data.StartDate));
+        $('#ExpirationDate').val(convertTODate(data.ExpirationDate));
+      
+        $("#IsAllCompaniesCA").prop("checked", data.IsAllCompanies);
+       
+    }
+    function convertTODate(dateStr) {
+        var pattern = /Date\(([^)]+)\)/;
+        if (dateStr != null) {
+            var results = pattern.exec(dateStr);
+            var dt = new Date(parseFloat(results[1]));
+            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+        }
+        return null;
+    }
+    function saveCompanyAnnouncementData() {
+        debugger;
+        var alertID = "";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        //Fields value setting in object
+        var dataObj = new Object();
+        dataObj.CompanyAnnouncementId = $('#CompanyAnnouncementId').val();
+        dataObj.AnnouncementName = $('#AnnouncementName').val();
+        dataObj.AnnouncementMessage = $('.textarea-editor').summernote('code');
+        dataObj.StartDate = $('#StartDate').val();
+        dataObj.ExpirationDate = $('#ExpirationDate').val();
+        dataObj.IsAllCompanies = $('#IsAllCompaniesCA').is(":checked");
+        //Required fields validations
+        if (dataObj != null) {
+
+            isRequiredValidated += dataObj.AnnouncementName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += $('.textarea-editor').summernote('isEmpty') ? 0 : 1;
+            isRequiredValidated += dataObj.StartDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.ExpirationDate.trim().length > 0 ? 1 : 0;
+
+
+            if (isRequiredValidated != 4) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+            else if (dataObj.AnnouncementName.trim().length > 100) {
+                isValidated = false;
+               // $("#AnnouncementNameValid").show();
+               // $("#AnnouncementNameValid").text("Title shouldn't be greater than 50 chars.");
+                message = "Title shouldn't be greater than 100 chars.";
+            }
+            else {
+                $("#AnnouncementNameValid").hide();
+            }
+
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/CompanyPortal/CreateEditCompanyAnnouncement",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#CreateEdit_CmpAnnouncement_modal").modal("hide");
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        //location.reload(true);
+                        getCompanyAnnouncementList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in in saving parent data');
+                    return false;
+                }
+            });
+        }
+
+    }
+    function viewCompanyAnnouncement(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/CompanyPortal/ViewCompanyAnnouncement',
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCompanyPortalPopup").html(data);
+                $("#View_CmpAnnouncement_modal").modal("show");
+
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+
+    }
+
+    function getCompanyAnnouncementDeleteData(id) {
+        if (id != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/CompanyPortal/DeleteCompanyAnnouncement',
+                data: { "id": id },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCompanyPortalPopup").html(data);
+                    $("#CmpAnnouncementDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteCompanyAnnouncement(id) {
+
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/CompanyPortal/ConfirmDeleteCompanyAnnouncement",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#CmpAnnouncementDelete_modal").modal("hide");
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        getCompanyAnnouncementList();
+                        // location.reload(true);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function addEditCompanyDocument(id) {
+        $('#DocumentName').val("");
+        document.getElementById("DocumentFile").value = null;
+        $('#DocumentName').val("");
+        $("#AllCompaniesCD").prop("checked", false);
+        $("#AddEdit_CompanyDocument_modal").modal("show");
+    }
+    function saveCompanyDocumentData() {
+        debugger;
+        var isProceed = true;
+        var formData = new FormData();
+        // var pictureSrc = $('#companyPortalImageEdit').attr("src");
+        var totalFiles = document.getElementById("DocumentFile").files.length;
+        var documentName = $('#DocumentName').val();
+        var isAllCompanies = $('#IsAllCompaniesCD').is(":checked");
+        if (totalFiles > 0 && documentName != "") {
+
+            var file = document.getElementById("DocumentFile").files[0];
+            formData.append("DocumentFile", file);
+            formData.append("DocumentName", documentName);
+            formData.append("IsAllCompanies", isAllCompanies);
+            
+        }
+        else {
+            isProceed = false;
+            showAlertAutoHide("", "Error", "Missing Required field(s)");
+        }
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/CompanyPortal/AddEditCompanyDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+
+                        $('#AddEdit_CompanyDocument_modal').modal('hide');
+                        getCompanyDocumentList();
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                },
+                error: function (error) {
+                    showAlertAutoHide("", "Error", error);
+                }
+            });
+        }
+    }
+    function downloadCompanyDocument(id) {
+        debugger;
+        window.location.href = "/CompanyPortal/DownloadCompanyDocument/" + id;
+    }
+    function getCompanyDocumentList() {
+        $("#divLoadingCompanyDocumentList").show();
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/CompanyPortal/CompanyDocumentList',
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCompanyDocumentList").html(data);
+                //  $("#MyDashboard_modal").modal("show");
+                $("#divLoadingCompanyDocumentList").hide();
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function getCompanyDocumentDeleteData(id) {
+        if (id != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/CompanyPortal/DeleteCompanyDocument',
+                data: { "id": id },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCompanyPortalPopup").html(data);
+                    $("#CompanyDocumentDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteCompanyDocument(id) {
+
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/CompanyPortal/ConfirmDeleteCompanyDocument",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#CompanyDocumentDelete_modal").modal("hide");
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        getCompanyDocumentList();
+                        // location.reload(true);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function addEditCompanyConfigurableLink(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/CompanyPortal/AddEditCompanyConfigurableLink',
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCompanyPortalPopup").html(data);
+                $("#AddEdit_CmpConfigurableLink_modal").modal("show");
+
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function saveCompanyConfigurableLinkData() {
+        debugger;
+        var alertID = "";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        //Fields value setting in object
+        var dataObj = new Object();
+        dataObj.Id = $('#ConfigurableLinkId').val();
+        dataObj.LinkName = $('#LinkName').val();
+        dataObj.LinkURL = $('#LinkURL').val();
+        var isAllCmp = $("#IsAllCompaniesCCL").is(":checked");
+        if (isAllCmp) {
+            dataObj.CompanyId = null;
+         }
+        //Required fields validations
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.LinkName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.LinkURL.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 2) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+            else {
+                if (!isValidUrl(dataObj.LinkURL)) {
+                    isValidated = false;
+                    message = " Invalid Entered URL";
+                }
+            }
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/CompanyPortal/AddEditCompanyConfigurableLink",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#AddEdit_CmpConfigurableLink_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        //location.reload(true);
+                        getCompanyConfigurableLinkList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in in saving parent data');
+                    return false;
+                }
+            });
+        }
+    }
+    function getCompanyConfigurableLinkDeleteData(id) {
+        if (id != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/CompanyPortal/DeleteCompanyConfigurableLink',
+                data: { "id": id },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCompanyPortalPopup").html(data);
+                    $("#CmpConfigurableLinkDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteConfigurableLink(id) {
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/CompanyPortal/ConfirmDeleteCompanyConfigurableLink",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#CmpConfigurableLinkDelete_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        getCompanyConfigurableLinkList();
+                        // location.reload(true);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function getCompanyConfigurableLinkList() {
+        $("#divLoadingCompanyConfigurableLinkList").show();
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/CompanyPortal/CompanyConfigurableLinkList',
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCompanyConfigurableLinkList").html(data);
+                //  $("#MyDashboard_modal").modal("show");
+                $("#divLoadingCompanyConfigurableLinkList").hide();
+            },
+            error: function () {
+                //  displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+    function initRichTextEditor() {
+        $('.textarea-editor').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']],
+                ['view', []],
+            ],
+
+            height: 600, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            //  disableDragAndDrop: true
+
+        });
+
+        // $('.textarea-editor').summernote('disable');
+        $('.textarea-editor').summernote('fontName', 'Arial');
+        $('.textarea-editor').summernote('fontSizeUnit', 'pt');
+        $('.textarea-editor').summernote('fontSize', 14);
+        //$('.textarea-editor').summernote('airMode', true);
+        $('div.note-popover').css("display", "none");
+    }
+
+    function isValidUrl(s) {
+        var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/
+        return regexp.test(s);
+    }
+
+
+
+</script>

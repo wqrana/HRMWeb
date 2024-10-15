@@ -1,0 +1,48 @@
+﻿@model TimeAide.Web.Models.BaseEntity
+<div class="dropdown dropdown-action">
+    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+        @if ((bool)(ViewBag.AllowEdit ?? false))
+        {
+            <a href="javascript:void(0);" id="anchorEdit" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+            @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+
+        }
+        @if ((bool)(ViewBag.AllowView ?? false))
+        {
+            @*<a class="dropdown-item" href="/@ViewBag.FormName/Details/@Model.Id"><i class="far fa-eye m-r-5"></i> Detail</a>*@
+            <a href="javascript:void(0);" id="anchorDetail" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-eye m-r-5"></i> Detail</a>
+            @*<a href="javascript:void(0);"  class="anchorDetail"  data-id="@Model.Id">Details</a>*@
+        }
+        @if ((bool)(ViewBag.AllowDelete ?? false))
+        {
+            <a href="javascript:void(0);" id="anchorDelete" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+            @*<a href="javascript:void(0);" class="anchorDelete" data-id="@Model.Id">Delete</a>*@
+        }
+        @if (ViewBag.Label == "Company")
+        {
+            @*<a href="javascript:AddCompanyEmployeeTab(@Model.Id);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Employee Tabs</a>*@
+            @*<a href="javascript:void(0);" class="anchorDelete" data-id="@Model.Id">Delete</a>*@
+            <a href="javascript:getCompanyDocView(@Model.Id)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Logo</a>
+        }
+        @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+        {
+            <a href="javascript:void(0);" id="anchorChangeHistory" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-history"></i> Change History</a>
+            @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+        }
+        @if (ViewBag.FormName == "EmployeeGroup")
+        {
+            <a a href="javascript:;" data-toggle="modal" onclick="fnAddEmployeeGroupMembers(@Model.Id);" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-plus m-r-5"></i>Add Members</a>
+            <a a href="javascript:;" data-toggle="modal" onclick="EmployeeGroupMembersHistory(@Model.Id);" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-history"></i>Members History</a>
+
+        }
+        @if (ViewBag.FormName == "Role")
+        {
+            <a a href="javascript:;" data-toggle="modal" onclick="fnAddRoleMembers(@Model.Id);" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-plus m-r-5"></i>Add Members</a>
+            <a a href="javascript:;" data-toggle="modal" onclick="ShowRoleMembersHistory(@Model.Id);" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-history"></i>Members History</a>
+        }
+    </div>
+</div>
+
+
+

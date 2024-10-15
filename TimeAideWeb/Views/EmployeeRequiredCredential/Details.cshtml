@@ -1,0 +1,25 @@
+﻿@model TimeAide.Web.Models.EmployeeRequiredCredential
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserInformationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInformationId)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CredentialId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CredentialId)
+        </dd>
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

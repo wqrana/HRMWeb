@@ -1,0 +1,137 @@
+﻿@*@model IEnumerable<TimeAide.Web.Models.UserContactInformation>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+ }
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.City.CityDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City1.CityDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserInformation.IdNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeAddress1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeAddress2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City1.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserInformation.IdNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeAddress1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeAddress2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeZipCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MailingAddress1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MailingAddress2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MailingZipCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CelNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FaxNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OtherNumber)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.City.CityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City1.CityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserInformation.IdNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeAddress1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeAddress2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeZipCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MailingAddress1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MailingAddress2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MailingZipCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CelNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FaxNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OtherNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PersonalEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OtherEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkExtension)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>*@

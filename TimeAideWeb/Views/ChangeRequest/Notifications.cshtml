@@ -1,0 +1,445 @@
+﻿@using TimeAide.Web.ViewModel;
+@using TimeAide.Services.Helpers;
+@model NotificationViewModel
+
+@if ((SecurityHelper.IsSuperAdmin || SecurityHelper.IsAvailable("ShowAllWorkflowNotifications")))
+{
+    <div id="workflowNotification" class="pro-overview tab-pane fade show active">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <!--<h3 class="card-title">General Information  <a href="javascript:editGeneralInfo()" class="edit-icon" title="Edit General Info."><i class="fa fa-pencil"></i></a></h3>-->
+                        <!--Tab Title & Right dropdown menu-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Workflow Notification
+                                </h3>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexWorkflowNotification">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                Id
+                                            </th>
+                                            <th>
+                                                Request By
+                                            </th>
+                                            <th>
+                                                Request Type
+                                            </th>
+                                            <th>
+                                                Request Date
+                                            </th>
+                                            <th>
+                                                Created Since
+                                            </th>
+                                            <th>
+                                                Total Levels
+                                            </th>
+                                            <th>
+                                                Level
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                            <th>Action By</th>
+                                            <th>Action Date</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.bellIconNotificationViewModelList)
+                                        {
+
+                                            //var canApprove = TimeAide.Services.WorkflowService.CanApproveChangeRequest(item);
+                                            //var popupURL = TimeAide.Services.WorkflowService.GetChangeRequestApprovalUrl(item, item.CanAppprove, false);
+                                            var popupURL = TimeAide.Services.WorkflowService.GetNewChangeRequestApprovalUrl(item, item.CanAppprove, false);
+                                            if (!popupURL.StartsWith("/") && !popupURL.StartsWith("\\"))
+                                            {
+                                                popupURL = "/" + popupURL;
+                                            }
+
+                                            <tr>
+                                                <td>
+                                                    <div class="pull-right dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                                            @if (item.CanAppprove)
+                                                            {
+                                                                <a href="javascript:ChangeRequestApproval('li_@item.WorkflowTriggerRequestDetailId','@popupURL')" class="dropdown-item">
+                                                                    <i class="fa fa-cog m-r-5"></i> Approve Request
+                                                                </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a href="javascript:ChangeRequestView('','@popupURL')" class="dropdown-item">
+
+                                                                    <i class="fa fa-eye m-r-5"></i> View Request
+                                                                </a>
+                                                            }
+                                                            <a href="javascript:ShowEmailInfo(@item.WorkflowTriggerRequestDetailId)" class="dropdown-item">
+                                                                <i class="fa fa-envelope m-r-5"></i>View Email-Info
+                                                            </a>
+
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ShortFullName)
+                                                </td>
+                                                <td>
+                                                    <span>@item.RequestType</span>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                                </td>
+                                                <td>
+                                                    @if (item.WorkflowActionTypeId == 6)
+                                                    {
+                                                        <span>Closed</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@Html.DisplayFor(modelItem => item.CreatedSince)</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @(item.TotalLevel)
+                                                </td>
+                                                <td>
+                                                    @if (item.WorkflowActionTypeId == 6)
+                                                    {
+                                                        <span>Closed</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.CurrentLevel)
+                                                        @*@Html.DisplayFor(modelItem => item.WorkflowTriggerRequest.WorkflowTriggerRequestDetail.Count)*@
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        string statusColor = "";
+                                                        if (item.WorkflowActionTypeId == 6 && item.PrevWorkflowTriggerRequestDetailId != null)
+                                                        {
+                                                            if (item.PrevWorkflowActionTypeId == 2)
+                                                            { statusColor = "#468847 !important"; }
+                                                            else if (item.PrevWorkflowActionTypeId == 3)
+                                                            { statusColor = "#e63c3c !important"; }
+                                                            else if (item.PrevWorkflowActionTypeId == 4)
+                                                            { statusColor = "#FF3131 !important "; }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (item.WorkflowActionTypeId == 2)
+                                                            { statusColor = "#90EE90 !important"; }
+                                                            else if (item.WorkflowActionTypeId == 3)
+                                                            { statusColor = "#e63c3c !important"; }
+                                                            else if (item.WorkflowActionTypeId == 4)
+                                                            { statusColor = "#FF3131 !important "; }
+
+                                                        }
+                                                    }
+                                                    <span style="color: @statusColor">
+                                                        @Html.DisplayFor(modelItem => item.WorkflowActionTypeName)
+                                                        @if (item.WorkflowActionTypeId == 6 && item.PrevWorkflowTriggerRequestDetailId != null && item.PrevWorkflowActionTypeId != null)
+                                                        {
+                                                            <span>/</span><span>@item.PrevWorkflowActionTypeName</span>
+                                                        }
+                                                    </span>
+                                                </td>
+                                                @if (item.ActionById != null)
+                                                {
+                                                    <td>@item.ActionPersonShortFullName</td>
+                                                }
+                                                else if (item.WorkflowActionTypeId == 6)
+                                                {
+                                                    <td>System Generated</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                @{
+                                                    DateTime? actionDate = null;
+                                                    if (item.ActionById != null)
+                                                    {
+                                                        actionDate = item.ActionDate;
+                                                    }
+                                                    else if (item.WorkflowActionTypeId == 6)
+                                                    {
+                                                        actionDate = item.CreatedDate;
+                                                    }
+                                                    var actionDateStr = actionDate.HasValue ? actionDate.Value.ToString("MM/d/yyyy hh:mm:ss tt") : "";
+                                                }
+                                                <td>@Html.DisplayFor(m => actionDateStr)</td>
+                                                <td>
+
+                                                    @if (item.CanAppprove)
+                                                    {
+                                                        <a href="javascript:ChangeRequestApproval('li_@item.WorkflowTriggerRequestDetailId','@popupURL')">
+                                                            Approve Request
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <a href="javascript:ChangeRequestView('','@popupURL')" title="View/Approve Reques">
+
+                                                            View Request
+                                                        </a>
+
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:ShowEmailInfo(@item.WorkflowTriggerRequestDetailId)">
+                                                        View Email-Info
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@if ((SecurityHelper.IsSuperAdmin || SecurityHelper.IsAvailable("ShowAllExpirationNotification")))
+{
+    <div id="expirationNotification" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Expiration Notification
+                                </h3>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexExpirationNotification">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Id
+                                            </th>
+                                            <th>
+                                                User Name
+                                            </th>
+                                            <th>
+                                                Type
+                                            </th>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Notification Role
+                                            </th>
+                                            <th>
+                                                Notification Message
+                                            </th>
+                                            <th>
+                                                Notification Date
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                            <th>
+                                                Days Before
+                                            </th>
+                                            <th>
+                                                Expiring in
+                                            </th>
+                                            <th>
+                                                Read
+                                            </th>
+
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.NotificationLog)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.UserInformation.EmployeeId)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.UserInformationName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.RecordType)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.RecordName)
+                                                </td>
+                                                <td>
+                                                    @*@Html.DisplayFor(modelItem => item.NotificationScheduleDetail.NotificationRole.NotificationRoleName)*@
+                                                </td>
+                                                @if (item.NotificationTypeId == 13)
+                                                {
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.EmailBlast.EmailTemplate.EmailSubject)
+                                                    </td>
+                                                    <td>
+                                                        <span>@item.CreatedDate.ToString("dd-MMM-yyyy  hh:mm")</span>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.NotificationScheduleDetail.NotificationMessage.NotificationMessageName)
+                                                    </td>
+                                                    <td>
+                                                        <span>@item.NotificationScheduleDetail.CreatedDate.ToString("dd-MMM-yyyy  hh:mm")</span>
+                                                    </td>
+                                                }
+                                                <td>
+                                                    @{ bool isRead = item.NotificationLogMessageReadBy.Any(i => i.ReadById == TimeAide.Common.Helpers.SessionHelper.LoginId); }
+                                                    @if (isRead)
+                                                    {
+
+                                                        <span>Read@@@item.NotificationLogMessageReadBy.FirstOrDefault().CreatedDate.ToString("dd-MMM-yyyy  hh:mm")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Unread</span>
+
+                                                    }
+                                                </td>
+                                                @if (item.NotificationTypeId == 13)
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.NotificationScheduleDetail.DaysBefore)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.ExpiringDays == 0)
+                                                        {
+                                                            <span>Expired Today</span>
+                                                        }
+                                                        else if (item.ExpiringDays < 0)
+                                                        {
+                                                            <span>Expired @(-1 * item.ExpiringDays) before</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.ExpiringDays)
+                                                        }
+                                                    </td>
+                                                }
+                                                <td>
+
+                                                    @if (isRead)
+                                                    {
+                                                        <a href="javascript:ReadNotificationItem(@item.Id)" style="color: #681da8;">
+                                                            <span>View</span>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="javascript:ReadNotificationItem(@item.Id)">
+                                                            <span>Read</span>
+                                                        </a>
+                                                    }
+
+
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:ShowExpirationEmailInfo(@item.Id)">
+                                                        View Email Info
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        /* retrieveNotificationList();*/
+    });
+    function ShowEmailInfo(id) {
+        $.ajax({
+            type: "GET",
+            url: '/ChangeRequest/EmailInfo',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function ShowExpirationEmailInfo(id) {
+        $.ajax({
+            type: "GET",
+            url: '/ChangeRequest/ExpirationEmailInfo',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

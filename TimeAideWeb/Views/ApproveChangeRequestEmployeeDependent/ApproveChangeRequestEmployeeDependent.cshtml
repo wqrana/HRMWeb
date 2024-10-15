@@ -1,0 +1,522 @@
+﻿@model TimeAide.Web.Models.ChangeRequestEmployeeDependent
+
+@if (Model != null)
+{
+    if (Model.EmployeeDependent == null)
+    {
+        Model.EmployeeDependent = new TimeAide.Web.Models.EmployeeDependent();
+    }
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id, new { id = "ChangeRequestAddressId" })
+        @Html.HiddenFor(model => model.UserInformationId, new { id = "ChangeRequestAddressUserInformationId" })
+
+        <div class="row pb-0">
+            <div class="col-lg-12">
+                <ul class="list-unstyled">
+                    <li><h4 class="mb-0"> @Model.UserInformation.ShortFullName</h4></li>
+                    <li>Employee ID:@Model.UserInformation.EmployeeId</li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="panel panel-default" style="width:50%;">
+                <div class="panel-heading" style="padding-left:10px">Old Employee Dependent</div>
+                <div class="panel-body" style="padding-left:10px">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:0px">First Name:</label>
+                        <div class="col-md-4 text-muted mt-2">
+                            <span id="oldFirstName">
+                                @Html.DisplayFor(model => model.EmployeeDependent.FirstName)
+                            </span>
+                        </div>
+                        <label class="col-md-2 col-form-label">Last Name:</label>
+                        <div class="col-md-4 text-muted mt-2">
+                            <span id="oldLastName">
+                                @Html.DisplayFor(model => model.EmployeeDependent.LastName)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">SSN:</label>
+                        <div class="col-md-4 text-muted  mt-2">
+                            @Html.DisplayFor(m => m.SSN)
+
+                            @if (Model.SSN == Model.NewSSN)
+                            {
+                                @Html.DisplayFor(model => model.EmployeeDependent.SSNComputed)
+                            }
+                            else
+                            {
+                                <div class="text">@Model.SSNComputed</div>
+                            }
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:0px">Birth Date:</label>
+                        <div class="col-md-4 text-muted mt-2">
+                            @if (Model != null && Model.EmployeeDependent != null && Model.EmployeeDependent.BirthDate != null)
+                            {
+                                @String.Format("{0:MM/dd/yyyy}", Model.EmployeeDependent.BirthDate);
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Gender:</label>
+                        <div class="col-md-4 text-muted mt-2">
+                            @Html.DisplayFor(m => m.EmployeeDependent.Gender.GenderName)
+                        </div>
+                        <label class="col-md-2 col-form-label">Relationship:</label>
+                        <div class="col-md-4 text-muted mt-2">
+                            @Html.DisplayFor(m => m.EmployeeDependent.Relationship.RelationshipName)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:0px">Status:</label>
+                        <div class="col-md-4 text-muted mt-2">
+                            @Html.DisplayFor(m => m.EmployeeDependent.DependentStatus.StatusName)
+                        </div>
+                        <label class="col-md-3 col-form-label">Full-Time Student:</label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @* @{ var IsFullTimeStudent = Model == null ? false : Model.IsFullTimeStudent ?? false; }*@
+                            @Html.DisplayFor(model => model.EmployeeDependent.IsFullTimeStudent, new { @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">School Attending:</label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.DisplayFor(m => m.EmployeeDependent.SchoolAttending)
+                        </div>
+                        <label class="col-md-3 col-form-label" style="margin-left:0px">Health Insurance:</label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @* @{ var IsHealthInsurance = Model == null ? false : Model.IsHealthInsurance ?? false; }*@
+
+                            @Html.DisplayFor(model => model.EmployeeDependent.IsHealthInsurance, new { @disabled = "disabled" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Dental Insurance:</label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @*  @{ var IsDentalInsurance = Model == null ? false : Model.IsDentalInsurance ?? false; }*@
+                            @Html.DisplayFor(model => model.EmployeeDependent.IsDentalInsurance, new { @disabled = "disabled" })
+                        </div>
+                        <label class="col-md-3 col-form-label">Tax Purposes:</label>
+                        <div class="col-md-1 text-muted mt-2">
+                            @*  @{ var IsTaxPurposes = Model == null ? false : Model.IsTaxPurposes ?? false; }*@
+                            @Html.DisplayFor(model => model.EmployeeDependent.IsTaxPurposes, new { @disabled = "disabled" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="width:49%;margin-left:10px;">
+                @if (String.IsNullOrEmpty(Model.ReasonForDelete))
+                {
+                    <div class="panel-heading" style="padding-left:10px">New Employee Dependent</div>
+                }
+                else
+                {
+                    <div class="panel-heading" style="padding-left:10px;color:red !important">Delete Employee Dependent</div>
+                }
+                <div class="panel-body" style="padding-left:10px">
+                    @if (String.IsNullOrEmpty(Model.ReasonForDelete))
+                    {
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                First Name:
+                            </label>
+                            <div class="col-md-4">
+                                <span id="newFirstName">
+                                    @if (Model.NewFirstName == Model.FirstName)
+                                    {
+                                        <span>
+                                            @Model.EmployeeDependent.FirstName
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="changedItems">
+                                            @Model.NewFirstName
+                                        </span>
+                                    }
+                                </span>
+                            </div>
+
+                            <label class="col-md-2 col-form-label">
+                                Last Name: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                <span id="newLastName">
+                                    @if (Model.NewLastName == Model.LastName)
+                                    {
+                                        <span>
+                                            @Model.EmployeeDependent.LastName
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="changedItems">
+                                            @Model.NewLastName
+                                        </span>
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">
+                                SSN: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @if (Model.NewSSN == Model.SSN)
+                                {
+                                    <span>
+                                        @Model.EmployeeDependent.SSNComputed
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="changedItems">
+                                        @Model.NewSSNComputed
+                                    </span>
+                                }
+                            </div>
+                            <label class="col-md-2 col-form-label">
+                                Birth Date: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @if (Model.NewBirthDate == Model.BirthDate)
+                                {
+                                    <span>
+                                        @String.Format("{0:MM/dd/yyyy}", Model.EmployeeDependent.BirthDate)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="changedItems">
+                                        @String.Format("{0:MM/dd/yyyy}", Model.NewBirthDate)
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Gender:
+                            </label>
+                            <div class="col-md-4">
+                                @if (Model.NewGenderId == Model.GenderId)
+                                {
+                                    if (Model.EmployeeDependent.Gender != null)
+                                    {
+                                        <span>
+                                            @Model.EmployeeDependent.Gender.GenderName
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Model.NewGender != null)
+                                    {
+                                        <span class="changedItems">
+                                            @Model.NewGender.GenderName
+                                        </span>
+                                    }
+                                }
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Relationship:
+                            </label>
+                            <div class="col-md-4">
+                                @if (Model.NewRelationshipId == Model.RelationshipId)
+                                {
+                                    if (Model.EmployeeDependent.Relationship != null)
+                                    {
+                                        <span>
+                                            @Model.EmployeeDependent.Relationship.RelationshipName
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Model.NewRelationship != null)
+                                    {
+                                        <span class="changedItems">
+                                            @Model.NewRelationship.RelationshipName
+                                        </span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Status:<span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-4">
+                                @if (Model.NewDependentStatusId == Model.DependentStatusId)
+                                {
+                                    if (Model.EmployeeDependent.DependentStatus != null)
+                                    {
+                                        <span>
+                                            @Model.EmployeeDependent.DependentStatus.StatusName
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Model.NewDependentStatus != null)
+                                    {
+                                        <span class="changedItems">
+                                            @Model.NewDependentStatus.StatusName
+                                        </span>
+                                    }
+                                }
+                            </div>
+                            <label class="col-md-3 col-form-label">
+                                Full-Time Student: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-2">
+                                @if (Model.NewIsFullTimeStudent == Model.IsFullTimeStudent)
+                                {
+                                    @Html.CheckBox("IsFullTimeStudentAE", Model.EmployeeDependent.IsFullTimeStudent)
+                                }
+                                else
+                                {
+                                    @Html.CheckBox("IsFullTimeStudentAE", Model.NewIsFullTimeStudent ?? false, new { style = "outline: 2px solid #F00;" })
+                                }
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">
+                                School Attending:<span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-3">
+                                @if (Model.NewSchoolAttending == Model.SchoolAttending)
+                                {
+                                    <span>
+                                        @Model.SchoolAttending
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="changedItems">
+                                        @Model.NewSchoolAttending
+                                    </span>
+                                }
+                            </div>
+                            <label class="col-md-3 col-form-label">
+                                Health Insurance: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-1">
+                                @if (Model.NewIsHealthInsurance == Model.IsHealthInsurance)
+                                {
+                                    @Html.CheckBox("IsHealthInsuranceAE", Model.EmployeeDependent.IsHealthInsurance)
+                                }
+                                else
+                                {
+                                    @Html.CheckBox("IsHealthInsuranceAE", Model.NewIsHealthInsurance ?? false, new { style = "outline: 2px solid #F00;" })
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">
+                                Dental Insurance: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-3">
+                                @if (Model.NewIsDentalInsurance == Model.IsDentalInsurance)
+                                {
+                                    @Html.CheckBox("IsDentalInsuranceAE", Model.EmployeeDependent.IsDentalInsurance)
+                                }
+                                else
+                                {
+                                    @Html.CheckBox("IsDentalInsuranceAE", Model.NewIsDentalInsurance ?? false, new { style = "outline: 2px solid #F00;" })
+                                }
+                            </div>
+                            <label class="col-md-3 col-form-label">
+                                Tax Purposes: <span class="text-danger"></span>
+                            </label>
+                            <div class="col-md-1">
+                                @if (Model.NewIsTaxPurposes == Model.IsTaxPurposes)
+                                {
+                                    @Html.CheckBox("IsTaxPurposesAE", Model.EmployeeDependent.IsTaxPurposes)
+                                }
+                                else
+                                {
+                                    @Html.CheckBox("IsTaxPurposesAE", Model.NewIsTaxPurposes ?? false, new { style = "outline: 2px solid #F00;" })
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <div class="form-group row" style="margin-left:0px;margin-top:10px">
+                            <div class="col-md-3">
+                                Reason For Delete
+                            </div>
+                            <div class="col-md-9">
+                                <span style="color:red !important">
+                                    @Model.ReasonForDelete
+                                </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        @if (!ViewBag.IsViewOnly)
+        {
+            <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+                <div class="panel panel-default" style="width:100%;margin-left:10px;margin-right:10px">
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Remarks
+                            </label>
+                            <div class="col-lg text-muted mt-2">
+                                @Html.EditorFor(model => model.ChangeRequestRemarks, new { htmlAttributes = new { @class = "form-control", style = "width: 100% !important;" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+                <div class="col-md-12">
+                    <h4 class="pull-left">Workflow Request History</h4>
+                    <div class="table-responsive">
+                        <table class="table  table-striped custom-table table-nowrap mb-0" style="width:100% !important">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Workflow Level</th>
+                                    <th>Action By</th>
+                                    <th>Workflow Type</th>
+                                    <th>Remarks</th>
+                                    <th>Action Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.WorkflowTriggerRequestDetail != null && ViewBag.WorkflowTriggerRequestDetail.Count > 0)
+                                {
+                                    foreach (TimeAide.Web.Models.WorkflowTriggerRequestDetail workflowTriggerRequestDetail in ViewBag.WorkflowTriggerRequestDetail)
+                                    {
+                                        <tr>
+                                            <td>@workflowTriggerRequestDetail.WorkflowActionType.WorkflowActionTypeName</td>
+                                            <td>@workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelName</td>
+                                            @if (workflowTriggerRequestDetail.ActionBy != null)
+                                            {
+                                                <td>@workflowTriggerRequestDetail.ActionBy.ShortFullName</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                            @if (workflowTriggerRequestDetail.WorkflowLevel != null && workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelType != null)
+                                            {
+                                                <td>@workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelType.WorkflowLevelTypeName</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+
+                                            <td>@workflowTriggerRequestDetail.ActionRemarks</td>
+
+                                            @if (workflowTriggerRequestDetail.ActionDate.HasValue)
+                                            {
+                                                <td>@workflowTriggerRequestDetail.ActionDate.Value</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="submit-section">
+            <input type="hidden" id="popupTargetDdl" />
+            @if (ViewBag.CanTakeAction)
+            {
+                <button type="button" onclick="ChangeRequestAction(2);" class="btn btn-primary submit-btn">Approve</button>
+                <button type="button" onclick="ChangeRequestAction(3);" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Decline</button>
+            }
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Close</button>
+
+
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger
+        if ($('#newFirstName').text().trim() != $('#oldFirstName').text().trim()) {
+            $('#newFirstName').css('color', 'red');
+        }
+        if ($('#newLastName').text().trim() != $('#oldLastName').text().trim()) {
+            $("#newLastName").css('color', 'red');
+        }
+        if ('@ViewBag.MarkAsRead' != 'null' && '@ViewBag.MarkAsRead' == 'True') {
+            RefreshBellIconCount('');
+        }
+    });
+    function ChangeRequestAction(statusId) {
+
+        var model = {
+            Id: $('#ChangeRequestAddressId').val(),
+            ChangeRequestRemarks: $('#ChangeRequestRemarks').val(),
+            ChangeRequestStatusId: statusId,
+            UserInformationId: $('#ChangeRequestAddressUserInformationId').val(),
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/ApproveChangeRequestEmployeeDependent/ApproveChangeRequestEmployeeDependent',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                //window.location.href = '/UserInformation/Index';
+                //location.reload(true);
+                if (statusId == 2) { toastr.success('Change request approved successfully.', "Success!"); }
+                else if (statusId == 3) { toastr.success('Change request decline.', "Success!"); }
+                $('#myModal').modal('hide');
+                RefreshBellIconCount('');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                window.location.href = '/UserInformation/Index';
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+</script>
+<style>
+    .modal-dialog {
+        width: 90%;
+        max-width: 90% !important;
+    }
+
+    .changedItems {
+        color: red !important
+    }
+
+    .sourceForChange {
+        /*color: green !important*/
+    }
+</style>

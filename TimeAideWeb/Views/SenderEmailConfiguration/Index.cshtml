@@ -1,0 +1,269 @@
+﻿@model IEnumerable<TimeAide.Web.Models.SenderEmailConfiguration>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Mail Provider
+        </th>
+        <th>
+            Host Name
+        </th>
+        <th>
+            Provider Account
+        </th>
+        <th>
+            Sender Name
+        </th>
+
+        <th>
+            Environment
+        </th>
+
+        <th>
+            Port
+        </th>
+
+        <th>
+            EnableSsl
+        </th>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MailProvider)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HostName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ProviderAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SenderName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Environment)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => item.Port)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => item.EnableSsl)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAllCompanies)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+
+
+<script type="text/javascript">
+    function fnAddMasterData(action) {
+        var model = GetData();
+        $.ajax({
+            type: 'post',
+            url: '/SenderEmailConfiguration/' + action,
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                location.reload(true);
+                $('#myModal').modal('hide');
+                toastr.success('Record saved successfully.', "Success!");
+                $("#divLoading").hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+    function fnOpenTestEmailPopup() {
+        debugger
+        var model = GetData();
+        $("#divLoading").hide();
+        $.ajax({
+            type: 'post',
+            url: '/SenderEmailConfiguration/ValidateModel',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                if (html == '"Error"') {
+                    toastr.error('There was an error while sending test email.', "error!");
+                    return;
+                }
+
+                debugger
+                $('span[data-valmsg-for="MailProvider"]').text('');
+                $('span[data-valmsg-for="HostName"]').text('');
+                $('span[data-valmsg-for="ProviderAccount"]').text('');
+                $('span[data-valmsg-for="Port"]').text('');
+                $('span[data-valmsg-for="Password"]').text('');
+                $('span[data-valmsg-for="RetyprPassword"]').text('');
+                $('span[data-valmsg-for="FromEmail"]').text('');
+                $('#testEmail_modal').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                $("#divLoading").hide();
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+    function fnTestEmail() {
+        debugger
+        var model = GetData();
+        if (model.ToEmailForTest == null || model.ToEmailForTest.trim() == '') {
+            toastr.error('Please provide to  test email.', "error!");
+            return;
+        }
+        if (model.TestEmailBody == null || model.TestEmailBody.trim() == '') {
+            toastr.error('Please provide to Test Email Body.', "error!");
+            return;
+        }
+        if (model.TestEmailSubject == null || model.TestEmailSubject.trim() == '') {
+            toastr.error('Please provide Test Email Subject.', "error!");
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: '/SenderEmailConfiguration/TestEmail',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                $("#divLoading").hide();
+                debugger
+                if (html == '"Error"') {
+                    toastr.error('There was an error while sending test email.', "error!");
+                    return;
+                }
+                //location.reload(true);
+                $('#testEmail_modal').modal('hide');
+                toastr.success('Test email sent successfully.', "Success!");
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                toastr.error('Please complete email config  before sending test email.', "error!");
+                $("#divLoading").hide();
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+    function fnClose() {
+        $('#testEmail_modal').modal('hide');
+    }
+    function GetData() {
+        $("#divLoading").show();
+        var model = {}
+        $('input, select, textarea').each(
+            function (index) {
+                var input = $(this);
+                model[input.attr('name')] = input.val();
+            }
+        );
+        $('input[type=checkbox]').each(
+            function (index) {
+                var input = $(this);
+                debugger
+                if (this.id == 'chkAllCompanies') {
+                    if (input.is(":checked")) {
+                        model['CompanyId'] = '';
+                    }
+                    else {
+                        model['CompanyId'] = $('#hdnSelectedCompanyId').val();
+                    }
+
+                }
+                else {
+                    model[input.attr('name')] = (input.is(":checked"));
+                }
+            }
+        );
+        return model; 
+    }
+</script>
+
+<div id="testEmail_modal" class="modal">
+    <div class="modal-dialog" style="max-width:40%">
+        <div class="modal-content" style="padding:10px">
+            <div class="modal-header alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;padding:10px">
+                <h4 class="modal-title">Test Email</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-header alert alert-warning" style="text-align:center;border: 1px solid #00c5fb;padding:10px">
+                Below information is only to test configuration, This information is not stored in database
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" style="margin-left:10px">
+                        To Email:
+                    </label>
+                    <div class="col-md-8">
+                        <input type="text" id="ToEmailForTest" name="ToEmailForTest" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" style="margin-left:10px">
+                        Sample Email Subject:
+                    </label>
+                    <div class="col-md-8">
+                        <input id="TestEmailSubject" name="TestEmailSubject" value="Test Subject" class="form-control" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" style="margin-left:10px">
+                        Test Email Body:
+                    </label>
+                    <div class="col-md-8">
+                        <textarea id="TestEmailBody" name="TestEmailBody" rows="10" cols="50" class="form-control">This is test email!</textarea>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <button type="button" onclick="fnTestEmail();" class="btn btn-primary submit-btn">Test Email</button>
+                    <button type="button" onclick="fnClose();" class="btn btn-primary submit-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

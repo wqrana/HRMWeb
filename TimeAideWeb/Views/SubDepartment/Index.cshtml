@@ -1,0 +1,70 @@
+﻿@model IEnumerable<TimeAide.Web.Models.SubDepartment>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubDepartmentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubDepartmentDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.DepartmentName)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.USECFSEAssignment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CFSECode.CFSECodeDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CFSECompanyPercent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubDepartmentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubDepartmentDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.USECFSEAssignment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CFSECode.CFSECodeDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CFSECompanyPercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAllCompanies)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

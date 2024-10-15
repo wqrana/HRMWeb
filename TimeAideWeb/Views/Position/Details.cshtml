@@ -1,0 +1,231 @@
+﻿@model TimeAide.Web.Models.Position
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Position Information
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label" style="margin-left:5px">Position:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @*  @Html.HiddenFor(m=>m.Id, new { @id="SelectedTemplateId"})*@
+                                @Html.Hidden("SelectedPositionId", Model.Id)
+                                @Html.DisplayFor(m => m.PositionName)
+                            </div>
+                            <label class="col-md-1 col-form-label" style="margin-left:0px">Description:</label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PositionDescription)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-1 col-form-label" style="margin-left:5px">Position Code:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @*  @Html.HiddenFor(m=>m.Id, new { @id="SelectedTemplateId"})*@
+                                @Html.DisplayFor(m => m.PositionCode)
+                            </div>
+                            <label class="col-md-1 col-form-label" style="margin-left:0px">Pay Scale:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.DefaultPayScale.PayScaleName)
+                            </div>
+                            <label class="col-md-1 col-form-label" style="margin-left:0px">EEO Category:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.DefaultEEOCategory.EEOCategoryName)
+                            </div>
+                            <label class="col-md-1 col-form-label" style="margin-left:0px">All-Companies:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @{
+                                    Model.IsAllCompanies = !Model.CompanyId.HasValue;
+                                }
+                                @Html.DisplayFor(m => m.IsAllCompanies)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Training(s) List
+                        <div class="pull-right dropdown-action" style="height:20px;">
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditPositionTraining(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add/Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divPositionTrainings" style="max-height:200px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                    <tr>
+                                        <th>
+                                            Training Name
+                                        </th>
+
+                                    </tr>
+                                    @if (Model.PositionTrainings != null)
+                                    {
+                                        foreach (var item in Model.PositionTrainings)
+                                        {
+                                            <tr>
+
+                                                <td>@item.Training.TrainingName</td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+
+                    <div class="panel-heading" style="padding-left:10px">
+                        Appraisal(s) List
+                        <div class="pull-right dropdown-action" style="height:20px;">
+
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditPositionAppraisalTemplate(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add/Edit</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divPositionAppraisalTemplates" style="max-height:200px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                    <tr>
+                                        <th>
+                                            Template Name
+                                        </th>
+
+                                    </tr>
+                                    @if (Model.PositionAppraisalTemplates != null)
+                                    {
+                                        foreach (var item in Model.PositionAppraisalTemplates)
+                                        {
+                                            <tr>
+
+                                                <td>@item.AppraisalTemplate.TemplateName</td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-3 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+
+                    <div class="panel-heading" style="padding-left:10px">
+                        Credential(s) List
+                        <div class="pull-right dropdown-action" style="height:20px;">
+
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createEditPositionCredential(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add/Edit</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divPositionCredentials" style="max-height:200px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table mb-0">
+                                    <tr>
+                                        <th>
+                                            Credential Name
+                                        </th>
+                                        <th>
+                                            Required
+                                        </th>
+                                    </tr>
+                                    @if (Model.PositionCredentials != null)
+                                    {
+                                        var positionCredentials = Model.PositionCredentials.OrderByDescending(o => o.IsRequired);
+                                        foreach (var item in positionCredentials)
+                                        {
+                                            <tr>
+
+                                                <td>@item.Credential.CredentialName</td>
+                                                <td>
+                                                    @{var isRequired = item.IsRequired ?? false; }
+                                                    @Html.DisplayFor(m => isRequired)<a class="fa fa-pencil pl-2" href="javascript:EditIsRequiredCredential(@item.Id)"></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-3 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+
+                    <div class="panel-heading" style="padding-left:10px">
+                        Interview Question(s) List
+                        <div class="pull-right dropdown-action" style="height:20px;">
+
+                            <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a href="javascript:createAdhocPositionQuestion();" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+                                <a href="javascript:createEditPositionQuestion(0);" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="divPositionQuestions" style="max-height:200px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0">
+                                    <tr>
+                                        <th>
+                                            Question Name
+                                        </th>
+
+                                    </tr>
+                                    @if (Model.PositionQuestions != null)
+                                    {
+                                        foreach (var item in Model.PositionQuestions)
+                                        {
+                                            <tr>
+
+                                                <td>@item.ApplicantInterviewQuestion.QuestionName</td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,120 @@
+﻿@model TimeAide.Web.Models.EmployeeDependent
+
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:0px">Dependent Information</div>
+                    <div class="panel-body">
+                        @Html.Hidden("EmployeeDependentDetailId", Model == null ? 0 : Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">First Name:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FirstName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Last Name:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.LastName)
+
+                            </div>
+                            <label class="col-md-2 col-form-label">SSN:</label>
+
+                            @if (Model != null)
+                            {
+                                <div class="col-md-2 text-muted  mt-2">
+                                    @TimeAide.Services.UserInformationService.MaskSsn(Model.SSN)
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-2 text-muted  mt-2">
+                                </div>
+                            }
+
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Birth Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.BirthDate);
+                                }
+                            </div>
+                            <label class="col-md-2 col-form-label">Gender:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Gender.GenderName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Relationship:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Relationship.RelationshipName)
+
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Status:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.DependentStatus.StatusName)
+                            </div>
+                            <label class="col-md-3 col-form-label">Full-Time Student:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @* @{ var IsFullTimeStudent = Model == null ? false : Model.IsFullTimeStudent ?? false; }*@
+                                @Html.CheckBoxFor(model => model.IsFullTimeStudent, new { @disabled = "disabled" })
+
+                            </div>
+                            <label class="col-md-2 col-form-label">School Attending:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SchoolAttending)
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:0px">Health Insurance:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @* @{ var IsHealthInsurance = Model == null ? false : Model.IsHealthInsurance ?? false; }*@
+
+                                @Html.CheckBoxFor(model => model.IsHealthInsurance, new { @disabled = "disabled" })
+
+                            </div>
+                            <label class="col-md-3 col-form-label">Dental Insurance:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @*  @{ var IsDentalInsurance = Model == null ? false : Model.IsDentalInsurance ?? false; }*@
+                                @Html.CheckBoxFor(model => model.IsDentalInsurance, new { @disabled = "disabled" })
+                            </div>
+                            <label class="col-md-3 col-form-label">Tax Purposes:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @*  @{ var IsTaxPurposes = Model == null ? false : Model.IsTaxPurposes ?? false; }*@
+                                @Html.CheckBoxFor(model => model.IsTaxPurposes, new { @disabled = "disabled" })
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">
+                                Document Name:
+                            </label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.DocName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Expiry Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.ExpiryDate);
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

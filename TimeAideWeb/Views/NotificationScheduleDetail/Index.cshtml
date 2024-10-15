@@ -1,0 +1,220 @@
+﻿@model IEnumerable<TimeAide.Web.Models.NotificationScheduleDetail>
+
+<div class="panel panel-default" style="margin-left:5px">
+    <div class="panel-heading" style="padding-left:10px">
+        Notification Schedule Detail
+        @if (ViewBag.NotificationScheduleId != 0)
+        {
+            <span>
+                Pay Scale Detail
+                @("(" + ViewBag.NotificationScheduleId + " - " + ViewBag.NotificationScheduleName + ")" )
+            </span>
+            <div class="pull-right dropdown-action" style="height:20px;">
+                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                    <a href="javascript:createEditNotificationScheduleDetail(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add</a>
+
+                </div>
+            </div>
+        }
+        else
+        {
+            <span>
+                please select a notification schedule to display details
+            </span>
+        }
+
+        
+    </div>
+    <div class="panel-body">
+
+        <input type="hidden" id="SelectedNotificationScheduleId" , value="@ViewBag.NotificationScheduleId" />
+        <div class="table-responsive">
+            <table class="table table-striped custom-table table-nowrap mb-0">
+                <tr>
+                    <th>
+                        Days Before
+                    </th>
+                    <th>
+                        Notification Role
+                    </th>
+                    <th>
+                        Notification Message
+                    </th>
+                    <th></th>
+
+                </tr>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.DaysBefore</td>
+                            <td>@item.SelectedNotificationEmployeeGroupNames</td>
+                            <td>@item.NotificationMessage.NotificationMessageName</td>
+                            <td width="10%">
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                        <a href="javascript:createEditNotificationScheduleDetail(@item.Id);" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a href="javascript:getNotificationScheduleDetailDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+    function createEditNotificationScheduleDetail(scaleDetailId) {
+        debugger;
+        var ActionMethod = scaleDetailId == 0 ? "Create" : "Edit";
+        var ScaleId = $('#SelectedNotificationScheduleId').val();
+        if (ScaleId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/NotificationScheduleDetail/' + ActionMethod,
+                data: { "id": scaleDetailId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#NotificationScheduleDetailCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide("#IndexPageAlert", "Error", " Please first select the Scale");
+        }
+    }
+    function saveNotificationScheduleDetailData() {
+        debugger;
+        var alertID = "#NotificationScheduleDetailCreateEditAlert";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#NotificationScheduleDetailId').val();
+        dataObj.NotificationScheduleId = $('#SelectedNotificationScheduleId').val();
+        //dataObj.EmployeeGroupId = $('#EmployeeGroupId').val();
+        dataObj.NotificationMessageId = $('#NotificationMessageId').val();
+        dataObj.NotificationMessageId = $('#NotificationMessageId').val();
+        dataObj.DaysBefore = $('#DaysBefore').val();
+        debugger
+        dataObj.ExcludeUser = $('#ExcludeUser').is(":checked");
+        dataObj.ExcludeSupervisor = $('#ExcludeSupervisor').is(":checked");
+        //--------------------------------------------------------
+
+
+        var selectedEmployeeGroupList = [];
+        var selectedEmployeeGroupIdStr = "";
+        $('#EmployeeGroupId option:selected').each(function () {
+            selectedEmployeeGroupList.push($(this).val());
+        });
+        if (selectedEmployeeGroupList.length > 0) {
+            selectedEmployeeGroupIdStr = selectedEmployeeGroupList.join(",");
+        }
+        dataObj.SelectedEmployeeGroupId = selectedEmployeeGroupIdStr;
+        //--------------------------------------------------------
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.DaysBefore.trim().length > 0 ? 1 : 0;
+            if (isRequiredValidated != 1) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/NotificationScheduleDetail/Create",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#NotificationScheduleDetailCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#IndexPageAlert", data.status, data.message);
+                        //location.reload(true);
+                        getNotificationScheduleDetail(dataObj.NotificationScheduleId);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+
+    function getNotificationScheduleDetailDeleteData(scaleDetailId) {
+        if (scaleDetailId != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/NotificationScheduleDetail/Delete',
+                data: { "id": scaleDetailId },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#NotificationScheduleDetailDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteNotificationScheduleDetail(scaleDetailId) {
+        debugger;
+        alertID = "#NotificationScheduleDetailDeleteAlert"
+        if (scaleDetailId != '') {
+            $.ajax({
+                type: "Post",
+                url: "/NotificationScheduleDetail/ConfirmDelete",
+                data: { "id": scaleDetailId },
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#NotificationScheduleDetailDelete_modal").modal("hide");
+                        showAlertAutoHide("#IndexPageAlert", data.status, data.message);
+                        getNotificationScheduleDetail(scaleDetailId);
+                        //location.reload(true);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+</script>

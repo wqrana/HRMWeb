@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EEOCategory>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EEONumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EEOCategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EEONumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EEOCategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAllCompanies)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

@@ -1,0 +1,105 @@
+﻿@model TimeAide.Web.Models.EmployeeAppraisalGoal
+
+<div id="EmployeeAppraisalGoalCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Employee Appraisal Goal - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeAppraisalGoalCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        @Html.Hidden("EmployeeAppraisalGoalId", Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"> Goal:<span class="text-danger">*</span></label>
+                            <div class="col-md-10">
+                                <div class="input-group">
+                                    @Html.DropDownList("AppraisalGoalId", null, "Click Icon for Select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button id="btnOpenAppraisalGoalPopUp" class="btn btn-secondary" type="button"><i class="fa fa-pencil"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"> Rating:<span class="text-danger">*</span></label>
+                            <div class="col-md-5">
+
+                                @Html.DropDownList("AppraisalRatingScaleDetailId", null, "Please Select", new { @class = "form-control" })
+                                @Html.HiddenFor(model => model.GoalRatingName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Value:<span class="text-danger"></span></label>
+                            <div class="col-md-2 pr-0">
+                                @Html.EditorFor(model => model.GoalRatingValue, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                            <div class="col-md-1 text-muted pl-0 pr-0 pt-4">
+                                /<span id="spanGoalScaleMaxValue" style="font-size:12px"> @Html.DisplayFor(model => model.GoalScaleMaxValue)</span>
+                                @Html.HiddenFor(model => model.GoalScaleMaxValue)
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Comments:<span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.ReviewerComments, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEmployeeAppraisalGoal" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#AppraisalGoalId").attr("disabled", true);
+        $("#GoalRatingValue").attr("disabled", true);
+
+
+        $("#btnOpenAppraisalGoalPopUp").click(function () {
+            debugger;
+
+            openAppraisalGoalSelectionPopUp();
+        });
+        $("#AppraisalRatingScaleDetailId").on("change", function () {
+            debugger;
+            var scaleDetailId = $(this).val();
+            var ratingName = $("#AppraisalRatingScaleDetailId option:selected").text();
+            $('#GoalRatingName').val(ratingName);
+            ajaxSetAppraisalGoalRatingValue('#GoalRatingValue', scaleDetailId);
+
+        });
+        $("#btnSaveEmployeeAppraisalGoal").click(function () {
+            saveEmployeeAppraisalGoalData();
+        });
+
+
+    });
+
+</script>
+
+

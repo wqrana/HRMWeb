@@ -1,0 +1,417 @@
+﻿@model TimeAide.Web.Models.UserContactInformation
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" style="padding:10px;width:100%">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(model => model.UserInformationId)
+        <input id="UserContactInformationId" name="UserContactInformationId" type="hidden" value="@Model.Id">
+        @*<div style="font-size: 90%;">*@
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="panel panel-default" style="width:49%;margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Telephone Numbers</div>
+                <div class="panel-body">
+                    <div>
+                        @Html.ValidationMessage("PopupMessage1", "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            @Html.LabelFor(model => model.HomeNumber, "Home:", htmlAttributes: new { @class = "control-label" })
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.EditorFor(model => model.HomeNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HomeNumber, "", new { @class = "text-danger" })
+                        </div>
+
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Mobile:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.EditorFor(model => model.CelNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CelNumber, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Fax:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.EditorFor(model => model.FaxNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FaxNumber, "", new { @class = "text-danger" })
+                        </div>
+
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Other:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.EditorFor(model => model.OtherNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.OtherNumber, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Work:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.EditorFor(model => model.WorkNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.WorkNumber, "", new { @class = "text-danger" })
+                        </div>
+
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Work Ext.:
+                        </label>
+                        <div class="col-md-3 text-muted mt-2">
+                            @Html.EditorFor(model => model.WorkExtension, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.WorkExtension, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="width:49%;margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Emails</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            @Html.LabelFor(model => model.WorkEmail, "Work:", htmlAttributes: new { @class = "control-label" })
+                        </label>
+                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                            @Html.EditorFor(model => model.WorkEmail, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.WorkEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Personal
+                        </label>
+                        <div class="col-lg text-muted mt-2">
+                            @Html.EditorFor(model => model.PersonalEmail, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PersonalEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Other
+                        </label>
+                        <div class="col-lg text-muted mt-2">
+                            @Html.EditorFor(model => model.OtherEmail, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.OtherEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="panel panel-default" style="width:49%;margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Home Address</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Address 1
+                        </label>
+                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                            @Html.EditorFor(model => model.HomeAddress1, new { htmlAttributes = new { @class = "form-control", style = "width: 100% !important;" } })
+                            @Html.ValidationMessageFor(model => model.HomeAddress1, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Address 2
+                        </label>
+                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                            @Html.EditorFor(model => model.HomeAddress2, new { htmlAttributes = new { @class = "form-control", style = "width: 100% !important;" } })
+                            @Html.ValidationMessageFor(model => model.HomeAddress2, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Country
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("ddlCountryId_Home", null, Model.HomeCountryId, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.HomeCountryId, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            State
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.State>("ddlStateId_Home", null, Model.HomeStateId, Model.HomeCountryId, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.HomeStateId, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            City
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.City>("ddlCityId_Home", null, Model.HomeCityId, Model.HomeStateId, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.HomeCityId, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Zip Code
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @Html.EditorFor(model => model.HomeZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HomeZipCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="width:49%;margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Mailing Address  @Html.CheckBoxFor(m => m.IsSameHomeAddress, htmlAttributes: new { onchange = "IsSameHomeAddressChange()" }) <span style="font-size:70%"> Make same as Home Address</span></div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Address 1
+                        </label>
+                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                            @Html.EditorFor(model => model.MailingAddress1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MailingAddress1, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Address 2
+                        </label>
+                        <div class="col-lg text-muted mt-2" style="width:100% !important">
+                            @Html.EditorFor(model => model.MailingAddress2, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MailingAddress2, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Country
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.Country>("ddlCountryId_Mailing", null, Model.MailingCountryId, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.MailingCountryId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            State
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.State>("ddlStateId_Mailing", null, Model.MailingStateId, Model.MailingCountryId, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.MailingStateId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            City
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @(Html.CustomDropDownList<TimeAide.Web.Models.City>("ddlCityId_Mailing", null, Model.MailingCityId, Model.MailingStateId, htmlAttributes: new { @class = "form-control" }))
+                            @Html.ValidationMessageFor(model => model.MailingCityId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <label class="col-md-2 col-form-label" style="margin-left:10px">
+                            Zip Code
+                        </label>
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @Html.EditorFor(model => model.MailingZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MailingZipCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="submit-section">
+            <button type="button" id="btnAddUserContactInformation" class="btn btn-primary submit-btn">Save</button>
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+
+    </div>
+}
+
+<style>
+    .modal-xl {
+        min-width: 80% !important;
+        margin: 0 auto;
+    }
+
+        .modal-xl .modal-content {
+            /*min-height: 75vh !important;*/
+            margin: 0 auto;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#HomeNumber').mask('(999) 999-9999');
+        $('#CelNumber').mask('(999) 999-9999');
+        $('#FaxNumber').mask('(999) 999-9999');
+        $('#OtherNumber').mask('(999) 999-9999');
+        $('#WorkNumber').mask('(999) 999-9999');
+        $('#HomeZipCode').mask('99999-9999');
+        $('#MailingZipCode').mask('99999-9999');
+
+        $('#ddlCountryId_Home').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#ddlStateId_Home', null);
+            LoadCityDropdown(null, '#ddlCityId_Home', null);
+        })
+        $('#ddlStateId_Home').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#ddlCityId_Home', null);
+        })
+
+        $('#ddlCountryId_Mailing').change(function (e) {
+            debugger;
+            var countyId = $(this).val();
+            LoadStateDropdown(countyId, '#ddlStateId_Mailing', null);
+            LoadCityDropdown(null, '#ddlCityId_Mailing', null);
+        })
+        $('#ddlStateId_Mailing').change(function (e) {
+            debugger;
+            var stateId = $(this).val();
+            LoadCityDropdown(stateId, '#ddlCityId_Mailing', null);
+        })
+    });
+
+    function LoadStateDropdown(contryId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/State/AjaxGetCountryState',
+            data: { 'countryId': contryId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+    function LoadCityDropdown(stateId, targetElement, selectedValue) {
+        $.ajax({
+            url: '/City/AjaxGetStateCity',
+            data: { 'stateId': stateId }, //dataString,
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+    function IsSameHomeAddressChange() {
+        if ($('#IsSameHomeAddress').is(":checked")) {
+            var countyId = $('#ddlCountryId_Home').val();
+            LoadStateDropdown1(countyId, '#ddlStateId_Mailing', null);
+        }
+        else {
+            $('#MailingAddress1').val();
+            $('#MailingAddress2').val();
+            $('#ddlCityId_Mailing').val("");
+            $('#ddlStateId_Mailing').val("");
+            $('#ddlCountryId_Mailing').val("");
+            $('#MailingZipCode').val("");
+        }
+
+
+    }
+
+    function LoadStateDropdown1(contryId, targetElement, selectedValue) {
+
+        $.ajax({
+            url: '/State/AjaxGetCountryState',
+            data: { 'countryId': contryId }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+                var stateId = $('#ddlStateId_Home').val();
+                LoadCityDropdown1(stateId, '#ddlCityId_Mailing', null);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+
+        });
+
+    }
+    function LoadCityDropdown1(stateId, targetElement, selectedValue) {
+        $.ajax({
+            url: '/City/AjaxGetStateCity',
+            data: { 'stateId': stateId }, //dataString,
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+
+                $('#MailingAddress1').val($('#HomeAddress1').val());
+                $('#MailingAddress2').val($('#HomeAddress2').val());
+                $('#MailingZipCode').val($('#HomeZipCode').val());
+                $('#ddlCountryId_Mailing').val($('#ddlCountryId_Home').val());
+                $('#ddlStateId_Mailing').val($('#ddlStateId_Home').val());
+                $('#ddlCityId_Mailing').val($('#ddlCityId_Home').val());
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+
+    }
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+
+@*<div>
+        <a href="/UserInformation/Index"><i class="fa fa-arrow-left"></i> Back to List</a>
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <style>
+            .form-group row {
+            }
+        </style>
+    }*@

@@ -1,0 +1,112 @@
+﻿<div class="card-body">
+    <h3 class="card-title" style="border-bottom: 1px;border-bottom: 1px solid #dee2e6;padding-bottom: 20px;">Employment Record</h3>
+    <div class="experience-box">
+        @if (ViewBag.ActiveEmploymentHistory != null)
+        {
+            <div class="form-group row">
+                <label class="col-md-3">
+                    Start Date:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (Model.Id != 0)
+                    {
+                        <span id="lblStartDate">
+                            @String.Format("{0:MM/dd/yyyy}", ViewBag.ActiveEmploymentHistory.StartDate)
+                        </span>
+                    }
+                </div>
+                <label class="col-md-3">
+                    Company:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (ViewBag.ActiveEmploymentHistory.Company != null)
+                    {
+                        <span id="lblCompanyName">@ViewBag.ActiveEmploymentHistory.Company.CompanyName</span>
+                    }
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3">
+                    Location:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (ViewBag.ActiveEmploymentHistory.Location != null)
+                    {
+                        <span id="lblLocationName"> @ViewBag.ActiveEmploymentHistory.Location.LocationName</span>
+                    }
+                </div>
+                <label class="col-md-3">
+                    Department:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (ViewBag.ActiveEmploymentHistory.Department != null)
+                    {
+                        <span id="lblDepartmentName">@ViewBag.ActiveEmploymentHistory.Department.DepartmentName</span>
+                    }
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3">
+                    SubDepartment:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    <span id="lblSubDepartmentName">
+                        @if (ViewBag.ActiveEmploymentHistory.SubDepartment != null)
+                        {
+                            @ViewBag.ActiveEmploymentHistory.SubDepartment.SubDepartmentName
+                        }
+                    </span>
+                </div>
+                <label class="col-md-3">
+                    Position:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (ViewBag.ActiveEmploymentHistory.Position != null)
+                    {
+                        <span id="lblPositionName">  @ViewBag.ActiveEmploymentHistory.Position.PositionName)</span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3">
+                    Employment Type
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (ViewBag.ActiveEmploymentHistory.EmploymentType != null)
+                    {
+                        <span id="lblEmploymentType">  @ViewBag.ActiveEmploymentHistory.EmploymentType.EmploymentTypeName</span>
+
+                    }
+                </div>
+                <label class="col-md-3">
+                    Employee Type
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (ViewBag.ActiveEmploymentHistory.EmployeeType != null)
+                    {
+                        <span id="lblEmployeeType">  @ViewBag.ActiveEmploymentHistory.EmployeeType.EmployeeTypeName</span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3">
+                    Supervisor:
+                </label>
+                <div class="col-md-9 text-muted mt-2" style="width:100% !important">
+                    <span id="lblSupervisorId">  @ViewBag.ActiveEmploymentHistory.SelectedSupervisorByName</span>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .col-md-3, .col-md-9 {
+        padding-right: unset;
+        padding-left: 2px;
+        /*font-size:90%;*/
+    }
+</style>

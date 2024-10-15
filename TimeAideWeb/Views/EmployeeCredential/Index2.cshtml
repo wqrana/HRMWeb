@@ -1,0 +1,581 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeCredential>
+<div style="padding:1px">
+    @*@Html.Partial("_CreatePageTitleView")*@
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="panel panel-default" style="width:100%;">
+                <div class="panel-heading" style="padding-left:10px">
+                    <div class="row">
+                        <div class="col-md-6">
+                            @ViewBag.NewCaption
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div id="" >
+                        <div class="table-responsive" style="min-height:250px; max-height:350px; overflow-y:auto">
+                            <table class="table table-striped custom-table table-nowrap mb-0 tblCredentials" id="tblCredentials">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Credential
+                                        </th>
+                                        <th>Submitted</th>
+                                        <th>
+                                            Credential Id
+                                        </th>
+                                        <th>Document</th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.IssueDate)
+                                        </th>
+                                        <th>
+                                            Exp. Date
+                                        </th>
+
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Note)
+                                        </th>
+                                        <th width="5%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Credential.CredentialName)
+                                        </td>
+                                        <td>
+                                            @{ var IsSubmitted = item.Id == 0 ? false : true;}
+
+                                            @Html.DisplayFor(modelItem => IsSubmitted)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeCredentialName)
+                                        </td>
+                                        <td>
+                                            @{ var IsUploaded = string.IsNullOrEmpty(item.DocumentPath) ? false : true;}
+
+                                            @Html.DisplayFor(modelItem => IsUploaded)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeCredentialDescription)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IssueDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ExpirationDate)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Note)
+                                        </td>
+                                        <td width="5%">
+                                            @if ((ViewBag.AllowAdd || ViewBag.AllowEdit))
+                                            {
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                                        @if ((bool)(ViewBag.AllowEdit ?? false))
+                                                        {
+                                                            if (item.Id > 0)
+                                                            {
+                                                                <a a href="javascript:void(0);" data-toggle="modal" id="anchorEditEmployeeCredential" class="dropdown-item" onclick="fnEditEmployeeCredentialPopup(@item.Id);" data-id="@ViewBag.UserInformationId"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                                <a a href="javascript:void(0);" data-toggle="modal" id="anchorDetailEmployeeCredential" class="dropdown-item" onclick="fnDetailEmployeeCredentialPopup(@item.Id);" data-id="@ViewBag.UserInformationId"><i class="fa fa-eye m-r-5"></i> Detail</a>
+                                                                <a a href="javascript:void(0);" data - toggle="modal" id="anchorDetailEmployeeCredential" class="dropdown-item" onclick="fnDeleteEmployeeCredentialPopup(@item.Id);" data-id="@ViewBag.UserInformationId"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                                <a href="javascript:getUserEmployeeCredentialDocView(@item.Id)" class="dropdown-item"><i class="fa fa-upload m-r-5"></i> Upload Doc</a>
+                                                                <a href="javascript:downloadCredential(@item.Id)" class="dropdown-item"><i class="fa fa-download m-r-5"></i> Download Credential</a>
+                                                                <a href="javascript:getEmployeeCredentialUploadHistory(@item.Id)" class="dropdown-item"><i class="fa fa-file m-r-5"></i> Upload History</a>
+                                                                if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                                                {
+                                                                    <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                                                    @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <a a href="javascript:void(0);" data-toggle="modal" id="" class="dropdown-item" onclick="fnAddEmployeeCredentialPopup(@item.UserInformationId,@item.CredentialId, '@item.IsRequired.ToString()');" data-id="@ViewBag.UserInformationId">Submit Credential</a>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+<div id="divCredentialUpoadHistory">
+
+</div>
+<script type="text/javascript">
+
+    function fnFilterEmployeeCredential(filterType) {
+        debugger
+        table = document.getElementById("tblCredentials");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            if (filterType == 'All') {
+                tr[i].style.display = "";
+            }
+            else if (filterType == 'NonRequiredOnly') {
+                var tdata = tr[i].getElementsByTagName("td")[5];
+                if (tdata) {
+                    if (tdata.children[0].checked == false) {
+                        tr[i].style.display = "";
+                    }
+                    else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+            else if (filterType == 'RequiredOnly') {
+                var tdata = tr[i].getElementsByTagName("td")[5];
+                if (tdata) {
+                    if (tdata.children[0].checked == true) {
+                        tr[i].style.display = "";
+                    }
+                    else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    }
+
+    function fnAddEmployeeCredentialPopup(UserInformationId, CredentialId,IsRequired) {
+        debugger;
+        var $buttonClicked = $(this);
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/AddEmployeeCredential',
+            contentType: "application/json; charset=utf-8",
+            data: { "UserInformationId": UserInformationId, "CredentialId": CredentialId, "IsRequired": IsRequired },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnLoadEmployeeCredentialList(DivName, isRequired, userInformationId) {
+        debugger
+        var options = { "backdrop": "static", keyboard: true };
+        var model = {
+            UserInformationId: userInformationId,
+            IsRequired: isRequired
+
+        }
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/Index2/?UserInformationId=' + userInformationId + '&IsRequired=' + isRequired + '',
+            contentType: "application/json; charset=utf-8",
+            //data: JSON.stringify({ UserInformationId: $('#UserInformationId').val(), IsRequired: isRequired }),
+            datatype: "html",
+            success: function (html) {
+                debugger;
+                $('#' + DivName + '').html(html);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnEditEmployeeCredentialPopup(id) {
+        debugger;
+        
+        var $buttonClicked = $(this);
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/EditEmployeeCredential',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnAddEmployeeRequiredCredential(id) {
+        debugger;
+        var $buttonClicked = $(this);
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeRequiredCredential/AddEmployeeRequiredCredential',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnDetailEmployeeCredentialPopup(id) {
+        debugger;
+        var $buttonClicked = $(this);
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/Details',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnDeleteEmployeeCredentialPopup(id) {
+        debugger;
+        var $buttonClicked = $(this);
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/Delete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnDeleteCredentialFile() {
+        $('#btnDeleteCredentialFile').hide();
+        $('#viewCredentialFile').hide();
+        $('#uploadEmployeeCredentialFile').show();
+    }
+    function getUserEmployeeCredentialDocView(EmpCredentialId) {
+        debugger;
+       // var id = credentialId == null ? $("#EmployeeEducationDetailId").val() : educationId;
+        var id = EmpCredentialId;
+        if (id != 0) {
+
+            $.ajax({
+                type: "get",
+                url: '/EmployeeCredential/UploadDocument',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                }
+            });
+        }
+        else {
+            showAlertAutoHide("#userDetailAlert", "Error", "Record doesn't exists!");
+        }
+    }
+    function fnAddEmployeeCredential(id) {
+        debugger;
+        $('.loading').show();
+        var model = {
+            CredentialId: $('#CredentialId  :selected').val(),
+            CredentialTypeId: $('#CredentialTypeId  :selected').val(),
+            UserInformationId: $('#hdnEmployeeCredential_UserInformationId').val(),
+            IssueDate: $('#IssueDate').val(),
+            ExpirationDate: $('#ExpirationDate').val(),
+            EmployeeCredentialName: $('#EmployeeCredentialName').val(),
+            EmployeeCredentialDescription: $('#EmployeeCredentialDescription').val(),
+            Note: $('#Note').val(),
+            IsRequired: $('#IsRequired').is(":checked")
+
+        }
+
+        var employeeCredentialId = $('#hdnEmployeeCredentialId').val();
+        if (employeeCredentialId.length > 0) {
+            model.Id = employeeCredentialId;
+        }
+        $.ajax({
+            type: 'post',
+            url: '/EmployeeCredential/Create',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            success: function (html) {
+                debugger
+
+                //fnLoadEmployeeCredentialList('divEmployeeCredentialRequired',true);
+                //fnLoadEmployeeCredentialList('divEmployeeCredentialNonRequired',false);
+                //uploadEmployeeDocPost(html.Id, $('#hdnEmployeeCredential_UserInformationId').val());
+                uploadEmployeeDocPost(html.Id, html.UserInformationId);
+
+                $('#myModal').modal('hide');
+                $('.loading').hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+                $('.loading').hide();
+            }
+        });
+    }
+    function uploadEmployeeDocPost(id, userInformationId) {
+
+        //debugger;
+        alertID = "#employeeCredentialAlert"
+        var isProceed = true;
+        var formData = new FormData();
+        //var id = $('#employeeCredentialId').val();
+
+        formData.append("employeeCredentialId", id);
+        debugger
+        var totalFiles = document.getElementById("uploadEmployeeCredentialFile").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadEmployeeCredentialFile").files[0];
+            formData.append("EmployeeCredentialFile", file);
+
+        }
+        else {
+            isProceed = false;
+            fnLoadEmployeeCredentialList('divEmployeeCredentialRequired', true, userInformationId);
+            fnLoadEmployeeCredentialList('divEmployeeCredentialNonRequired', false, userInformationId);
+            //fnRefreshEmployeeDocuments(userInformationId);
+        }
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/EmployeeCredential/UploadDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        $('#myModal').modal('hide');
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        //var userInformationId = $('#UserInformationId').val();
+                        fnLoadEmployeeCredentialList('divEmployeeCredentialRequired', true, userInformationId);
+                        fnLoadEmployeeCredentialList('divEmployeeCredentialNonRequired', false, userInformationId);
+                        //fnRefreshEmployeeDocuments(userInformationId);
+                        //retreiveEmployeeEducationTab();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                },
+                error: function (error) {
+
+                    showAlertAutoHide(alertID, "Error", error);
+
+                }
+            });
+        }
+    }
+    function uploadEmployeeCredentialDoc(id) {
+
+        //debugger;
+        alertID = "#employeeCredentialAlert"
+
+
+        if (isProceed) {
+            //Ajax call for uploading & deletion
+            $.ajax({
+                type: "POST",
+                url: '/EmployeeDocument/UploadDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        $('#myModal').modal('hide');
+                        showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                        var userInformationId = $('#UserInformationId').val();
+                        fnRefreshEmployeeDocuments(userInformationId)
+                        //retreiveEmployeeEducationTab();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                },
+                error: function (error) {
+
+                    showAlertAutoHide(alertID, "Error", error);
+
+                }
+            });
+        }
+    }
+    function fnRefreshEmployeeDocuments(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/IndexByUser',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                //debugger;
+                $('#divEmployeeDocument').html(html);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function EditEmployeeCredential(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/CreateRecord',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                //debugger;
+                $('#divCreateRecordEmployeeCredential').html(html);
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function EditEmployeeCredential_(id) {
+        alert(id);
+        $.ajax({
+            url: '/EmployeeCredential/AjaxGetEmployeeCredential',
+            data: { 'id': id }, //dataString,
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $('#UserInformationId').val(data.UserInformationId);
+                $('#EmployeeCredentialName').val(data.EmployeeCredentialName);
+                $('#EmployeeCredentialDescription').val(data.EmployeeCredentialDescription);
+                $('#IssueDate').val(data.IssueDate);
+                $('#ExpirationDate').val(data.ExpirationDate);
+                $('#CredentialId').val(data.CredentialId);
+                $('#Note').val(data.Note);
+                $('#CredentialTypeId  :selected').val(data.CredentialTypeId);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+    function downloadCredential(id) {
+        debugger;
+        //var id = $('#userID').val();
+        $.ajax({
+            url: "/EmployeeCredential/AjaxCheckCredential",
+            type: "POST",
+            data: {
+                "userID": id
+            },
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    //$("#processing-spinner").hide();
+                    window.location.href = "/EmployeeCredential/DownloadCredential/" + id;
+                }
+                else {
+                    showAlertAutoHide('#userDetailAlert', data.status, data.message);
+                }
+            }
+            ,
+            error: function (data) {
+                showAlertDismissable("#userDetailAlert", "Error", data);
+
+            }
+        });
+
+    }
+    function getEmployeeCredentialUploadHistory(employeeCredentialId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeCredential/EmployeeCredentialUploadHistory',
+            data: { "id": employeeCredentialId },
+            success: function (data) {
+                debugger;
+                $("#divCredentialUpoadHistory").html(data);
+                $("#CredentialUpoadHistory_modal").modal("show");
+            },
+            error: function () {
+            }
+        });
+    }
+
+   
+</script>
+<style>
+    .modal-md {
+        min-width: 60% !important;
+        margin: 0 auto;
+    }
+
+        .modal-md .modal-content {
+            /*min-height: 75vh !important;*/
+            margin: 0 auto;
+        }
+</style>
+

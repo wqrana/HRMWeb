@@ -1,0 +1,65 @@
+﻿@model TimeAide.Web.Models.AccrualRuleTier
+
+@{
+    ViewBag.Label = "Accrual-Rule Tier";
+}
+<div id="accrualRuleTierDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+
+            <div class="modal-body pt-0">
+
+                
+                @Html.Hidden("AccrualRuleTierDeleteId", Model.Id)
+
+                <div class="form-group row">
+                    <div class="panel panel-default" style="width:100%;margin-left:10px">
+                        <div class="panel-heading" style="padding-left:10px">Tier Information</div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Tier No: <span class="text-danger"></span></label>
+                                <div class="col-md-2 text-muted pt-2">
+                                    @Html.DisplayFor(model => model.TierNo)
+                                </div>
+                                <label class="col-md-2 col-form-label">Description: <span class="text-danger"></span></label>
+                                <div class="col-md-5 text-muted pt-2">
+                                    @Html.DisplayFor(model => model.TierDescription)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Years: <span class="text-danger"></span></label>
+                                <label class="col-md-1 col-form-label pl-0 pr-0">From: <span class="text-danger"></span></label>
+                                <div class="col-md-2 text-muted pt-2">
+                                    @Html.DisplayFor(model => model.YearsWorkedFrom)
+                                </div>
+                                <label class="col-md-1 col-form-label pr-0">To: <span class="text-danger"></span></label>
+                                <div class="col-md-2 text-muted pt-2">
+                                    @Html.DisplayFor(model => model.YearsWorkedTo)
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                </div>
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteAccrualRuleTier" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteAccrualRuleTier").click(function () {
+            var id = $("#AccrualRuleTierDeleteId").val();
+            deleteAccrualRuleTier(id);
+        })
+
+    } );
+</script>
+
+

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TimeAide.Web.Models.JobCode>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobCodeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobCodeDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectId)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobCodeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobCodeDescription)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectId)
+            </td>
+            
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

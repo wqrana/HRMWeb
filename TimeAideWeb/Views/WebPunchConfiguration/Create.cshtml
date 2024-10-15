@@ -1,0 +1,68 @@
+﻿@model TimeAide.Web.Models.WebPunchConfiguration
+@using (Html.BeginForm())
+{
+<div class="form-horizontal" style="padding:10px">
+    @Html.AntiForgeryToken()
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.PunchServiceUrl, "WebPunchConfiguration Name", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.PunchServiceUrl, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PunchServiceUrl, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.PunchServiceCompanyId, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.PunchServiceCompanyId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PunchServiceCompanyId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.APIKey, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.APIKey, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.APIKey, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.PunchServiceCompanyPassword, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.PunchServiceCompanyPassword, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PunchServiceCompanyPassword, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.UseGPSCoordinates, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.UseGPSCoordinates)
+                @Html.ValidationMessageFor(model => model.UseGPSCoordinates, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.UseJobCode, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.UseJobCode)
+                @Html.ValidationMessageFor(model => model.UseJobCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+</div>
+
+}

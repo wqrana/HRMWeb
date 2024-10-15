@@ -1,0 +1,37 @@
+﻿
+@model TimeAide.Web.ViewModel.DashboardNotificationWidgetViewModel
+    <div class="statistics">
+        <div class="row">
+            <div class="col-md-6 col-6 text-center">
+                <a href="javascript:getDashboardMyNotificationList(0);">
+                    <div class="stats-box mb-4">
+                        <p>Notifying</p>
+
+                        <h3>@Html.DisplayFor(m=>m.NotifyingCount)</h3>
+
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-6 text-center">
+                <a href="javascript:getDashboardMyNotificationList(1);">
+                    <div class="stats-box mb-4">
+                        <p>Expired</p>
+                        <h3>@Html.DisplayFor(m => m.ExpiredCount)</h3>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <div class="progress mb-4">
+        <div class="progress-bar bg-warning" role="progressbar" style="width: @Model.NotifyingPct%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">@Model.NotifyingPct%</div>
+        <div class="progress-bar bg-danger" role="progressbar" style="width: @Model.ExpiredPct%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"> @Model.ExpiredPct%</div>
+
+    </div>
+    <div>
+
+        <p><i class="fa fa-dot-circle-o text-warning mr-2"></i>Notifying <span class="float-right"> @Model.NotifyingCount</span></p>
+
+        <p><i class="fa fa-dot-circle-o text-danger mr-2"></i>Expired <span class="float-right"> @Model.ExpiredCount</span></p>
+
+    </div>

@@ -1,0 +1,209 @@
+﻿@model TimeAide.Web.Models.PayrollRule
+<style>
+    .material-icons {
+        font-size: unset;
+    }
+
+    .profile-info-right table tr {
+        height: 30px;
+    }
+
+    .title {
+        color: #4f4f4f;
+    }
+
+    .page-header {
+        margin-bottom: 0px;
+    }
+
+
+    .tab-box {
+        margin-bottom: 0px;
+    }
+
+
+    textarea {
+        width: 100%;
+    }
+
+    .table th {
+        font-size: small;
+        background-color: #d9edf7 !important;
+    }
+
+    .table thead th {
+        font-size: small;
+        background-color: #d9edf7 !important;
+    }
+
+    .table tbody td {
+        font-size: small;
+    }
+</style>
+
+@Html.Hidden("SelectedPayrollRuleId", @Model.Id)
+<div id="accordion">
+    <div class="card mb-0">
+        <div class="card-header">
+            <a href="javascript:javascript:createEditPayrollRule(@Model.Id);" class="fa fa-pencil" title="Edit"></a>
+            <div class="text">
+                <h3>
+                    <a class="card-link" data-toggle="collapse" href="#collapseProfileHeader">
+                        <span id="ShortFullNameSpan"> @Html.DisplayFor(m=>m.Name)</span> <span id="showHeader" class="bg-light pull-right fa fa fa-chevron-up" style="font-size:small"></span>
+
+                    </a>
+                </h3>
+            </div>
+        </div>
+        <div id="collapseProfileHeader" class="collapse show" data-parent="#accordion">
+            <div class="card-body pb-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="profile-view">
+                            <div class="profile-basic ml-1">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="profile-info-left">
+                                            <div class="staff-id">Description:<span class="text-muted ml-1"> @Html.DisplayFor(m => m.Description)</span></div>
+                                            <div class="staff-id">No-Of-Punches:<span class="text-muted ml-1"> @Html.DisplayFor(m => m.NoOfPunchText)</span></div>
+                                            <div class="staff-id">Pay-Period Length:<span class="text-muted ml-1"> @Html.DisplayFor(m => m.PayFrequency.PayFrequencyName)</span></div>
+                                            <div class="staff-id">Pay-Week Start:<span class="text-muted ml-1"> @Html.DisplayFor(m=>m.PayweekStartDate)</span></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="profile-info-right">
+                                            <div class="staff-id">Time-Sheet Start:<span class="text-muted ml-1"> @Html.DisplayFor(m => m.TimesheetStartDate)</span></div>
+                                            @{ 
+                                                var schType = "";
+                                                if (Model.IsCustomSchedule) { schType = "Custom Schedule"; }
+                                                else if (Model.IsAssignedWork) { schType = "Assign Worked"; }
+
+                                                var IsAllComp = Model.CompanyId == null ? true : false;
+                                            }
+                                            <div class="staff-id">Schedule Type:<span class="text-muted ml-1"> @schType</span></div>
+                                            @if (Model.IsAssignedWork)
+                                            {
+                                            <div class="staff-id"><span class="text-muted">Daily Hours:(8) ; Weekly Max:(40) </span></div>
+                                            }
+                                            <div class="staff-id">All-Company:<span class="text-muted ml-1 mt-2"> @Html.DisplayFor(m => IsAllComp) </span></div>
+                                            @*<div class="staff-id">Supervisory Level:<span class="text-muted ml-1"> @Html.DisplayFor(model => model.SupervisoryLevel.SupervisoryLevelName)</span></div>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card tab-box">
+    <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+            <ul class="nav nav-tabs nav-tabs-bottom">
+                <li class="nav-item" id="breakAmealTab"><a href="#payrollRule_breakAmeal" onclick="" data-toggle="tab" class="nav-link active">Breaks &amp; Meal</a></li>
+                <li class="nav-item" id="punchesAovertimeTab"><a href="#payrollRule_punchesAovertime" onclick="" data-toggle="tab" class="nav-link">Punches &amp; Overtime</a></li>
+                <li class="nav-item" id="hoursCompTab"><a href="#payrollRule_hoursComp" onclick="" data-toggle="tab" class="nav-link">Hours Computation</a></li>
+                <li class="nav-item" id="additionalSettingTab"><a href="#payrollRule_additionalSetting" onclick="" data-toggle="tab" class="nav-link">Additional Settings</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tab-content pt-0">
+    <div id="payrollRule_breakAmeal" class="pro-overview tab-pane fade show active">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill mb-2">
+                    <div class="card-body pt-1">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Breaks &amp; Meal
+                                </h3>
+                            </div>
+                        </div>
+                        <div id="divBreakAMealDetail">
+                            @Html.Partial("BreakAMealTabDetail",Model)
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End-->
+    <div id="payrollRule_punchesAovertime" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill mb-2">
+                    <div class="card-body pt-1">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Punches &amp; Overtime
+                                </h3>
+                            </div>
+                        </div>
+                      
+                        <div id="divPunchesAOvertimeDetail">
+                            @Html.Partial("PunchesAOvertimeTabDetail", Model)
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="payrollRule_hoursComp" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill mb-2">
+                    <div class="card-body pt-1">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Hours Computation
+                                </h3>
+                            </div>
+                        </div>                       
+
+                        <div id="divHoursCompDetail">
+                            @Html.Partial("HoursComputationTabDetail", Model)
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="payrollRule_additionalSetting" class="pro-overview tab-pane">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="card profile-box flex-fill mb-2">
+                    <div class="card-body pt-1">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title pull-left">
+                                    Additional Settings
+                                </h3>
+                            </div>
+                        </div>                       
+                        <div id="divAdditionalSettingDetail">
+                            @Html.Partial("AdditionalSettingTabDetail", Model)
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

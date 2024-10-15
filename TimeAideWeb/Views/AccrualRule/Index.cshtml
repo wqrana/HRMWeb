@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "Accrual Rule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header mb-2">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Accrual Rule</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Setting</li>
+                <li class="breadcrumb-item active">Accrual</li>
+                <li class="breadcrumb-item active">Accrual Rules</li>
+            </ul>
+           
+            <div class="col-auto float-right ml-auto">
+                @*@Html.ActionLink("Create New User", "Create")*@
+                @if ((bool)(ViewBag.AllowAdd ?? false))
+                {                   
+                    <a href="javascript:createEditAccrualRule(0);" class="btn add-btn">+ Add @ViewBag.Label</a>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="divAccrualRuleDetail">
+</div>
+<div id="divAccrualRuleList" style="min-height:150px; max-height:250px; overflow-y:auto">
+    
+</div>
+
+<div id="divCreateEditDelPopUp">
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        getAccrualRuleDetail(0);
+        getAccrualRuleList();
+    });
+    function getAccrualRuleList() {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/IndexByAccrualRule',
+           
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divAccrualRuleList").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAccrualRuleList");
+            }
+        });
+    }
+    function getAccrualRuleDetail(accrualRuleId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/Details',
+            data: { "id": accrualRuleId },
+
+            success: function (data) {
+                 debugger;
+                //console.log(data);
+                $("#divAccrualRuleDetail").html(data);
+                $('html, body').animate({
+                    scrollTop: ($('#divAccrualRuleDetail').offset().top)
+                }, 500);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAccrualRuleDetail");
+            }
+        });
+    }
+    
+    function createEditAccrualRule(accrualRuleId) {
+        debugger;
+        var ActionMethod = accrualRuleId == 0 ? "Create" : "Edit";
+        $.ajax({
+            type: "get",
+            url: '/AccrualRule/' + ActionMethod,
+            data: { "id": accrualRuleId },
+
+            success: function (data) {
+                 debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#acrualRuleCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveAccrualRuleData() {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#AccrualRuleId').val();
+        dataObj.AccrualRuleName = $('#AccrualRuleName').val();
+        dataObj.AccrualRuleDescription = $('#AccrualRuleDescription').val();
+        dataObj.ReferenceTypeId = $('#ReferenceTypeId').val();
+        dataObj.BeginningOfYearDate = $('#BeginningOfYearDate').val();
+        dataObj.AccrualPeriodTypeId = $('#AccrualPeriodTypeId').val();
+        dataObj.AccrualTypeId = $('#AccrualTypeId').val();
+        dataObj.AccrualTypeUnavailable = $('#AccrualTypeUnavailable').val();
+        dataObj.AccumulationTypeId = $('#AccumulationTypeId').val();
+        dataObj.AccumulationMultiplier = $('#AccumulationMultiplier').val();
+        dataObj.UseYearsWorked = $('#UseYearsWorkedAE').is(':checked');
+        dataObj.IsAllCompanies = $('#IsAllCompaniesAE').is(':checked');
+
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.AccrualRuleName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.ReferenceTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.BeginningOfYearDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccrualPeriodTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccrualTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccumulationTypeId.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 6) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+        
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/AccrualRule/CreateEdit",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#acrualRuleCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);
+                        getAccrualRuleDetail(data.id);
+                        getAccrualRuleList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+    
+    function getAccrualRuleDeleteData(accrualRuleId) {
+        debugger;
+        if (accrualRuleId != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/AccrualRule/Delete',
+                data: { "id": accrualRuleId },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#accrualRuleDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteAccrualRule(accrualRuleId) {
+        debugger;
+       
+        if (accrualRuleId != '') {
+            $.ajax({
+                type: "Post",
+                url: "/AccrualRule/ConfirmDelete",
+                data: { "id": accrualRuleId },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#accrualRuleDelete_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        var selectedAccrualRuleId = $("#SelectedAccrualRuleId").val();
+                        if (selectedAccrualRuleId == accrualRuleId) {
+                            location.reload(true);
+                        }
+                        else {
+                            getAccrualRuleList();
+                        }
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide("", "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+ 
+   
+
+    //End
+</script>

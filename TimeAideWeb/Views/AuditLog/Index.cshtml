@@ -1,0 +1,115 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutMasterData.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">@ViewBag.LabelPlural</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Audit </li>
+                <li class="breadcrumb-item active">@ViewBag.Label</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-2">
+            <input id="FromDate" type="datetime" class="form-control floating" value="@DateTime.Today.AddDays(-1)">
+            <label class="focus-label">From Date</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-2">
+            <input id="ToDate" type="datetime" class="form-control floating" value="@DateTime.Today">
+            <label class="focus-label">To Date</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-1">
+            <input id="EmployeeId" type="text" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("ActionType", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Action Type</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("RecordType", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Record Type</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("SupervisorId", null, "Self", new { @class = "select floating" })
+            <label class="focus-label">Supervisor</label>
+        </div>
+    </div>
+    <div class="col-sm-1 col-md-1 pl-0 pr-0">
+        <a href="javascript: getAuditLogDetail();" class="btn btn-success btn-block"> Apply </a>
+    </div>
+</div>
+<div id="divLoadingAuditLog" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div class="row" id="divAuditDetailView">
+    
+</div>
+<hr />
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+
+<script>
+    $(document).ready(function () {
+        getAuditLogDetail();
+    });
+
+    function getAuditLogDetail() {
+        $("#divLoadingAuditLog").show();
+        debugger;
+        var filterObject = new Object();
+       
+        filterObject.FromDate = $('#FromDate').val();
+        filterObject.ToDate = $('#ToDate').val();
+        filterObject.EmployeeId = $('#EmployeeId').val();
+        filterObject.EmployeeName = $('#EmployeeName').val();
+        filterObject.ActionType = $('#ActionType').val();
+        filterObject.RecordType = $('#RecordType').val();
+        filterObject.SupervisorId = $('#SupervisorId').val();
+        
+        $.ajax({
+            type: "POST",
+            url: '/AuditLog/GetFilteredAuditLogList',
+            data: JSON.stringify(filterObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divAuditDetailView").html(data);
+
+                $("#divLoadingAuditLog").hide();
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+</script>
+
+
+
+

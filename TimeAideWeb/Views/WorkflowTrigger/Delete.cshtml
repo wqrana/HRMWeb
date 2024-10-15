@@ -1,0 +1,23 @@
+﻿@model TimeAide.Web.Models.WorkflowTrigger
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkflowTriggerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkflowTriggerName)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

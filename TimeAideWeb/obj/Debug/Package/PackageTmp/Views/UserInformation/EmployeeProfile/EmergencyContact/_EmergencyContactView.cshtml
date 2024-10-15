@@ -1,0 +1,63 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.UserInformation
+<div class="card-body">
+    <h3 class="card-title">
+        Emergency Contact
+        @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.EmergencyContactPrivilege.AllowAdd)
+        {
+            //&& SessionHelper.LoginId == Model.Id && ViewBag.EmailsAndNumberPrivilege.AllowView
+            <a href="#" class="edit-icon" onclick="btnEmergencyContactChangeRequest(-1)"><i class="fa fa-pencil"></i></a>
+
+        }
+    </h3>
+    <div class="table-responsive">
+        <table class="table table-nowrap">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Relationship</th>
+                    <th>Phone</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var eachContact in Model.EmergencyContact)
+                {
+                    <tr>
+                        <td>@eachContact.ContactPersonName</td>
+                        @if (@eachContact.Relationship != null)
+                        {
+                            <td>@eachContact.Relationship.RelationshipName</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    <td>
+                        @if (!String.IsNullOrEmpty(eachContact.MainNumber) && eachContact.MainNumber.Trim().Length == 10)
+                        {
+                            @String.Format("({0}) {1}-{2}", eachContact.MainNumber.Substring(0, 3), eachContact.MainNumber.Substring(3, 3), eachContact.MainNumber.Substring(6, 4))
+                        }
+                        else
+                        {
+                            @eachContact.MainNumber
+                        }
+                    </td>
+                        <td class="text-right">
+                            @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.EmergencyContactPrivilege.AllowView)
+                            {
+                                <a href="#" class="edit-icon" id="btnEmergencyContactChangeRequest" onclick="btnEmergencyContactChangeRequest(@eachContact.Id)"><i class="fa fa-pencil"></i></a>
+                            }
+                            @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.EmergencyContactPrivilege.AllowDelete)
+                            {
+                                <a href="#" class="delete-icon" id="btnEmergencyContactChangeRequest" onclick="btnEmergencyContactChangeRequestDelete(@eachContact.Id)"><i class="fa fa-trash"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

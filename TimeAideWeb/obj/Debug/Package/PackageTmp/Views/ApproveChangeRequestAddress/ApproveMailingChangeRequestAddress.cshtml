@@ -1,0 +1,414 @@
+﻿@model TimeAide.Web.Models.ChangeRequestAddress
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id, new { id = "ChangeRequestAddressId" })
+    @Html.HiddenFor(model => model.UserInformationId, new { id = "ChangeRequestAddressUserInformationId" })
+    <div class="row pb-0">
+        <div class="col-lg-12">
+            <ul class="list-unstyled">
+                <li><h4 class="mb-0"> @Model.UserInformation.ShortFullName</h4></li>
+                <li>Employee ID:@Model.UserInformation.EmployeeId</li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="panel panel-default" style="width:50%;">
+            <div class="panel-heading" style="padding-left:10px">Old @Model.AddressType Address</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        Address 1
+                    </label>
+                    <div class="col-lg text-muted mt-2" style="width:100% !important">
+
+                        @if (Model.NewAddress1 == Model.Address1)
+                        {
+                            <span>
+                                @Model.UserContactInformation.Address1
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="sourceForChange">
+                                @Model.Address1
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        Address 2
+                    </label>
+                    <div class="col-lg text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewAddress2 == Model.Address2)
+                        {
+                            <span>
+                                @Model.UserContactInformation.Address2
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="sourceForChange">
+                                @Model.Address2
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        Country
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewCountryId == Model.CountryId && Model.UserContactInformation.Country != null)
+                        {
+
+                            @Model.UserContactInformation.Country.CountryName
+
+                        }
+                        else if (Model.Country != null)
+                        {
+                            <span class="sourceForChange">
+                                @Model.Country.CountryName
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2" style="margin-left:10px">
+                        State
+                    </label>
+                    @if (Model.NewStateId == Model.StateId && Model.UserContactInformation.State != null)
+                    {
+                        <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                            @Model.UserContactInformation.State.StateName
+                        </div>
+                    }
+                    else
+                    {
+                        if (Model.State != null)
+                        {
+                            <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                                <span class="sourceForChange">
+                                    @Model.State.StateName
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        City
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewCityId == Model.CityId && Model.UserContactInformation.City != null)
+                        {
+
+                            @Model.UserContactInformation.City.CityName
+
+                        }
+                        else if (Model.City != null)
+                        {
+                            <span class="sourceForChange">
+                                @Model.City.CityName
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2" style="margin-left:10px">
+                        Zip Code
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+
+                        @if (Model.NewZipCode == Model.ZipCode)
+                        {
+                            <span>
+                                @Model.UserContactInformation.ZipCodeFormatted
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="sourceForChange">
+                                @Model.ZipCodeFormatted
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="width:50%">
+            <div class="panel-heading" style="padding-left:10px">New @Model.AddressType Address</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        Address 1
+                    </label>
+                    <div class="col-lg text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewAddress1 == Model.Address1)
+                        {
+                            <span>
+                                @Model.UserContactInformation.Address1
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="changedItems">
+                                @Model.NewAddress1
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        Address 2
+                    </label>
+                    <div class="col-lg text-muted mt-2">
+                        @if (Model.NewAddress2 == Model.Address2)
+                        {
+                            <span>
+                                @Model.UserContactInformation.Address2
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="changedItems">
+                                @Model.NewAddress2
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        Country
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewCountryId == Model.CountryId)
+                        {
+                            if (Model.UserContactInformation.Country != null)
+                            {
+                                <span>
+                                    @Model.UserContactInformation.Country.CountryName
+                                </span>
+                            }
+                        }
+                        else if (Model.NewCountry != null)
+                        {
+                            <span class="changedItems">
+                                @Model.NewCountry.CountryName
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2" style="margin-left:10px">
+                        State
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewStateId == Model.StateId)
+                        {
+                            if (Model.UserContactInformation.State != null)
+                            {
+                                <span>
+                                    @Model.UserContactInformation.State.StateName
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            if (Model.NewState != null)
+                            {
+                                <span class="changedItems">
+                                    @Model.NewState.StateName
+                                </span>
+                            }
+                        }
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" style="margin-left:10px">
+                        City
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewCityId == Model.CityId)
+                        {
+                            if (Model.UserContactInformation.City != null)
+                            {
+                                <span>
+                                    @Model.UserContactInformation.City.CityName
+                                </span>
+                            }
+                        }
+                        else if (Model.NewCity != null)
+                        {
+                            <span class="changedItems">
+                                @Model.NewCity.CityName
+                            </span>
+                        }
+                    </div>
+                    <label class="col-md-2" style="margin-left:10px">
+                        Zip Code
+                    </label>
+                    <div class="col-md-3 text-muted mt-2" style="width:100% !important">
+                        @if (Model.NewZipCode == Model.ZipCode)
+                        {
+                            <span>
+                                @Model.UserContactInformation.ZipCodeFormatted
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="changedItems">
+                                @Model.NewZipCodeFormatted
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!ViewBag.IsViewOnly)
+    {
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="panel panel-default" style="width:100%;margin-left:10px;margin-right:10px">
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-2" style="margin-left:10px">
+                            Remarks
+                        </label>
+                        <div class="col-lg text-muted mt-2">
+                            @Html.EditorFor(model => model.ChangeRequestRemarks, new { htmlAttributes = new { @class = "form-control", style = "width: 100% !important;" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+            <div class="col-md-12">
+                <h4 class="pull-left">Workflow Request History</h4>
+                <div class="table-responsive">
+                    <table class="table  table-striped custom-table table-nowrap mb-0" style="width:100% !important">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Workflow Level</th>
+                                <th>Action By</th>
+                                <th>Workflow Type</th>
+                                <th>Remarks</th>
+                                <th>Action Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.WorkflowTriggerRequestDetail != null && ViewBag.WorkflowTriggerRequestDetail.Count > 0)
+                            {
+                                foreach (TimeAide.Web.Models.WorkflowTriggerRequestDetail workflowTriggerRequestDetail in ViewBag.WorkflowTriggerRequestDetail)
+                                {
+                                    <tr>
+                                        <td>@workflowTriggerRequestDetail.WorkflowActionType.WorkflowActionTypeName</td>
+                                        <td>@workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelName</td>
+                                        @if (workflowTriggerRequestDetail.ActionBy != null)
+                                        {
+                                            <td>@workflowTriggerRequestDetail.ActionBy.ShortFullName</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                        @if (workflowTriggerRequestDetail.WorkflowLevel != null && workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelType != null)
+                                        {
+                                            <td>@workflowTriggerRequestDetail.WorkflowLevel.WorkflowLevelType.WorkflowLevelTypeName</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+
+                                        <td>@workflowTriggerRequestDetail.ActionRemarks</td>
+
+                                        @if (workflowTriggerRequestDetail.ActionDate.HasValue)
+                                        {
+                                            <td>@workflowTriggerRequestDetail.ActionDate.Value</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="submit-section" style="padding-bottom:10px">
+    <input type="hidden" id="popupTargetDdl" />
+    @if (ViewBag.CanTakeAction)
+    {
+        <button type="button" onclick="ChangeRequestAction(2);" class="btn btn-primary submit-btn">Approve</button>
+        <button type="button" onclick="ChangeRequestAction(3);" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Decline</button>
+    }
+    <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Close</button>
+
+    @*<button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Cancel</button>*@
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.MarkAsRead' != 'null' && '@ViewBag.MarkAsRead' == 'True') {
+            RefreshBellIconCount('');
+        }
+
+    });
+    function ChangeRequestAction(statusId) {
+        debugger
+        var model = {
+            Id: $('#ChangeRequestAddressId').val(),
+            ChangeRequestRemarks: $('#ChangeRequestRemarks').val(),
+            ChangeRequestStatusId: statusId,
+            UserInformationId: $('#ChangeRequestAddressUserInformationId').val(),
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/ApproveChangeRequestAddress/ApproveMailingChangeRequestAddress',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            success: function (html) {
+                debugger
+                //window.location.href = '/UserInformation/Index';
+                //location.reload(true);
+                if (statusId == 2) { toastr.success('Change request approved successfully.', "Success!"); }
+                else if (statusId == 3) { toastr.success('Change request decline.', "Success!"); }
+                $('#myModal').modal('hide');
+                /*alert(html);*/
+                RefreshBellIconCount(html);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                window.location.href = '/UserInformation/Index';
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+</script>
+<style>
+    .modal-dialog {
+        width: 80%;
+        max-width: 80% !important;
+    }
+
+    .changedItems {
+        color: red !important
+    }
+
+    .sourceForChange {
+        /*color: green !important*/
+    }
+</style>

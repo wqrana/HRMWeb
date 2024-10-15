@@ -1,0 +1,733 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TIMEAIDE_7_PSICOModelStoreContainer" CdmEntityContainer="TimeAideWindowContext">
+    <EntitySetMapping Name="tCompanies">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tCompany">
+        <MappingFragment StoreEntitySet="tCompany">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="nPayRuleID" ColumnName="nPayRuleID" />
+          <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tSchedModDailyDetails">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tSchedModDailyDetail">
+        <MappingFragment StoreEntitySet="tSchedModDailyDetail">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="nUserID" ColumnName="nUserID" />
+          <ScalarProperty Name="sUserName" ColumnName="sUserName" />
+          <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+          <ScalarProperty Name="sNote" ColumnName="sNote" />
+          <ScalarProperty Name="dPunchDate" ColumnName="dPunchDate" />
+          <ScalarProperty Name="dPunchIn1" ColumnName="dPunchIn1" />
+          <ScalarProperty Name="dPunchOut1" ColumnName="dPunchOut1" />
+          <ScalarProperty Name="dPunchIn2" ColumnName="dPunchIn2" />
+          <ScalarProperty Name="dPunchOut2" ColumnName="dPunchOut2" />
+          <ScalarProperty Name="dPunchIn3" ColumnName="dPunchIn3" />
+          <ScalarProperty Name="dPunchOut3" ColumnName="dPunchOut3" />
+          <ScalarProperty Name="dPunchIn4" ColumnName="dPunchIn4" />
+          <ScalarProperty Name="dPunchOut4" ColumnName="dPunchOut4" />
+          <ScalarProperty Name="nWorkDayType" ColumnName="nWorkDayType" />
+          <ScalarProperty Name="dblDayHours" ColumnName="dblDayHours" />
+          <ScalarProperty Name="nSupervisorID" ColumnName="nSupervisorID" />
+          <ScalarProperty Name="dModifiedDate" ColumnName="dModifiedDate" />
+          <ScalarProperty Name="nPunchNum" ColumnName="nPunchNum" />
+          <ScalarProperty Name="nPayWeekNum" ColumnName="nPayWeekNum" />
+          <ScalarProperty Name="nJobCodeID" ColumnName="nJobCodeID" />
+          <ScalarProperty Name="nSchedModPeriodSumm" ColumnName="nSchedModPeriodSumm" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tSchedModPeriodSumms">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tSchedModPeriodSumm">
+        <MappingFragment StoreEntitySet="tSchedModPeriodSumm">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="nUserID" ColumnName="nUserID" />
+          <ScalarProperty Name="sUserName" ColumnName="sUserName" />
+          <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+          <ScalarProperty Name="sNote" ColumnName="sNote" />
+          <ScalarProperty Name="dStartDate" ColumnName="dStartDate" />
+          <ScalarProperty Name="dEndDate" ColumnName="dEndDate" />
+          <ScalarProperty Name="dblPeriodHours" ColumnName="dblPeriodHours" />
+          <ScalarProperty Name="nSupervisorID" ColumnName="nSupervisorID" />
+          <ScalarProperty Name="dModifiedDate" ColumnName="dModifiedDate" />
+          <ScalarProperty Name="nPayPeriodType" ColumnName="nPayPeriodType" />
+          <ScalarProperty Name="nPayWeekNum" ColumnName="nPayWeekNum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tSchedules">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tSchedule">
+        <MappingFragment StoreEntitySet="tSchedule">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="sDesc" ColumnName="sDesc" />
+          <ScalarProperty Name="nPunchNum" ColumnName="nPunchNum" />
+          <ScalarProperty Name="nPunchCode" ColumnName="nPunchCode" />
+          <ScalarProperty Name="bSunday" ColumnName="bSunday" />
+          <ScalarProperty Name="bMonday" ColumnName="bMonday" />
+          <ScalarProperty Name="bTuesday" ColumnName="bTuesday" />
+          <ScalarProperty Name="bWednesday" ColumnName="bWednesday" />
+          <ScalarProperty Name="bThursday" ColumnName="bThursday" />
+          <ScalarProperty Name="bFriday" ColumnName="bFriday" />
+          <ScalarProperty Name="bSaturday" ColumnName="bSaturday" />
+          <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+          <ScalarProperty Name="nShiftDiff" ColumnName="nShiftDiff" />
+          <ScalarProperty Name="sShiftDiffName" ColumnName="sShiftDiffName" />
+          <ScalarProperty Name="sShiftDiffCode" ColumnName="sShiftDiffCode" />
+          <ScalarProperty Name="nShiftDiffCount" ColumnName="nShiftDiffCount" />
+          <ScalarProperty Name="dShiftDiffStart" ColumnName="dShiftDiffStart" />
+          <ScalarProperty Name="dShiftDiffEnd" ColumnName="dShiftDiffEnd" />
+          <ScalarProperty Name="sShiftDiffName2" ColumnName="sShiftDiffName2" />
+          <ScalarProperty Name="sShiftDiffCode2" ColumnName="sShiftDiffCode2" />
+          <ScalarProperty Name="dShiftDiffStart2" ColumnName="dShiftDiffStart2" />
+          <ScalarProperty Name="dShiftDiffEnd2" ColumnName="dShiftDiffEnd2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tScheduleDayInfoes">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tScheduleDayInfo">
+        <MappingFragment StoreEntitySet="tScheduleDayInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+          <ScalarProperty Name="nDayofWeek" ColumnName="nDayofWeek" />
+          <ScalarProperty Name="bRight" ColumnName="bRight" />
+          <ScalarProperty Name="bOvernight" ColumnName="bOvernight" />
+          <ScalarProperty Name="dIn1Hr" ColumnName="dIn1Hr" />
+          <ScalarProperty Name="dOut1Hr" ColumnName="dOut1Hr" />
+          <ScalarProperty Name="dIn2Hr" ColumnName="dIn2Hr" />
+          <ScalarProperty Name="dOut2Hr" ColumnName="dOut2Hr" />
+          <ScalarProperty Name="dIn3Hr" ColumnName="dIn3Hr" />
+          <ScalarProperty Name="dOut3Hr" ColumnName="dOut3Hr" />
+          <ScalarProperty Name="dIn4Hr" ColumnName="dIn4Hr" />
+          <ScalarProperty Name="dOut4Hr" ColumnName="dOut4Hr" />
+          <ScalarProperty Name="nJobCodeID" ColumnName="nJobCodeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tusers">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tuser">
+        <MappingFragment StoreEntitySet="tuser">
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="reg_date" ColumnName="reg_date" />
+          <ScalarProperty Name="datelimit" ColumnName="datelimit" />
+          <ScalarProperty Name="idno" ColumnName="idno" />
+          <ScalarProperty Name="badmin" ColumnName="badmin" />
+          <ScalarProperty Name="padmin" ColumnName="padmin" />
+          <ScalarProperty Name="company" ColumnName="company" />
+          <ScalarProperty Name="dept" ColumnName="dept" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="group_id" ColumnName="group_id" />
+          <ScalarProperty Name="cantgate" ColumnName="cantgate" />
+          <ScalarProperty Name="timegate" ColumnName="timegate" />
+          <ScalarProperty Name="validtype" ColumnName="validtype" />
+          <ScalarProperty Name="pwd" ColumnName="pwd" />
+          <ScalarProperty Name="cancard" ColumnName="cancard" />
+          <ScalarProperty Name="cardnum" ColumnName="cardnum" />
+          <ScalarProperty Name="identify" ColumnName="identify" />
+          <ScalarProperty Name="seculevel" ColumnName="seculevel" />
+          <ScalarProperty Name="fpdata" ColumnName="fpdata" />
+          <ScalarProperty Name="fpimage" ColumnName="fpimage" />
+          <ScalarProperty Name="fpname" ColumnName="fpname" />
+          <ScalarProperty Name="face" ColumnName="face" />
+          <ScalarProperty Name="voice" ColumnName="voice" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="antipass_state" ColumnName="antipass_state" />
+          <ScalarProperty Name="antipass_lasttime" ColumnName="antipass_lasttime" />
+          <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+          <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+          <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+          <ScalarProperty Name="nGroupID" ColumnName="nGroupID" />
+          <ScalarProperty Name="nEmployeeType" ColumnName="nEmployeeType" />
+          <ScalarProperty Name="nStatus" ColumnName="nStatus" />
+          <ScalarProperty Name="sNotes" ColumnName="sNotes" />
+          <ScalarProperty Name="objPhoto" ColumnName="objPhoto" />
+          <ScalarProperty Name="nPunchClockID" ColumnName="nPunchClockID" />
+          <ScalarProperty Name="nPayrollRuleID" ColumnName="nPayrollRuleID" />
+          <ScalarProperty Name="nScheduleID" ColumnName="nScheduleID" />
+          <ScalarProperty Name="nSupervisorType" ColumnName="nSupervisorType" />
+          <ScalarProperty Name="sPwd" ColumnName="sPwd" />
+          <ScalarProperty Name="nCompanyRest" ColumnName="nCompanyRest" />
+          <ScalarProperty Name="nDeptRest" ColumnName="nDeptRest" />
+          <ScalarProperty Name="nCatRest" ColumnName="nCatRest" />
+          <ScalarProperty Name="bEmpRecordsView" ColumnName="bEmpRecordsView" />
+          <ScalarProperty Name="bEmpRecordsEdit" ColumnName="bEmpRecordsEdit" />
+          <ScalarProperty Name="bEmpReportsView" ColumnName="bEmpReportsView" />
+          <ScalarProperty Name="bPunchMaintView" ColumnName="bPunchMaintView" />
+          <ScalarProperty Name="bPunchMaintEdit" ColumnName="bPunchMaintEdit" />
+          <ScalarProperty Name="bPunchSuperView" ColumnName="bPunchSuperView" />
+          <ScalarProperty Name="bReptPeriod" ColumnName="bReptPeriod" />
+          <ScalarProperty Name="bReptHistorical" ColumnName="bReptHistorical" />
+          <ScalarProperty Name="bReptAudit" ColumnName="bReptAudit" />
+          <ScalarProperty Name="bExportPayroll" ColumnName="bExportPayroll" />
+          <ScalarProperty Name="bPayRuleView" ColumnName="bPayRuleView" />
+          <ScalarProperty Name="bPayRuleEdit" ColumnName="bPayRuleEdit" />
+          <ScalarProperty Name="bSchedView" ColumnName="bSchedView" />
+          <ScalarProperty Name="bSchedEdit" ColumnName="bSchedEdit" />
+          <ScalarProperty Name="bCompanySettings" ColumnName="bCompanySettings" />
+          <ScalarProperty Name="bMonitor" ColumnName="bMonitor" />
+          <ScalarProperty Name="bEmployeeImport" ColumnName="bEmployeeImport" />
+          <ScalarProperty Name="bRestrictClock" ColumnName="bRestrictClock" />
+          <ScalarProperty Name="nRestrickClock" ColumnName="nRestrickClock" />
+          <ScalarProperty Name="nSupervisorViewOptions" ColumnName="nSupervisorViewOptions" />
+          <ScalarProperty Name="bHoursLostView" ColumnName="bHoursLostView" />
+          <ScalarProperty Name="bHoursLostEdit" ColumnName="bHoursLostEdit" />
+          <ScalarProperty Name="nSickRule" ColumnName="nSickRule" />
+          <ScalarProperty Name="nVacationRule" ColumnName="nVacationRule" />
+          <ScalarProperty Name="nEmployeeTypeRest" ColumnName="nEmployeeTypeRest" />
+          <ScalarProperty Name="sPwdHash" ColumnName="sPwdHash" />
+          <ScalarProperty Name="intPositionID" ColumnName="intPositionID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
+          <ScalarProperty Name="FirstLastName" ColumnName="FirstLastName" />
+          <ScalarProperty Name="SecondLastName" ColumnName="SecondLastName" />
+          <ScalarProperty Name="ShortFullName" ColumnName="ShortFullName" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="AutoShortFullName" ColumnName="AutoShortFullName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tAccrualTypes">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tAccrualType">
+        <MappingFragment StoreEntitySet="tAccrualTypes">
+          <ScalarProperty Name="intAccrualType" ColumnName="intAccrualType" />
+          <ScalarProperty Name="sAccrualTypeDesc" ColumnName="sAccrualTypeDesc" />
+          <ScalarProperty Name="sAccrualCodeID" ColumnName="sAccrualCodeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spSS_CompensationBalances" FunctionName="TIMEAIDE_7_PSICOModel.Store.spSS_CompensationBalances">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.spSS_CompensationBalances_Result">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="AccrualType" ColumnName="AccrualType" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="SearchDate" ColumnName="SearchDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="tPunchDates">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tPunchDate">
+        <MappingFragment StoreEntitySet="tPunchDate">
+          <ScalarProperty Name="intPayrollLock" ColumnName="intPayrollLock" />
+          <ScalarProperty Name="nWeekID" ColumnName="nWeekID" />
+          <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+          <ScalarProperty Name="nAbsentStatus" ColumnName="nAbsentStatus" />
+          <ScalarProperty Name="dblOTHERS" ColumnName="dblOTHERS" />
+          <ScalarProperty Name="dblMEAL" ColumnName="dblMEAL" />
+          <ScalarProperty Name="nEmployeeTypeID" ColumnName="nEmployeeTypeID" />
+          <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+          <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+          <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+          <ScalarProperty Name="dblDOUBLE" ColumnName="dblDOUBLE" />
+          <ScalarProperty Name="dblONEHALF" ColumnName="dblONEHALF" />
+          <ScalarProperty Name="dblREGULAR" ColumnName="dblREGULAR" />
+          <ScalarProperty Name="bLocked" ColumnName="bLocked" />
+          <ScalarProperty Name="sHoursSummary" ColumnName="sHoursSummary" />
+          <ScalarProperty Name="sDaySchedule" ColumnName="sDaySchedule" />
+          <ScalarProperty Name="sExceptions" ColumnName="sExceptions" />
+          <ScalarProperty Name="sPunchSummary" ColumnName="sPunchSummary" />
+          <ScalarProperty Name="b_Processed" ColumnName="b_Processed" />
+          <ScalarProperty Name="sType" ColumnName="sType" />
+          <ScalarProperty Name="dblPunchHrs" ColumnName="dblPunchHrs" />
+          <ScalarProperty Name="DTPunchDate" ColumnName="DTPunchDate" />
+          <ScalarProperty Name="DayID" ColumnName="DayID" />
+          <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+          <ScalarProperty Name="e_group" ColumnName="e_group" />
+          <ScalarProperty Name="e_name" ColumnName="e_name" />
+          <ScalarProperty Name="e_idno" ColumnName="e_idno" />
+          <ScalarProperty Name="e_id" ColumnName="e_id" />
+          <ScalarProperty Name="tpdID" ColumnName="tpdID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tReportWeeks">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tReportWeek">
+        <MappingFragment StoreEntitySet="tReportWeek">
+          <ScalarProperty Name="dtUserReviewDate" ColumnName="dtUserReviewDate" />
+          <ScalarProperty Name="strUserReviewedName" ColumnName="strUserReviewedName" />
+          <ScalarProperty Name="intUserReviewedID" ColumnName="intUserReviewedID" />
+          <ScalarProperty Name="intUserReviewed" ColumnName="intUserReviewed" />
+          <ScalarProperty Name="nLocked" ColumnName="nLocked" />
+          <ScalarProperty Name="dblOTHERS" ColumnName="dblOTHERS" />
+          <ScalarProperty Name="dblMEAL" ColumnName="dblMEAL" />
+          <ScalarProperty Name="nWeekID" ColumnName="nWeekID" />
+          <ScalarProperty Name="sSupervisorName" ColumnName="sSupervisorName" />
+          <ScalarProperty Name="nReviewSupervisorID" ColumnName="nReviewSupervisorID" />
+          <ScalarProperty Name="nReviewStatus" ColumnName="nReviewStatus" />
+          <ScalarProperty Name="nPayPeriod" ColumnName="nPayPeriod" />
+          <ScalarProperty Name="sScheduleName" ColumnName="sScheduleName" />
+          <ScalarProperty Name="nScheduleID" ColumnName="nScheduleID" />
+          <ScalarProperty Name="sJobTitleName" ColumnName="sJobTitleName" />
+          <ScalarProperty Name="nJobTitleID" ColumnName="nJobTitleID" />
+          <ScalarProperty Name="sEmployeeTypeName" ColumnName="sEmployeeTypeName" />
+          <ScalarProperty Name="nEmployeeType" ColumnName="nEmployeeType" />
+          <ScalarProperty Name="sCompanyName" ColumnName="sCompanyName" />
+          <ScalarProperty Name="nCompID" ColumnName="nCompID" />
+          <ScalarProperty Name="sDeptName" ColumnName="sDeptName" />
+          <ScalarProperty Name="nDept" ColumnName="nDept" />
+          <ScalarProperty Name="sWeekID" ColumnName="sWeekID" />
+          <ScalarProperty Name="sHoursSummary" ColumnName="sHoursSummary" />
+          <ScalarProperty Name="dblDOUBLE" ColumnName="dblDOUBLE" />
+          <ScalarProperty Name="dblONEHALF" ColumnName="dblONEHALF" />
+          <ScalarProperty Name="dblREGULAR" ColumnName="dblREGULAR" />
+          <ScalarProperty Name="DTEndDate" ColumnName="DTEndDate" />
+          <ScalarProperty Name="DTStartDate" ColumnName="DTStartDate" />
+          <ScalarProperty Name="nPayWeekNum" ColumnName="nPayWeekNum" />
+          <ScalarProperty Name="sPayRuleName" ColumnName="sPayRuleName" />
+          <ScalarProperty Name="nPayRuleID" ColumnName="nPayRuleID" />
+          <ScalarProperty Name="e_name" ColumnName="e_name" />
+          <ScalarProperty Name="e_idno" ColumnName="e_idno" />
+          <ScalarProperty Name="e_id" ColumnName="e_id" />
+          <ScalarProperty Name="tpwID" ColumnName="tpwID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewPay_UserBatchStatus">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.viewPay_UserBatchStatus">
+        <MappingFragment StoreEntitySet="viewPay_UserBatchStatus">
+          <ScalarProperty Name="ClosedDateTime" ColumnName="ClosedDateTime" />
+          <ScalarProperty Name="ClosedByUserID" ColumnName="ClosedByUserID" />
+          <ScalarProperty Name="intCheckCount" ColumnName="intCheckCount" />
+          <ScalarProperty Name="intDirectDepositCount" ColumnName="intDirectDepositCount" />
+          <ScalarProperty Name="intUserBatchStatus" ColumnName="intUserBatchStatus" />
+          <ScalarProperty Name="intTemplateID" ColumnName="intTemplateID" />
+          <ScalarProperty Name="intBatchType" ColumnName="intBatchType" />
+          <ScalarProperty Name="strPayMethodType" ColumnName="strPayMethodType" />
+          <ScalarProperty Name="intPayMethodType" ColumnName="intPayMethodType" />
+          <ScalarProperty Name="strBatchTypeName" ColumnName="strBatchTypeName" />
+          <ScalarProperty Name="sSSN" ColumnName="sSSN" />
+          <ScalarProperty Name="strEmployeeType" ColumnName="strEmployeeType" />
+          <ScalarProperty Name="strSubdepartment" ColumnName="strSubdepartment" />
+          <ScalarProperty Name="strDepartment" ColumnName="strDepartment" />
+          <ScalarProperty Name="strCompany" ColumnName="strCompany" />
+          <ScalarProperty Name="intEmployeeTypeID" ColumnName="intEmployeeTypeID" />
+          <ScalarProperty Name="intSubdepartmentID" ColumnName="intSubdepartmentID" />
+          <ScalarProperty Name="intDepartmentID" ColumnName="intDepartmentID" />
+          <ScalarProperty Name="intCompanyID" ColumnName="intCompanyID" />
+          <ScalarProperty Name="dtEndDatePeriod" ColumnName="dtEndDatePeriod" />
+          <ScalarProperty Name="dtStartDatePeriod" ColumnName="dtStartDatePeriod" />
+          <ScalarProperty Name="decBatchNetPay" ColumnName="decBatchNetPay" />
+          <ScalarProperty Name="decBatchUserWithholdings" ColumnName="decBatchUserWithholdings" />
+          <ScalarProperty Name="decBatchUserCompensations" ColumnName="decBatchUserCompensations" />
+          <ScalarProperty Name="strZipCode" ColumnName="strZipCode" />
+          <ScalarProperty Name="strState" ColumnName="strState" />
+          <ScalarProperty Name="strCity" ColumnName="strCity" />
+          <ScalarProperty Name="sHomeAddressLine2" ColumnName="sHomeAddressLine2" />
+          <ScalarProperty Name="sHomeAddressLine1" ColumnName="sHomeAddressLine1" />
+          <ScalarProperty Name="strUserName" ColumnName="strUserName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strUserBatchStatus" ColumnName="strUserBatchStatus" />
+          <ScalarProperty Name="intPayWeekNum" ColumnName="intPayWeekNum" />
+          <ScalarProperty Name="decBatchTransactionHoursAmount" ColumnName="decBatchTransactionHoursAmount" />
+          <ScalarProperty Name="strStatusDescription" ColumnName="strStatusDescription" />
+          <ScalarProperty Name="decBatchDeductionAmount" ColumnName="decBatchDeductionAmount" />
+          <ScalarProperty Name="decBatchCompensationAmount" ColumnName="decBatchCompensationAmount" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="intBatchStatus" ColumnName="intBatchStatus" />
+          <ScalarProperty Name="dtBatchUpdates" ColumnName="dtBatchUpdates" />
+          <ScalarProperty Name="strCreateByName" ColumnName="strCreateByName" />
+          <ScalarProperty Name="intCreatedByID" ColumnName="intCreatedByID" />
+          <ScalarProperty Name="dtBatchCreated" ColumnName="dtBatchCreated" />
+          <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="fnPay_tblUserCompensationsYTD" FunctionName="TIMEAIDE_7_PSICOModel.Store.fnPay_tblUserCompensationsYTD">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.fnPay_tblUserCompensationsYTD_Result">
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+          <ScalarProperty Name="decHours" ColumnName="decHours" />
+          <ScalarProperty Name="decPay" ColumnName="decPay" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="decPayYTD" ColumnName="decPayYTD" />
+          <ScalarProperty Name="intReportOrder" ColumnName="intReportOrder" />
+          <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="fnPay_tblUserWithholdingsYTD" FunctionName="TIMEAIDE_7_PSICOModel.Store.fnPay_tblUserWithholdingsYTD">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.fnPay_tblUserWithholdingsYTD_Result">
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+          <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+          <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="decWithholdingsYTD" ColumnName="decWithholdingsYTD" />
+          <ScalarProperty Name="intReportOrder" ColumnName="intReportOrder" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="tblCompanyPayrollInformations">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblCompanyPayrollInformation">
+        <MappingFragment StoreEntitySet="tblCompanyPayrollInformation">
+          <ScalarProperty Name="decDepartamentoDelTrabajoRate" ColumnName="decDepartamentoDelTrabajoRate" />
+          <ScalarProperty Name="strDepartamentoDelTrabajoAccount" ColumnName="strDepartamentoDelTrabajoAccount" />
+          <ScalarProperty Name="strSeguroChoferilAccount" ColumnName="strSeguroChoferilAccount" />
+          <ScalarProperty Name="strNAICSCode" ColumnName="strNAICSCode" />
+          <ScalarProperty Name="strSICCode" ColumnName="strSICCode" />
+          <ScalarProperty Name="dtCompanyStartDate" ColumnName="dtCompanyStartDate" />
+          <ScalarProperty Name="strPayrollEmail" ColumnName="strPayrollEmail" />
+          <ScalarProperty Name="strPayrollContactPhone" ColumnName="strPayrollContactPhone" />
+          <ScalarProperty Name="strPayrollContactTitle" ColumnName="strPayrollContactTitle" />
+          <ScalarProperty Name="strPayrollContactName" ColumnName="strPayrollContactName" />
+          <ScalarProperty Name="strPayrollFax" ColumnName="strPayrollFax" />
+          <ScalarProperty Name="strEIN" ColumnName="strEIN" />
+          <ScalarProperty Name="strPayrollZipCode" ColumnName="strPayrollZipCode" />
+          <ScalarProperty Name="strPayrollState" ColumnName="strPayrollState" />
+          <ScalarProperty Name="strPayrollCity" ColumnName="strPayrollCity" />
+          <ScalarProperty Name="strPayrollCountry" ColumnName="strPayrollCountry" />
+          <ScalarProperty Name="strPayrollAddress2" ColumnName="strPayrollAddress2" />
+          <ScalarProperty Name="strPayrollAddress1" ColumnName="strPayrollAddress1" />
+          <ScalarProperty Name="strPayrollName" ColumnName="strPayrollName" />
+          <ScalarProperty Name="strContactName" ColumnName="strContactName" />
+          <ScalarProperty Name="strWebSite" ColumnName="strWebSite" />
+          <ScalarProperty Name="strEmail" ColumnName="strEmail" />
+          <ScalarProperty Name="strFax" ColumnName="strFax" />
+          <ScalarProperty Name="strPhone" ColumnName="strPhone" />
+          <ScalarProperty Name="strCountry" ColumnName="strCountry" />
+          <ScalarProperty Name="strZipCode" ColumnName="strZipCode" />
+          <ScalarProperty Name="strState" ColumnName="strState" />
+          <ScalarProperty Name="strCity" ColumnName="strCity" />
+          <ScalarProperty Name="strAddress2" ColumnName="strAddress2" />
+          <ScalarProperty Name="strAddress1" ColumnName="strAddress1" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tJobTitle">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tJobTitle">
+        <MappingFragment StoreEntitySet="tJobTitle">
+          <ScalarProperty Name="decCFSECompanyPercent" ColumnName="decCFSECompanyPercent" />
+          <ScalarProperty Name="strCFSECode" ColumnName="strCFSECode" />
+          <ScalarProperty Name="boolUSECFSEAssignment" ColumnName="boolUSECFSEAssignment" />
+          <ScalarProperty Name="nDeptID" ColumnName="nDeptID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tEmployeeType">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tEmployeeType">
+        <MappingFragment StoreEntitySet="tEmployeeType">
+          <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSS_TransdefTimeOffRequest">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffRequest">
+        <MappingFragment StoreEntitySet="tblSS_TransdefTimeOffRequest">
+          <ScalarProperty Name="intWorkFlowID" ColumnName="intWorkFlowID" />
+          <ScalarProperty Name="intTimeOffRequest" ColumnName="intTimeOffRequest" />
+          <ScalarProperty Name="strTransName" ColumnName="strTransName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tTransDef">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tTransDef">
+        <MappingFragment StoreEntitySet="tTransDef">
+          <ScalarProperty Name="boolUseForTimesheetEditor" ColumnName="boolUseForTimesheetEditor" />
+          <ScalarProperty Name="decMaximumYearlyTaken" ColumnName="decMaximumYearlyTaken" />
+          <ScalarProperty Name="decMinimumAccrualTypeBalance" ColumnName="decMinimumAccrualTypeBalance" />
+          <ScalarProperty Name="boolUseSickInFamily" ColumnName="boolUseSickInFamily" />
+          <ScalarProperty Name="nPayRateTransaction" ColumnName="nPayRateTransaction" />
+          <ScalarProperty Name="decPayRateOffset" ColumnName="decPayRateOffset" />
+          <ScalarProperty Name="decPayRateMultiplier" ColumnName="decPayRateMultiplier" />
+          <ScalarProperty Name="sCompforCompensationAccrual" ColumnName="sCompforCompensationAccrual" />
+          <ScalarProperty Name="nCompforCompensationAccrual" ColumnName="nCompforCompensationAccrual" />
+          <ScalarProperty Name="nTardinessRevLetter" ColumnName="nTardinessRevLetter" />
+          <ScalarProperty Name="nAttendanceRevLetter" ColumnName="nAttendanceRevLetter" />
+          <ScalarProperty Name="decMoneyAmount" ColumnName="decMoneyAmount" />
+          <ScalarProperty Name="nIsMoneyAmountFixed" ColumnName="nIsMoneyAmountFixed" />
+          <ScalarProperty Name="nIsMoneyTrans" ColumnName="nIsMoneyTrans" />
+          <ScalarProperty Name="sCountForCompensationAccruals" ColumnName="sCountForCompensationAccruals" />
+          <ScalarProperty Name="nCountForCompensationAccruals" ColumnName="nCountForCompensationAccruals" />
+          <ScalarProperty Name="dblAdditionalPayAmount" ColumnName="dblAdditionalPayAmount" />
+          <ScalarProperty Name="dblPayRateMultiplier" ColumnName="dblPayRateMultiplier" />
+          <ScalarProperty Name="nCountsForSickAccrual" ColumnName="nCountsForSickAccrual" />
+          <ScalarProperty Name="nCountsForVacationAccrual" ColumnName="nCountsForVacationAccrual" />
+          <ScalarProperty Name="nTardinessRevision" ColumnName="nTardinessRevision" />
+          <ScalarProperty Name="nAttendanceRevision" ColumnName="nAttendanceRevision" />
+          <ScalarProperty Name="sAccrualImportName" ColumnName="sAccrualImportName" />
+          <ScalarProperty Name="sAccrualType" ColumnName="sAccrualType" />
+          <ScalarProperty Name="nAccrualType" ColumnName="nAccrualType" />
+          <ScalarProperty Name="sParentCode" ColumnName="sParentCode" />
+          <ScalarProperty Name="nParentCode" ColumnName="nParentCode" />
+          <ScalarProperty Name="sAttendanceCategory" ColumnName="sAttendanceCategory" />
+          <ScalarProperty Name="nAttendaceCategory" ColumnName="nAttendaceCategory" />
+          <ScalarProperty Name="nIsAbsent" ColumnName="nIsAbsent" />
+          <ScalarProperty Name="pCode" ColumnName="pCode" />
+          <ScalarProperty Name="sTDesc" ColumnName="sTDesc" />
+          <ScalarProperty Name="nTCode" ColumnName="nTCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSS_TimeOffRequest">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblSS_TimeOffRequest">
+        <MappingFragment StoreEntitySet="tblSS_TimeOffRequest">
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+          <ScalarProperty Name="dtTimestamp" ColumnName="dtTimestamp" />
+          <ScalarProperty Name="intTORStatusID" ColumnName="intTORStatusID" />
+          <ScalarProperty Name="strRequestNote" ColumnName="strRequestNote" />
+          <ScalarProperty Name="decDayHours" ColumnName="decDayHours" />
+          <ScalarProperty Name="dtDayStart" ColumnName="dtDayStart" />
+          <ScalarProperty Name="dtEndDate" ColumnName="dtEndDate" />
+          <ScalarProperty Name="dtStartDate" ColumnName="dtStartDate" />
+          <ScalarProperty Name="bitSingleDay" ColumnName="bitSingleDay" />
+          <ScalarProperty Name="strTransType" ColumnName="strTransType" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="intTORUniqueID" ColumnName="intTORUniqueID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spSS_UpdateTimeOffRequestFromWeb" FunctionName="TIMEAIDE_7_PSICOModel.Store.spSS_UpdateTimeOffRequestFromWeb" />
+    <EntitySetMapping Name="tPunchData">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tPunchData">
+        <MappingFragment StoreEntitySet="tPunchData">
+          <ScalarProperty Name="DTPunchDateTime_Rounded" ColumnName="DTPunchDateTime_Rounded" />
+          <ScalarProperty Name="DTPunchDateTime_Original" ColumnName="DTPunchDateTime_Original" />
+          <ScalarProperty Name="DTPunchdate_Original" ColumnName="DTPunchdate_Original" />
+          <ScalarProperty Name="intTerminalType" ColumnName="intTerminalType" />
+          <ScalarProperty Name="nPunchType" ColumnName="nPunchType" />
+          <ScalarProperty Name="sNote" ColumnName="sNote" />
+          <ScalarProperty Name="nJobCodeID" ColumnName="nJobCodeID" />
+          <ScalarProperty Name="sModType" ColumnName="sModType" />
+          <ScalarProperty Name="nAdminID" ColumnName="nAdminID" />
+          <ScalarProperty Name="b_Modified" ColumnName="b_Modified" />
+          <ScalarProperty Name="b_Processed" ColumnName="b_Processed" />
+          <ScalarProperty Name="e_result" ColumnName="e_result" />
+          <ScalarProperty Name="e_type" ColumnName="e_type" />
+          <ScalarProperty Name="e_mode" ColumnName="e_mode" />
+          <ScalarProperty Name="e_user" ColumnName="e_user" />
+          <ScalarProperty Name="e_group" ColumnName="e_group" />
+          <ScalarProperty Name="e_idno" ColumnName="e_idno" />
+          <ScalarProperty Name="e_name" ColumnName="e_name" />
+          <ScalarProperty Name="e_id" ColumnName="e_id" />
+          <ScalarProperty Name="g_id" ColumnName="g_id" />
+          <ScalarProperty Name="DTPunchDateTime" ColumnName="DTPunchDateTime" />
+          <ScalarProperty Name="DTPunchDate" ColumnName="DTPunchDate" />
+          <ScalarProperty Name="tpdID" ColumnName="tpdID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spSS_TransDefTimeOff" FunctionName="TIMEAIDE_7_PSICOModel.Store.spSS_TransDefTimeOff">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.spSS_TransDefTimeOff_Result">
+          <ScalarProperty Name="TransId" ColumnName="TransId" />
+          <ScalarProperty Name="TransName" ColumnName="TransName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="AccrualType" ColumnName="AccrualType" />
+          <ScalarProperty Name="IsTimeOffTrans" ColumnName="IsTimeOffTrans" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="tblSS_TransdefTimeOffDocument">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffDocument">
+        <MappingFragment StoreEntitySet="tblSS_TransdefTimeOffDocument">
+          <ScalarProperty Name="intTimeOffDays" ColumnName="intTimeOffDays" />
+          <ScalarProperty Name="intSubmissionType" ColumnName="intSubmissionType" />
+          <ScalarProperty Name="intDocumentType" ColumnName="intDocumentType" />
+          <ScalarProperty Name="sDocumentName" ColumnName="sDocumentName" />
+          <ScalarProperty Name="intTransId" ColumnName="intTransId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tDept">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tDept">
+        <MappingFragment StoreEntitySet="tDept">
+          <ScalarProperty Name="decCFSECompanyPercent" ColumnName="decCFSECompanyPercent" />
+          <ScalarProperty Name="strCFSECode" ColumnName="strCFSECode" />
+          <ScalarProperty Name="boolUSECFSEAssignment" ColumnName="boolUSECFSEAssignment" />
+          <ScalarProperty Name="nCompanyID" ColumnName="nCompanyID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBatch">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblBatch">
+        <MappingFragment StoreEntitySet="tblBatch">
+          <ScalarProperty Name="ACHFileName" ColumnName="ACHFileName" />
+          <ScalarProperty Name="intACHSentCount" ColumnName="intACHSentCount" />
+          <ScalarProperty Name="strFUTATaxRptName" ColumnName="strFUTATaxRptName" />
+          <ScalarProperty Name="varFUTATaxConfirmation" ColumnName="varFUTATaxConfirmation" />
+          <ScalarProperty Name="strFUTATaxStatusByName" ColumnName="strFUTATaxStatusByName" />
+          <ScalarProperty Name="dtFUTATaxStatusDate" ColumnName="dtFUTATaxStatusDate" />
+          <ScalarProperty Name="strFUTATaxReceiptNo" ColumnName="strFUTATaxReceiptNo" />
+          <ScalarProperty Name="dtFUTATaxDepositDate" ColumnName="dtFUTATaxDepositDate" />
+          <ScalarProperty Name="decFUTATaxDepositAmount" ColumnName="decFUTATaxDepositAmount" />
+          <ScalarProperty Name="intFUTATaxDepositStatusId" ColumnName="intFUTATaxDepositStatusId" />
+          <ScalarProperty Name="intFUTATaxDepositScheduleId" ColumnName="intFUTATaxDepositScheduleId" />
+          <ScalarProperty Name="strHaciendaTaxRptName" ColumnName="strHaciendaTaxRptName" />
+          <ScalarProperty Name="varHaciendaTaxConfirmation" ColumnName="varHaciendaTaxConfirmation" />
+          <ScalarProperty Name="strHaciendaTaxStatusByName" ColumnName="strHaciendaTaxStatusByName" />
+          <ScalarProperty Name="dtHaciendaTaxStatusDate" ColumnName="dtHaciendaTaxStatusDate" />
+          <ScalarProperty Name="strHaciendaTaxReceiptNo" ColumnName="strHaciendaTaxReceiptNo" />
+          <ScalarProperty Name="dtHaciendaTaxDepositDate" ColumnName="dtHaciendaTaxDepositDate" />
+          <ScalarProperty Name="decHaciendaTaxDepositAmount" ColumnName="decHaciendaTaxDepositAmount" />
+          <ScalarProperty Name="intHaciendaTaxDepositStatusId" ColumnName="intHaciendaTaxDepositStatusId" />
+          <ScalarProperty Name="intHaciendaTaxDepositScheduleId" ColumnName="intHaciendaTaxDepositScheduleId" />
+          <ScalarProperty Name="strFederalTaxRptName" ColumnName="strFederalTaxRptName" />
+          <ScalarProperty Name="varFederalTaxConfirmation" ColumnName="varFederalTaxConfirmation" />
+          <ScalarProperty Name="strFederalTaxStatusByName" ColumnName="strFederalTaxStatusByName" />
+          <ScalarProperty Name="dtFederalTaxStatusDate" ColumnName="dtFederalTaxStatusDate" />
+          <ScalarProperty Name="strFederalTaxEFTPSNo" ColumnName="strFederalTaxEFTPSNo" />
+          <ScalarProperty Name="dtFederalTaxDepositDate" ColumnName="dtFederalTaxDepositDate" />
+          <ScalarProperty Name="decFederalTaxDepositAmount" ColumnName="decFederalTaxDepositAmount" />
+          <ScalarProperty Name="intFederalTaxDepositStatusId" ColumnName="intFederalTaxDepositStatusId" />
+          <ScalarProperty Name="intFederalTaxDepositScheduleId" ColumnName="intFederalTaxDepositScheduleId" />
+          <ScalarProperty Name="strPayrollSummaryRptName" ColumnName="strPayrollSummaryRptName" />
+          <ScalarProperty Name="varCompanyPayrollSummary" ColumnName="varCompanyPayrollSummary" />
+          <ScalarProperty Name="strPaymentConfirmationRptName" ColumnName="strPaymentConfirmationRptName" />
+          <ScalarProperty Name="varPaymentConfirmation" ColumnName="varPaymentConfirmation" />
+          <ScalarProperty Name="dtPaymentStatusDate" ColumnName="dtPaymentStatusDate" />
+          <ScalarProperty Name="strPaymentStatusByName" ColumnName="strPaymentStatusByName" />
+          <ScalarProperty Name="intPaymentStatusId" ColumnName="intPaymentStatusId" />
+          <ScalarProperty Name="ClosedDateTime" ColumnName="ClosedDateTime" />
+          <ScalarProperty Name="ClosedByUserID" ColumnName="ClosedByUserID" />
+          <ScalarProperty Name="intTemplateID" ColumnName="intTemplateID" />
+          <ScalarProperty Name="intBatchType" ColumnName="intBatchType" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="intBatchStatus" ColumnName="intBatchStatus" />
+          <ScalarProperty Name="dtBatchUpdates" ColumnName="dtBatchUpdates" />
+          <ScalarProperty Name="strCreateByName" ColumnName="strCreateByName" />
+          <ScalarProperty Name="intCreatedByID" ColumnName="intCreatedByID" />
+          <ScalarProperty Name="dtBatchCreated" ColumnName="dtBatchCreated" />
+          <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatch">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblUserBatch">
+        <MappingFragment StoreEntitySet="tblUserBatch">
+          <ScalarProperty Name="intPayMethodType" ColumnName="intPayMethodType" />
+          <ScalarProperty Name="intEmployeeTypeID" ColumnName="intEmployeeTypeID" />
+          <ScalarProperty Name="intSubdepartmentID" ColumnName="intSubdepartmentID" />
+          <ScalarProperty Name="intDepartmentID" ColumnName="intDepartmentID" />
+          <ScalarProperty Name="intCompanyID" ColumnName="intCompanyID" />
+          <ScalarProperty Name="dtEndDatePeriod" ColumnName="dtEndDatePeriod" />
+          <ScalarProperty Name="dtStartDatePeriod" ColumnName="dtStartDatePeriod" />
+          <ScalarProperty Name="intUserBatchStatus" ColumnName="intUserBatchStatus" />
+          <ScalarProperty Name="intPayWeekNum" ColumnName="intPayWeekNum" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchCompensations">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblUserBatchCompensations">
+        <MappingFragment StoreEntitySet="tblUserBatchCompensations">
+          <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="decPay" ColumnName="decPay" />
+          <ScalarProperty Name="decHours" ColumnName="decHours" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+          <ScalarProperty Name="strCompensationName" ColumnName="strCompensationName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchStatus">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblUserBatchStatus">
+        <MappingFragment StoreEntitySet="tblUserBatchStatus">
+          <ScalarProperty Name="strUserBatchStatus" ColumnName="strUserBatchStatus" />
+          <ScalarProperty Name="intUserBatchStatus" ColumnName="intUserBatchStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchTransactions">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblUserBatchTransactions">
+        <MappingFragment StoreEntitySet="tblUserBatchTransactions">
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="intJobCode" ColumnName="intJobCode" />
+          <ScalarProperty Name="decPayRate" ColumnName="decPayRate" />
+          <ScalarProperty Name="decMoneyValue" ColumnName="decMoneyValue" />
+          <ScalarProperty Name="decHours" ColumnName="decHours" />
+          <ScalarProperty Name="strTransactionType" ColumnName="strTransactionType" />
+          <ScalarProperty Name="dtPunchDate" ColumnName="dtPunchDate" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="intSequence" ColumnName="intSequence" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserBatchWithholdings">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblUserBatchWithholdings">
+        <MappingFragment StoreEntitySet="tblUserBatchWithholdings">
+          <ScalarProperty Name="intUBMESequence" ColumnName="intUBMESequence" />
+          <ScalarProperty Name="intEditType" ColumnName="intEditType" />
+          <ScalarProperty Name="intSequenceNumber" ColumnName="intSequenceNumber" />
+          <ScalarProperty Name="dtTimeStamp" ColumnName="dtTimeStamp" />
+          <ScalarProperty Name="boolDeleted" ColumnName="boolDeleted" />
+          <ScalarProperty Name="strGLAccount" ColumnName="strGLAccount" />
+          <ScalarProperty Name="intPrePostTaxDeduction" ColumnName="intPrePostTaxDeduction" />
+          <ScalarProperty Name="decWithholdingsAmount" ColumnName="decWithholdingsAmount" />
+          <ScalarProperty Name="decBatchEffectivePay" ColumnName="decBatchEffectivePay" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="strWithHoldingsName" ColumnName="strWithHoldingsName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserCompanyPayroll">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblUserCompanyPayroll">
+        <MappingFragment StoreEntitySet="tblUserCompanyPayroll">
+          <ScalarProperty Name="intPayMethodType" ColumnName="intPayMethodType" />
+          <ScalarProperty Name="intPayrollUserStatus" ColumnName="intPayrollUserStatus" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserPayChecks">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblUserPayChecks">
+        <MappingFragment StoreEntitySet="tblUserPayChecks">
+          <ScalarProperty Name="decDepositAmount" ColumnName="decDepositAmount" />
+          <ScalarProperty Name="decDepositPercent" ColumnName="decDepositPercent" />
+          <ScalarProperty Name="strBankName" ColumnName="strBankName" />
+          <ScalarProperty Name="strBankRoutingNumber" ColumnName="strBankRoutingNumber" />
+          <ScalarProperty Name="strBankAccountNumber" ColumnName="strBankAccountNumber" />
+          <ScalarProperty Name="intAccountType" ColumnName="intAccountType" />
+          <ScalarProperty Name="intPayMethodType" ColumnName="intPayMethodType" />
+          <ScalarProperty Name="intCheckNumber" ColumnName="intCheckNumber" />
+          <ScalarProperty Name="intPayCheckStatus" ColumnName="intPayCheckStatus" />
+          <ScalarProperty Name="decCheckAmount" ColumnName="decCheckAmount" />
+          <ScalarProperty Name="intSequenceNum" ColumnName="intSequenceNum" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="intUserID" ColumnName="intUserID" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

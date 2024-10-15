@@ -1,0 +1,323 @@
+﻿
+@{
+    ViewBag.Title = "Job Posting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Job Posting</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Applicant</li>
+                <li class="breadcrumb-item active">Job Posting</li>
+            </ul>
+            <div class="alert" style="display:none;" id="employeeIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+        <div class="col-auto float-right ml-auto">
+       
+            <a href="javascript:createOrEditJobPosting(0)"  class="btn add-btn"><i class="fa fa-plus"></i> Add New Job</a>
+           
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("PositionId", null, "All", new { @class = "select floating",@id= "PositionIdF" })
+            <label class="focus-label">Position</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus">
+
+            @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating", @id = "DepartmentIdF" })
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+
+            @Html.DropDownList("EmploymentTypeId", null, "All", new { @class = "select floating",@id= "EmploymentTypeIdF" })
+            <label class="focus-label">Employment Type</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("JobPostingStatusId", null, "All", new { @class = "select floating",@id= "JobPostingStatusIdF" })
+            <label class="focus-label">Job Status</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2">
+        <a href="javascript:getJobPostingList();" class="btn btn-success btn-block"> Apply Filter </a>
+    </div>
+</div>
+
+<div id="divLoadingJobs" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div id="divJobListView">    
+</div>
+<div id="divCreateEditDelPopup">
+</div>
+<script>
+    $(document).ready(function () {
+        $('#divLoadingJobs').hide();
+        getJobPostingList();
+    });
+    function getJobPostingList() {
+        $('#divLoadingJobs').show();
+        var obj = new Object();
+        obj.PositionId = $('#PositionIdF').val();
+        obj.DepartmentId = $('#DepartmentIdF').val();
+        obj.ViewTypeId = $('#EmploymentTypeIdF').val();
+        obj.EmployeeStatusId = $('#JobPostingStatusIdF').val();
+        $.ajax({
+            type: "POST",
+            url: '/JobPostingDetail/IndexByFilter',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divJobListView").html(data);
+                $('#divLoadingJobs').hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function createOrEditJobPosting(id) {
+        debugger;
+        var ActionMethod = id == 0 ? "Create" : "Edit";
+        $.ajax({
+            type: "get",
+            url: '/JobPostingDetail/' + ActionMethod,
+            data: { "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopup").html(data);
+                $("#JobPostingCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveJobPostingData() {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#JobPostingDetailId').val();
+        dataObj.PositionId = $('#PositionId').val();
+        dataObj.DepartmentId = $('#DepartmentId').val();
+        dataObj.LocationIds = $('#LocationId').val().join(",");
+        dataObj.NoOfVacancies = $('#NoOfVacancies').val();
+        dataObj.Experience = $('#Experience').val();
+        dataObj.EmploymentTypeId = $('#EmploymentTypeId').val();
+        dataObj.SalaryFrom = $('#SalaryFrom').val();
+        dataObj.SalaryTo = $('#SalaryTo').val();
+        dataObj.JobPostingStartDate = $('#JobPostingStartDate').val();
+        dataObj.JobPostingExpiringDate = $('#JobPostingExpiringDate').val();
+        dataObj.JobPostingStatusId = $('#JobPostingStatusId').val();
+        dataObj.IsHomeAddress = $('#IsHomeAddress').is(":checked");
+        dataObj.IsMailingAddress = $('#IsMailingAddress').is(":checked");
+        dataObj.IsAvailablity = $('#IsAvailablity').is(":checked");
+        dataObj.IsPreviousEmployment = $('#IsPreviousEmployment').is(":checked");
+        dataObj.IsEducation = $('#IsEducation').is(":checked");
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.PositionId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.DepartmentId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.NoOfVacancies.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.Experience.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.EmploymentTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.JobPostingStartDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.JobPostingStatusId.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 7) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+          
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/JobPostingDetail/CreateEdit",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#JobPostingCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        editJobDecription(data.id);
+                        //location.reload(true);                        
+                        getJobPostingList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+    function getJobPostingDetail(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/JobPostingDetail/Details',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopup").html(data);
+                $("#JobPostingDetail_modal").modal("show");
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionDetail");
+            }
+        });
+    }
+    function editJobDecription(id) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/JobPostingDetail/EditJobDescription',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopup").html(data);
+                $("#JobPostingCreateEdit_modal").modal("show");
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionDetail");
+            }
+        });
+    }
+    function saveJobDecription() {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#JobPostingDetailId').val();       
+        dataObj.JobDescription = $('#JobDescription').val();
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.JobDescription.trim().length > 0 ? 1 : 0;           
+
+            if (isRequiredValidated != 1) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/JobPostingDetail/EditJobDescription",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#JobPostingCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        //location.reload(true);                        
+                        //getJobPostingList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+
+    function getJobPostingDeleteData(id) {
+        debugger;
+       
+            $.ajax({
+                type: "get",
+                url: '/JobPostingDetail/Delete',
+                data: { "id": id },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCreateEditDelPopup").html(data);
+                    $("#JobPostingDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+       
+    }
+    function deleteJobPosting(id) {
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/JobPostingDetail/ConfirmDelete",
+                data: { "id": id },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#JobPostingDelete_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        getJobPostingList();
+                    }
+                    else {
+                        showAlertAutoHide('', data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+</script>

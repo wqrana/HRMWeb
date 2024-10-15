@@ -1,0 +1,59 @@
+﻿@model TimeAide.Web.Models.AccrualType
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.AccrualTypeName, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AccrualTypeName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AccrualTypeName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.AccrualTypeDescription, "Description", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AccrualTypeDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AccrualTypeDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.IsUsedBySystem, "Is UsedBy System", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.IsUsedBySystem)
+            @Html.ValidationMessageFor(model => model.IsUsedBySystem, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+</div>
+}
+
+<script>
+    $(document).ready(function () {
+        SetViewAccrualType();
+        $('#IsUsedBySystem').change(function () {
+            SetViewAccrualType();
+        });
+
+        function SetViewAccrualType(isUsedBySystem) {
+            if ($('#IsUsedBySystem').is(':checked')) {
+                $("#AccrualTypeName").attr("disabled", "disabled");
+                $("#AccrualTypeDescription").attr("disabled", "disabled");
+            }
+            else {
+                $("#AccrualTypeName").removeAttr("disabled");
+                $("#AccrualTypeDescription").removeAttr("disabled");
+            }
+        }
+    });
+</script>

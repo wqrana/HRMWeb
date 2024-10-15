@@ -1,0 +1,76 @@
+﻿<div class="card-body">
+    <h3 class="card-title" style="border-bottom: 1px;border-bottom: 1px solid #dee2e6;padding-bottom: 20px;">Hiring Record</h3>
+    <div class="experience-box">
+        @if (ViewBag.ActiveEmployment != null)
+        {
+            <div class="form-group row">
+                <label class="col-md-4" style="margin-left:10px">
+                    Hire Date:
+                </label>
+                <div class="col-md-6 text-muted mt-2">
+                    @if (ViewBag.ActiveEmployment.OriginalHireDate != null)
+                    {
+                        <span id="lblOriginalHire"> @String.Format("{0:MM/dd/yyyy}", ViewBag.ActiveEmployment.OriginalHireDate)</span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4" style="margin-left:10px">
+                    Re-Hire Date:
+                </label>
+                <div class="col-md-6 text-muted mt-2">
+                    @if (ViewBag.ActiveEmployment.EffectiveHireDate != null)
+                    {
+                        <span id="lblEffectiveHire">@String.Format("{0:MM/dd/yyyy}", ViewBag.ActiveEmployment.EffectiveHireDate)</span>
+                    }
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4" style="margin-left:10px">
+                    Probation Start:
+                </label>
+                <div class="col-md-6 text-muted mt-2">
+                    @if (ViewBag.ActiveEmployment.ProbationStartDate != null)
+                    {
+                        <span id="lblProbationStart">
+                            @String.Format("{0:MM/dd/yyyy}", ViewBag.ActiveEmployment.ProbationStartDate)
+                        </span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4" style="margin-left:10px">
+                    Probation End:
+                </label>
+                <div class="col-md-6 text-muted mt-2">
+                    @if (ViewBag.ActiveEmployment.ProbationEndDate != null)
+                    {
+                        <span id="lblProbationEnd">
+                            @String.Format("{0:MM/dd/yyyy}", ViewBag.ActiveEmployment.ProbationEndDate)
+                        </span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4" style="margin-left:10px">
+                    Employment Status:
+                </label>
+                <div class="col-md-6 text-muted mt-2">
+                    @if (@ViewBag.ActiveEmployment.EmploymentStatus != null)
+                    {
+                        <span id="lblEmploymentStatus">  @ViewBag.ActiveEmployment.EmploymentStatus.EmploymentStatusName</span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4" style="margin-left:10px">
+                    Years in Service:
+                </label>
+                <div class="col-md-6 text-muted mt-2">
+                    <span>  @ViewBag.ActiveEmployment.YearsinService</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

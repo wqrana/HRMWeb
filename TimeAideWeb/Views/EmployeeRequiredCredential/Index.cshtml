@@ -1,0 +1,33 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeRequiredCredential>
+
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserInformationId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CredentialId)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserInformation.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Credential.CredentialName)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

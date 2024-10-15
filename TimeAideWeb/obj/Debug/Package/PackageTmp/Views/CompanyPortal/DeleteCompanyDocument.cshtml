@@ -1,0 +1,49 @@
+﻿@model TimeAide.Web.Models.CompanyDocument
+    @{ 
+    ViewBag.Label = "Company Document";
+}
+<div id="CompanyDocumentDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+
+
+            @Html.HiddenFor(model => model.Id, new { id = "CompanyDocumentDeleteId" })
+
+            <div class="form-group row" style="margin-left:0px; margin-right:0px;">
+                <div class="panel panel-default" style="width:100%;margin-left:0px">
+                    <div class="panel-heading" style="padding-left:10px">Document</div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                Name:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.DocumentName)</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="submit-section mt-1">
+
+                <button id="btnDeleteCompanyDocument" class="btn btn-danger submit-btn">Delete</button>
+                <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteCompanyDocument").click(function () {
+            var id = $("#CompanyDocumentDeleteId").val();
+            deleteCompanyDocument(id);
+        })
+
+    } );
+</script>
+
+
+

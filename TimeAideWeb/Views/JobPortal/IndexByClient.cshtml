@@ -1,0 +1,92 @@
+﻿@model IEnumerable<TimeAide.Web.Models.JobPostingDetail>
+@{
+    ViewBag.Title = "Job Portal";
+    Layout = "~/Views/Shared/_LayoutJob.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Job Portal</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table mb-0" id="tblJobPortal">
+
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Position</th>
+                    <th>Location(s)</th>
+                    <th>Department</th>
+                    <th>Employment Type </th>
+                    <th>Posting Date</th>
+                    <th>No Of Vacancies</th>                    
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+
+
+                <tr>
+
+                   
+                    <td>@Html.DisplayFor(modelItem => item.Company.CompanyName)</td>
+                    <td>
+                        <a href="javascript:getJobPortal(@item.CompanyId,@item.Id)"> @Html.DisplayFor(modelItem => item.Position.PositionName)</a>
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.SelectedLocationNames)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmploymentType.EmploymentTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JobPostingStartDate)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoOfVacancies)
+                    </td>
+                   
+                  
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<script>
+    var refreshInterval = 900000; //every 15 min
+    $(document).ready(function () {
+
+        $('#tblJobPortal').dataTable({
+                    "searching": true
+        });
+        setTimeout("keepSessionAlive()", refreshInterval); // every 5 min
+    });
+    function keepSessionAlive() {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/JobPortal/AjaxKeepPortalSessionAlive',
+            dataType: 'json',
+            success: function (data) {
+                setTimeout("keepSessionAlive()", refreshInterval);
+            },
+            error: function () {
+               // alert(data.ErrorMessage);
+            }
+        });
+    }
+    function getJobPortal(companyId,id) {
+
+        window.location.href = "/JobPortal/Index?id=" + companyId+"&selectedJobId="+id;
+    }
+    
+</script>
+

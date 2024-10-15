@@ -1,0 +1,105 @@
+﻿@model TimeAide.Web.Models.ApplicantInterview
+
+<div id="applicantInterviewCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Interview Question - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        @Html.HiddenFor(model => model.Id, new { id = "ApplicantInterviewId" })
+
+                        <div class="form-group row">
+                            <label class="col-md-2 pr-0 col-form-label">Question: <span class="text-danger">*</span></label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("ApplicantInterviewQuestionId", null, "Please select", new { @class = "form-control" })
+                             
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 pr-0 col-form-label">Answer: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ApplicantAnswer, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0"> Answer Rating: <span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                @Html.DropDownList("ApplicantInterviewAnswerId", null, "Please select", new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0"> Rating Value: <span class="text-danger"></span></label>
+                            <div class="col-md-1 pr-0">
+                                @Html.EditorFor(model => model.InterviewAnswerValue, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-1 text-muted pl-0 pr-0 pt-4">
+                                /<span id="spanInterviewAnswerMaxValue" style="font-size:12px"> @Html.DisplayFor(model => model.InterviewAnswerMaxValue)</span>
+                                @Html.HiddenFor(model => model.InterviewAnswerMaxValue)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"> Note: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnSaveApplicantInterviewQA" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#InterviewAnswerValue").attr("disabled", true);
+       
+        $("#ApplicantInterviewAnswerId").change(function () {
+            debugger;
+            var id = $(this).val();
+            var questionId = $("#ApplicantInterviewQuestionId").val();
+            if (questionId == "") {
+                showAlertAutoHide("", "Error", "Please Select the Question First.");
+                $("#ApplicantInterviewAnswerId").val(null);
+                return;
+            }
+            ajaxGetSelectedAnswerRating(id);
+        });
+
+        $("#btnSaveApplicantInterviewQA").click(function () {
+            saveApplicantInterviewQAData();
+        });
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });                
+      
+    });
+   
+</script>
+

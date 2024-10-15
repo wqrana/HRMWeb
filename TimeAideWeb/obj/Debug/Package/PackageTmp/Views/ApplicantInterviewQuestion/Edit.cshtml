@@ -1,0 +1,63 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.ApplicantInterviewQuestion
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @Html.Partial("_CreatePageTitleView")
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuestionName, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.QuestionName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.QuestionName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicantAnswerTypeId, htmlAttributes: new { @class = "control-label" })
+
+            @{
+                var answerType = DataHelper.ApplicantAnswerType.
+                                Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+            }
+            @Html.DropDownList("ApplicantAnswerTypeId", answerType, "Please select", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ApplicantAnswerTypeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsPositionSpecific, htmlAttributes: new { @class = "control-label" })
+
+            @Html.CheckBoxFor(model => model.IsPositionSpecific, new { htmlAttributes = new { @class = "form-control pl-2 pt-1" } })
+            @Html.ValidationMessageFor(model => model.IsPositionSpecific, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsRequired, htmlAttributes: new { @class = "control-label" })
+
+            @Html.CheckBox("IsRequired", Model.IsRequired??false, new { htmlAttributes = new { @class = "form-control pl-2 pt-1" } })
+            @Html.ValidationMessageFor(model => model.IsRequired, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    @Html.Partial("_CreatePageFooterView")
+</div>
+}
+

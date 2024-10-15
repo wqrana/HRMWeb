@@ -1,0 +1,202 @@
+﻿@model  IEnumerable<TimeAide.Web.Models.EmployeeTimeOffRequest>
+@{ 
+    var showTimeOffDoc = TimeAide.Services.ApplicationConfigurationService.GetConfigurationStatus("ShowTimeOffDocument");
+}
+<div class="table-responsive">
+    <table class="table table-striped custom-table mb-0" id="tblTimeOff">
+        <thead>
+            <tr role="row">
+                <th>Action</th>
+                <th>Time Off Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Working Day(s)</th>
+                <th>Time-Off (Hrs)</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-left">
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="javascript:getTimeOffRequestStatusHistory(@item.Id);"><i class="fa fa-eye m-r-5"></i> View History </a>
+                               @if (showTimeOffDoc)
+                               {
+                                <a class="dropdown-item" href="javascript:getTimeOffRequestDocument(@item.Id);"><i class="fa fa-file m-r-5"></i> Document(s) </a>
+                               }
+                                @if (item.ChangeRequestStatusId == 1)
+                                {
+                                    <a class="dropdown-item" href="javascript:getTimeOffRequestCancellation(@item.Id);"><i class="fa fa-trash-o m-r-5"></i>Cancel Time-Off </a>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.TransType)
+                    </td>
+                    <td>@Html.DisplayFor(m => item.StartDate)</td>
+                    <td>@Html.DisplayFor(m => item.EndDate)</td>
+                    @{
+                        var WorkingDays = String.Format("{0:0.0}", item.WorkingDays ?? 0);
+                        //var requestedTime = (item.WorkingDays ?? 0) * (item.DayHours ?? 0);
+                    }
+                    <td>@Html.DisplayFor(m => WorkingDays) day(s)</td>
+                    <td>@Html.DisplayFor(m => item.RequestedTime) Hrs</td>
+                    <td>@Html.DisplayFor(m => item.RequestNote)</td>
+                    <td>
+                        @{
+                            var requestStatus = item.ChangeRequestStatusId;
+                            var badgeCSS = "bg-inverse-primary";
+                            if (requestStatus >= 3)
+                            {
+                                badgeCSS = "bg-inverse-danger";
+                            }
+                            else if (requestStatus == 2)
+                            {
+                                badgeCSS = "bg-inverse-success";
+                            }
+                        }
+                        <span class="badge @badgeCSS">@Html.DisplayFor(m => item.ChangeRequestStatus.ChangeRequestStatusName)</span>
+
+                    </td>
+                    <td>
+                        <div class="action-label">
+                            <span class="btn btn-white btn-sm btn-rounded" onclick="javascript:getTimeOffRequestStatusHistory(@item.Id);">
+                                <i class="fa fa-dot-circle-o text-info"></i>History
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        @if (showTimeOffDoc)
+                        {
+                            <div class="action-label">
+
+                                <span class="btn btn-white btn-sm btn-rounded" onclick="javascript:getTimeOffRequestDocument(@item.Id);">
+                                    <i class="fa fa-dot-circle-o text-secondary"></i> Doc(s)
+                                </span>
+                            </div>
+                        }
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    @*<table class="table table-striped custom-table mb-0" id="tblTimeOff">
+            <thead>
+                <tr role="row">
+                    <th>Action</th>
+                    <th>Time Off Type</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Time Off Duration</th>
+                    <th>Time off Reason</th>
+                    <th>Status</th>
+                    <th>Status History</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-left">
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> </a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_approve"><i class="fa fa-trash-o m-r-5"></i> </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Casual</td>
+                    <td>03/08/2019</td>
+                    <td>03/09/2019</td>
+                    <td>2 days</td>
+                    <td>Going to Hospital</td>
+                    <td>
+                        <span class="badge bg-inverse-success ">Approved</span>
+
+                    </td>
+                    <td>
+                        <div class="action-label">
+                            <span class="btn btn-white btn-sm btn-rounded" onclick="javascript:getTimeOffRequestStatusHistory(0);">
+                                <i class="fa fa-dot-circle-o text-info"></i> View Detail
+                            </span>
+                        </div>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td class="text-left">
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> </a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_approve"><i class="fa fa-trash-o m-r-5"></i> </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Vacations</td>
+                    <td>10/05/2020</td>
+                    <td>10/10/2020</td>
+                    <td>5 days</td>
+                    <td>Going to Vacations</td>
+                    <td>
+                        <span class="badge bg-inverse-danger">Denied</span>
+
+                    </td>
+                    <td>
+                        <div class="action-label">
+                            <span class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
+                                <i class="fa fa-dot-circle-o text-info"></i> View Detail
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> </a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_approve"><i class="fa fa-trash-o m-r-5"></i> </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Causal</td>
+                    <td>07/10/2021</td>
+                    <td>07/12/2021</td>
+                    <td>5 days</td>
+                    <td>Need time off</td>
+                    <td>
+                        <span class="badge bg-inverse-primary">In Progress</span>
+
+                    </td>
+                    <td>
+                        <div class="action-label">
+                            <span class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
+                                <i class="fa fa-dot-circle-o text-info"></i> View Detail
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>*@
+</div>
+<script>
+    $(document).ready(function () {
+        $('#tblTimeOff').dataTable({
+            "searching": true,
+            "paging": true,
+            "order": [[2, "desc"]]
+        });
+    });
+</script>

@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "Time Off Request(Admin)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Time Off Request</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Attendance</li>
+                <li class="breadcrumb-item active">Time Off Request</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="applicantIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row filter-row">
+        <div class="col-sm-6 col-md-5 pr-0">
+            <div class="form-group form-focus">
+                <input id="ApplicantName" type="text" class="form-control floating">
+                <label class="focus-label">Applicant Name</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 pr-0">
+            <div class="form-group form-focus select-focus">
+                @Html.DropDownList("PositionId", null, "All", new { @class = "select floating" })
+                <label class="focus-label">Position</label>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-2 pr-0">
+            <div class="form-group form-focus select-focus">
+
+                @Html.DropDownList("ApplicantStatusId", (IEnumerable<SelectListItem>)ViewBag.ApplicantStatusId, "All", new { @class = "select floating" })
+                <label class="focus-label">Applicant Status</label>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-2">
+            <a href="javascript: getFilterApplicantList();" class="btn btn-success btn-block"> Apply Filter </a>
+        </div>
+    </div>*@
+<div class="row filter-row">
+    <div class="col-sm-4 col-md-2 col-lg-2 col-xl-1 col-12 pr-0">
+        <div class="form-group form-focus">
+            <input type="text" class="form-control floating" id="EmployeeId">
+            <label class="focus-label">Emp Id</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12 pr-0">
+        <div class="form-group form-focus">
+            <input type="text" class="form-control floating" id="EmployeeName">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div class="form-group form-focus select-focus">
+            @*<select id="TimeOffTypeId" class="select floating">
+                    <option> -- Select -- </option>
+                    <option>Sick</option>
+                    <option>Family Sick</option>
+                    <option>REG VAC</option>
+                </select>*@
+            @Html.DropDownList("TimeOffTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Time-Off Type</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div class="form-group form-focus select-focus">
+            @*<select id="TimeOffStatusId" class="select floating ">
+                    <option> -- Select -- </option>
+                    <option> In Progress </option>
+                    <option> Approved </option>
+                    <option> Declined </option>
+                    <option> Cancelled </option>
+                </select>*@
+            @Html.DropDownList("TimeOffStatusId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Time-Off Status</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div class="form-group form-focus focused">
+            <div class="cal-icon">
+                <input class="form-control floating" type="datetime" id="FromDate" value="@DateTime.Today.AddDays(-30)">
+            </div>
+            <label class="focus-label">From</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div class="form-group form-focus">
+            <div class="cal-icon">
+                <input class="form-control floating" type="datetime" id="ToDate" value="">
+            </div>
+            <label class="focus-label">To</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 col-lg-2 col-xl-1 col-12 pl-0">
+        <a href="javascript:getEmployeeTimeOffList();" class="btn btn-success btn-block"> Filter </a>
+    </div>
+</div>
+<div id="divLoadingTimeOffList" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<div id="divLayoutView">
+</div>
+<div id="divTimeOffRequestHistory">
+</div>
+
+<script>
+    //JS for Applicant main page
+    var alertID = null;
+    $(document).ready(function () {
+        $("#divLoadingTimeOffList").hide();
+
+        getEmployeeTimeOffList();
+
+        $('#EmployeeName,#EmployeeId').on("keyup", function (e) {
+            debugger;
+            if (e.which == 13) {
+                getEmployeeTimeOffList();
+            }
+        });
+
+        $('#TimeOffTypeId,#TimeOffStatusId').on("change", function () {
+            debugger;
+            getEmployeeTimeOffList();
+        });
+
+    });
+
+    function getEmployeeTimeOffList() {
+        $("#divLoadingTimeOffList").show();
+        debugger;
+        var filterObject = new Object();
+        filterObject.EmployeeId = $('#EmployeeId').val();
+        filterObject.AccrualType = $('#EmployeeName').val();
+        filterObject.TransType = $('#TimeOffTypeId option:selected').text();
+        filterObject.ChangeRequestStatusId = $('#TimeOffStatusId').val();
+        filterObject.StartDate = $('#FromDate').val();
+        filterObject.EndDate = $('#ToDate').val();;
+        if (filterObject.StartDate == "") {
+            showAlertAutoHide("", "Error", "Missing From Date.");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeTimeOffRequest/IndexBySupervior',
+            data: JSON.stringify(filterObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divLayoutView").html(data);
+                $("#divLoadingTimeOffList").hide();
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+    function saveTimeOffRequestActionBySup(requestId, actionId) {
+        debugger;
+
+        var dataObject = new Object();
+        dataObject.Id = requestId;
+        dataObject.ChangeRequestStatusId = actionId;
+        dataObject.ChangeRequestRemarks = $("#ChangeRequestRemarksBySup").val();
+
+        if ($("#hdnAccrualType").val() != "NO" && $("#hdnRequestedTime").val() < 0 && actionId == 2) {
+            showAlertAutoHide("", "Error", "Request can't be approved, requested time is more than the current available balance.");
+            return;
+        }
+        if (dataObject.ChangeRequestRemarks == "") {
+            showAlertAutoHide("", "Error", "Please Enter the Remarks.");
+            return;
+        }
+        //$(".submit-btn").attr('disabled', 'disabled');
+        //$("#divLoadingTimeOffRequestAction").show();
+        disabledSubmitAction(true);
+        $.ajax({
+            url: "/EmployeeTimeOffRequest/ApproveTimeOffRequest",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data);
+                    showAlertAutoHide("", data.status, data.message);
+                    $("#timeOffRequestApproval_modal").modal("hide");
+                    getEmployeeTimeOffList();
+                }
+                else if (data.status == "Error") {
+                    //$(".submit-btn").removeAttr('disabled');
+                    //$("#divLoadingTimeOffRequestAction").hide();
+                    disabledSubmitAction(false);
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+
+</script>
+

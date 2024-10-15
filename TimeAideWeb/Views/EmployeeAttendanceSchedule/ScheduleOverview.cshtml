@@ -1,0 +1,223 @@
+﻿@model TimeAide.Models.ViewModel.EmployeeAttSchCalendarViewModel
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+
+    .table-avatar {
+        align-items: center;
+        display: inline-flex;
+        font-size: inherit;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .div-responsive th {
+        border-left: none;
+        border-right: 1px solid #bbbbbb;
+        padding: 5px;
+        width: 60px;
+        min-width: 60px;
+        position: sticky;
+        top: 0;
+        background: #d9edf7;
+        color: #1c2126;
+        font-weight: bold;
+        font-size: small;
+    }
+
+    .div-responsive td {
+        border-left: none;
+        border-right: 1px solid #bbbbbb;
+        border-bottom: 1px solid #bbbbbb;
+        padding: 5px;
+        width: 60px;
+        min-width: 60px;
+        height: 25px;
+    }
+    .div-responsive th:nth-child(1),
+    .div-responsive td:nth-child(1) {
+        position: sticky;
+        left: 0;
+        width: 250px;
+        min-width: 250px;
+    }
+
+
+
+   /* .div-responsive td:nth-child(1) {
+        background: #dee2e6;
+    }*/
+
+    .div-responsive th:nth-child(1) {
+        z-index: 2;
+    }
+
+
+    .div-responsive {
+        width: 100%;
+        height: 600px;
+        overflow: scroll;
+        border: 1px solid #777777;
+    }
+
+</style>
+
+<div class="div-responsive">
+    <!-- <table class="table table-striped custom-table table-nowrap mb-0" id="tblScheduleOverview">-->
+    <table class="" id="tblScheduleOverview">
+    <thead>
+        <tr class="">
+            <th></th>
+            <th>Hrs</th>
+            @foreach (var calDate in Model.CalendarDateRange)
+            {
+                <th>@calDate.ToString("MM/dd")</th>
+            }
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var calDetail in Model.CalendarDetail.OrderBy(o=>o.EmployeeSchedule.sUserName))
+        {
+            <tr>
+                <td>
+                    <h2 class="table-avatar">
+                        <a class="avatar avatar-xs" href="javascript:getUserScheduleDetail(@calDetail.EmployeeSchedule.Id,@calDetail.EmployeeSchedule.OldCompanyId)"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                        <a href="javascript:getUserScheduleDetail(@calDetail.EmployeeSchedule.Id,@calDetail.EmployeeSchedule.OldCompanyId)">@Html.DisplayFor(m => calDetail.EmployeeSchedule.sUserName)</a>
+                    </h2>
+                </td>
+                <td>@Html.DisplayFor(m => calDetail.EmployeeSchedule.dblPeriodHours)</td>
+                @foreach (var calDate in Model.CalendarDateRange)
+                {
+
+                    var scheduleDateData = calDetail.EmployeeScheduleDetail.Where(w => w.dPunchDate == calDate).FirstOrDefault();
+
+                    <td>
+                        @if (scheduleDateData != null)
+                        {
+                            var showTypeCls = "fa-check text-success";
+                            //fa fa-close text-danger
+
+                            if (scheduleDateData.nWorkDayType == 0)
+                            {
+                                showTypeCls = "fa-close text-danger";
+                            }
+                            else if (scheduleDateData.nWorkDayType == 2)
+                            {
+                                showTypeCls = "fa-hashtag text-warning";
+                            }
+                            <a href="javascript:javascript:getScheduleDetailEditData(@calDetail.EmployeeSchedule.Id,@scheduleDateData.Id,@scheduleDateData.OldCompanyId);">
+                                <i class="fa @showTypeCls"></i>
+                            </a>
+
+                        }
+                        else
+                        {
+                            
+                            <i class="fa-light fa-dash"></i>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+
+    </tbody>
+    </table>
+</div>
+<div class="div-responsive" style="display:none;">
+    <!-- <table class="table table-striped custom-table table-nowrap mb-0" id="tblScheduleOverview">-->
+    <table class="" id="tblScheduleOverviewPrint">
+        <thead>
+            <tr class="">
+                <th></th>
+                @foreach (var calDate in Model.CalendarDateRange)
+                {
+                    <th>@calDate.ToString("MM/dd")</th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var calDetail in Model.CalendarDetail.OrderBy(o => o.EmployeeSchedule.sUserName))
+            {
+                <tr>
+                    <td>
+                        <h2 class="table-avatar">
+                            <a class="avatar avatar-xs" href=""><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                            <a href="">@Html.DisplayFor(m => calDetail.EmployeeSchedule.sUserName)</a>
+                        </h2>
+                    </td>
+                    @foreach (var calDate in Model.CalendarDateRange)
+                    {
+
+                        var scheduleDateData = calDetail.EmployeeScheduleDetail.Where(w => w.dPunchDate == calDate).FirstOrDefault();
+
+                        <td>
+                            @if (scheduleDateData != null)
+                            {
+                                var showType = "*";
+                                //fa fa-close text-danger
+
+                                if (scheduleDateData.nWorkDayType == 0)
+                                {
+                                    showType = "x";
+                                }
+                                else if(scheduleDateData.nWorkDayType == 2)
+                                {
+                                    showType = "#";
+                                }
+                                <a href="javascript:javascript:getScheduleDetailEditData(@calDetail.EmployeeSchedule.Id,@scheduleDateData.Id,@scheduleDateData.OldCompanyId);">
+                                    <span>@showType</span>
+                                </a>
+
+                            }
+                            else
+                            {
+
+                                    <span></span>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#spanTotalRec").text(@Model.CalendarDetail.Count());
+        var fileNameAndTitle = "Schedule Overview";
+        var table = $('#tblScheduleOverviewPrint').DataTable({
+            "paging": false,
+            "info": false,
+            "sorting": false,
+            buttons: [
+                {
+                    extend: 'excel'
+                },
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+
+                    filename: function () {
+                        return fileNameAndTitle;
+                    },
+                    title: fileNameAndTitle,
+                    customize: function (doc) {
+                        //doc.pageMargins = [10, 20, 10, 20];
+                    }
+                },
+            ]
+        });
+
+    });
+</script>

@@ -1,0 +1,121 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmailBlastDetail>
+<div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+    <h4 style="display: inline;">Recipients Information</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexEmailBlastDetail">
+                <thead>
+                    <tr>
+                        <th>
+                            Employee Id
+                        </th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Notification Email
+                        </th>
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserInformation.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserInformation.ShortFullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserInformation.ActiveUserContactInformation.NotificationEmail)
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var indexColumns = $("#tblIndexEmailBlastDetail > thead > tr:first > th").length;
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns - 1; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        $('#tblIndexEmailBlastDetail').DataTable({
+            searching: false,
+            ordering: false,
+            paging: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+    });
+</script>

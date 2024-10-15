@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.ActionTaken
+
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionTakenName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionTakenName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionTakenDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionTakenDescription)
+        </dd>
+
+    </dl>
+
+</div>
+@Html.Partial("_DeleteViewFooter")

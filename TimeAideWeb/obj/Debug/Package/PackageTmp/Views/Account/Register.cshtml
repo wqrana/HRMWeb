@@ -1,0 +1,101 @@
+﻿@using TimeAide.Web.Models
+@model TimeAide.Web.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@ViewBag.Title.</h2>
+@if (ViewBag.ExceptionMessage != null && !String.IsNullOrEmpty(ViewBag.ExceptionMessage))
+{
+    <h3 class="text-danger"><i class="fa fa-warning"></i> @ViewBag.ExceptionMessage</h3>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <section id="registerForm">
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.HiddenFor(model => model.Email)
+                    @Html.HiddenFor(model => model.ActivationCode)
+                    @Html.AntiForgeryToken()
+                    <h4>Create a new account.</h4>
+                    <hr />
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.DisplayFor(m => m.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="from-group">
+                        <div id="divPasswordSpanish" class="alert-danger" style="font-size:70%">
+                            <span>Su contraseña debe contener lo siguiente:</span>
+                            <a href="#" onclick="ShowPasswordEnglish()">show in english</a>
+                            <ul data-header="">
+                                <li>Un mínimo de 6 caracteres. </li>
+                                <li>Al menos UNA letra mayúscula.</li>
+                                <li>Al menos UNA letra minúscula.</li>
+                                <li>Al menos UN número.</li>
+                                <li>Al menos UN caracter especial.</li>
+                            </ul>
+                        </div>
+                        <div id="divPasswordEnglish" class="alert-danger" style="font-size:70%">
+                            <span>Your password must contain:</span>
+                            <a href="#" onclick="ShowPasswordSpanish()">show in spanish</a>
+                            <ul data-header="">
+                                <li>At least 6 characters.</li>
+                                <li>At least ONE upper case letter.</li>
+                                <li>At least ONE lower case letter.</li>
+                                <li>At lease ONE number.</li>
+                                <li>At least ONE special character.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" class="btn btn-primary submit-btn" value="Register" />
+                        </div>
+                    </div>
+
+                }
+            </section>
+        </div>
+        <div class="col-md-4">
+            @if (!String.IsNullOrEmpty(Model.Email) && Model.Email.ToLower().Contains("@gmail.com"))
+            {
+                <section id="socialregisterForm">
+                    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                </section>
+            }
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#divPasswordEnglish").hide();
+        });
+        function ShowPasswordEnglish() {
+            $("#divPasswordEnglish").show();
+            $("#divPasswordSpanish").hide();
+        }
+        function ShowPasswordSpanish() {
+            $("#divPasswordEnglish").hide();
+            $("#divPasswordSpanish").show();
+        }
+    </script>
+}

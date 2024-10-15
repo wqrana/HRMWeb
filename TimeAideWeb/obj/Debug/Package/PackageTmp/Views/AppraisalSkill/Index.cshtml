@@ -1,0 +1,81 @@
+﻿@model IEnumerable<TimeAide.Web.Models.AppraisalSkill>
+@Html.Partial("_IndexPageHeaderView")
+
+<thead>
+    <tr>
+        <th>Action</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SkillName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SkillDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AppraisalRatingScaleId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td width="7%">
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+        <td>
+            @* @Html.DisplayFor(modelItem => item.Id)*@
+            <a href="javascript:void(0);" id="anchorDetail" data-id="@item.Id">@item.Id</a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SkillName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SkillDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AppraisalRatingScale.ScaleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+    </tr>
+    }
+</tbody>
+    @Html.Partial("_IndexPageFooterView")
+
+<script>
+    function LoadAppraisalSkillRating(IsAllCmp,targetElement, selectedValue) {
+        var model = {
+        }
+        debugger
+
+        $.ajax({
+            url: '/AppraisalRatingScale/AjaxGetRatingScale',
+            data: { IsAllCompanies: IsAllCmp},
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+</script>

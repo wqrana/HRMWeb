@@ -1,0 +1,148 @@
+﻿@model TimeAide.Web.Models.EmployeeDentalInsurance
+
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:0px">Dental Insurance</div>
+                    <div class="panel-body">
+                        @Html.Hidden("EmployeeDentalInsuranceDetailId", Model == null ? 0 : Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Status:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.InsuranceStatus.InsuranceStatusName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Start Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.InsuranceStartDate);
+                                }
+
+                            </div>
+                            <label class="col-md-2 col-form-label">Expiry Date:</label>
+                            <div class="col-md-2 text-muted  mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.InsuranceExpiryDate);
+                                }
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Contract ID:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.GroupId)
+                            </div>
+                            <label class="col-md-2 col-form-label">Type:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.InsuranceType.InsuranceTypeName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Coverage:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.InsuranceCoverage.InsuranceCoverageName)
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:0px">Contribution</div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Employee:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.EmployeeContribution)
+                            </div>
+                            <label class="col-md-2 col-form-label">Company:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CompanyContribution)
+
+                            </div>
+                            <label class="col-md-2 col-form-label">Other:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.OtherContribution)
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Total:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.TotalContribution)
+                            </div>
+                            <label class="col-md-2 col-form-label">PCORI fee:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PCORIFee)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:0px">Ley Cobra</div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Status:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.Hidden("DentalInsuranceCobraStatusDetailId", Model == null ? null : Model.CobraStatusId)
+                                @Html.Hidden("DentalInsuranceCobraStatusDetailName", Model == null ? null : @Html.DisplayFor(m => m.CobraStatus.CobraStatusName))
+                                @Html.DisplayFor(m => m.CobraStatus.CobraStatusName)
+                            </div>
+                            <label class="col-md-2 col-form-label">Start Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @Html.Hidden("DentalInsuranceLeyCobraDetailStartDate", Model == null ? null : Model.LeyCobraStartDate)
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.LeyCobraStartDate);
+                                }
+                            </div>
+                            <label class="col-md-2 col-form-label">Expiry Date:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                                @if (Model != null)
+                                {
+                                    @String.Format("{0:MM/dd/yyyy}", Model.LeyCobraExpiryDate);
+                                }
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">Insurance Premium:</label>
+                            <div class="col-md-2 text-muted mt-2">
+                               
+                                @Html.DisplayFor(m => m.InsurancePremium)
+                            </div>
+                         </div>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<script type="text/javascript">
+    function ShowChangeHistoryEmployeeHealthInsurance() {
+        var recordId = $('#EmployeeDentalInsuranceDetailId').val();
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeDentalInsurance/ChangeHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "refrenceId": recordId },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                //$('#myModal').modal(options);
+                //$('#myModal').css({ 'width': '70%' });
+                //$('#myModal').css({ 'max-width': '70%' });
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

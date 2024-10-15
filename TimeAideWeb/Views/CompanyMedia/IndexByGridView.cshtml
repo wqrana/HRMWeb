@@ -1,0 +1,109 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@model IEnumerable<TimeAide.Web.Models.CompanyMedia>
+@{
+    var pagingObject = ViewBag.GridPagingObject;
+    var isMediaAdmin = (bool)ViewBag.IsMediaAdmin;
+}
+<style>
+    /*.grid-profile-img-wrap img {
+        border-radius: 50%;
+        height: 80px;
+        width: 80px;
+    }*/
+    video {
+        width: 100%;
+        height: 180px;
+        
+    }
+    iframe {
+        width: 100%;
+        height: 180px;
+    }
+</style>
+
+
+<div class="row staff-grid-row" id="divGridProfile">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+            <div class="profile-widget">
+                <div class="grid-profile-img-wrap pt-3">
+                    @if (item.MediaType == "F")
+                    {
+                        if (String.IsNullOrEmpty(item.PosterFileName))
+                        {
+                            <video controls controlsList="nodownload" preload="metadata">
+                                <source src="@item.MediaFilePath" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        }
+                        else
+                        {
+                            <video controls controlsList="nodownload" preload="none" poster="@item.PosterFilePath">
+                                <source src="@item.MediaFilePath" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        }
+                    }
+                    @if (item.MediaType == "L")
+                    {
+                        <iframe src="@item.MediaFilePath" allow="autoplay" allowfullscreen></iframe>
+                    }
+                </div>
+                @if (isMediaAdmin || SecurityHelper.IsSuperAdmin)
+                {
+                    <div class="dropdown profile-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="javascript:addEditCompanyMedia(@item.Id);"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            <a class="dropdown-item" href="javascript:getCompanyMediaDeleteData(@item.Id);"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                        </div>
+                    </div>
+                }
+                @*<h5 class="user-name m-t-2 mb-0 text-ellipsis"><a href="/UserInformation/Details/@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h5>*@
+                <h5 class="user-name m-t-2 mb-0 text-ellipsis">@Html.DisplayFor(modelItem => item.Name)</h5>
+
+            </div>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-5">
+        <div class="pt-2" id="">Showing @pagingObject.StartRecord to @pagingObject.EndRecord of  @pagingObject.TotolRecords entries</div>
+    </div>
+    <div class="col-sm-12 col-md-7">
+        <div class="" style="text-align:right;" id="">
+            <ul class="pagination" style="justify-content: flex-end;margin: 2px 0;">
+                @{
+                    var disablePrev = pagingObject.CurrentPage == 1 ? " disabled" : " ";
+                    var disableNext = pagingObject.CurrentPage == pagingObject.TotalPages || pagingObject.TotalPages == 0 ? " disabled" : " ";
+
+                    <li class="paginate_button page-item previous @disablePrev" id="gridPage_prev"><a href="javascript:getMediaGridPageData(-1)" tabindex="0" class="page-link">Previous</a></li>
+
+                    for (int p = 1; p <= pagingObject.TotalPages; p++)
+                    {
+                        if (p == pagingObject.CurrentPage)
+                        {
+                            <li class="paginate_button page-item page-item-no active" id="gridPage_@p"><a href="javascript:getMediaGridPageData(@p)" tabindex="0" class="page-link">@p</a></li>
+                        }
+                        else
+                        {
+                            <li class="paginate_button page-item page-item-no" id="gridPage_@p"><a href="javascript:getMediaGridPageData(@p)" tabindex="0" class="page-link">@p</a></li>
+                        }
+                    }
+
+
+                    <li class="paginate_button page-item next @disableNext" id="gridPage_next"><a href="javascript:getMediaGridPageData(0)" tabindex="0" class="page-link">Next</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+</script>
+

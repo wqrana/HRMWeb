@@ -1,0 +1,67 @@
+﻿@model TimeAide.Web.Models.EmployeeAppraisalDocument
+
+<div id="EmployeeAppraisalDocumentCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Employee Appraisal Document - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeAppraisalDocumentCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        @Html.Hidden("EmployeeAppraisalDocumentId", Model==null?0: Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label"> Document Name:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                              @Html.EditorFor(model => model.AppraisalDocumentName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            
+                        </div>
+                      
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label pr-0">Attach File:<span class="text-danger"></span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="file" id="AppraisalDocumentFile" accept=".doc,.docx,.pdf,.jpg,.png">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEmployeeAppraisalDocument" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+              
+        $("#btnSaveEmployeeAppraisalDocument").click(function () {
+            saveEmployeeAppraisalDocumentData();
+        });
+
+
+    });
+
+</script>
+
+

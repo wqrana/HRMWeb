@@ -1,0 +1,131 @@
+﻿<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div style="max-height:550px; overflow-y:auto">
+    <div class="row">
+        <div class="col-md-12">
+            <hr class="m-0">
+            <h6 class="card-title">Education 1</h6>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Degree: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.DropDownList("Education1DegreeId", (IEnumerable<SelectListItem>)ViewBag.DegreeId, "Please select", new { @class = "form-control" })
+                    <small id="Education1DegreeIdValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+                <label class="col-md-2 col-form-label">Date Completed: <span class="text-danger"></span></label>
+                <div class="col-md-3">
+                    @Html.TextBox("Education1DateCompleted", "", new { @class = "form-control text-box single-line" })
+                    <small id="Education1DateCompletedValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Institution: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.TextBox("Education1InstitutionName", "", new { @class = "form-control text-box single-line edu-ins-auto" })
+                    <small id="Education1InstitutionNameValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+                <label class="col-md-1 col-form-label">Title: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.TextBox("Education1Title", "", new { @class = "form-control text-box single-line edu-title-auto" })
+                    <small id="Education1TitleValid" class="form-text text-danger">Missing field value.</small>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Notes: </label>
+                <div class="col-md-9">
+                    @Html.TextBox("Education1Note", "", new { @class = "form-control text-box single-line" })
+                </div>
+            </div>
+            <hr class="m-0">
+            <h6 class="card-title">Education 2</h6>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Degree: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.DropDownList("Education2DegreeId", (IEnumerable<SelectListItem>)ViewBag.DegreeId, "Please select", new { @class = "form-control" })
+
+                </div>
+                <label class="col-md-2 col-form-label">Date Completed: <span class="text-danger"></span></label>
+                <div class="col-md-3">
+                    @Html.TextBox("Education2DateCompleted", "", new { @class = "form-control text-box single-line" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Institution: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.TextBox("Education2InstitutionName", "", new { @class = "form-control text-box single-line edu-ins-auto" })
+                </div>
+                <label class="col-md-1 col-form-label">Title: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.TextBox("Education2Title", "", new { @class = "form-control text-box single-line edu-title-auto" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Notes: </label>
+                <div class="col-md-9">
+                    @Html.TextBox("Education2Note", "", new { @class = "form-control text-box single-line" })
+                </div>
+            </div>
+            <hr class="m-0">
+            <h6 class="card-title">Education 3</h6>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Degree: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.DropDownList("Education3DegreeId", (IEnumerable<SelectListItem>)ViewBag.DegreeId, "Please select", new { @class = "form-control" })
+
+                </div>
+                <label class="col-md-2 col-form-label">Date Completed: <span class="text-danger"></span></label>
+                <div class="col-md-3">
+                    @Html.TextBox("Education3DateCompleted", "", new { @class = "form-control text-box single-line" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Institution: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.TextBox("Education3InstitutionName", "", new { @class = "form-control text-box single-line edu-ins-auto" })
+                </div>
+                <label class="col-md-1 col-form-label">Title: <span class="text-danger"></span></label>
+                <div class="col-md-4">
+                    @Html.TextBox("Education3Title", "", new { @class = "form-control text-box single-line edu-title-auto" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-form-label">Notes: </label>
+                <div class="col-md-9">
+                    @Html.TextBox("Education3Note", "", new { @class = "form-control text-box single-line" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var autoCompleteSrc = "/JobPortal/AjaxGetAutoCompleteData";
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        
+        $(".edu-ins-auto").autocomplete({
+            source: function (request, response) {
+                var field = "InstitutionName";
+                autoCompleteAjaxSetting(request, response, autoCompleteSrc, field)
+            },
+            minLength: 3
+
+        });
+        $(".edu-title-auto").autocomplete({
+            source: function (request, response) {
+                var field = "Title";
+                autoCompleteAjaxSetting(request, response, autoCompleteSrc, field)
+            },
+            minLength: 3
+
+        });
+    });
+    
+</script>

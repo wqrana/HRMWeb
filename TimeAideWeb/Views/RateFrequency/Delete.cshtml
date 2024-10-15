@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.RateFrequency
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RateFrequencyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RateFrequencyName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RateFrequencyDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RateFrequencyDescription)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HourlyMultiplier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HourlyMultiplier)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

@@ -1,0 +1,150 @@
+﻿@model TimeAide.Web.Models.EmployeePayAccount
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div id="employeeCashAmountAccCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Cash Amount Account - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="form-group row">
+                    <div class="col-md-12 p-0">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">Cash Amount Account </div>
+                            <div class="panel-body">
+                                <div id="">
+                                    @Html.HiddenFor(m => m.Id, new { id = "EmployeePayAccountId" })
+                                    @Html.HiddenFor(m => m.PayType)
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Name:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { id = "AccountName", @class = "form-control" } })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2 pr-0" style="margin-left:0px">Account Type:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.DropDownList("BankAccountTypeId", null, "Please select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2 pr-1" style="margin-left:0px">Account Num.:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Bank:<span class="text-danger">*</span></label>
+                                        <div class="col-md-4 mt-2">
+
+                                            <div class="input-group">
+                                                @Html.DropDownList("PayBankId", null, "Please select", new { @class = "form-control" })
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Routing Num.:<span class="text-danger"></span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.PayBank.RoutingNumber, new { htmlAttributes = new { id = "BankRoutingNumber", @class = "form-control", @disabled = "disabled" } })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Amount:<span class="text-danger"></span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.DepositAmt, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Primary:<span class="text-danger"></span></label>
+                                        <div class="col-md-1 mt-3">
+                                            @Html.CheckBoxFor(m => m.IsPrimary, new { id = "IsPrimaryAE" })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">Deactivate:<span class="text-danger"></span></label>
+                                        <div class="col-md-1 mt-3">
+                                            @{ var IsDeactivated = false;}
+                                            @Html.CheckBoxFor(m => IsDeactivated, new { id = "IsDeactivatedAE" })
+                                        </div>
+                                        <label class="col-md-2 col-form-label mt-2" style="margin-left:0px">End Date:<span class="text-danger"></span></label>
+                                        <div class="col-md-4 mt-2">
+                                            @Html.EditorFor(m => m.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnsaveEmployeeCashAmountAccount" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('*[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $("#PayBankId").change(function () {
+            ajaxGetBankRoutingNumber($(this).val());
+        });
+        $("#IsPrimaryAE").change(function () {
+            debugger;
+            var isPrimary = $(this).is(":checked");
+            var endDate = $('#EndDate').val();
+            if (isPrimary == true && endDate == "") {
+                alert("This will override the existing primary account if any.");
+            }
+        });
+        $("#IsDeactivatedAE").change(function () {
+            debugger;
+            var isDeactivated = $(this).is(":checked");
+            if (isDeactivated == true) {
+                var endDate = new Date();
+                var setEndDateVal = moment(endDate).format('MM/DD/YYYY');
+                $('#EndDate').val(setEndDateVal);
+            }
+            else {
+                $('#EndDate').val("");
+            }
+        });
+
+        $("#btnsaveEmployeeCashAmountAccount").click(function () {
+            debugger;
+
+            saveEmployeeCashAmountAccountData();
+        });
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });
+    });
+
+</script>
+
+
+
+
+
+
+

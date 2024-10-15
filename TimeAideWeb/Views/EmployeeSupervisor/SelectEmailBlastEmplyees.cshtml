@@ -1,0 +1,114 @@
+﻿<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div class="form-horizontal" style="padding:30px;">
+    <div class="row filter-row">
+        <div class="col-sm-4 col-md-2 pr-0" style="margin-left:70px">
+            <div class="form-group form-focus select-focus mb-1">
+                @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating searchableDDL" })
+                <label class="focus-label">Department</label>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-2" style="margin-left:70px">
+            <div class="form-group form-focus select-focus  mb-1">
+                @Html.DropDownList("PositionId", null, "All", new { @class = "select floating searchableDDL" })
+                <label class="focus-label">Position</label>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-2 pr-0" style="margin-left:70px">
+            <div class="form-group form-focus select-focus">
+                @Html.DropDownList("EmployeeStatusId", null, "All", new { @class = "select floating searchableDDL" })
+                <label class="focus-label">Employee Status</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <a href="javascript:getSelectEmailBlastEmplyeeList();" class="btn btn-success btn-block">Filter</a>
+        </div>
+    </div>
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Select Employees for Bulk email </h4>
+        <button type="button" class="close" onclick="CloseMessagePopup()" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <input type="hidden" id="SelectedEmployeeSupervisorId" , value="@ViewBag.EmployeeSupervisorId" />
+    <div class="alert" style="display:none;" id="employeeSupervisorCreateEditAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    <div  id="divSelectEmailBlastEmplyeeList">
+    </div>
+    <div id="divLoadingUsers" class="align-content-md-center">
+        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+    </div>
+    <div class="submit-section">
+        <button id="btnSaveemployeeSupervisors" class="btn btn-primary submit-btn">Select</button>
+        <button id="btnCancel" class="btn btn-primary  submit-btn" onclick="CloseMessagePopup()" aria-label="Close">Cancel</button>
+    </div>
+</div>
+<style>
+    .modal-md {
+        min-width: 20% !important;
+        margin: 0 auto;
+    }
+
+    .custom-header {
+        text-align: center;
+        padding: 3px;
+        background: #000;
+        color: #fff;
+    }
+
+    .ms-container {
+        width: 100%;
+    }
+
+    .ms-selectable {
+        width: 49% !important;
+    }
+
+    .ms-selection {
+        width: 49% !important;
+    }
+
+    .modal-dialog {
+        width: 80%;
+        max-width: 80% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#DepartmentId').select2({ placeholder: "All" });
+        $('#PositionId').select2({ placeholder: "All" });
+        $('#EmployeeStatusId').select2({ placeholder: "All" });
+        $("#divLoadingUsers").hide();
+        getSelectEmailBlastEmplyeeList();
+    });
+    function getSelectEmailBlastEmplyeeList() {
+        var filterObject = new Object();
+        filterObject.DepartmentId = $('#DepartmentId').val();
+        filterObject.PositionId = $('#PositionId').val();
+        filterObject.EmployeeStatusId = $('#EmployeeStatusId').val();
+        $("#divLoadingUsers").show();
+        debugger
+        $.ajax({
+            type: "POST",
+            url: '/EmployeeSupervisor/SelectEmailBlastEmplyeeList',
+            data: JSON.stringify(filterObject),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#divSelectEmailBlastEmplyeeList").html(data);
+                $("#divLoadingUsers").hide();
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+                $("#divLoadingUsers").hide();
+            }
+        });
+    }
+</script>

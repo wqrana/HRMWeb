@@ -1,0 +1,644 @@
+﻿@{
+    ViewBag.Title = "Position";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Position</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Master Data</li>
+                <li class="breadcrumb-item active">Position</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="positionIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                @*@Html.ActionLink("Create New User", "Create")*@
+                @if ((bool)(ViewBag.AllowAdd ?? false))
+                {
+                    @*<a href="/Country/Create" class="btn add-btn"><i class="fa fa-plus"></i> Add @ViewBag.FormName</a>*@
+                    <a href="javascript:createEditPosition(0);" class="btn add-btn">+ Add @ViewBag.Label</a>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="divPositionDetail">
+</div>
+<div id="divPositionList">   
+</div>
+
+<div id="divCreateEditDelPopUp">
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        //$('#tblTemplate').dataTable({
+        //    "searching": true
+        //});
+
+        getPositionDetail(0);
+        getPositionList();
+    });
+    function getPositionList() {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/Position/IndexByPosition',
+           
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divPositionList").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionList");
+            }
+        });
+    }
+    function getPositionDetail(positionId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/Position/Details',
+            data: { "id": positionId },
+
+            success: function (data) {
+                 debugger;
+                //console.log(data);
+                $("#divPositionDetail").html(data);
+                $('html, body').animate({
+                    scrollTop: ($('#divPositionDetail').offset().top)
+                    }, 500);
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionDetail");
+            }
+        });
+    }
+    function createEditPosition(positionId) {
+        debugger;
+        var ActionMethod = positionId == 0 ? "Create" : "Edit";
+        $.ajax({
+            type: "get",
+            url: '/Position/' + ActionMethod,
+            data: { "id": positionId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#positionCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function savePositionData() {
+        debugger;
+        var alertID = "#positionCreateEditAlert";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#PositionId').val();
+        dataObj.PositionName = $('#PositionName').val();
+        dataObj.PositionDescription = $('#PositionDescription').val();
+        dataObj.PositionCode = $('#PositionCode').val();
+        dataObj.DefaultPayScaleId = $('#DefaultPayScaleId').val();
+        dataObj.DefaultEEOCategoryId = $('#DefaultEEOCategoryId').val();
+        dataObj.PositionCode = $('#PositionCode').val();
+        dataObj.DefaultPayScaleId = $('#DefaultPayScaleId').val();
+        dataObj.DefaultEEOCategoryId = $('#DefaultEEOCategoryId').val();
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.PositionName.trim().length > 0 ? 1 : 0;
+            if (isRequiredValidated != 1) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+        
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/Position/CreateEdit",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#positionCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        //location.reload(true);
+                        getPositionDetail(0);
+                        getPositionList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+    function getPositionDeleteData(positionId) {
+        debugger;
+        if (positionId != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/Position/Delete',
+                data: { "id": positionId },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#positionDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deletePosition(positionId) {
+        debugger;
+        alertID = "#positionDeleteAlert"
+        if (positionId != '') {
+            $.ajax({
+                type: "Post",
+                url: "/Position/ConfirmDelete",
+                data: { "id": positionId },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#positionDelete_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        var currSelPositionId = $("#SelectedPositionId").val();
+                        if (currSelPositionId == positionId) {
+                            location.reload(true);
+                        }
+                        else {
+                            getPositionList();
+                        }
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    //Child Record sections for position
+    function getPositionTrainingList(positionId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PositionTraining/IndexByPosition',
+            data: { "id": positionId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divPositionTrainings").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionTrainingList");
+            }
+        });
+    }
+
+    function createEditPositionTraining(positionId) {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        positionId = positionId == 0 ? $("#SelectedPositionId").val() : positionId;
+        if (positionId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/PositionTraining/CreateEdit',
+                data: { "id": positionId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#PositionTrainingCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Position for Add/Edit Training(s)");
+        }
+    }
+    function savePositionTrainingData(selectedTrainingStr) {
+        debugger;
+        alertID = "#positionTrainingCreateEditAlert"
+        var positionId = $("#SelectedPositionId").val();
+        if (positionId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/PositionTraining/CreateEdit',
+                data: {
+                    "id": positionId,
+                    "selectedTrainingIds": selectedTrainingStr
+                    },
+
+                success: function (data) {
+                     debugger;
+                    //console.log(data);
+                    if (data.status == "Success") {
+                        $("#PositionTrainingCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        //location.reload(true);                        
+                        getPositionDetail(positionId);
+                        getPositionList();
+                    }
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    //Position Templates 
+    function getPositionAppraisalTemplateList(positionId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PositionAppraisalTemplate/IndexByPosition',
+            data: { "id": positionId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divPositionAppraisalTemplates").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionTemplateList");
+            }
+        });
+    }
+
+    function createEditPositionAppraisalTemplate(positionId) {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        positionId = positionId == 0 ? $("#SelectedPositionId").val() : positionId;
+        if (positionId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/PositionAppraisalTemplate/CreateEdit',
+                data: { "id": positionId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#PositionAppraisalTemplateCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert("Error in createEditPositionAppraisalTemplate");
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Position for Add/Edit Appraisal Template(s)");
+        }
+    }
+    function savePositionAppraisalTemplateData(selectedTemplateStr) {
+        debugger;
+        alertID = "#positionAppraisalTemplateCreateEditAlert"
+        var positionId = $("#SelectedPositionId").val();
+        if (positionId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/PositionAppraisalTemplate/CreateEdit',
+                data: {
+                    "id": positionId,
+                    "selectedAppraisalTemplateIds": selectedTemplateStr
+                },
+
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    if (data.status == "Success") {
+                        $("#PositionAppraisalTemplateCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        //location.reload(true);                        
+                        getPositionDetail(positionId);
+                        getPositionList();
+                    }
+                },
+                error: function () {
+                    alert("error in savePositionAppraisalTemplateData");
+                }
+            });
+        }
+    }
+    //Position Credential
+    function getPositionCredentialList(positionId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PositionCredential/IndexByPosition',
+            data: { "id": positionId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divPositionCredentials").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionCredentialList");
+            }
+        });
+    }
+
+    function createEditPositionCredential(positionId) {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        positionId = positionId == 0 ? $("#SelectedPositionId").val() : positionId;
+        if (positionId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/PositionCredential/CreateEdit',
+                data: { "id": positionId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#PositionCredentialCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert("Error in createEditPositionCredential");
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Position for Add/Edit Credential(s)");
+        }
+    }
+    function savePositionCredentialData(selectedCredentialStr) {
+        debugger;
+        alertID = "#positionCredentialCreateEditAlert"
+        var positionId = $("#SelectedPositionId").val();
+        if (positionId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/PositionCredential/CreateEdit',
+                data: {
+                    "id": positionId,
+                    "selectedCredentialIds": selectedCredentialStr
+                },
+
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    if (data.status == "Success") {
+                        $("#PositionCredentialCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        //location.reload(true);                        
+                        getPositionDetail(positionId);
+                        getPositionList();
+                    }
+                },
+                error: function () {
+                    alert("error in savePositionCredentialData");
+                }
+            });
+        }
+    }
+    function EditIsRequiredCredential(id) {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        
+      
+            $.ajax({
+                type: "get",
+                url: '/PositionCredential/EditRequiredCredential',
+                data: { "id": id },
+
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#IsRequiredCredentialEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert("Error in EditIsRequiredCredential");
+                }
+            });               
+    }
+    function saveIsRequiredCredentialData(dataObj1) {
+        debugger;
+        alertID = "#positionCredentialCreateEditAlert"
+        var positionId = $("#SelectedPositionId").val();
+       
+        if (positionId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/PositionCredential/EditRequiredCredential',
+                data: JSON.stringify(dataObj1),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    if (data.status == "Success") {
+                        $("#IsRequiredCredentialEdit_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        //location.reload(true);                        
+                        getPositionDetail(positionId);
+                        //getPositionList();
+                    }
+                },
+                error: function () {
+                    alert("error in saveIsRequiredCredentialData");
+                }
+            });
+        }
+    }
+
+    //Position Question
+    function getPositionQuestionList(positionId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PositionQuestion/IndexByPosition',
+            data: { "id": positionId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divPositionQuestions").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getPositionQuestionList");
+            }
+        });
+    }
+
+    function createEditPositionQuestion(positionId) {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        positionId = positionId == 0 ? $("#SelectedPositionId").val() : positionId;
+        if (positionId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/PositionQuestion/CreateEdit',
+                data: { "id": positionId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#PositionQuestionCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Position for Add/Edit Training(s)");
+        }
+    }
+    function createAdhocPositionQuestion() {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        var positionId =  $("#SelectedPositionId").val();
+        if (positionId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/PositionQuestion/CreateAdhocQuestion',               
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#PositionAdhocQuestionCreate_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Position for Add/Edit Training(s)");
+        }
+    }
+    function saveAdhocPositionQuestionData(dataObj) {
+        debugger;
+        alertID = "#positionTrainingCreateEditAlert"
+        var positionId = $("#SelectedPositionId").val();
+        if (positionId != 0) {
+            $('.loading').show();
+            dataObj.PositionId = positionId;
+            $.ajax({
+                type: "post",
+                url: '/PositionQuestion/CreateAdhocQuestion',
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    $('.loading').hide();
+                    if (data.status == "Success") {
+                        $("#PositionAdhocQuestionCreate_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        //location.reload(true);                        
+                        getPositionDetail(positionId);
+                        getPositionList();
+                    }
+                    else {
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                    }
+                    
+                },
+                error: function () {
+                    $('.loading').hide();
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function savePositionQuestionData(selectedQuestionStr) {
+        debugger;
+        alertID = "#positionTrainingCreateEditAlert"
+        var positionId = $("#SelectedPositionId").val();
+        if (positionId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/PositionQuestion/CreateEdit',
+                data: {
+                    "id": positionId,
+                    "selectedQuestionIds": selectedQuestionStr
+                },
+
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    if (data.status == "Success") {
+                        $("#PositionQuestionCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#positionIndexPageAlert", data.status, data.message);
+                        //location.reload(true);                        
+                        getPositionDetail(positionId);
+                        getPositionList();
+                    }
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+    }
+
+    //End
+</script>

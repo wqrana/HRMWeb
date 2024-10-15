@@ -1,0 +1,943 @@
+﻿@model TimeAide.Web.Models.ChatConversation
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutChat.cshtml";
+}
+<div style="width: 55%; border: solid 1px Red; height: 0px;visibility:hidden">
+    <h3 style="margin: 10px 0px 0px 10px">
+        <span id="spnName"></span>
+        <span id="connID"></span>
+        <span id="usersCount"></span>
+    </h3>
+</div>
+<div style="width: 55%; border: solid 1px Red; height: 0px;visibility:hidden">
+    <div style="height: auto" id="divUsers"></div>
+    <div style="height: 70%" id="divChat"></div>
+    <div style="border: dashed 1px Black; margin-top:5%;">
+        <div style="float: left; width: 20%; padding: 4px">
+            <input type="text" style="width: 100%" id="txtTo" />
+        </div>
+        <div style="float: left; width: 60%; padding: 4px">
+            <input type="text" style="width: 100%" id="txtMsg" />
+        </div>
+        <div style="float: right; width: 15%; padding: 4px">
+            <input type="button" id="btnSend" value="Send Message" style="width: 45px" />
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+    <!-- Main Wrapper -->
+    <div class="page-wrapper" style="margin-left: 0px;padding-top: 0px;">
+
+        <!-- Chat Main Row -->
+        <div class="chat-main-row">
+
+            <!-- Chat Main Wrapper -->
+            <div class="chat-main-wrapper">
+
+                <!-- Chats View -->
+                <div class="col-lg-9 message-view task-view">
+                    <div class="chat-window">
+                        <div class="fixed-header">
+                            <div class="navbar">
+                                <div class="user-details mr-auto">
+                                    <div class="float-left user-img">
+                                        <a class="avatar" href="/UserInformation/EmployeeProfile/216" target="_blank" title="Mike Litorus">
+                                            <img src="assets/img/profiles/avatar-05.jpg" alt="" class="rounded-circle">
+                                            <span class="status online"></span>
+                                        </a>
+                                    </div>
+                                    <div class="user-info float-left">
+                                        @if (Model.Id > 0)
+                                        {
+                                            if (Model != null && Model.IsIndividualChate && Model.OtherParticipant != null)
+                                            {
+                                                <a href="/UserInformation/EmployeeProfile/216" target="_blank" title="Mike Litorus">
+                                                    <span>@Model.OtherParticipant.Participant.FullName</span>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span>@Model.ChatConversationTitle</span>
+                                            }
+                                            <i class="typing-text">Typing...</i>
+
+                                            <span class="last-seen">Last seen today at 7:50 AM</span>
+                                        }
+                                        else
+                                        {
+                                            <h4>Welcome to chat portal</h4>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="search-box">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" placeholder="Search" class="form-control">
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="nav custom-menu">
+                                    <li class="nav-item">
+                                        <a class="nav-link task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i class="fa fa-user"></i></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="voice-call.html" class="nav-link"><i class="fa fa-phone"></i></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="video-call.html" class="nav-link"><i class="fa fa-video-camera"></i></a>
+                                    </li>
+                                    <li class="nav-item dropdown dropdown-action">
+                                        <a aria-expanded="false" data-toggle="dropdown" class="nav-link dropdown-toggle" href=""><i class="fa fa-cog"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="javascript:void(0)" class="dropdown-item">Delete Conversations</a>
+                                            <a href="javascript:void(0)" class="dropdown-item">Settings</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="chat-contents">
+                            <div class="chat-content-wrap">
+                                <div class="chat-wrap-inner">
+                                    <div class="chat-box">
+                                        <div class="chats">
+                                            @foreach (var eachChatMessage in Model.ChatMessage.OrderBy(c => c.CreatedDate).ToList())
+                                            {
+                                                if (eachChatMessage.IsMyMessage || eachChatMessage.IsSelectedUserMessage)
+                                                {
+                                                    <div class="chat chat-right">
+                                                        <div class="chat-body">
+                                                            <div class="chat-bubble">
+                                                                <div class="chat-content">
+                                                                    <p>@eachChatMessage.ChatMessageText</p>
+                                                                    <span class="chat-time">@eachChatMessage.CreatedDate</span>
+                                                                </div>
+                                                                <div class="chat-action-btns">
+                                                                    <ul>
+                                                                        <li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="chat chat-left">
+                                                        <div class="chat-avatar">
+                                                            <a href="profile.html" class="avatar">
+                                                                <img alt="" src="assets/img/profiles/avatar-05.jpg">
+                                                            </a>
+                                                        </div>
+                                                        <div class="chat-body">
+                                                            <div class="chat-bubble">
+                                                                <div class="chat-content">
+                                                                    <p>@eachChatMessage.ChatMessageText</p>
+                                                                    <span class="chat-time">@eachChatMessage.CreatedDate</span>
+                                                                </div>
+                                                                <div class="chat-action-btns">
+                                                                    <ul>
+                                                                        <li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model != null && Model.Id > 0)
+                        {
+                            using (Html.BeginForm())
+                            {
+                                <div class="chat-footer">
+                                    <div class="message-bar">
+                                        <div class="message-inner">
+                                            @Html.HiddenFor(model => model.Id, new { id = "ChatConversationId" })
+
+                                            @Html.HiddenFor(model => model.OtherParticipant.ParticipantId, new { id = "OtherParticipantId" })
+
+                                            <input type="hidden" id="LoginId" value="@TimeAide.Common.Helpers.SessionHelper.LoginId" />
+                                            <a class="link attach-icon" href="#" data-toggle="modal" data-target="#drag_files"><img src="assets/img/attachment.png" alt=""></a>
+                                            <div class="message-area">
+                                                <div class="input-group">
+                                                    <textarea class="form-control" id="ChatMessageText" name="ChatMessageText" placeholder="Type message..."></textarea>
+
+                                                    <span class="input-group-append">
+                                                        <button class="btn btn-custom" type="button" id="sendmessage" value="Send"><i class="fa fa-send"></i></button>
+                                                    </span>
+                                                    <input type="hidden" value="@Model.MyUserInformation.Participant.FullName" id="displayname" />
+                                                    <ul id="discussion"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+                <!-- /Chats View -->
+                <!-- Chat Right Sidebar -->
+                <div class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window">
+                    <div class="chat-window video-window">
+                        <div class="fixed-header">
+                            <ul class="nav nav-tabs nav-tabs-bottom">
+                                <li class="nav-item"><a class="nav-link" href="#calls_tab" data-toggle="tab">Calls</a></li>
+                                <li class="nav-item"><a class="nav-link active" href="#profile_tab" data-toggle="tab">Profile</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-content chat-contents">
+                            <div class="content-full tab-pane" id="calls_tab">
+                                <div class="chat-wrap-inner">
+                                    <div class="chat-box">
+                                        <div class="chats">
+                                            <div class="chat chat-left">
+                                                <div class="chat-avatar">
+                                                    <a href="profile.html" class="avatar">
+                                                        <img alt="" src="assets/img/profiles/avatar-02.jpg">
+                                                    </a>
+                                                </div>
+                                                <div class="chat-body">
+                                                    <div class="chat-bubble">
+                                                        <div class="chat-content">
+                                                            <span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
+                                                            <div class="call-details">
+                                                                <i class="material-icons">phone_missed</i>
+                                                                <div class="call-info">
+                                                                    <div class="call-user-details">
+                                                                        <span class="call-description">Jeffrey Warden missed the call</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat chat-left">
+                                                <div class="chat-avatar">
+                                                    <a href="profile.html" class="avatar">
+                                                        <img alt="" src="assets/img/profiles/avatar-02.jpg">
+                                                    </a>
+                                                </div>
+                                                <div class="chat-body">
+                                                    <div class="chat-bubble">
+                                                        <div class="chat-content">
+                                                            <span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
+                                                            <div class="call-details">
+                                                                <i class="material-icons">call_end</i>
+                                                                <div class="call-info">
+                                                                    <div class="call-user-details"><span class="call-description">This call has ended</span></div>
+                                                                    <div class="call-timing">Duration: <strong>5 min 57 sec</strong></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat-line">
+                                                <span class="chat-date">January 29th, 2019</span>
+                                            </div>
+                                            <div class="chat chat-left">
+                                                <div class="chat-avatar">
+                                                    <a href="profile.html" class="avatar">
+                                                        <img alt="" src="assets/img/profiles/avatar-05.jpg">
+                                                    </a>
+                                                </div>
+                                                <div class="chat-body">
+                                                    <div class="chat-bubble">
+                                                        <div class="chat-content">
+                                                            <span class="task-chat-user">Richard Miles</span> <span class="chat-time">8:35 am</span>
+                                                            <div class="call-details">
+                                                                <i class="material-icons">phone_missed</i>
+                                                                <div class="call-info">
+                                                                    <div class="call-user-details">
+                                                                        <span class="call-description">You missed the call</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat chat-left">
+                                                <div class="chat-avatar">
+                                                    <a href="profile.html" class="avatar">
+                                                        <img alt="" src="assets/img/profiles/avatar-02.jpg">
+                                                    </a>
+                                                </div>
+                                                <div class="chat-body">
+                                                    <div class="chat-bubble">
+                                                        <div class="chat-content">
+                                                            <span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
+                                                            <div class="call-details">
+                                                                <i class="material-icons">ring_volume</i>
+                                                                <div class="call-info">
+                                                                    <div class="call-user-details">
+                                                                        <a href="#" class="call-description call-description--linked" data-qa="call_attachment_link">Calling John Smith ...</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-full tab-pane show active" id="profile_tab">
+                                <div class="display-table">
+                                    <div class="table-row">
+                                        <div class="table-body">
+                                            <div class="table-content">
+                                                @if (Model != null && Model.IsIndividualChate && Model.OtherParticipant != null)
+                                                {
+                                                    <a href="/UserInformation/EmployeeProfile/216" target="_blank" title="Mike Litorus">
+                                                        <span></span>
+                                                    </a>
+
+                                                    <div class="chat-profile-img" style="padding-top: 10px;">
+                                                        <h3 class="user-name m-t-10 mb-0">@Model.OtherParticipant.Participant.FullName</h3>
+                                                        <small class="text-muted">Web Designer</small>
+                                                    </div>
+                                                    <div class="chat-profile-info">
+                                                        <ul class="user-det-list">
+                                                            <li>
+                                                                <span>Employee Id:</span>
+                                                                <span class="float-right text-muted">@Model.OtherParticipant.Participant.EmployeeId</span>
+                                                            </li>
+                                                            <li>
+                                                                <span>DOB:</span>
+                                                                <span class="float-right text-muted">@String.Format("{0:MM/dd/yyyy}", Model.OtherParticipant.Participant.BirthDate)</span>
+                                                            </li>
+                                                            <li>
+                                                                <span>Email:</span>
+                                                                @if (@Model.OtherParticipant.Participant.ActiveUserContactInformation != null)
+                                                                {
+                                                                    <span class="float-right text-muted">@Model.OtherParticipant.Participant.ActiveUserContactInformation.WorkEmail</span>
+                                                                }
+                                                            </li>
+                                                            <li>
+                                                                <span>Phone:</span>
+                                                                @if (@Model.OtherParticipant.Participant.ActiveUserContactInformation != null)
+                                                                {
+                                                                    <span class="float-right text-muted">@Model.OtherParticipant.Participant.ActiveUserContactInformation.WorkNumber</span>
+                                                                }
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="transfer-files">
+                                                        <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-0">
+                                                            <li class="nav-item"><a class="nav-link active" href="#all_files" data-toggle="tab">All Files</a></li>
+                                                            <li class="nav-item"><a class="nav-link" href="#my_files" data-toggle="tab">My Files</a></li>
+                                                        </ul>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane show active" id="all_files">
+                                                                <ul class="files-list">
+                                                                    <li>
+                                                                        <div class="files-cont">
+                                                                            <div class="file-type">
+                                                                                <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                                                                            </div>
+                                                                            <div class="files-info">
+                                                                                <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                                                                                <span class="file-author"><a href="#">Loren Gatlin</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                                                                            </div>
+                                                                            <ul class="files-action">
+                                                                                <li class="dropdown dropdown-action">
+                                                                                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                                                    <div class="dropdown-menu">
+                                                                                        <a class="dropdown-item" href="javascript:void(0)">Download</a>
+                                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="tab-pane" id="my_files">
+                                                                <ul class="files-list">
+                                                                    <li>
+                                                                        <div class="files-cont">
+                                                                            <div class="file-type">
+                                                                                <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                                                                            </div>
+                                                                            <div class="files-info">
+                                                                                <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                                                                                <span class="file-author"><a href="#">John Doe</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                                                                            </div>
+                                                                            <ul class="files-action">
+                                                                                <li class="dropdown dropdown-action">
+                                                                                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                                                    <div class="dropdown-menu">
+                                                                                        <a class="dropdown-item" href="javascript:void(0)">Download</a>
+                                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="chat-profile-info">
+                                                        <ul class="user-det-list">
+                                                            @foreach (var eachParticipant in Model.ChatConversationParticipant)
+                                                            {
+                                                                if (!eachParticipant.IsMe)
+                                                                {
+                                                                    <li>
+                                                                        <span>@eachParticipant.Participant.FullName</span>
+                                                                        <span class="float-right text-muted">@eachParticipant.Participant.FullNameInitials</span>
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Chat Right Sidebar -->
+
+            </div>
+            <!-- /Chat Main Wrapper -->
+
+        </div>
+        <!-- /Chat Main Row -->
+        <!-- Drogfiles Modal -->
+        <div id="drag_files" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Drag and drop files upload</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="js-upload-form">
+                            <div class="upload-drop-zone" id="drop-zone">
+                                <i class="fa fa-cloud-upload fa-2x"></i> <span class="upload-text">Just drag and drop files here</span>
+                            </div>
+                            <h4>Uploading</h4>
+                            <ul class="upload-list">
+                                <li class="file-list">
+                                    <div class="upload-wrap">
+                                        <div class="file-name">
+                                            <i class="fa fa-photo"></i>
+                                            photo.png
+                                        </div>
+                                        <div class="file-size">1.07 gb</div>
+                                        <button type="button" class="file-close">
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                    </div>
+                                    <div class="progress progress-xs progress-striped">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                                    </div>
+                                    <div class="upload-process">37% done</div>
+                                </li>
+                                <li class="file-list">
+                                    <div class="upload-wrap">
+                                        <div class="file-name">
+                                            <i class="fa fa-file"></i>
+                                            task.doc
+                                        </div>
+                                        <div class="file-size">5.8 kb</div>
+                                        <button type="button" class="file-close">
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                    </div>
+                                    <div class="progress progress-xs progress-striped">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                                    </div>
+                                    <div class="upload-process">37% done</div>
+                                </li>
+                                <li class="file-list">
+                                    <div class="upload-wrap">
+                                        <div class="file-name">
+                                            <i class="fa fa-photo"></i>
+                                            dashboard.png
+                                        </div>
+                                        <div class="file-size">2.1 mb</div>
+                                        <button type="button" class="file-close">
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                    </div>
+                                    <div class="progress progress-xs progress-striped">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                                    </div>
+                                    <div class="upload-process">Completed</div>
+                                </li>
+                            </ul>
+                        </form>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Drogfiles Modal -->
+        <!-- Add Group Modal -->
+        <div id="add_group" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create a group</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Group Name <span class="text-danger">*</span></label>
+                                <input class="form-control" id="txtGroupName" type="text">
+                            </div>
+                            @*<div class="form-group">
+                                    <label>Send invites to: <span class="text-muted-light">(optional)</span></label>
+                                    <input class="form-control" type="text">
+                                </div>*@
+                            <div class="col-md-12" style="width:100%;padding-left:0px;padding-right:0px">
+                                @Html.DropDownList("EmployeeSupervisorList",
+                                    new MultiSelectList(ViewBag.SupervisorList,
+                                    "Value", "Text", ViewBag.SelectedSupervisorList),
+                               new
+                               {
+                                   multiple = "multiple",
+                                   id = "EmployeeSupervisorList",
+                                   name = "CredentialList[]"
+                               })
+                            </div>
+                            <div class="submit-section">
+                                <input type="submit" id="btnSaveemployeeSupervisors" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Group Modal -->
+        <!-- Add Chat User Modal -->
+        <div id="add_chat_user" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Direct Chat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group m-b-30">
+                            <input placeholder="Search to start a chat" id="Search" class="form-control search-input" type="text" required="required">
+                            <span class="input-group-append">
+                                <input type="submit" id="SearchBtn" button class="btn btn-primary" />
+                            </span>
+                        </div>
+
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h2 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"><i class="fa fa-plus"></i> Show Advance Filters</button>
+                                    </h2>
+                                </div>
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                    <div class="card-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <ul class="chat-user-list" style="overflow:hidden; overflow-y:scroll;height:300px"></ul>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Chat User Modal -->
+        <!-- Share Files Modal -->
+        <div id="share_files" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share File</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="files-share-list">
+                            <div class="files-cont">
+                                <div class="file-type">
+                                    <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                                </div>
+                                <div class="files-info">
+                                    <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                                    <span class="file-author"><a href="#">Bernardo Galaviz</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Share With</label>
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Share Files Modal -->
+
+    </div>
+    <!-- /Page Wrapper -->
+}
+<style>
+    .page-wrapper > .content {
+        padding: 0px;
+    }
+
+    .accordion .fa {
+        margin-right: 0.5rem;
+    }
+</style>
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Content/multi-select.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.multi-select.js"></script>
+
+@section scripts {
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        //var _name = window.prompt("Please Enter your name");
+        //$("#spnName").text(_name);
+        //$('#txtMsg').val('');
+
+        //Get proxy instance using the auto-generated proxy class
+        var chatProxy = $.connection.signalRChatHub;
+        //chatProxy.client.foo = function () { };
+        // Bind the btnClick event when connection to the hub is started
+        $.connection.hub.start().done(function () {
+            debugger
+            if ('@(@Model.IsGroupChate)' == "True" ) {
+                try {
+                    chatProxy.server.groupconnect($("#spnName").text(), $("#connID").text(), $("#connID").text(), '@Model.ChatConversationTitle','@Model.Id');
+                } catch (e) { alert(e.message); }
+            }
+            else {
+                try {
+                    $.connection.signalRChatHub.server.hubconnect($("#spnName").text(), $("#connID").text(), $("#connID").text(),'@Model.Id');
+                }
+                catch (e) { alert(e.message); }
+            }
+            //$("#btnSend").click(function () {
+            //    // Send Message to the Hub using the proxy instance
+            //    if ($("#txtTo").val() == "") {
+            //        chatProxy.server.broadCastMessage($("#spnName").text(), $("#txtMsg").val());
+            //    }
+            //    else {
+            //        chatProxy.server.send_PrivateMessage($("#spnName").text(), $("#txtMsg").val(), $("#txtTo").val());
+            //    }
+            //    $('#txtMsg').val('').focus();
+            //})
+
+            $('#sendmessage').click(function () {
+                // Call the Send method on the hub.
+                debugger
+                var model = {
+                    Id: $('#ChatConversationId').val(),
+                    ChatMessageText: $('#ChatMessageText').val(),
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: '/UserInformation/ChatWindow',
+                    data: JSON.stringify(model),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "html",
+                    success: function (html) {
+                        debugger;
+                        if ('@(@Model.IsGroupChate)' == "True") {
+                            chatProxy.server.broadCastMessageAllGroups($("#spnName").text(), $('#ChatMessageText').val(), '@Model.ChatConversationTitle', '@Model.Id');
+                        }
+                        else {
+                            chatProxy.server.send_PrivateMessage($("#spnName").text(), $('#ChatMessageText').val(), $("#OtherParticipantId").val(), '@Model.Id');
+                        }
+
+                        // Clear text box and reset focus for next comment.
+                        $('#ChatMessageText').val('').focus();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        debugger;
+                    }
+                });
+
+            });
+        })
+        //Callback function which the hub will call when it has finished processing,
+        // is attached to the proxy
+        chatProxy.client.receiveMessage = function (msgFrom, msg, senderid, chatConversationId) {
+            debugger
+            if (msgFrom == "NewConnection") {
+                $("#usersCount").text(senderid);
+                $('#divUsers').append('<li>' + msg + '</li>');
+
+                if (msg.endsWith("offline")) {
+                    toastr.success(msg, "Offline!");
+                }
+                else {
+                    toastr.success(msg, "Online!");
+                }
+            }
+            else if (msgFrom == "ChatHub") {
+                $("#usersCount").text(senderid);
+                $("#connID").text(msg);
+            }
+            else if (msgFrom == "RU") {
+                var online = senderid.split('#');
+                var length = online.length;
+                for (var i = 0; i < length; i++) {
+                    $('#divUsers').append('<li>' + online[i] + '</li>')
+                }
+
+                $('#divChat').append('<li><strong>' + msgFrom
+                    + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
+            }
+            else {
+
+                if (msgFrom == $('#displayname').val()) {
+                    var stringHtml = '<div class="chat chat-right"><div class="chat-body"><div class="chat-bubble"><div class="chat-content">';
+                    stringHtml += '<p>' + htmlEncode(msg) + '</p><span class="chat-time">' + formatedDate() + '</span></div>';
+                    stringHtml += '<div class="chat-action-btns"><ul><li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>';
+                    //stringHtml += '<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li><li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>';
+                    stringHtml += '</ul></div></div></div></div>';
+                    $('.chats').append(stringHtml);
+                }
+                else {
+                    debugger
+                    if (chatConversationId == $('#ChatConversationId').val()) {
+                        var stringHtml = '<div class="chat chat-left"><div class="chat-avatar"><a href="profile.html" class="avatar"><img alt="" src="assets/img/profiles/avatar-05.jpg">';
+                        stringHtml += '</a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content">';
+                        stringHtml += '<p>' + htmlEncode(msg) + '</p><span class="chat-time">' + formatedDate() + '</span></div><div class="chat-action-btns">';
+                        stringHtml += '<ul><li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>';
+                        stringHtml += '</ul></div></div></div></div>';
+                        $('.chats').append(stringHtml);
+                    }
+                    else {
+
+                        var lbl = $("#lblPendingMessageCount_" + chatConversationId + "");
+                        var messageCount = isNaN(parseInt(lbl.text())) ? 0 : parseInt(lbl.text());
+                        if (messageCount == 0) {
+                            lbl.text(1);
+                        }
+                        else {
+                            lbl.text(messageCount + 1);
+                        }
+                    }
+                }
+                //$("#txtTo").val(senderid);
+                //$('#divChat').append('<li><strong>' + msgFrom
+                //    + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
+            }
+        };
+    });
+
+    function registerEvents(chatHub) {
+        try {
+            chatHub.server.connect($("#spnName").text(), $("#connID").text(), $("#connID").text());
+        } catch (e) { alert(e.message); }
+    }
+
+    function htmlEncode(value) {
+        var encodedValue = $('<div />').text(value).html();
+        return encodedValue;
+    }
+
+    function formatedDate() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //As January is 0.
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var min = today.getMinutes();
+        var ss = today.getSeconds();
+
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        if (hh < 10) hh = '0' + hh;
+        if (min < 10) min = '0' + min;
+        if (ss < 10) ss = '0' + ss;
+        return (mm + '/' + dd + '/' + yyyy + ' ' + hh + ":" + min + ":" + ss);
+    };
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#SearchBtn").click(function () {
+                var SearchBy = 'ID'; // $("#SearchBy").val();
+                var SearchValue = $("#Search").val();
+                var SetData = $(".chat-user-list");
+                SetData.html("");
+                $.ajax({
+                    type: "post",
+                    url: "/UserInformation/GetChatEmployeeList?SearchBy=" + SearchBy + "&SearchValue=" + SearchValue,
+                    contentType: "html",
+                    success: function (result) {
+                        debugger
+                        if (result.length == 0) {
+                            SetData.append('<tr style="color:red"><td colspan="3">No Match Data</td></tr>')
+                        }
+                        else {
+                            $.each(result, function (index, value) {
+                                var Data = "<li><a href='/UserInformation/CreateNewChat?id=" + value.Id + "'><div class='media'><span class='avatar align-self-center'><img src='assets/img/profiles/avatar-16.jpg' alt=''></span>" +
+                                    "<div class='media-body align-self-center text-nowrap'><div class='user-name'>" + value.FullName + "</div><span class='designation'></span></div>" +
+                                    "</div></a></li>";
+                                SetData.append(Data);
+
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Add minus icon for collapse element which is open by default
+            $(".collapse.show").each(function () {
+                $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+            });
+
+            // Toggle plus minus icon on show hide of collapse element
+            $(".collapse").on('show.bs.collapse', function () {
+                $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+            }).on('hide.bs.collapse', function () {
+                $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+            });
+        });
+
+        $(window).load(function () {
+            $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+        });
+        $(document).ready(function () {
+            debugger;
+            $('#EmployeeSupervisorList').multiSelect(
+                {
+                    keepOrder: false,
+                    selectableHeader: "<div class='custom-header'>Available Employees</div>",
+                    selectionHeader: "<div class='custom-header'>Selected for Chat</div>",
+                    //selectableFooter: "<button id='btnSelectAll' class='btn btn-sm submit-btn btn-sm' onclick='SelectAllSupervisors();'>Select All</button>",
+                    //selectionFooter: "<button id='btnUnSelectAll' class='btn btn-sm submit-btn btn-sm' onclick='UnSelectAllSupervisors();'>Unselect All</button>",
+                    afterInit: function (ms) {
+
+                        //alert($("#btnSelectAll").html());
+                        //alert($("#EmployeeSupervisorList").html());
+                    }
+                }
+            );
+
+            $("#btnSaveemployeeSupervisors").click(function () {
+                debugger;
+                var selectedCredentialsStr = '';
+                var selectedCredentialList = $('#EmployeeSupervisorList').val();
+                if (selectedCredentialList.length > 0) {
+                    selectedCredentialsStr = selectedCredentialList.length > 1 ? selectedCredentialList.join(',') : selectedCredentialList[0];
+                }
+                saveemployeeSupervisorData(selectedCredentialsStr);
+            })
+        });
+        function UnSelectAllSupervisors() {
+            debugger
+            $('#EmployeeSupervisorList').multiSelect('deselect_all');
+        }
+        function SelectAllSupervisors() {
+            debugger
+            $('#EmployeeSupervisorList').multiSelect('select_all');
+        }
+        function saveemployeeSupervisorData(selectedCredentialStr) {
+            debugger;
+            alertID = "#employeeSupervisorCreateEditAlert"
+            var title = $("#txtGroupName").val();
+            if (title != 0) {
+                $.ajax({
+                    type: "post",
+                    url: '/UserInformation/CreateNewGroupChat',
+                    data: {
+                        "title": title,
+                        "selectedCredentialIds": selectedCredentialStr
+                    },
+
+                    success: function (data) {
+                        debugger;
+                        if (data.status == "Success") {
+                            $("#myModal").modal("hide");
+                            LoadSupervisedEmployees(title);
+                        }
+                    },
+                    error: function () {
+                        alert("error in saveemployeeSupervisorData");
+                    }
+                });
+            }
+        }
+    </script>
+    <style>
+        .modal-md {
+            min-width: 20% !important;
+            margin: 0 auto;
+        }
+
+        .custom-header {
+            text-align: center;
+            padding: 3px;
+            background: #000;
+            color: #fff;
+        }
+
+        .ms-container {
+            width: 100% !important;
+        }
+
+        .ms-selectable {
+            width: 49% !important;
+        }
+
+        .ms-selection {
+            width: 49% !important;
+        }
+    </style>
+}

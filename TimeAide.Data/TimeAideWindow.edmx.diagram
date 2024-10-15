@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="62ce644d6734451d9e1961cd9257272f" Name="Diagram1">
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tCompany" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tSchedModDailyDetail" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tSchedModPeriodSumm" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tSchedule" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tScheduleDayInfo" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tuser" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tAccrualType" Width="1.5" PointX="7.375" PointY="5.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tPunchDate" Width="1.5" PointX="7.375" PointY="8.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tReportWeek" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.viewPay_UserBatchStatus" Width="1.75" PointX="9.375" PointY="8.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tblCompanyPayrollInformation" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tJobTitle" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tEmployeeType" Width="1.5" PointX="11.375" PointY="4.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffRequest" Width="1.5" PointX="3.375" PointY="12.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tTransDef" Width="1.5" PointX="12.375" PointY="11.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tblSS_TimeOffRequest" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tPunchData" Width="1.5" PointX="14.375" PointY="8.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tblSS_TransdefTimeOffDocument" Width="1.5" PointX="13.375" PointY="5.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tDept" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tPunchPair" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tAuditInfo" Width="1.5" PointX="14.375" PointY="16" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tblTAEDetail" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="TIMEAIDE_7_PSICOModel.tblTAESignature" Width="1.5" PointX="14.375" PointY="15.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

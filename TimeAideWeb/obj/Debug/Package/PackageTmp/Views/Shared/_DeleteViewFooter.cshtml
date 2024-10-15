@@ -1,0 +1,64 @@
+﻿@Html.AntiForgeryToken()
+<div class="submit-section pb-2" style="text-align:center;margin:10px">
+    <button class="btn btn-danger submit-btn m-r-10" type="button" onclick="fnDeleteRecord('@ViewBag.FormName');">Delete</button>
+    <button type="submit" class="btn btn-danger submit-btn m-r-10" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    <input type="hidden" id="hdnIdForDelete" value="@Model.Id" />
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    function fnDeleteRecord(controller) {
+        var model = {}
+        debugger
+        var idForDelete = $("#hdnIdForDelete").val();
+        var actionMethod = "Delete";
+        $.ajax({
+            type: 'post',
+            url: '/' + controller + '/' + actionMethod + '/' + idForDelete,
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                location.reload(true);
+                $('#myModal').modal('hide');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText).Data.errors;
+                $('#divDeleteAlert').html(errorObject);
+            }
+        });
+    }
+</script>
+
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+<style>
+    #myModaldialog {
+        width: 60%;
+        max-width: 60% !important;
+    }
+    #divDdlPopupdialog {
+        width: 50%;
+        max-width: 50% !important;
+    }
+    
+</style>

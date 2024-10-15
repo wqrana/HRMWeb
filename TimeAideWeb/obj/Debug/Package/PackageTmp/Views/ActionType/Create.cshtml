@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.ActionType
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ActionTypeName, htmlAttributes: new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.ActionTypeName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ActionTypeName, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ActionTypeDescription, htmlAttributes: new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.ActionTypeDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ActionTypeDescription, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        @Html.Partial("_CreatePageFooterView")
+</div>
+        }

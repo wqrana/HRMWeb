@@ -1,0 +1,211 @@
+﻿
+@using TimeAide.Web.Models
+@model TimeAide.Web.Models.VerifySecurityCodeViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <title>Login</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/Themes/assets/img/favicon.png">
+
+    @*<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="~/Content/Themes/assets/css/bootstrap.min.css">
+
+        <!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="~/Content/Themes/assets/css/font-awesome.min.css">
+
+        <!-- Main CSS -->
+        <link rel="stylesheet" href="~/Content/Themes/assets/css/style.css">*@
+    @Styles.Render("~/content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-theme")
+    @Scripts.Render("~/bundles/3rdParty")
+    <script src="~/signalr/hubs"></script>
+
+</head>
+<body class="account-page">
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <div class="account-content">
+            <div class="container">
+                <!-- Account Logo -->
+                <div class="account-logo">
+                    <a href="/"><img src="@ViewBag.LogoPath" alt="Time Aide"></a>
+                </div>
+                <!-- /Account Logo -->
+                <div class="account-box">
+                    <div class="account-wrapper">
+                        <h3 class="account-title">Security Verification</h3>
+                        <p class="account-subtitle">Access to TimeAide</p>
+                        <!-- Account Form -->
+
+                        @using (Html.BeginForm("VerifySecurityCode", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("userinformationid", @Model.Userinformationid)
+                            @Html.Hidden("clientid", @Model.Clientid)
+                            @Html.HiddenFor(m => m.loginView.Email);
+                            @Html.HiddenFor(m => m.loginView.Password);
+                            @Html.HiddenFor(m => m.FisrtLastName);
+                            @Html.HiddenFor(m => m.DeviceMetaDataid);
+
+                            <h4>Enter verification code send to your login email</h4>
+                            <hr />
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(m => m.Code, "{0:#.#}", new { @class = "form-control", placeholder = "Security Code" })
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(m => m.RememberBrowser)
+                        @Html.LabelFor(m => m.RememberBrowser)
+                    </div>
+                </div>
+            </div>*@
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-12">
+                                    <input type="submit" class="btn btn-primary account-btn" value="Submit Code" />
+                                </div>
+                            </div>
+                        }
+                        <div class="form-group">
+
+                            <button class="btn" style="color: #008aff;" id="resendcode">Resend Code</button>
+                        </div>
+
+
+
+
+                        <!-- /Account Form -->
+                        <!--External Login Provider    -->
+                        @*<div class="account-footer">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </div>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Main Wrapper -->
+    @*<!-- jQuery -->
+        <script src="~/Content/Themes/assets/js/jquery-3.2.1.min.js"></script>
+
+        <!-- Bootstrap Core JS -->
+        <script src="~/Content/Themes/assets/js/popper.min.js"></script>
+        <script src="~/Content/Themes/assets/js/bootstrap.min.js"></script>
+
+        <!-- Custom JS -->
+        <script src="~/Content/Themes/assets/js/app.js"></script>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var toastMsgOptions = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-center",
+            "onclick": null,
+            "showDuration": "1000",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "preventDuplicates": true
+        }
+
+        var chat = $.connection.authHub;
+        debugger
+        chat.client.Signout = function () {
+           window.location.href = '@Url.Action("Login", "Account")';
+        };
+        chat.client.Redirect = function () {
+           window.location.href = '@Url.Action("Login1", "Account")';
+        };
+        $.connection.hub.start().done(function () {
+            chat.server.forceLogOut('@TimeAide.Common.Helpers.SessionHelper.PreviousLoginEmail', '@TimeAide.Common.Helpers.SessionHelper.CurrentBowser','LoginPage');
+        });
+        $("#resendcode").on("click", function () {
+            
+
+            debugger
+            var LoginView = {
+                Email: $('#loginView_Email').val()
+            };
+            var model = {
+
+                FisrtLastName: $('#FisrtLastName').val(),
+                UserInformationId: $('#userinformationid').val(),
+                DeviceMetaDataid: $('#DeviceMetaDataid').val(),
+                ClientId: $('#clientid').val(),
+                LoginView: LoginView
+            };
+            debugger
+            $.ajax({
+                type: 'post',
+                url: '/Account/ResendSecurityCode',
+                data: JSON.stringify(model),
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                success: function (data) {
+                    debugger
+                  
+                    if (data.status == "Succes") {
+
+                        toastr.options = toastMsgOptions;
+                        toastr.success(data.message, "Success!");
+                    }
+                    else if (data.status == "Error") {
+
+                        toastr.options = toastMsgOptions;
+                        toastr.success(data.message, "Erorr!");
+                    }
+
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    var responseText = jQuery.parseJSON(xhr.responseText)
+                    var errorObject = jQuery.parseJSON(responseText.errors)
+                    $.each(errorObject, function (idx, errorMessage) {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    });
+                }
+            });
+        });
+    });
+    function timerIncrement() {
+        //debugger
+        // alert('auto!');
+        idleTime = idleTime + 1;
+        @* chat.server.send_PrivateMessage($("#spnName").text(), $('#ChatMessageText').val(), $("#OtherParticipantId").val(), '@Model.Id');*@
+        chat.server.updateUserActivity(isActive,'@TimeAide.Common.Helpers.SessionHelper.CurrentBowser');
+        isActive = false;
+        @*if (idleTime > 15) { // 15 minutes
+            //window.location.reload();
+            window.location.href = '@Url.Action("Login", "Account")';
+        }*@
+        }
+</script>
+</body>
+</html>
+
+
+
+

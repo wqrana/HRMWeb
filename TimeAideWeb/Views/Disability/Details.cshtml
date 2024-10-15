@@ -1,0 +1,27 @@
+﻿@model TimeAide.Web.Models.Disability
+
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            Disability
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisabilityName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisabilityDescription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>

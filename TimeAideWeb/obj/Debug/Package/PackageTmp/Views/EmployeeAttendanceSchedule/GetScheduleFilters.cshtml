@@ -1,0 +1,48 @@
+﻿<div class="row filter-row">
+    <div class="col-sm-2 col-md-2 pr-0">
+        <div class="form-group form-focus mb-1">
+            <input id="ScheduleDate" type="datetime" class="form-control floating" value="@DateTime.Today">
+            <label class="focus-label">From/To Date</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-1">
+            <input id="EmployeeId" type="text" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("SubDepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">SubDepartment</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("EmployeeTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Employee Type</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("PositionId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Position</label>
+        </div>
+    </div>
+    <div class="col-sm-1 col-md-1 pl-0 pr-0">
+        <a href="javascript: getAttendanceSchedules();" class="btn btn-success btn-block"> Search </a>
+    </div>
+
+</div>

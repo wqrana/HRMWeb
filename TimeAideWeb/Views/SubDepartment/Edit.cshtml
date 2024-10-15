@@ -1,0 +1,86 @@
+﻿@model TimeAide.Web.Models.SubDepartment
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.SubDepartmentName, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.SubDepartmentName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SubDepartmentName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.SubDepartmentDescription, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.SubDepartmentDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SubDepartmentDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+
+                @Html.LabelFor(model => model.USECFSEAssignment, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.USECFSEAssignment)
+                @Html.ValidationMessageFor(model => model.USECFSEAssignment, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.CFSECodeId, "CFSE Code", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.CFSECode>("CFSECodeId", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" }))
+                @Html.ValidationMessageFor(model => model.CFSECodeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.CFSECompanyPercent, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CFSECompanyPercent, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.CFSECompanyPercent, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.DepartmentId, "Department", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-8">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Department>("DepartmentId", null, Model.DepartmentId, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}
+
+    <script>
+    $(document).ready(function () {
+        $('#USECFSEAssignment').click(function () {
+            if ($(this).is(":checked")) {
+                $("#CFSECodeId").removeAttr("disabled");
+                $("#CFSECompanyPercent").removeAttr("disabled");
+            }
+            else {
+                $("#CFSECodeId").attr("disabled", "disabled");
+                $("#CFSECompanyPercent").attr("disabled", "disabled");
+                $("#CFSECodeId").val("");
+                $("#CFSECompanyPercent").val("");
+                $('span[data-valmsg-for="CFSECodeId"]').text('');
+                $('span[data-valmsg-for="CFSECompanyPercent"]').text('');
+            }
+        });
+    });
+    </script>

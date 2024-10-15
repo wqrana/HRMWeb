@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.NotificationRole
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NotificationRoleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NotificationRoleName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+           Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NotificationRoleDescription)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

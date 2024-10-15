@@ -1,0 +1,49 @@
+﻿@model TimeAide.Web.Models.EmployeeCustomField
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeader")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomField.CustomFieldName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomField.CustomFieldName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomFieldValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomFieldValue)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomFieldNote)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomFieldNote)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpirationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpirationDate)
+        </dd>
+    </dl>
+
+    @*@using (Html.BeginForm())*@
+    @*{*@
+        @Html.AntiForgeryToken()
+        <div class="submit-section" style="text-align:center">
+            <button class="btn btn-danger submit-btn m-r-10" id="btnDeleteEmployeeCustomField">Delete</button>
+            <button type="submit" class="btn btn-danger submit-btn m-r-10" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+    @*}*@
+</div>

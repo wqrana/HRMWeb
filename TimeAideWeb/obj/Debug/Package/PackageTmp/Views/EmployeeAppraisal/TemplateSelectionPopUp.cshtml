@@ -1,0 +1,76 @@
+﻿<div class="mt-2 p-1">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Template Selection</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <hr>
+</div>
+<div class="modal-body pt-0">
+
+    <div class="alert" style="display:none;" id="templateSelectionPopUpAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Position: <span class="text-danger"></span></label>
+                <div class="col-md-6 text-muted mt-2">
+                 @ViewBag.PositionName    
+                </div>              
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label pr-0">Template: <span class="text-danger">*</span></label>
+                <div class="col-md-6">
+                    @Html.DropDownList("AppraisalTemplateSelectionId", null, "Please Select", new { @class = "form-control" })
+                </div>
+                <label class="col-md-1 col-form-label">All: <span class="text-danger"></span></label>
+                <div class="col-md-2 mt-2">
+                    @Html.CheckBox("ChkAllTemplateList", false)
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="submit-section mt-1">
+
+        <button id="btnSelectTemplate" class="btn btn-primary submit-btn">Ok</button>
+        <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+    </div>
+
+</div>
+@*</div>
+        </div>
+    </div>*@
+
+<script>
+    $(document).ready(function () {
+        $("#ChkAllTemplateList").click(function () {
+            debugger;
+            var isChecked = $(this).is(":checked");
+            var dropdownElementId = "#AppraisalTemplateSelectionId";
+            ajaxLoadAppraisalTemplateSelectionDropdown(dropdownElementId, isChecked);
+        });
+        $("#btnSelectTemplate").click(function () {
+            debugger;
+            var templateId = $("#AppraisalTemplateSelectionId").val();
+            if (templateId == null || templateId == "") {
+                showAlertAutoHide('#templateSelectionPopUpAlert', 'Error', "Please Select the Template");
+                return;
+            }
+            setSelectedAppraisalTemplate(templateId);
+        });
+    });
+
+</script>
+
+
+

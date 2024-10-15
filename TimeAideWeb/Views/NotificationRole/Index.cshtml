@@ -1,0 +1,81 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeGroup>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NotificationRoleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NotificationRoleDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NotificationLevel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NotificationRoleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NotificationRoleDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NotificationLevel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+
+<div id="divEmployeeNotificationRoleCreateEditPopUp">
+
+</div>
+
+<script type="text/javascript">
+    function AddRoleSupervisor(positionId) {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        positionId = positionId == 0 ? $("#SelectedPositionId").val() : positionId;
+        if (positionId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/NotificationScheduleRole/CreateEdit',
+                data: { "id": positionId },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                },
+                error: function () {
+                    alert("Error in createEditPositionCredential");
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Position for Add/Edit Credential(s)");
+        }
+    }
+
+</script>

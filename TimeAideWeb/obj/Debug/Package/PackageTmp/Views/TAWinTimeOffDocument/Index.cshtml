@@ -1,0 +1,184 @@
+﻿@model IEnumerable<TimeAide.Web.Models.TAWinTransDefTimeOff>
+@{
+    ViewBag.Title = "Time-Off Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Time-Off Transaction</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">TA-Window</li>
+                <li class="breadcrumb-item active">Time-Off Transaction</li>
+            </ul>
+            <div class="alert" style="display:none;" id="IndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="col-md-12 p-0">
+                <!-- <div class="panel panel-default" style="width:49%;margin-left:10px">-->
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Time-off Transaction List
+                       
+                    </div>
+                    <div class="panel-body">
+                        <div style="max-height:275px; overflow-y:auto">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table table-nowrap mb-0" id="tblTrans">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Show
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.TransName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsTimeOffTrans)
+
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.AccrualType)
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td width="10%">
+                                                <a href="javascript:getTransDefTimeOffDocumentList('@item.TransId','@item.TransName');"><span class="fa fa-eye"></span></a>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TransName)
+                                            </td>
+                                            <td>
+                                                @*@Html.DisplayFor(modelItem => item.IsTimeOffTrans)*@
+                                                @if (item.IsTimeOffTrans)
+                                                {
+                                                    <input type="checkbox" id="cbTransId_@item.TransId" disabled checked />
+                                                }
+                                                else{ 
+                                                    <input type="checkbox" id="cbTransId_@item.TransId" disabled/>
+                                                }
+                                                <span class="pl-2"><a href="javascript:createEditTransDefTimeOff('@item.TransId','@item.TransName');"><span class="fa fa-pencil"></span></a></span>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AccrualType)
+                                            </td>
+                                            
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12 p-0">
+                <div id="divTimeOffDocuments">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divCreateEditDelPopUp">
+
+</div>
+@Html.Partial("CreateOrEditTimeOffTrans")
+<script>
+    $(document).ready(function () {
+        transDefViewSetting();
+    });
+    function getTransDefTimeOffDocumentList(transId) {
+        debugger;
+        if (transId != null) {
+            var isTimeOffTrans = $("#cbTransId_" + transId).is(":checked");
+            if (!isTimeOffTrans) {
+                showAlertAutoHide("", "Error", "Selected transaction is not a time-off transaction.");
+                return;            
+            }
+        }
+        $.ajax({
+            type: "get",
+            url: '/TAWinTimeOffDocument/IndexByDocumentList',
+            data: { "transId": transId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divTimeOffDocuments").html(data);
+                //$("#WorkflowCreateEdit_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function createEditTransDefTimeOff(transId,transName) {
+        debugger;
+        $("#AddEditTransName").val(transName);
+        $("#AddEditTransId").val(transId);
+        $("#divTransName").text(transName);
+        var isTimeOffTrans = $("#cbTransId_" + transId).is(":checked");
+        $("#IsTimeOffTransAE").prop("checked", isTimeOffTrans);
+        
+        $("#addEdit_TimeoffTrans_modal").modal("show");
+    }
+    function saveTransDefTimeOff(dataObj) {
+        $.ajax({
+            type: "POST",
+            url: "/TAWinTimeOffDocument/CreateEditTransDefTimeOff",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    showAlertAutoHide("", data.status, data.message);
+                    var stat = $("#IsTimeOffTransAE").is(":checked");
+                    $("#cbTransId_" + dataObj.TransId).prop("checked", stat);
+                    $("#addEdit_TimeoffTrans_modal").modal("hide");
+                    location.reload(true);
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                alert('Error in CreateEditTransDefTimeOff');
+                return false;
+            }
+        });
+    }
+    function transDefViewSetting() {
+        $('#tblTrans').dataTable({
+            "searching": true,
+            "bPaginate": false,
+            "bSort": false
+            //"order": [[2, "dsc"]]
+        });
+        getTransDefTimeOffDocumentList(null);
+    }
+</script>

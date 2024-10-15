@@ -1,0 +1,29 @@
+﻿@model TimeAide.Web.Models.EmployeeVeteranStatus
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.Partial("_CreatePageTitleView")
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserInformationId, "Employee", htmlAttributes: new { @class = "control-label" })
+
+                @Html.DropDownList("UserInformationId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserInformationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-12 row">
+           
+                @Html.LabelFor(model => model.VeteranStatusId, "Veteran Status", htmlAttributes: new { @class = "control-label" })
+
+                @(Html.CustomDropDownList<TimeAide.Web.Models.VeteranStatus>("VeteranStatusId", null, htmlAttributes: new { @class = "form-control" }))
+                @Html.ValidationMessageFor(model => model.VeteranStatusId, "", new { @class = "text-danger" })
+           
+        </div>
+
+        @Html.Partial("_CreatePageFooterView")
+    </div>
+}
+

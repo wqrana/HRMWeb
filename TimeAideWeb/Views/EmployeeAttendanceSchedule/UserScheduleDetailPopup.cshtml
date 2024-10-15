@@ -1,0 +1,204 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeAttendenceSchDetail>
+<div id="employeeViewScheduleDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            @{
+                var usrName = Model.FirstOrDefault().sUserName;
+            }
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">User Schedule Detail(@usrName)</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+               
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeeScheduleDetail">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>EmployeeID</th>
+                                <th>Punch Date</th>
+                                <th>Day Type</th>
+                                <th>PunchNum </th>
+                                <th>Punch-In 1</th>
+                                <th>Punch-Out 1</th>
+                                <th>Punch-In 2</th>
+                                <th>Punch-Out 2</th>
+                                <th>Day Hour(s)</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.nUserID)
+                                    </td>
+
+                                    <td>
+                                        @{ var punchDate = (item.dPunchDate.Value).ToString("ddd, dd MMMM yyyy");}
+                                        @Html.DisplayFor(modelItem => punchDate)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sWorkDayTypeName)
+                                    </td>
+
+                                    <td align="center">
+                                        @Html.DisplayFor(modelItem => item.nPunchNum)
+                                    </td>
+                                    <td>
+                                        @{ var PunchIn1 = (item.dPunchIn1 == null) ? "" : item.dPunchIn1.Value.ToString("MM/dd hh:mm tt");
+                                            if (item.nPunchNum < 1) { PunchIn1 = ""; }
+                                        }
+                                        @Html.DisplayFor(modelItem => PunchIn1)
+                                    </td>
+                                    <td>
+                                        @{ var PunchOut1 = (item.dPunchOut1 == null) ? "" : item.dPunchOut1.Value.ToString("MM/dd hh:mm tt");
+                                            if (item.nPunchNum < 2) { PunchOut1 = ""; }
+                                        }
+                                        @Html.DisplayFor(modelItem => PunchOut1)
+                                    </td>
+                                    <td>
+                                        @{ var PunchIn2 = (item.dPunchIn2 == null) ? "" : item.dPunchIn2.Value.ToString("MM/dd hh:mm tt");
+                                            if (item.nPunchNum < 4) { PunchIn2 = ""; }
+                                        }
+                                        @Html.DisplayFor(modelItem => PunchIn2)
+                                    </td>
+                                    <td>
+                                        @{ var PunchOut2 = (item.dPunchOut2 == null) ? "" : item.dPunchOut2.Value.ToString("MM/dd hh:mm tt");
+                                            if (item.nPunchNum < 4) { PunchOut2 = ""; }
+                                        }
+                                        @Html.DisplayFor(modelItem => PunchOut2)
+                                    </td>
+                                    <td align="center">
+                                        @Html.DisplayFor(modelItem => item.dblDayHours)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sNote)
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                @{
+                                    var periodHrs = ViewBag.PeriodHours;
+                                }
+                                <th >Period Hrs: @periodHrs</th>
+                               
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        //$('#tblEmployeeScheduleDetail').dataTable({
+        //    "searching": true,
+        //    "paging": false
+        //});
+        var indexColumns = $("#tblEmployeeScheduleDetail > thead > tr:first > th").length;
+        //alert(indexColumns);
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns ; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        var fileNameAndTitle = 'Employee Schedule - Detail';
+        var fileTitle = '@usrName';
+       $('#tblEmployeeScheduleDetail').DataTable({
+            searching: true,
+            sDom: '<"top"i>rt<"bottom"fl><"clear">',
+           "bLengthChange": false,
+           "paging": false,
+            dom: 'Bfrti',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    footer: true,
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+
+                    extend: 'excelHtml5',
+                    footer: true,
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileTitle,
+                    title: fileNameAndTitle,
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    footer: true,
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileTitle,
+                    title: fileNameAndTitle,
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    footer: true,
+                    filename: function () {
+                        return fileNameAndTitle + '(' + fileTitle + ')';
+                    },
+                    messageTop: fileTitle,
+                    title: fileNameAndTitle,
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    orientation: 'landscape',
+                    pageSize: 'LETTER',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                }
+
+
+            ],
+
+        });
+
+    });
+
+</script>
+
+

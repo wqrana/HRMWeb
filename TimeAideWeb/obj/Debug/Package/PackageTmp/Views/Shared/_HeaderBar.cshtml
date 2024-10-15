@@ -1,0 +1,672 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+<style>
+    .global-search{
+        fill:white;
+    }
+</style>
+<!--Header Bar-->
+<div class="header">
+    <!-- Logo -->
+    <div class="header-left">
+        <a href="/CompanyPortal/Index" class="logo">
+            <img src="/Content/Themes/assets/img/logo.png" width="48" height="40" alt="">
+        </a>
+    </div>
+    <!-- /Logo -->
+
+    <a id="toggle_btn" href="javascript:void(0);">
+        <span class="bar-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+    </a>
+
+    <!-- Header Title -->
+    <div class="page-title-box">
+        <h3>@TimeAide.Services.CompanyService.SelectedCompanyName</h3>
+    </div>
+
+    <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
+
+    <!-- Header Menu -->
+
+    <ul class="nav user-menu">
+        <li class="nav-item dropdown">
+            @if (!SecurityHelper.IsUser)
+            {
+                if (SecurityHelper.IsAvailable("UserInformation"))
+                {
+                    <a href="/UserInformation/Index" class="nav-link" title="Employee Search">
+                        <i class="la la-search"></i>
+                    </a>
+                }
+            }
+        </li>
+
+
+        <li class="nav-item dropdown">
+            @if (!SecurityHelper.IsUser)
+            {
+                if (SecurityHelper.IsAvailable("UserInformation"))
+                {
+                    <a href="javascript:GlobelEmployeeView()" class="nav-link" title="Employee Search">
+                       <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32" class="global-search">
+                           <path d="M103.025-215.384v-60.513q0-28 14.5-48.039 14.5-20.038 40.33-31.874 55.273-24.934 104.965-39.177 49.693-14.244 120.462-14.244t120.128 14.244q49.359 14.243 105.145 39.177 25.317 11.836 39.894 31.874 14.577 20.039 14.577 48.039v60.513H103.025Zm633.847 0v-59.59q0-40.77-16.511-71.64-16.51-30.871-43.951-51.848 34.795 6.821 67.128 17.629 32.334 10.807 58.893 23.974 24.492 12.91 39.518 34.354t15.026 47.531v59.59H736.872Zm-353.59-289.385q-49.757 0-83.468-33.712-33.712-33.711-33.712-83.468 0-49.756 33.712-83.211 33.711-33.455 83.468-33.455 49.756 0 83.212 33.455 33.455 33.455 33.455 83.211 0 49.757-33.455 83.468-33.456 33.712-83.212 33.712Zm278.205-117.18q0 49.757-33.455 83.468-33.455 33.712-83.395 33.712-2.611 0-5.227-.423-2.615-.423-5.154-1.269 19.35-22.792 29.444-52.235 10.095-29.443 10.095-63.091 0-33.649-10.859-61.957-10.859-28.307-28.68-53.692 2.257-.333 5.154-.756 2.898-.423 5.154-.423 50.013 0 83.468 33.455 33.455 33.455 33.455 83.211ZM136.871-249.23H629.18v-26.667q0-15.359-8.167-27.59T593.333-326q-50.615-25.718-98.282-37.551-47.667-11.834-111.769-11.834-64.103 0-111.846 11.834-47.744 11.833-98.359 37.551-19.513 10.282-27.859 22.513-8.347 12.231-8.347 27.59v26.667Zm246.154-289.385q34.949 0 59.013-24.064 24.065-24.065 24.065-59.013 0-34.949-24.065-59.013-24.064-24.064-59.013-24.064-34.948 0-59.012 24.064-24.065 24.064-24.065 59.013 0 34.948 24.065 59.013 24.064 24.064 59.012 24.064Zm0 289.385Zm0-372.462Z" />
+                       </svg>
+                    </a>
+                }
+            }
+        </li>
+        @{
+            //var oldnotificationList = TimeAide.Services.WorkflowService.GetWorkFlowNotifications();
+            //var oldclosingNotificationList = TimeAide.Services.WorkflowService.GetWorkFlowClosingNotifications(true);
+
+            //var notificationList = TimeAide.Services.WorkflowService.GetNewWorkFlowNotifications();
+            var notificationList = new List<TimeAide.Models.ViewModel.BellIconNotificationViewModel>();
+            //var closingNotificationList = TimeAide.Services.WorkflowService.GetNewWorkFlowClosingNotifications(true);
+            var closingNotificationList = new List<TimeAide.Models.ViewModel.BellIconNotificationViewModel>();
+            //var notificationLogList = TimeAide.Services.NotificationScheduleServiceManager.GetNotificationList(SessionHelper.LoginEmail, true);
+            var notificationLogList = new List<TimeAide.Web.Models.NotificationLog>();
+            <li class="nav-item dropdown" style="display: none;">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <i class="fa fa-bell-o"></i>
+                    @{
+                        int workflowCount = 0;
+                        if (notificationList != null && notificationList.Count > 0)
+                        {
+                            workflowCount = @notificationList.Count;
+                        }
+                        int workflowCount1 = 0;
+                        if (notificationLogList != null && notificationLogList.Count > 0)
+                        {
+                            workflowCount1 = notificationLogList.Count;
+                        }
+
+                        if (closingNotificationList != null && closingNotificationList.Count > 0)
+                        {
+                            workflowCount1 += closingNotificationList.Count;
+                        }
+
+                    }
+                    @if (workflowCount1 + workflowCount > 0)
+                    {
+                        <span class="badge badge-pill">
+                            @(workflowCount1 + workflowCount)
+                        </span>
+                    }
+                    else
+                    {
+                        <span>
+                        </span>
+                    }
+
+                </a>
+                <div class="dropdown-menu notifications">
+                    <div class="topnav-dropdown-header">
+                        <span class="notification-title">Notifications</span>
+                        @*<a href="javascript:void(0)" class="clear-noti"> Clear All </a>*@
+                    </div>
+                    <div class="noti-content">
+                        <input type="hidden" id="hdnSelectedNotificationId" />
+                        <ul class="notification-list" id="ulNotifications">
+                            @foreach (var eachNotification in notificationList.OrderByDescending(n => n.CreatedDate).ToList())
+                            {
+                                <li class="notification-message" id='li_@eachNotification.WorkflowTriggerRequestDetailId'>
+                                    @{
+                                        var popupURL = TimeAide.Services.WorkflowService.GetNewChangeRequestApprovalUrl(eachNotification, true, false);
+                                        if (!popupURL.StartsWith("/") && !popupURL.StartsWith("\\"))
+                                        {
+                                            popupURL = "/" + popupURL;
+                                        }
+                                    }
+                                    <a href="javascript:ChangeRequestApproval('li_@eachNotification.WorkflowTriggerRequestDetailId','@popupURL')">
+                                        @*<a href="javascript:ChangeRequestApproval('@TimeAide.Services.WorkflowService.GetChangeRequestApprovalUrl(eachNotification,true)')">*@
+                                        <div class="media">
+                                            <span class="avatar" style="background: #428bca !important ">P</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">@eachNotification.ShortFullName</span> Change Request for <span class="noti-title">@eachNotification.RequestType</span></p>
+                                                <p class="noti-time"><span class="notification-time">@eachNotification.CreatedSince</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                            @foreach (var eachNotification in closingNotificationList.OrderByDescending(n=>n.CreatedDate).ToList())
+                            {
+                                <li class="notification-message" id='li_@eachNotification.WorkflowTriggerRequestDetailId'>
+                                    @{
+                                        var popupURL = TimeAide.Services.WorkflowService.GetNewChangeRequestApprovalUrl(eachNotification, false, false);
+                                        if (!popupURL.StartsWith("/") && !popupURL.StartsWith("\\"))
+                                        {
+                                            popupURL = "/" + popupURL;
+                                        }
+                                    }
+                                    <a href="javascript:ChangeRequestView('li_@eachNotification.WorkflowTriggerRequestDetailId','@popupURL')">
+                                        <div class="media">
+
+                                            @if (eachNotification.ActionType != null)
+                                            {
+                                                if (eachNotification.ActionType == "A")
+                                                {<span class="avatar" style="background: #468847 !important">@eachNotification.ActionType</span> }
+                                            else if (eachNotification.ActionType == "D")
+                                            {<span class="avatar" style="background: #e63c3c !important">@eachNotification.ActionType</span>}
+                                        else if (eachNotification.ActionType == "C")
+                                        {<span class="avatar" style="background: #FF3131 !important ">@eachNotification.ActionType</span>}
+                                }
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">@eachNotification.ShortFullName </span> Change Request closed for <span class="noti-title">@eachNotification.RequestType</span></p>
+                                                <p class="noti-time"><span class="notification-time">@eachNotification.CreatedSince</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                            @foreach (var eachNotificationLog in notificationLogList)
+                            {
+                                <li class="notification-message" id='li_e_@eachNotificationLog.Id'>
+                                    <a href="javascript:ReadNotification('li_e_@eachNotificationLog.Id',@eachNotificationLog.Id)">
+                                        <div class="media">
+                                            @if (eachNotificationLog.NotificationTypeId == 13)
+                                            {
+                                                <span class="avatar" style="background: #c08f53 !important ">EB</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="avatar" style="background: #c05353 !important ">I</span>
+                                            }
+
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">@eachNotificationLog.UserInformationName </span> @eachNotificationLog.RecordName <span class="noti-title">@eachNotificationLog.NotificationType.NotificationTypeName</span></p>
+
+                                                @if (eachNotificationLog.NotificationTypeId == 13)
+                                                {
+                                                    <p class="noti-time"><span class="notification-time">Email is sent on @eachNotificationLog.CreatedDate</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="noti-time"><span class="notification-time">Will expire in @eachNotificationLog.ExpiringDays</span></p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        @if (SecurityHelper.IsAvailable("ShowAllWorkflowNotifications") || SecurityHelper.IsAvailable("ShowAllExpirationNotification"))
+                        {
+                            <a href="/ChangeRequest/NotiificationListActive">View all Notifications</a>
+                        }
+                    </div>
+                </div>
+            </li>
+        }
+        @if (Request.IsAuthenticated)
+        {
+            <li class="nav-item dropdown" id="divBellIcon">
+                <!--<div >-->
+                @*@Html.Partial("_BellIcon")*@
+                <!--</div>-->
+            </li>
+            <div id="divLoadingBellIcon" class="align-content-md-center">
+                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+            </div>
+        }
+        <!-- Message Notifications -->
+        <li class="nav-item dropdown">
+            @if (SecurityHelper.IsAvailable("ChatConversation"))
+            {
+                var chatConversations = TimeAide.Services.ChatConversationService.GetChatConversationWithUnreadMessages();
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <i class="fa fa-comment-o"></i>
+                    @if (chatConversations.Count > 0)
+                    {
+                        <span class="badge badge-pill">@chatConversations.Count</span>
+                    }
+                </a>
+                <div class="dropdown-menu notifications">
+                    <div class="topnav-dropdown-header">
+                        <span class="notification-title">Messages</span>
+                        @*<a href="javascript:void(0)" class="clear-noti"> Clear All </a>*@
+                    </div>
+                    <div class="noti-content">
+                        <ul class="notification-list">
+
+                            @foreach (var eachChat in chatConversations)
+                            {
+
+                                <li class="notification-message">
+                                    <a href="/ChatConversation/ChatWindow/@eachChat.Id">
+                                        <div class="list-item">
+                                            <div class="list-left">
+                                                <span class="avatar">
+                                                    <img alt="" src="../Content/themes/assets/img/profiles/avatar-09.jpg">
+                                                </span>
+                                            </div>
+                                            <div class="list-body">
+                                                <span class="message-author">@eachChat.ChatConversationTitle</span>
+                                                <span class="message-time">@eachChat.LatestMessage.CreatedDate</span>
+                                                <div class="clearfix"></div>
+                                                <span class="message-content">@eachChat.LatestMessage.ChatMessageText</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        <a href="/ChatConversation/ChatWindow/">View all Messages</a>
+                    </div>
+                </div>
+            }
+        </li>
+        <!-- /Message Notifications -->
+        @if (SecurityHelper.IsSuperAdmin)
+        {
+            <li class="nav-item dropdown has-arrow flag-nav">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+                    <img alt="" height="20"> <span>@TimeAide.Services.ClientService.SelectedClientName</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" id="clientDropdownMenu">
+                    <input type="text" class="form-control" placeholder="Search..." id="clientSearchInput" />
+                    @foreach (TimeAide.Web.Models.Client eachClient in TimeAide.Services.ClientService.GetClients())
+                    {
+                        <a href="javascript:void(0);" onclick="SelectClient(@eachClient.Id)" class="dropdown-item" style="width:auto">
+                            @eachClient.ClientName
+                        </a>
+                    }
+                </div>
+            </li>
+        }
+        @if (SecurityHelper.IsSuperAdmin || !String.IsNullOrEmpty(SessionHelper.SupervisorCompany))
+        {
+            <li class="nav-item dropdown has-arrow flag-nav">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+                    <img alt="" height="20"> <span>@TimeAide.Services.CompanyService.SelectedCompanyName</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" id="cmpDropdownMenu">
+                    <input type="text" class="form-control" placeholder="Search..." id="cmpSearchInput" />
+                    @foreach (TimeAide.Web.Models.Company eachCompany in TimeAide.Services.CompanyService.GetCompany(@TimeAide.Common.Helpers.SessionHelper.SelectedClientId).OrderBy(o => o.CompanyName))
+                    {
+                        <a href="javascript:void(0);" onclick="SelectCompany(@eachCompany.Id)" class="dropdown-item" style="width:auto">
+                            @eachCompany.CompanyName
+                        </a>
+                    }
+                </div>
+            </li>
+        }
+        <li class="nav-item dropdown has-arrow main-drop">
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <span class="user-img">
+                    <!-- <img src="~/Images/user-profile-pic-admin.jpg" alt="">-->
+                    <img src="@SessionHelper.UserProfilePicture" alt="Not Available">
+                    <span class="status online"></span>
+                </span>
+                @{
+                    var UserLogin = SessionHelper.LoginEmail;
+                    if (UserLogin != null)
+                    {
+                        var chrInx = UserLogin.IndexOf("@");
+                        if (chrInx > 0)
+                        {
+                            UserLogin = UserLogin.Substring(0, chrInx);
+                        }
+                    }
+                    else
+                    {
+                        UserLogin = "NA";
+                    }
+                }
+                <span id="spanLoginUser">@UserLogin</span>
+            </a>
+
+            <div class="dropdown-menu">
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="dropdown-item" onclick="forceLogout()">Logout</button>
+                    @*<a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>*@
+
+                }
+
+            </div>
+        </li>
+    </ul>
+    <!-- /Header Menu -->
+    <!-- Mobile Menu -->
+    <div>
+        <div class="dropdown mobile-user-menu">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="login.html">Logout</a>
+            </div>
+        </div>
+        <!-- /Mobile Menu -->
+
+    </div>
+</div>
+<!-- /Header -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        console.log("Load header");
+        $('.dropdown-submenu a.test').on("click", function (e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        $("#cmpSearchInput").keyup(function () {
+            FilterDropdownMenuList("cmpSearchInput", "cmpDropdownMenu");
+        });
+        $("#clientSearchInput").keyup(function () {
+            FilterDropdownMenuList("clientSearchInput", "clientDropdownMenu");
+        });
+        setTimeout(function () {
+            RefreshCount();
+        }, 2000);
+        
+    });
+
+
+
+
+</script>
+<style>
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+        }
+
+    .flag-nav .dropdown-menu {
+        max-height: 250px;
+        min-width: 120px;
+        overflow-y: auto;
+    }
+</style>
+<script type="text/javascript">
+
+
+    function GlobelEmployeeView() {
+        debugger;
+        $(".loading").show();
+        
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: "/UserInformation/GlobelEmployeeView",
+            contentType: "application/json; charset=utf-8",
+           /* datatype: "json",*/
+            success: function (data) {
+                debugger
+
+                var redirectURL = "/";
+                var result = data.split(",");
+                if (result.length == 2) {
+                    debugger
+                    redirectURL += result[1] + "/Index";
+                    window.location.href = redirectURL;
+                }
+                else {
+
+                    $(".loading").hide();
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);                    
+                    $('#myModal').modal('show');
+                }
+             
+    
+                
+            },
+            error: function () {
+                $(".loading").hide();
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function SelectCompanyByGlobalEmployeeSearch(SelectedEmployeeCompanyId,RedirectLink) {
+        $(".loading").show();
+        debugger
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/SetSelectedCompanyByGlobalEmployeeSearch',
+            contentType: "application/json",
+            data: JSON.stringify({ "Id": SelectedEmployeeCompanyId, "CompanyName": RedirectLink }),
+            datatype: "json",
+            success: function (data) {
+
+                if (data != "") {
+                    
+                    window.location.href = data;    
+                   
+                }
+               
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                $(".loading").hide();
+                alert(xhr.status);
+                alert("Dynamic Edit profile error content load failed.");
+            }
+        });
+
+    }
+
+
+
+    function ReadNotification(secondli, id) {
+        $('#hdnSelectedNotificationId').val(secondli);
+        //debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/NotificationLog/ReadNotification',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                /*$('#'+ ulId + ' #'+secondli).remove();*/
+                RefreshBellIconCount('');
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function ChangeRequestApproval(secondli, url) {
+        debugger;
+        $('#hdnSelectedNotificationId').val(secondli);
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            /*data: { "Id": id },*/
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function ChangeRequestView(secondli, url) {
+        debugger;
+        $('#hdnSelectedNotificationId').val(secondli);
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            /*data: { "Id": id },*/
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+                debugger;
+                RefreshBellIconCount('');
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function SelectCompany(SelectedCompanyId) {
+        debugger
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/SetSelectedCompany',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ "Id": SelectedCompanyId }),
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                if (window.location.href.includes('/ChatConversation/')) {
+                    window.location.href = '/ChatConversation/ChatWindow';
+                }
+                else {
+                    var redirectURL = "/";
+                    var result = data.split(",");
+                    if (result.length == 2) {
+                        redirectURL += result[1] + "/Index";
+                    }
+                   // window.location.href = '/UserInformation/Index';
+                    window.location.href = redirectURL;
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+    function SelectClient(selectedClientId) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: '/UserInformation/SetSelected',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ "Id": selectedClientId }),
+            datatype: "json",
+            success: function (data) {
+                if (window.location.href.includes('/ChatConversation/')) {
+                    window.location.href = '/ChatConversation/ChatWindow';
+                }
+                else if (window.location.href.includes('UserInformation/Details/')) {
+                    window.location.href = '/UserInformation/Index';
+                }
+                else {
+                    location.reload(true);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function SelectChatConversation(SelectedChatConversationId) {
+        debugger
+        $.ajax({
+            type: "POST",
+            url: '/ChatConversation/ChatWindow',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ "Id": SelectedChatConversationId }),
+            datatype: "json",
+            success: function (data) {
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+    function FilterDropdownMenuList(fieldName, dropdownMenuName) {
+        //debugger;
+        var input, filter, ul, li, a, i;
+        input = document.getElementById(fieldName);
+        filter = input.value.toUpperCase();
+        div = document.getElementById(dropdownMenuName);
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            txtValue = a[i].textContent || a[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        }
+    }
+    function RefreshBellIconCount(new_li)
+    {
+        
+       // debugger;
+        RefreshCount();
+        var isActiveNotificationDetail = $("#IsActiveNotificationDetail").val();
+        if (isActiveNotificationDetail == "1") {
+            retrieveNotificationListMain();
+        }
+        //var notificationCountText = $('.badge.badge-pill').text();
+        //if (isNaN(parseInt(notificationCountText))) { $('.badge.badge-pill').text('') }
+        //else {
+        //    debugger
+        //    var notificationCount = parseInt(notificationCountText);
+        //    /*alert(notificationCount);*/
+        //    if (notificationCount != 0)
+        //        $('.badge.badge-pill').text(notificationCount - 1);
+        //    else
+        //        $('.badge.badge-pill').text('')
+
+        //    var secondli = $('#hdnSelectedNotificationId').val();
+        //    if (secondli.length > 0) {
+        //        var elem = document.getElementById("" + secondli + "");
+        //        elem.parentElement.removeChild(elem);
+        //        $('#hdnSelectedNotificationId').val('')
+        //    }
+        //    debugger
+        //    if (new_li.length > 0)
+        //        $("#ulNotifications").append(new_li);
+        //}
+    }
+    function RefreshCount() {
+        $("#divBellIcon").empty();
+        $("#divLoadingBellIcon").show();
+        $.ajax({
+            type: "get",
+            url: '/ChangeRequest/BellIcon',
+            success: function (data) {
+                $("#divBellIcon").html(data);
+                $("#divLoadingBellIcon").hide();
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+</script>

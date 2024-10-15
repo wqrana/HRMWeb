@@ -1,0 +1,193 @@
+﻿@model TimeAide.Web.ViewModel.EmployeePrivilegeViewModel
+
+@Html.HiddenFor(model => model.UserInformationId)
+<input id="ContactInformationId" name="ContactInformationId" type="hidden" value="@Model.Id">
+
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.RoleId, "Role Type:", htmlAttributes: new { @class = "control-label" })
+            </label>
+            <div class="col-md-7" style="width:100% !important">
+                @(Html.CustomDropDownList<TimeAide.Web.Models.RoleType>("ddlRoleTypeId", null, Model.RoleTypeId, htmlAttributes: new { @class = "form-control" }))
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                @Html.LabelFor(model => model.RoleId, "Role Id:", htmlAttributes: new { @class = "control-label" })
+            </label>
+            <div class="col-md-7" style="width:100% !important">
+                @Html.DropDownList("RoleId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                Email for Login
+            </label>
+            <div class="col-md-7">
+                @Html.DropDownList("LoginEmailAddressTypeId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+
+            </div>
+            @*@if (ViewBag.LoginEmailAddressTypeId == null || ViewBag.LoginEmailAddressTypeId.Items.Count == 0)
+            {
+
+                <div class="alert alert-danger alert-dismissible fade show danger " role="alert">
+                    <strong>Alert!</strong> Selected employee does not have any email, please add employee emails in employee contact information
+                </div>
+
+            }*@
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                Action Type
+            </label>
+            <div class="col-md-8">
+                <div class="radio-inline pt-2">
+                    <input type="radio" id="radio0" name="registrationActionType" value="0" checked>
+                    <label for="radio0">NONE</label>
+                    <input type="radio" id="radio1" name="registrationActionType" value="1" class="ml-2">
+                    <label for="radio1">Send Registration Email</label>
+                    <input type="radio" id="radio2" name="registrationActionType" value="2" class="ml-2">
+                    <label for="radio2">Manual User Registration</label>
+                </div>
+            </div>
+        </div>
+ 
+
+<script>
+    $(document).ready(function () {
+        LoadRoleDropdown(@Model.RoleTypeId, '#RoleId', @Model.RoleId);
+
+        $('#ddlRoleTypeId').change(function (e) {
+            debugger;
+            var roleTypeId = $(this).val();
+            LoadRoleDropdown(roleTypeId, '#RoleId', null);
+        });
+
+    });
+    function LoadRoleDropdown(roleTypeId, targetElement, selectedValue) {
+    $.ajax({
+        url: '/Role/AjaxGetRoleByRoleType',
+        data: { 'roleTypeId': roleTypeId }, //dataString,
+        type: 'GET',
+        success: function (res) {
+            debugger;
+            var data = res;
+            $(targetElement + ' option').remove();
+            var option = '<option value=""> Please Select </option>';
+            $(targetElement).append(option);
+            $(data).each(function () {
+                var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                $(targetElement).append(option);
+            });
+            // if (selectedValue != null)
+            $(targetElement).val(selectedValue == null ? "" : selectedValue);
+        },
+        error: function (xhr, status, error) {
+            //displayErrorMessage('Error during retrieving Data:' + error);
+        }
+    });
+    $(targetElement+ " select").val(@Model.RoleId);
+    }
+       
+    //function fnAddEmployeeActivationAccessLogin() {
+    //    debugger;
+    //    var options = { "backdrop": "static", keyboard: true };
+
+    //    var model = {
+    //        Id: $("#ContactInformationId").val(),
+    //        UserInformationId: $("#UserInformationId").val(),
+    //        RoleTypeId: $("#RoleType_Id").val(),
+    //        RoleId: $("#Role_Id").val(),
+    //        LoginEmail: $("#Login_Email").val(),
+    //        ViewType: $("#Registration_Type").val()
+    //    };
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: '/UserInformation/EmployeeActivationAccessLogin',
+    //        contentType: "application/json; charset=utf-8",
+    //        data: JSON.stringify(model),
+    //        datatype: "json",
+    //        success: function (data) {
+    //            debugger;
+    //            $('#myModalContent').html(data);
+    //            $('#myModal').modal(options);
+    //            $('#myModal').modal('show');
+    //        },
+    //        error: function (xhr, status, error) {
+    //            var err = eval("(" + xhr.responseText + ")");
+    //            alert(err.Message);
+    //            alert("Dynamic content load failed.");
+    //        }
+    //    });
+
+    //}
+   
+
+
+</script>
+
+
+<!--
+ <div class="panel panel-default" style="margin-left:0px">
+    <div class="panel-heading" style="padding-left:10px">
+        Info.
+        <div class="pull-right dropdown-action">
+            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                <a a href="javascript:void(0);" id="" onclick="fnAddEmployeeActivationAccessLogin();" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-pencil m-r-5"> Edit</i></a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body pt-2">
+
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label pl-0" style="margin-left:10px">
+                @Html.LabelFor(model => model.RoleId, "Role Type:", htmlAttributes: new { @class = "control-label" })
+            </label>
+            <div class="col-md-6 pr-0">
+                @*@Html.DisplayFor(model => model.Role.RoleType.RoleTypeName)*@
+                @Html.HiddenFor(model => model.Role.RoleType.Id, new { id = "RoleType_Id" })
+                @Html.EditorFor(model => model.Role.RoleType.RoleTypeName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+
+                @Html.LabelFor(model => model.RoleId, "Role Id:", htmlAttributes: new { @class = "control-label" })
+            </label>
+            <div class="col-md-6 pr-4">
+                @*@Html.DisplayFor(model => model.Role.RoleName)*@
+                @Html.HiddenFor(model => model.Role.Id, new { id = "Role_Id" })
+                @Html.EditorFor(model => model.Role.RoleName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                Email for Login
+            </label>
+            <div class="col-md-6 pr-4">
+                @*@Html.DisplayFor(model => model.LoginEmail)*@
+                @Html.EditorFor(model => model.LoginEmail, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @Id = "Login_Email" } })
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                Registration Type
+            </label>
+            <div class="col-md-6 pr-4">
+                <select id="Registration_Type" class="form-control" disabled>
+                    <option value=""></option>
+                    <option value="1">Send Registration Email</option>
+                    <option value="2">Manual User Registration</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+-->

@@ -1,0 +1,83 @@
+﻿
+@model TimeAide.Web.Models.ApplicantInterviewQuestion
+
+                        @if (Model.ApplicantAnswerTypeId == 1)
+                        {
+                            <div class="form-group row mb-1">
+                                <label class="col-md-1 col-form-label pr-0">Yes: <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    <input type="radio" id="qId_@Model.Id" name="yesNoOption_@Model.Id" value="Yes" />
+                                </div>
+                                <label class="col-md-1 col-form-label pr-0">No: <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    <input type="radio" id="qId_@Model.Id" name="yesNoOption_@Model.Id" value="No" />
+                                </div>
+                            </div>
+                        }
+                        @if (Model.ApplicantAnswerTypeId == 2)
+                        {
+                          
+
+                            foreach (var option in Model.ApplicantQAnswerOptions)
+                            {
+
+                                <div class="form-group row mb-1">
+                                    <div class="col-md-12">
+                                        @*<label class="col-md-1 col-form-label pr-0">@optionSeq</label>*@
+
+                                        <div class="input-group">
+                                            <div class="input-group-prepend pr-2 pt-3">
+                                                <input type="checkbox" id="qId_@Model.Id" name="selectAllApplyOption" value="@option.Id" />
+                                            </div>
+                                            <input type="text" id="answerOption_@option.Id" class="form-control" value="@option.AnswerOptionName" disabled />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @if (Model.ApplicantAnswerTypeId == 3)
+                        {
+                          
+
+                            foreach (var option in Model.ApplicantQAnswerOptions)
+                            {
+
+                                <div class="form-group row mb-1">
+                                    <div class="col-md-12">
+
+                                        <div class="input-group ">
+                                            <div class="input-group-prepend pr-2 pt-3">
+                                                <input type="radio" id="qId_@Model.Id" name="selectOneOption_@Model.Id" value="@option.Id" />
+                                            </div>
+                                            <input type="text" id="answerOption_@option.Id" value="@option.AnswerOptionName" class="form-control" disabled />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                        @if (Model.ApplicantAnswerTypeId == 4)
+                        {
+                            <div class="form-group row mb-1">
+                                <div class="col-md-12">
+
+                                    <div class="input-group ">
+                                        <div class="input-group-prepend pr-2 pt-2">
+                                            <span style="font-weight:normal;">Select Date:</span>
+                                        </div>
+                                        <input type="datetime" id="qId_@Model.Id" name="SelectDateOPtion" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.ApplicantAnswerTypeId == 5)
+                        {
+                            <div class="form-group row mb-1">
+                                <div class="col-md-12">
+                                    <input type="text" id="qId_@Model.Id" name="OpenAnswerOption" class="form-control" />
+                                </div>
+                            </div>
+                        }
+                    

@@ -1,0 +1,157 @@
+﻿@model TimeAide.Web.Models.SenderEmailConfiguration
+<div class="form-horizontal" style="padding:10px">
+
+
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.MailProvider, "Mail Provider", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.MailProvider, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MailProvider, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.HostName, "Host Name", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.HostName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ProviderAccount, "Provider Account", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.ProviderAccount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProviderAccount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.SenderName, "Sender Name", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.SenderName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SenderName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Environment, "Environment", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.Environment, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Environment, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Port, "Port", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.Port, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Port, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.EnableSsl, "Enable SSL", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.CheckBoxFor(model => model.EnableSsl)
+            @Html.ValidationMessageFor(model => model.EnableSsl, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Password, "Password", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.RetyprPassword, "Retypr Password", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.RetyprPassword, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RetyprPassword, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.FromEmail, "From Email", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.EditorFor(model => model.FromEmail, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FromEmail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.UseFixedForm, "Use Fixed Form", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-7">
+            @Html.CheckBoxFor(model => model.UseFixedForm) 
+            @Html.ValidationMessageFor(model => model.UseFixedForm, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @if (ViewBag.IsBaseCompanyObject)
+    {
+        <div class="submit-section">
+            <span>All Companies</span>
+            <input type="hidden" id="hdnSelectedCompanyId" value="@TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId" />
+            @if (ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+            {
+                <input type="checkbox" id="chkAllCompanies" checked="checked" />
+            }
+            else if (!ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+            {
+                <input type="checkbox" id="chkAllCompanies" checked="checked" disabled="disabled" />
+            }
+            else if (!ViewBag.IsAllCompanies)
+            {
+                <input type="checkbox" id="chkAllCompanies" value="@ViewBag.IsAllCompanies" />
+            }
+        </div>
+    }
+
+    <div class="submit-section">
+        <button type="button" onclick="fnOpenTestEmailPopup();" class="btn btn-primary submit-btn" >Test Email</button>
+        <button type="button" onclick="fnAddMasterData('Create');" class="btn btn-primary submit-btn">Save</button>
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+    <div id="divLoading" class="align-content-md-center" style="display: none;">
+        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+    </div>
+    @Scripts.Render("~/bundles/jqueryval")
+    <style type="text/css">
+        .panel {
+            margin-bottom: 20px !important;
+            background-color: #ffffff !important;
+            border: 1px solid transparent !important;
+            border-color: #ddd !important;
+            border-radius: 4px !important;
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .panel-heading {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
+    </style>
+    <style>
+        #myModaldialog {
+            width: 60%;
+            max-width: 60% !important;
+        }
+    </style>
+</div>

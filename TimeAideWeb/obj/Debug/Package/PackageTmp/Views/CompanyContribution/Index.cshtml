@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TimeAide.Web.Models.CompanyContribution>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Contribution Type
+        </th>
+        <th>
+           Contribution Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Pre/Post Type
+        </th>
+        <th>
+            CC GL Expense/Debit
+        </th>
+        
+        <th>
+            CC GL Payable/Credit
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WitholdingComputationType.WitholdingComputationTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyContributionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WitholdingPrePostType.WitholdingPrePostTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GLContributionAccount.GLAccountName)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.GLContributionPayableAccount.GLAccountName)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+        
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

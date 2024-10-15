@@ -1,0 +1,538 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Employment>
+<style>
+    .showDownload {
+        display: block;
+    }
+
+    .hideDownload {
+        display: none;
+    }
+</style>
+<div style="font-size: 90%;">
+    <h4 class="pull-left">Hiring History</h4>
+    <div class="table-responsive">
+        <table class="table  table-striped custom-table table-nowrap mb-0" id="tblEmploymentInfo">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmploymentStatus.EmploymentStatusName)
+                    </th>
+                    <th>
+                        Hire Date
+                    </th>
+                    <th>
+                        Re-Hire Date
+                    </th>
+                    <th>
+                        Probation Start
+                    </th>
+                    <th>
+                        Probation End
+                    </th>
+
+                    <th>
+                        Termination Date
+                    </th>
+                    <th>
+                        Termination Type
+                    </th>
+                    <th>
+                        Termination Eligibility
+                    </th>
+                    <th>
+                        Term. Reason
+                    </th>
+                    <th>
+                        Term. Notes
+                    </th>
+                    <th>Contract</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmploymentStatus.EmploymentStatusName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OriginalHireDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EffectiveHireDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProbationStartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProbationEndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TerminationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TerminationType.TerminationTypeName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TerminationEligibility.TerminationEligibilityName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TerminationReason.TerminationReasonName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TerminationNotes)
+                    </td>
+                    <td>
+                        @*@if (!String.IsNullOrEmpty(item.DocumentName) && !String.IsNullOrEmpty(item.DocumentPath))
+                            {
+                                <a target="_blank" href='@Url.Content(item.DocumentPath)'>
+                                    @{
+                                        var filePathHelper = new TimeAide.Common.Helpers.FilePathHelper();
+                                        string fileName = filePathHelper.GetFileName(item.DocumentPath);
+                                    }
+                                    @fileName
+                                </a>
+                            }*@
+                        @{
+                            var showAHideCSS = String.IsNullOrEmpty(item.DocumentPath) == false ? "showDownload" : "hideDownload";
+                        }
+                        <div id="divDownloadContractDoc" class="@showAHideCSS">
+                            <a class="fa fa-download text-info" href="/Employment/DownloadContractDocument/@item.Id" title="Download File">Download</a>
+                        </div>
+                    </td>
+                    <td width="10%">
+                        <div class="pull-right dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                <a a href="javascript:;" class="dropdown-item" data-toggle="modal" onclick="fnDetailEmployment(@item.Id);" id="anchorDetailEmployment" data-id="@item.Id"><i class="fa fa-eye m-r-5"></i> Details</a>
+                                @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                                {
+                                    <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                    @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <style type="text/css">
+        td, th {
+            padding: 0 !important;
+        }
+    </style>
+}
+<script>
+    function fnAddEmployment(id) {
+        debugger;
+        var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Employment/AddEmployment',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+
+                $('#myModal').modal('show');
+
+                $("#btnAddEmploymentInformation").click(function (e) {
+
+                    var model = {
+                        UserInformationId: $('#UserInformationId').val(),
+                        //Id: $('#EmploymentId').val(),
+                        OriginalHireDate: $('#OriginalHireDate').val(),
+                        EffectiveHireDate: $('#EffectiveHireDate').val(),
+                        ProbationStartDate: $('#ProbationStartDate').val(),
+                        ProbationEndDate: $('#ProbationEndDate').val(),
+                        EmploymentStatusId: $('#EmploymentStatusId').val(),
+                        UseHireDateforYearsInService: $('#UseHireforYearsInService').is(":checked")
+                    }
+
+                    //e.preventDefault();
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/Employment/AddEmployment',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "json",
+                        success: function (html) {
+                            debugger
+                            //$('#divEmploymentInformation').html(html);
+                            uploadEmployeeDoc(html.Id);
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnDeleteEmployment(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Employment/Delete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnDeleteEmployment").click(function (e) {
+                    var model = {
+                        Id: $('#EmploymentId').val(),
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/Employment/Delete',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                           // $('#divEmploymentInformation').html(html);
+                            hiringInfoTabClicked();
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (xhr, exception) {
+                            debugger;
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorText = jQuery.parseJSON(responseText).Data.errors;
+                           // $('#divDeleteAlert').html(errorObject);
+                            // alert("Error - Dynamic content load failed.");
+                            showAlertAutoHide("", "Error", errorText);
+                            //alert('Uncaught Error.\n' + jqXHR.responseText);
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+    function fnEditEmployment(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Employment/Edit',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnAddEmploymentInformation").click(function (e) {
+
+                    var model = {
+                        UserInformationId: $('#UserInformationId').val(),
+                        Id: $('#Employment_Id').val(),
+                        OriginalHireDate: $('#OriginalHireDate').val(),
+                        EffectiveHireDate: $('#EffectiveHireDate').val(),
+                        ProbationStartDate: $('#ProbationStartDate').val(),
+                        ProbationEndDate: $('#ProbationEndDate').val(),
+                        EmploymentStatusId: $('#EmploymentStatusId').val(),
+                        UseHireDateforYearsInService: $('#UseHireforYearsInService').is(":checked")
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/Employment/Edit',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "json",
+                        success: function (html) {
+                            debugger
+                            uploadEmployeeDoc(html.Id);
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function fnDetailEmployment(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Employment/ViewSelected',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "html",
+            success: function (html) {
+                $('#divMostRecentRecord').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function getEmploymentContactView(id) {
+        debugger;
+        if (id != 0) {
+
+            $.ajax({
+                type: "get",
+                url: '/Employment/UploadDocument',
+                data: { "id": id },
+
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                }
+            });
+        }
+        else {
+            showAlertAutoHide("#userDetailAlert", "Error", "Record doesn't exists!");
+        }
+    }
+    function fnCloseEmployment(id) {
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Employment/Close',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            datatype: "json",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnAddEmploymentInformation").click(function (e) {
+
+                    var model = {
+                        Id: $('#Employment_Id').val(),
+                        TerminationDate: $('#txtTerminationDate').val(),
+                        TerminationTypeId: $('#ddlTerminationTypeId').val(),
+                        TerminationReasonId: $('#ddlTerminationReasonId').val(),
+                        TerminationEligibilityId: $('#ddlTerminationEligibilityId').val(),
+                        TerminationNotes: $('#txtTerminationNotes').val(),
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/Employment/Close',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divEmploymentInformation').html(html);
+
+                            $.ajax({
+                                type: "GET",
+                                url: '/Employment/MostRecentRecord',
+                                contentType: "application/json; charset=utf-8",
+                                data: { "Id": $('#UserInformationId').val() },
+                                datatype: "html",
+                                success: function (html) {
+                                    $('#divMostRecentRecord').html(html);
+                                    showAlertAutoHide("#EmploymentAlert", "Success", "Employment is successfully uploaded!");
+                                },
+                                error: function () {
+                                    alert("Dynamic content load failed.");
+
+                                }
+                            });
+
+                            $('#myModal').modal('hide');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function refreshRecord() {
+        $.ajax({
+            type: "GET",
+            url: '/Employment/MostRecentRecord',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": $('#UserInformationId').val() },
+            datatype: "html",
+            success: function (html) {
+                $('#divMostRecentRecord').html(html);
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function refreshList() {
+        $.ajax({
+            type: "GET",
+            url: '/Employment/IndexByUser',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": $('#UserInformationId').val() },
+            datatype: "html",
+            success: function (html) {
+                $('#divEmploymentInformation').html(html);
+                showAlertAutoHide("#EmploymentAlert", "Success", "Employment is Successfully uploaded!");
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function uploadEmployeeDoc(id) {
+        debugger;
+        var formData = new FormData();
+        formData.append("EmploymentId", id);
+
+        var totalFiles = document.getElementById("uploadContractFile").files.length;
+        if (totalFiles > 0) {
+            var file = document.getElementById("uploadContractFile").files[0];
+            formData.append("ContractDocFile", file);
+            $.ajax({
+                type: "POST",
+                url: '/Employment/UploadDocument',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    refreshRecord();
+                    refreshList();
+
+                    if (data.status == "Success") {
+                    }
+                    else {
+                    }
+                },
+                error: function (error) {
+                    refreshRecord();
+                    refreshList();
+                }
+            });
+
+        }
+        else {
+            refreshRecord();
+            refreshList();
+        }
+    }
+    function OnProbationEndDateChange(daysToAdd) {
+        var tt = document.getElementById('ProbationStartDate').value;
+        if (tt == '') {
+            alert('Please select Probation Start Date ');
+
+
+            $("input:radio[name=radioProbationEndDate]").each(function (i) {
+                this.checked = false;
+            });
+            return;
+        }
+        //var monthsToAdd = $(this).val();
+        var date = new Date(tt);
+        var probEndDate = new Date(date);
+        probEndDate.setDate(probEndDate.getDate() + Number(daysToAdd));
+        //var dd = Number(newdate.getDate());
+        //var origionalMonth = Number(newdate.getMonth()) + 1;
+        //var mm = origionalMonth + Number(monthsToAdd);
+        //var y = Number(newdate.getFullYear());
+        //if (mm > 12) {
+        //    mm = (mm % 12);
+        //    if (mm == 0)
+        //        mm = origionalMonth;
+        //    y = y + 1;
+        //}
+        var formattedDate = moment(probEndDate).format('MM/DD/YYYY');
+        //var someFormattedDate = mm + '/' + dd + '/' + y;
+        document.getElementById('ProbationEndDate').value = formattedDate;
+    }
+
+
+</script>
+
+<style>
+    .radio-toolbar {
+        margin: 10px;
+    }
+
+        .radio-toolbar input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+
+        .radio-toolbar label {
+            display: inline-block;
+            background-color: #ddd;
+            height: 30px;
+            width: 30px;
+            font-family: sans-serif, Arial;
+            /*font-size: 16px;*/
+            border: 2px solid #444;
+            border-radius: 4px;
+            text-align: center;
+            padding-top: 2px
+        }
+
+            .radio-toolbar label:hover {
+                background-color: #dfd;
+            }
+
+        .radio-toolbar input[type="radio"]:focus + label {
+            border: 2px dashed #444;
+        }
+
+        .radio-toolbar input[type="radio"]:checked + label {
+            background-color: #bfb;
+            border-color: #4c4;
+        }
+</style>

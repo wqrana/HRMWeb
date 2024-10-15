@@ -1,0 +1,152 @@
+﻿@using TimeAide.Web.Models
+@model EmployeeTimeOffRequest
+<div id="timeOffRequestCancel_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Time-Off Request Cancellation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12 d-flex">
+
+                        <div class="card flex-fill mb-2">
+
+                            <div class="card-header" style="padding:15px;padding-bottom:0px;">
+                                <h3 class="card-title mb-1" id="">
+                                    Time-Off Request
+                                    @{ var requestStatus = Model.ChangeRequestStatusId;
+                                        var badgeCSS = "text-primary";
+                                        if (requestStatus >= 3)
+                                        {
+                                            badgeCSS = "text-danger";
+                                        }
+                                        else if (requestStatus == 2)
+                                        {
+                                            badgeCSS = "text-success";
+                                        }}
+                                    <span class="pt-2 @badgeCSS" style="font-size:small;">(@Model.ChangeRequestStatus.ChangeRequestStatusName)</span>
+                                </h3>
+                                <div class="row pb-0">
+                                    <div class="col-lg-12">
+                                        <ul class="list-unstyled">
+                                            <li><h4 class="mb-0"> @Html.DisplayFor(m => m.UserInformation.ShortFullName)</h4></li>
+                                            <li>Employee ID: @Html.DisplayFor(m => m.UserInformation.EmployeeId)</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pb-0">
+
+                                <div class="form-group row">
+                                    <label class="col-md-1 col-form-label pr-0">Type: <span class="text-danger"></span></label>
+                                    <div class="col-md-4 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.TransType)
+                                    </div>
+                                    <label class="col-md-1 col-form-label pr-0">From: <span class="text-danger"></span></label>
+                                    <div class="col-md-2 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.StartDate)
+                                    </div>
+                                    <label class="col-md-1 col-form-label pr-0">To: <span class="text-danger"></span></label>
+                                    <div class="col-md-2 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.EndDate)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label pr-0">Hour(s) in Day: <span class="text-danger"></span></label>
+                                    <div class="col-md-3 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.DayHours)
+                                    </div>
+                                    <label class="col-md-2 col-form-label pr-0">Work-Day(s): <span class="text-danger"></span></label>
+                                    <div class="col-md-2 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.WorkingDays)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label pr-0">Requested Time(Hrs): <span class="text-danger"></span></label>
+                                    <div class="col-md-2 text-muted mt-2 pl-0">
+
+                                        @Html.DisplayFor(m => m.RequestedTime)
+                                    </div>
+                                    <label class="col-md-2 col-form-label">Reason: <span class="text-danger"></span></label>
+                                    <div class="col-md-5 text-muted mt-2">
+                                        @Html.DisplayFor(m => m.RequestNote)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label">Remarks: <span class="text-danger">*</span></label>
+                                    <div class="col-md-9 pr-0">
+                                        <textarea rows="2" class="form-control" id="CancellationRemarks"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="text-align:center;">
+                               
+                                    <button id="btnApproveTimeOffRequest" class="btn btn-danger submit-btn" onclick="javascript:saveTimeOffRequestCancellation(4)">Cancel Request</button>                                
+                                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Closed</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+    });
+
+    function saveTimeOffRequestCancellation(actionId) {
+        debugger;
+
+        var dataObject = new Object();
+        dataObject.Id = @Model.Id;
+        dataObject.ChangeRequestStatusId = actionId;
+        dataObject.ChangeRequestRemarks = $('#CancellationRemarks').val();
+       
+        if (dataObject.ChangeRequestRemarks == "") {
+            showAlertAutoHide("", "Error", "Please Enter the Remarks.");
+            return;
+        }
+        $.ajax({
+            url: "/EmployeeTimeOffRequest/CancelTimeOffRequest",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data);
+                    $("#timeOffRequestCancel_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    retreiveEmployeeTimeOffRequests();
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+</script>
+
+
+
+

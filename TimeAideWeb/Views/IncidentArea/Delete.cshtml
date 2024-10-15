@@ -1,0 +1,28 @@
+﻿@model TimeAide.Web.Models.IncidentArea
+
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IncidentAreaName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IncidentAreaName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IncidentAreaDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IncidentAreaDescription)
+        </dd>
+
+    </dl>
+    
+
+</div>
+@Html.Partial("_DeleteViewFooter")

@@ -1,0 +1,114 @@
+﻿<div class="card-body">
+    <h3 class="card-title" style="border-bottom: 1px;border-bottom: 1px solid #dee2e6;padding-bottom: 20px;">Pay Info</h3>
+    <div class="experience-box">
+        @if (ViewBag.ActivePayInformationHistory != null)
+        {
+            <div class="form-group row">
+                <label class="col-md-3" style="margin-left:10px;">
+                    Start Date:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    <span id="lblOriginalHire"> @String.Format("{0:MM/dd/yyyy}", ViewBag.ActivePayInformationHistory.StartDate)</span>
+                </div>
+                <label class="col-md-3" style="margin-left:10px;">
+                    Rate:
+                </label>
+                <div class="col-md-2 text-muted mt-2">
+                    <span id="lblProbationStart"> @ViewBag.ActivePayInformationHistory.RateAmount</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3" style="margin-left:10px;">
+                    Rate Frequency:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (@ViewBag.ActivePayInformationHistory.RateFrequency != null)
+                    {
+                        <span id="lblProbationStart"> @ViewBag.ActivePayInformationHistory.RateFrequency.RateFrequencyName</span>
+                    }
+                </div>
+                <label class="col-md-3" style="margin-left:10px;">
+                    Pay Frequency:
+                </label>
+                <div class="col-md-2 text-muted mt-2">
+                    @if (@ViewBag.ActivePayInformationHistory.PayFrequency != null)
+                    {
+                        <span id="lblEmploymentStatus">  @ViewBag.ActivePayInformationHistory.PayFrequency.PayFrequencyName</span>
+                    }
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3" style="margin-left:10px;">
+                    Hourly Rate:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    <span id="lblProbationStart"> @ViewBag.ActivePayInformationHistory.HourlyRate</span>
+                </div>
+                <label class="col-md-3" style="margin-left:10px;">
+                    Period Hours:
+                </label>
+                <div class="col-md-2 text-muted mt-2">
+                    @if (@ViewBag.ActivePayInformationHistory.RateFrequency != null)
+                    {
+                        <span id="lblProbationStart"> @ViewBag.ActivePayInformationHistory.RateFrequency.HourlyMultiplier</span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3" style="margin-left:10px;">
+                    Period Gross Pay:
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    <span id="lblProbationStart"> @ViewBag.ActivePayInformationHistory.PeriodGrossPay</span>
+                </div>
+                <label class="col-md-3" style="margin-left:10px;">
+                    Yearly Gross Pay:
+                </label>
+                <div class="col-md-2 text-muted mt-2">
+                    <span id="lblProbationStart"> @ViewBag.ActivePayInformationHistory.YearlyGrossPay</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3" style="margin-left:10px;">
+                    Pay Scale
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (@ViewBag.ActivePayInformationHistory.PayScale != null)
+                    {
+                        <span id="lblTerminationType">  @ViewBag.ActivePayInformationHistory.PayScale.PayScaleName</span>
+                    }
+                </div>
+                <label class="col-md-3" style="margin-left:10px;">
+                    Pay Type:
+                </label>
+                <div class="col-md-2 text-muted mt-2">
+                    @if (ViewBag.ActivePayInformationHistory.PayType != null)
+                    {
+                        <span id="lblProbationEnd">@ViewBag.ActivePayInformationHistory.PayType.PayTypeName</span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3" style="margin-left:10px;">
+                    EEO Category
+                </label>
+                <div class="col-md-3 text-muted mt-2">
+                    @if (@ViewBag.ActivePayInformationHistory.EEOCategory != null)
+                    {
+                        <span id="lblTerminationType">  @ViewBag.ActivePayInformationHistory.EEOCategory.EEOCategoryName</span>
+                    }
+                </div>
+                <label class="col-md-3" style="margin-left:10px;">
+                    WC Class Code
+                </label>
+                <div class="col-md-2 text-muted mt-2">
+                    @if (@ViewBag.ActivePayInformationHistory.WCClassCode != null)
+                    {
+                        <span id="lblTerminationType">  @ViewBag.ActivePayInformationHistory.WCClassCode.ClassName</span>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

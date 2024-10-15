@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.PayRateMultiplier
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayRateMultiplierName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayRateMultiplierName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayRateMultiplierDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayRateMultiplierDescription)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayRateMultiplierValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayRateMultiplierValue)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

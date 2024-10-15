@@ -1,0 +1,95 @@
+﻿@model TimeAide.Web.Models.HealthInsuranceCobraHistory
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+    
+</style>
+<div id="employeeHInsCobraHistoryCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Cobra Payment - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeHInsCobraHistoryCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m=>m.Id, new {id= "HealthInsuranceCobraHistoryId" })                                       
+                       
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Due Date: <span class="text-danger">*</span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                            <label class="col-md-3 col-form-label">Payment Date: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.PaymentDate, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Payment Amount: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.PaymentAmount, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                            <label class="col-md-3 col-form-label">Status: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @Html.DropDownList("CobraPaymentStatusId", null, "Please select", new { @class = "form-control" })
+
+                            </div>
+
+                        </div>
+
+                       
+
+                    </div>
+
+
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnSaveEmployeeHInsCobraHistory" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+       
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+
+        $("#btnSaveEmployeeHInsCobraHistory").click(function () {
+            saveUserHInsCobraHistoryData();
+        })
+       
+       
+    });
+   
+</script>
+

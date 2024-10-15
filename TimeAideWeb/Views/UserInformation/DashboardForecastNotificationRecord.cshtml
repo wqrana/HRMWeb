@@ -1,0 +1,10 @@
+﻿@model IEnumerable<TimeAide.Web.ViewModel.DashboardNotificationForecastViewModel>
+<div>
+    @foreach (var item in Model)
+    {
+        var forecastMonthId = "'" + item.ForecastMonthId+"'";
+    <p><i class="mr-2"></i>@item.ForecastMonthName <span class="float-right"><a href="javascript:getDashboardForecastNotificationList(@forecastMonthId)">@item.ExpiryRecordCount</a></span></p>
+    
+    }
+
+</div>

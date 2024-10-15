@@ -1,0 +1,66 @@
+﻿<div id="syncpayrollTA7_modal_popup" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sync Payroll</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">              
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>From Date <span class="text-danger">*</span></label>
+                                        <input id="payrollFromDate" type="datetime" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>To Date<span class="text-danger">*</span></label>
+                                        <input id="payrollToDate" type="datetime" class="form-control">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                            </div>
+                        </div>
+                        <div class="submit-section mt-1">
+                            <button id="btnSync" class="btn btn-primary submit-btn">Sync</button>
+                            <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#btnSync").click(function () {
+            var dataObj = new Object();
+            var isRequiredValidated = 0;
+            var isValidated = true;
+            dataObj.fromDate = $("#payrollFromDate").val();
+            dataObj.toDate = $("#payrollToDate").val();
+            isRequiredValidated += dataObj.fromDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.toDate.trim().length > 0 ? 1 : 0;           
+            if (isRequiredValidated != 2) {
+                isValidated = false;
+                showAlertAutoHide("", 'Error', "Missing Required field(s).");               
+                return;
+            }
+            if (moment(dataObj.fromDate) > moment(dataObj.toDate)) {
+                showAlertAutoHide("", 'Error', "From date should be less than to date.");
+                return;
+            }
+            fetchPayrollFromTA7(dataObj);
+        });
+    });
+
+</script>

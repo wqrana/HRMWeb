@@ -1,0 +1,153 @@
+﻿@model TimeAide.Web.ViewModel.EmployeeSupervisorViewModel
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.SelectedUserId)
+    <div class="form-horizontal">
+        <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+            <h4 style="display: inline;">Employee Supervisor</h4>
+            <button class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+
+        </div>
+        <div class="form-group row">
+            @*@Html.LabelFor(model => model.EmployeeUserId, "EmployeeUserId", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div class="col-md-4">
+                @*@Html.ListBoxFor(model => model.AllUserId, Model.Users)*@
+                @Html.ListBoxFor(model => model.AllUserId, Model.Users, new { @class = "form-control" })
+                @*@Html.ListBoxFor(m => m.AllUserId, (IEnumerable<SelectListItem>)ViewBag.IfPoor, new { @class = "chosen" })*@
+            </div>
+            <div class="col-md-3">
+                <div class="subject-info-arrows text-center">
+                    <input type="button" id="btnAllRight" value=">>" class="btn btn-default" onclick="MoveAllRight()" style="width: 70px !important;" /><br />
+                    <input type="button" id="btnRight" value=">" class="btn btn-default" onclick="MoveRight()" style="width: 70px !important;" /><br />
+                    <input type="button" id="btnLeft" value="<" class="btn btn-default" onclick="MoveLeft()" style="width: 70px !important;" /><br />
+                    <input type="button" id="btnAllLeft" value="<<" class="btn btn-default" onclick="MoveAllLeft()" style="width: 70px !important;" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                @*@Html.ListBoxFor(model => model.AllUserId, Model.Users)*@
+                @Html.ListBoxFor(model => model.SupervisedUserId, Model.SupervisedUsers, new { @class = "form-control" })
+                @*@Html.ListBoxFor(m => m.AllUserId, (IEnumerable<SelectListItem>)ViewBag.IfPoor, new { @class = "chosen" })*@
+            </div>
+        </div>
+
+
+
+        <div class="submit-section">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-primary submit-btn" onclick="SelectAllUsers()"><span class="glyphicon glyphicon-remove"></span>Save</button>
+                    <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    function MoveAllRight() {
+        var selectedOpts = $('#AllUserId option');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#SupervisedUserId').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+    }
+    function MoveRight() {
+        var selectedOpts = $('#AllUserId option:selected');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#SupervisedUserId').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+    }
+    function MoveLeft() {
+        var selectedOpts = $('#SupervisedUserId option:selected');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#AllUserId').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+    }
+    function MoveAllLeft() {
+        var selectedOpts = $('#SupervisedUserId option');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#AllUserId').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+    }
+    function SelectAllUsers() {
+        debugger
+        $('#SupervisedUserId option').prop('selected', true);
+
+        var SupervisedUserId = [];
+        $('#SupervisedUserId option').each(function (i) {
+            if (this.selected == true) {
+                SupervisedUserId.push(this.value);
+            }
+        });
+
+
+        var model = {
+            SelectedUserId: $('#SelectedUserId').val(),
+            SupervisedUserId: SupervisedUserId
+        }
+        $.ajax({
+            type: 'post',
+            url: '/UserInformation/AddSupervisor',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                $('#divEmployeePrivilege').html(html);
+                $('#myModal').modal('hide');
+            }
+        });
+    }
+</script>
+<style type="text/css">
+    .col-md-3 {
+        /*
+        width: 8% !important;
+         margin-top: 30px;*/
+    }
+
+    .subject-info-box-1,
+    .subject-info-box-2 {
+        float: left;
+        width: 45%;
+    }
+
+    select[multiple] {
+        height: 200px;
+        padding: 0;
+    }
+
+    option {
+        padding: 4px 10px 4px 10px;
+    }
+
+        option:hover {
+            background: #EEEEEE;
+        }
+
+
+    .subject-info-arrows {
+        float: left;
+        width: 10%;
+    }
+</style>

@@ -1,0 +1,88 @@
+﻿@model TimeAide.Web.Models.Document
+@using (Html.BeginForm())
+{
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    @Html.AntiForgeryToken()
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.DocumentName, "Name", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.DocumentName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DocumentName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.DocumentDescription, "Description", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.DocumentDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DocumentDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.IsExpirable, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @if (Model != null && Model.IsExpirable)
+            {
+                <input type="checkbox" name="IsExpirable" id="IsExpirable" value="checked" checked>
+            }
+            else
+            {
+                <input type="checkbox" name="IsExpirable" id="IsExpirable" value="">
+            }
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.SelfServiceUpload, "Self-Service Upload", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.CheckBoxFor(model => model.SelfServiceUpload, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.SelfServiceUpload, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.SelfServiceDisplay, "Self-Service Display", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.CheckBoxFor(model => model.SelfServiceDisplay, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.SelfServiceDisplay, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.DocumentRequiredById, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.DocumentRequiredBy>("DocumentRequiredById", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.DocumentRequiredById, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.NotificationScheduleId, "Notification Schedule", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.NotificationSchedule>("NotificationScheduleId", null, htmlAttributes: new { @class = "form-control"}))
+            @Html.ValidationMessageFor(model => model.NotificationScheduleId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    @Html.Partial("_CreatePageFooterView")
+</div>
+}

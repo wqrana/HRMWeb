@@ -1,0 +1,76 @@
+﻿@model IEnumerable<TimeAide.Web.Models.NotificationSchedule>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NotificationScheduleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NotificationScheduleDescription)
+        </th>
+
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotificationScheduleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotificationScheduleDescription)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+
+
+
+<div id="divEmployeeNotificationRoleCreateEditPopUp">
+
+</div>
+
+<script type="text/javascript">
+    function AddNotificationScheduleDocuments(positionId) {
+        debugger;
+        alertID = "#positionIndexPageAlert"
+        positionId = positionId == 0 ? $("#SelectedPositionId").val() : positionId;
+        if (positionId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/EmployeeNotificationRole/CreateEdit',
+                data: { "id": positionId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divEmployeeNotificationRoleCreateEditPopUp").html(data);
+                    $("#EmployeeNotificationRoleCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert("Error in createEditPositionCredential");
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Position for Add/Edit Credential(s)");
+        }
+    }
+
+</script>

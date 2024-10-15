@@ -1,0 +1,56 @@
+﻿@model TimeAide.Web.Models.Employment
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeader")
+   
+    <br />
+    @Html.HiddenFor(model => model.Id, new { id = "EmploymentId" })
+<div style="padding:10px">
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Hire Date:
+        </label>
+        <div class="col-md-6 text-muted mt-2">
+            <span id="lblOriginalHire"> @Html.DisplayFor(model => model.OriginalHireDate)</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Re-Hire Date:
+        </label>
+        <div class="col-md-6 text-muted mt-2">
+            <span id="lblEffectiveHire">@Html.DisplayFor(model => model.EffectiveHireDate)</span>
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Probation Start:
+        </label>
+        <div class="col-md-6 text-muted mt-2">
+            <span id="lblProbationStart"> @Html.DisplayFor(model => model.ProbationStartDate)</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Probation End:
+        </label>
+        <div class="col-md-6 text-muted mt-2">
+            <span id="lblProbationEnd">@Html.DisplayFor(model => model.ProbationEndDate)</span>
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Employment Status:
+        </label>
+        <div class="col-md-6 text-muted mt-2">
+            <span id="lblEmploymentStatus">  @Html.DisplayFor(model => model.EmploymentStatus.EmploymentStatusName)</span>
+        </div>
+    </div>
+    <div class="submit-section" style="text-align:center">
+        <button class="btn btn-danger submit-btn m-r-10" id="btnDeleteEmployment">Delete</button>
+        <button type="submit" class="btn btn-danger submit-btn m-r-10" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+</div>
+

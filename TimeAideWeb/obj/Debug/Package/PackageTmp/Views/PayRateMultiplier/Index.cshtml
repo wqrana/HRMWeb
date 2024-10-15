@@ -1,0 +1,111 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PayRateMultiplier>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayRateMultiplierName)
+        </th>
+        <th>
+            Description
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.PayRateMultiplierValue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PayRateMultiplierName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PayRateMultiplierDescription)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.PayRateMultiplierValue)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<script>
+    function LoadJobCertificationSignee(IsAllCmp, targetElement, selectedValue) {
+        var model = {
+        }
+        debugger
+
+        $.ajax({
+            url: '/JobCertificationSignee/AjaxGetJobCertificationSignee',
+            data: { IsAllCompanies: IsAllCmp },
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+    function LoadJobCertificationTemplate(IsAllCmp, targetElement, selectedValue) {
+        var model = {
+        }
+        debugger
+
+        $.ajax({
+            url: '/JobCertificationTemplate/AjaxGetJobCertificationTemplate',
+            data: { IsAllCompanies: IsAllCmp },
+            dataType: 'json',
+            type: 'GET',
+            success: function (res) {
+                debugger;
+                var data = res;
+                $(targetElement + ' option').remove();
+                var option = '<option value=""> Please Select </option>';
+                $(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.id + '>' + this.name + '</option>';
+                    $(targetElement).append(option);
+                });
+                // if (selectedValue != null)
+                $(targetElement).val(selectedValue == null ? "" : selectedValue);
+            },
+            error: function (xhr, status, error) {
+                //displayErrorMessage('Error during retrieving Data:' + error);
+            }
+        });
+    }
+</script>

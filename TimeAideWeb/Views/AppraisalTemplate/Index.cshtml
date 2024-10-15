@@ -1,0 +1,371 @@
+﻿@{
+    ViewBag.Title = "Appraisal Template";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Appraisal Template</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Master Data</li>
+                <li class="breadcrumb-item active">Appraisal Template</li>
+
+            </ul>
+            <div class="alert" style="display:none;" id="appraisalTemplateIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                @*@Html.ActionLink("Create New User", "Create")*@
+                @if ((bool)(ViewBag.AllowAdd ?? false))
+                {
+                    @*<a href="/Country/Create" class="btn add-btn"><i class="fa fa-plus"></i> Add @ViewBag.FormName</a>*@
+                    <a href="javascript:createEditAppraisalTemplate(0);" class="btn add-btn">+ Add @ViewBag.Label</a>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="divTemplateDetail">
+</div>
+<div id="divTemplateList">   
+</div>
+
+<div id="divCreateEditDelPopUp">
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        //$('#tblTemplate').dataTable({
+        //    "searching": true
+        //});
+
+        getAppraisalTemplateDetail(0);
+        getAppraisalTemplateList();
+    });
+    function getAppraisalTemplateList() {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AppraisalTemplate/IndexByTemplate',
+           
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divTemplateList").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAppraisalTemplateList");
+            }
+        });
+    }
+    function getAppraisalTemplateDetail(templateId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AppraisalTemplate/Details',
+            data: { "id": templateId },
+
+            success: function (data) {
+                 debugger;
+                //console.log(data);
+                $("#divTemplateDetail").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax");
+            }
+        });
+    }
+    function createEditAppraisalTemplate(templateId) {
+        debugger;
+        var ActionMethod = templateId == 0 ? "Create" : "Edit";
+        $.ajax({
+            type: "get",
+            url: '/AppraisalTemplate/' + ActionMethod,
+            data: { "id": templateId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#AppraisalTemplateCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveAppraisalTemplateData() {
+        debugger;
+        var alertID = "#appraisalTemplateCreateEditAlert";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#AppraisalTemplateId').val();
+        dataObj.TemplateName = $('#TemplateName').val();
+        dataObj.IsAllCompanies = $('#IsAllCompaniesAE').is(':checked');
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.TemplateName.trim().length > 0 ? 1 : 0;
+            
+            if (isRequiredValidated != 1) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/AppraisalTemplate/CreateEdit",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#AppraisalTemplateCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#appraisalTemplateIndexPageAlert", data.status, data.message);
+                        //location.reload(true);
+                        getAppraisalTemplateDetail(0);
+                        getAppraisalTemplateList();
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in deleting parent alert data');
+                    return false;
+                }
+            });
+        }
+    }
+    function getAppraisalTemplateDeleteData(templateId) {
+        debugger;
+        if (templateId != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/AppraisalTemplate/Delete',
+                data: { "id": templateId },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#appraisalTemplateDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteAppraisalTemplate(templateId) {
+        debugger;
+        alertID = "#appraisalTemplateDeleteAlert"
+        if (templateId != '') {
+            $.ajax({
+                type: "Post",
+                url: "/AppraisalTemplate/ConfirmDelete",
+                data: { "id": templateId },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#appraisalTemplateDelete_modal").modal("hide");
+                        showAlertAutoHide("#appraisalIndexPageAlert", data.status, data.message);
+                        var currSelTemplateId = $("#SelectedTemplateId").val();
+                        if (currSelTemplateId == templateId) {
+                            location.reload(true);
+                        }
+                        else {
+                            getAppraisalTemplateList();
+                        }
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+        }
+    }
+    function getAppraisalTemplateGoalList(templateId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AppraisalTemplateGoal/IndexByTemplate',
+            data: { "id": templateId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divTemplateGoals").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAppraisalTemplateGoalList");
+            }
+        });
+    }
+
+    function createEditAppraisalTemplateGoal(templateId) {
+        debugger;
+        alertID = "#appraisalTemplateIndexPageAlert"
+        templateId = templateId == 0 ? $("#SelectedTemplateId").val() : templateId;
+        if (templateId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/AppraisalTemplateGoal/CreateEdit',
+                data: { "id": templateId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#AppraisalTemplateGoalCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Template for Add/Edit Goal(s)");
+        }
+    }
+    function saveAppraisalTemplateGoalData(selectedGoalsStr) {
+        debugger;
+        alertID = "#appraisalTemplateDeleteAlert"
+        var templateId = $("#SelectedTemplateId").val();
+        if (templateId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/AppraisalTemplateGoal/CreateEdit',
+                data: {
+                    "id": templateId,
+                    "selectedGoalIds": selectedGoalsStr
+                    },
+
+                success: function (data) {
+                     debugger;
+                    //console.log(data);
+                    if (data.status == "Success") {
+                        $("#AppraisalTemplateGoalCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#appraisalIndexPageAlert", data.status, data.message);
+                        //location.reload(true);
+                        getAppraisalTemplateGoalList(templateId);
+                        getAppraisalTemplateList();
+                    }
+                    
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    //Template Skills
+    function getAppraisalTemplateSkillList(templateId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AppraisalTemplateSkill/IndexByTemplate',
+            data: { "id": templateId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divTemplateSkills").html(data);
+
+            },
+            error: function () {
+                alert("Error Loading ajax getAppraisalTemplateSkillList");
+            }
+        });
+    }
+
+    function createEditAppraisalTemplateSkill(templateId) {
+        debugger;
+        alertID = "#appraisalTemplateIndexPageAlert"
+        templateId = templateId == 0 ? $("#SelectedTemplateId").val() : templateId;
+        if (templateId != 0) {
+            $.ajax({
+                type: "get",
+                url: '/AppraisalTemplateSkill/CreateEdit',
+                data: { "id": templateId },
+
+                success: function (data) {
+                    // debugger;
+                    //console.log(data);
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#AppraisalTemplateSkillCreateEdit_modal").modal("show");
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        else {
+            showAlertAutoHide(alertID, 'Error', " Please the Select Template for Add/Edit Goal(s)");
+        }
+    }
+    function saveAppraisalTemplateSkillData(selectedSkillsStr) {
+        debugger;
+        alertID = "#appraisalTemplateDeleteAlert"
+        var templateId = $("#SelectedTemplateId").val();
+        if (templateId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/AppraisalTemplateSkill/CreateEdit',
+                data: {
+                    "id": templateId,
+                    "selectedSkillIds": selectedSkillsStr
+                },
+
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    if (data.status == "Success") {
+                        $("#AppraisalTemplateSkillCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#appraisalIndexPageAlert", data.status, data.message);
+                        //location.reload(true);
+                        getAppraisalTemplateSkillList(templateId);
+                        getAppraisalTemplateList();
+                    }
+
+
+
+                },
+                error: function () {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+    }
+
+</script>

@@ -1,0 +1,70 @@
+﻿@model TimeAide.Web.Models.EmployeeCompensation
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_CreatePageTitleView")
+    <dl class="dl-horizontal">
+        <dt>
+            Compensation
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyCompensation.CompensationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GLAccount.GLAccountName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GLAccount.GLAccountName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PeriodEntry.CompensationPeriodEntryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PeriodEntry.CompensationPeriodEntryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Enabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Enabled)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MoneyAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MoneyAmount)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</p>
+<style>
+    p {
+        text-align: center;
+    }
+
+    /*dt {
+        display: inline;
+        width: 25%;
+    }*/
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>

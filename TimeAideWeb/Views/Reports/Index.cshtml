@@ -1,0 +1,1260 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@model TimeAide.Web.ViewModel.ReportViewModel
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+    iframe {
+        /*width: 100%;*/
+        padding-left: 10px;
+        padding-top: 5px;
+        max-height: 800px;
+    }
+
+    .divReportView {
+        border: .5px #eaeaea solid;
+        min-height: 875px;
+        /* margin-left: 2%;*/
+    }
+
+    .divReportFilters {
+        background-color: #edeff0;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        min-height: 750px;
+        /*min-width: 280px;*/
+    }
+
+    .showFilter {
+        display: block;
+    }
+
+    .hideFilter {
+        display: none;
+    }
+
+    .reportrangeClass {
+        font-size: 14px;
+        border: 1px solid #AAAAAA;
+        padding-left: 9px;
+        padding-right: 9px;
+        min-width: 251px;
+    }
+
+    .PaddingClass {
+        padding-top: 10px;
+        padding-right: 0px;
+        padding-bottom: 10px;
+    }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Reports</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Reports</li>
+                <li class="breadcrumb-item">@Html.DisplayFor(m => m.ReportGroupName)</li>
+                <li class="breadcrumb-item active">@Html.DisplayFor(m => m.ReportName)</li>
+            </ul>
+            <div class="alert" style="display:none;" id="reportIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div>
+    <a href="javascript:void(0);" id="filterShowHideBtn">Hide Filter(s)</a>
+</div>
+<div class="row">
+    @Html.HiddenFor(m => m.ReportId)
+    @Html.Hidden("StartDate")
+    @Html.Hidden("EndDate")
+    @Html.Hidden("ReportType",(string)ViewBag.ReportType)
+    <!--Filter Section -->
+    <div id="divFilterSection" class="col-md-5">
+        <div id="divRefreshingFilter" class="align-content-md-center">
+            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+        </div>
+        <div class="col-md-12 divReportFilters">
+            <div class="form-group">
+                <div class="col-md-12 pl-0 pr-0">
+                    <button class="btn btn-success btn-lg col-md-12" id="RunReportBtn">
+                        Run Report
+                    </button>
+                </div>
+            </div>
+            <div class="form-group row mb-0">
+                <div class="col-md-12">
+                    <div class="panel panel-default" style="margin-left:0px">
+                        <div class="panel-heading" style="padding-left:5px">
+                            Selection Type
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                @*<label class="col-md-3 col-form-label" style="margin-left:5px">Selection:</label>*@
+                                <div class="col-md-12 mt-2 ml-1">
+                                    <div class="radio">
+                                        <label>
+                                            Selection:
+                                            <input type="radio" name="selectionType" value="0" class="ml-2" checked="checked">
+                                        </label>
+                                    </div>
+                                </div>
+                                @*<label class="col-md-3 col-form-label" style="margin-left:5px">Template:</label>*@
+                                @if ((string)ViewBag.ReportType != "OSHA")
+                                {
+                                    <div class="col-md-4 mt-2 ml-1">
+
+                                        <div class="radio">
+                                            <label>
+                                                Template:
+                                                <input type="radio" name="selectionType" value="1" class="ml-2">
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-7">
+                                        @Html.DropDownList("ReportCriteriaTemplate", new SelectList(@Model.ReportCriteriaTemplateList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control searchableDDL" })
+                                                                @*<div class="input-group">
+                                            @Html.DropDownList("ReportCriteriaTemplate", new SelectList(@Model.ReportCriteriaTemplateList, "id", "text"), "Please Select", htmlAttributes: new { @class = "form-control" })
+                                            <div class="input-group-append">
+                                                <button id="btnOpenTrainingPopUp" class="btn btn-danger" type="button"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row mb-0">
+                <div class="col-md-12">
+                    <div class="panel panel-default" style="margin-left:0px">
+                        <div class="panel-heading" style="padding-left:5px">
+                            Selection Criteria
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                @*<label class="col-md-4 col-form-label" style="margin-left:5px">By Selections:</label>*@
+                                <div class="col-md-6 mt-2 ml-1">
+                                    <div class="radio">
+                                        <label>
+                                            By Selections:
+                                            <input type="radio" name="selectionCriteria" class="ml-2" value="0" checked="checked">
+                                        </label>
+                                    </div>
+                                </div>
+                                @*<label class="col-md-4 col-form-label" style="margin-left:0px">By Employee:</label>*@
+                                @if (ViewBag.ShowFilterByEmployee == true)
+                                {
+                                <div class="col-md-5 mt-2 ml-1">
+                                    <div class="radio">
+                                        <label>
+                                            By Employee(s):
+                                            <input type="radio" name="selectionCriteria" value="1" class="ml-2">
+                                        </label>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row mb-0">
+                <div class="col-md-12" id="filterBySelection">
+                    <div class="panel panel-default" style="margin-left:0px">
+                        <div class="panel-heading" style="padding-left:5px">
+                            By Selections
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                @{ var isShow = Model.ShowHideReportsFilters.ShowDateRange;
+                                    var showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Date Range:</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    <div id="reportrange" class="reportrangeClass PaddingClass">
+                                        <i class="fa fa-calendar pull-left"></i>
+                                        &nbsp;
+                                        <span></span>
+                                        <b class="fa fa-angle-down"></b>
+                                    </div>
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowReportYear;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Report Year:</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.EditorFor(m => m.ReportYear, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+
+                                <label class="col-md-4 col-form-label pr-0" style="margin-left:5px">Company:</label>
+                                <div class="col-md-7 text-muted mt-2">
+                                    @Html.DropDownList("CompanyId", new SelectList(@Model.CompanyList, "id", "text", SessionHelper.SelectedCompanyId), "Please Select", htmlAttributes: new { @class = "form-control pr-0" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowLocations;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Location(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("LocationIds", (IEnumerable<SelectListItem>)@Model.LocationsList, new { @class = "form-control" })
+                                </div>
+
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowDepartments;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Department(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("DepartmentIds", (IEnumerable<SelectListItem>)@Model.DepartmentList, new { @class = "form-control" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowSubDepartments;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Sub-Department(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("SubDepartmentIds", (IEnumerable<SelectListItem>)@Model.SubDepartmentList, new { @class = "form-control" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowEmployeeTypes;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Employee Type(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("EmployeeTypeIds", (IEnumerable<SelectListItem>)@Model.EmployeeTypeList, new { @class = "form-control" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowEmploymentTypes;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Employment Type(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("EmploymentTypeIds", (IEnumerable<SelectListItem>)@Model.EmploymentTypeList, new { @class = "form-control" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowEmploymentStatus;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Employment Status(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("EmploymentStatusIds", (IEnumerable<SelectListItem>)@Model.EmploymentStatusList, new { @class = "form-control" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowPositions;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Position(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("PositionIds", (IEnumerable<SelectListItem>)@Model.PositionList, new { @class = "form-control" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowEmployeeStatus;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Status:</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("EmployeeStatusIds", (IEnumerable<SelectListItem>)@Model.EmployeeStatusList, new { @class = "form-control" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowDegrees;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Degree(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("DegreeIds", (IEnumerable<SelectListItem>)@Model.DegreeList, new { @class = "form-control" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowTrainings;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Training(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("TrainingIds", (IEnumerable<SelectListItem>)@Model.TrainingList, new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Training Type(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("TrainingTypeIds", (IEnumerable<SelectListItem>)@Model.TrainingTypeList, new { @class = "form-control" })
+                                </div>
+
+                                @{ isShow = Model.ShowHideReportsFilters.ShowCredentials;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Credential(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("CredentialIds", (IEnumerable<SelectListItem>)@Model.CredentialList, new { @class = "form-control" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowCustomFields;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">CustomField(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("CustomFieldIds", (IEnumerable<SelectListItem>)@Model.CustomFieldList, new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">CustomField Type(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("CustomFieldTypeIds", (IEnumerable<SelectListItem>)@Model.CustomFieldTypeList, new { @class = "form-control" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowBenefits;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Benefit(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("BenefitIds", (IEnumerable<SelectListItem>)@Model.BenefitList, new { @class = "form-control" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowActionTypes;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Action Type(s):</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.ListBox("ActionTypeIds", (IEnumerable<SelectListItem>)@Model.ActionTypeList, new { @class = "form-control" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowSuperviors;
+                                    var isAdminShow = (SecurityHelper.IsAdmin || SecurityHelper.IsSuperAdmin);
+                                    showHideClass = (isShow && isAdminShow) ? "showFilter" : "hideFilter";
+
+                                }
+
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Supervisor:</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.DropDownList("SuperviorId", new SelectList(@Model.SuperviorList, "id", "text"), "Self", htmlAttributes: new { @class = "form-control searchableDDL pr-0" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowLocation;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+                                <label class="col-md-4 col-form-label pr-0 @showHideClass" style="margin-left:5px">Location:</label>
+                                <div class="col-md-7 text-muted mt-2 @showHideClass">
+                                    @Html.DropDownList("LocationId", new SelectList(@Model.LocationList, "id", "text"), "Select", htmlAttributes: new { @class = "form-control pr-0" })
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowAvgNoOfEmployees;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+                                <label class="col-md-5 col-form-label pr-0 @showHideClass" style="margin-left:5px">Annual Avg. # of Emp.:</label>
+                                <div class="col-md-2 text-muted mt-2 pr-0 @showHideClass">
+                                    @Html.EditorFor(m => m.AverageNoOfEmployees, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-md-4 text-muted mt-2 @showHideClass">
+                                    <select class="form-control pl-0" id="AverageNoOfEmpSel">
+                                        <option value="0">Manual Entry</option>
+                                        <option value="1">Auto Retreive</option>
+                                    </select>
+                                </div>
+                                @{ isShow = Model.ShowHideReportsFilters.ShowTotalHoursByEmployee;
+                                    showHideClass = isShow ? "showFilter" : "hideFilter";
+                                }
+                                <label class="col-md-5 col-form-label pr-0 @showHideClass" style="margin-left:5px">Tot. (Hrs) worked by all Emp.:</label>
+                                <div class="col-md-2 text-muted mt-2 pr-0 @showHideClass">
+                                    @Html.EditorFor(m => m.TotalHoursByEmployees, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-md-4 text-muted mt-2 @showHideClass">
+                                    <select class="form-control pl-0" id="totHrsByEmpSel">
+                                        <option value="0">Manual Entry</option>
+                                        <option value="1">Auto Retreive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row mb-0">
+                <div class="col-md-12" id="filterByEmployee">
+                    <div class="panel panel-default" style="margin-left:0px">
+                        <div class="panel-heading" style="padding-left:5px">
+                            By Employee(s)
+                        </div>
+                        @{ 
+                            showHideClass = (isAdminShow) ? "showFilter" : "hideFilter";
+                        }
+                        <div class="@showHideClass">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">supervisor:</span>
+                                </div>
+                                @Html.DropDownList("EmployeeBySuperviorId", new SelectList(@Model.SuperviorList, "id", "text"), "Self", htmlAttributes: new { @class = "form-control searchableDDL pr-0" })
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="divLoadingReportEmployee" class="align-content-md-center">
+                                <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                            </div>
+
+                            <div id="divEmployeeRecordList" class="p-2" style="height:400px; overflow-y:auto">
+
+                                @*<div class="table-responsive">
+
+                 <table class="table table-striped custom-table table-nowrap mb-0" id="tblByEmployee">
+
+                    <thead>
+                        <tr>
+                            <th width="10%" class="no-sort">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="chkSelAllEmp" />
+                                </div>
+                            </th>
+
+                            <th width="25%">
+                                EmployeeID
+                            </th>
+                            <th width="50%">Employee Name</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="chkSelEmp" />
+                                </label>
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>Waqar Qaaa</td>
+                    </tr>
+
+                    </table>
+                </div>*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @if ((string)ViewBag.ReportType != "OSHA")
+                {
+                    <div class="submit-section mt-1">
+
+                        <button id="SaveAsTemplateBtn" class="btn btn-sm btn-primary">Save As Template</button>
+                        <button id="DeleteTemplateBtn" class="btn btn-sm btn-danger">Delete Template</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!--Report Display -->
+    <div id="divDisplaySection" class="col-md-7 pl-0 pr-0">
+        <div id="divLoadingReport" class="align-content-md-center">
+            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+        </div>
+        <div class="divReportView" id="divReportView">
+        </div>
+
+    </div>
+</div>
+<div id="divCreateEditDeleteTemplate">
+
+</div>
+<script>
+
+
+    $(document).ready(function () {
+        $('#divLoadingReport').hide();
+        $('#divLoadingReportEmployee').hide();
+        $('#divRefreshingFilter').hide();
+        $("#filterByEmployee").hide();
+
+        setReportDateRangePicker();
+
+        $('#StartDate').val(moment().startOf('month').format("MM/DD/YYYY"));
+        $('#EndDate').val(moment().endOf('month').format("MM/DD/YYYY"));
+
+       
+        $('select[id $=Ids]').each(function () {
+            debugger;
+            $(this).select2({
+                placeholder: "All",
+                allowClear: true
+            });
+
+        });
+        //getReportTemplateList();
+        getEmployeeList();
+
+        $(".select2-container").css("width", "100%");
+
+        $("#ReportCriteriaTemplate").attr("disabled", true);
+        $("#CompanyId").attr("disabled", true);
+
+
+        $("input[name='selectionType']").on("change", function () {
+            debugger;
+            var isDisabled = true;
+            var selType = $("input[name='selectionType']:checked").val();
+            if (selType == 1) {
+                isDisabled = false;
+            }
+            else {
+                var selectedTemplate = $("#ReportCriteriaTemplate").val();
+                if (selectedTemplate != "") {
+                    $("#ReportCriteriaTemplate").val("");
+                    getReportTemplateDetail();
+                }
+            }
+            $("#ReportCriteriaTemplate").attr("disabled", isDisabled);
+        });
+        $("input[name='selectionCriteria']").on("change", function () {
+            debugger;
+
+            var criteriaType = $("input[name='selectionCriteria']:checked").val();
+            switch (criteriaType) {
+                case "0":
+                    $("#filterBySelection").show();
+                    $("#filterByEmployee").hide();
+                    break;
+                case "1":
+                    $("#filterBySelection").hide();
+                    $("#filterByEmployee").show();
+            }
+
+        });
+
+        $('#ReportCriteriaTemplate').on('change', function () {
+            debugger;
+            getReportTemplateDetail();
+        });
+        $('#DepartmentIds').on('change', function () {
+            debugger;
+            var selectedDeptIdList=[];
+            $('#DepartmentIds option:selected').each(function () {
+                selectedDeptIdList.push($(this).val());
+            });
+            var deptIds = selectedDeptIdList.length > 0 ? selectedDeptIdList.join(",") : "";
+            getSelectedDeptsSubDeptDDL(deptIds);
+        });
+
+        $('#EmployeeBySuperviorId').on('change', function () {
+            debugger;
+            var supId = $(this).val();
+            getEmployeeList(supId);
+        });
+
+
+        $('#AverageNoOfEmpSel').on('change', function () {
+            debugger;
+            var selectedValue = $(this).val();
+            if (selectedValue == 1) {
+                getCalculatedOSHAEmpOrHours("#AverageNoOfEmployees", "E");
+            }
+            else {
+                $("#AverageNoOfEmployees").val("");
+            }
+        });
+        $('#totHrsByEmpSel').on('change', function () {
+            debugger;
+            var selectedValue = $(this).val();
+            if (selectedValue == 1) {
+                getCalculatedOSHAEmpOrHours("#TotalHoursByEmployees", "H");
+            }
+            else {
+                $("#TotalHoursByEmployees").val("");
+            }
+        });
+       
+
+        $("#RunReportBtn").on("click", function () {
+            debugger;
+            runReport();
+        });
+
+        $("#SaveAsTemplateBtn").on("click", function () {
+            debugger;
+            var selectedTemplateId = $("#ReportCriteriaTemplate").val();
+            createEditReportTemplate(selectedTemplateId);
+        });
+
+        $("#DeleteTemplateBtn").on("click", function () {
+            debugger;
+            var selectedTemplateId = $("#ReportCriteriaTemplate").val();
+            if (selectedTemplateId == "") {
+                showAlertAutoHide("#reportIndexPageAlert", 'Error', "Please Select the Template");
+                return;
+            }
+            else {
+                getDeleteReportTemplate(selectedTemplateId);
+            }
+        });
+
+        $('#filterShowHideBtn').click(function () {
+            debugger;
+
+            switch ($(this).text()) {
+
+                case 'Hide Filter(s)':
+                    $('#divFilterSection').hide();
+                    $('#divDisplaySection').removeClass('col-md-7').addClass('col-md-12');
+                    $('#filterShowHideBtn').text('Show Filter(s)')
+                    break;
+                case 'Show Filter(s)':
+                    $('#divFilterSection').show();
+                    $('#divDisplaySection').removeClass('col-md-12').addClass('col-md-7');
+                    $('#filterShowHideBtn').text('Hide Filter(s)')
+                    break;
+
+            }
+
+        });
+    });
+    function setReportDateRangePicker() {
+        debugger;
+        var reportId = $('#ReportId').val();
+        var minDateYearVal = parseInt(moment().format('YYYY'));
+        if (reportId != 4) { // year dropdown shows 100 years if it's not birthday report
+            minDateYearVal -= 100;
+        }
+
+        $('#reportrange').daterangepicker({
+
+            startDate: moment().startOf('month'),
+            endDate: moment().endOf('month'),
+            // minDate: '01/01/' + (parseInt(moment().format('YYYY'))),
+            minDate: '01/01/' + minDateYearVal,
+            maxDate: '12/31/' + (parseInt(moment().format('YYYY'))),
+            //dateLimit: {
+            //    days: 730
+            //},
+            showDropdowns: true,
+            format: 'MMM/DD/YYYY',
+            "opens": "center",
+            "drops": "auto",
+            "autoApply": true,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Last 1 Week': [moment().subtract('days', 6), moment()],
+                'Last 2 Weeks': [moment().subtract('days', 13), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last 1 Month': [moment().subtract('months', 1), moment()],
+                'Last 3 Month(s)': [moment().subtract('months', 3), moment()],
+                'Last 6 Month(s)': [moment().subtract('months', 6), moment()],
+                'This Year': [moment().startOf('Year'), moment().endOf('Year')],
+                'Last 1 Year': [moment().subtract('Years', 1), moment()]
+            },
+        },
+            function (start, end) {
+                console.log("Callback has been called!");
+                debugger;
+                $('#StartDate').val(start);
+                $('#EndDate').val(end);
+                $('#reportrange span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+            }
+        );
+        $('#reportrange span').html(moment().startOf('month').format('MMM D, YYYY') + ' - ' + moment().endOf('month').format('MMM D, YYYY'));
+
+    }
+    function getEmployeeList(supId) {
+        $('#divLoadingReportEmployee').show();
+        $.ajax({
+            type: "get",
+            url: '/UserInformation/GetReportByEmployeeList',
+            data: { superviorId: supId },
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divEmployeeRecordList").html(data);
+                $('#divLoadingReportEmployee').hide();
+
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+
+    function runReport(id) {
+        $('#divLoadingReport').show();
+        debugger;
+
+        var dataObj = getReportSelectedFilterData();
+        if ($("#ReportType").val() == "OSHA") {
+            if (dataObj.ReportYear == "" || dataObj.LocationId == "") {
+                showAlertAutoHide("", 'Error', "Missing Report Year/Location");
+                return;
+            }
+        }
+        dataObj.ReportId = $('#ReportId').val();
+
+        if ($("#ReportType").val() == "OSHA") {
+            debugger;
+            var divHtml = "<h2 class='text-info' style='text-align:center'>  Processing ....</h2>";
+            $("#divReportView").html(divHtml);
+            $.ajax({
+                type: "POST",
+                url: "/Reports/ReportViewAsDownload",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    console.log(data.downloadFile);
+                    if (data.status == "Success") {
+                        var divHtml = "<h2 class='text-success' style='text-align:center'> Report is generated successfully</h2>";
+                        divHtml += "<h4 class='text-info' style='text-align:center'><b>Downloaded Report File:</b>" + data.downloadFile + "</h4>";
+                        $("#divReportView").html(divHtml);
+                        window.location.href = "/Reports/DownloadReportAsPDF?downloadFileName=" + data.downloadFile;
+                    }
+                    else {
+                        showAlertAutoHide("", 'Error', data.message);
+                    }
+                    // setTimeout(function () { $('#divLoadingReport').hide(); }, 3000);
+                    $('#divLoadingReport').hide();
+                },
+                error: function (request, status, error) {
+                    alert('Error in in runing  report data');
+                    return false;
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/Reports/ReportView",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                // dataType: "json",
+                success: function (data) {
+                    debugger;
+                    //console.log(data);
+                    $("#divReportView").html(data);
+                    // setTimeout(function () { $('#divLoadingReport').hide(); }, 3000);
+
+                },
+                error: function (request, status, error) {
+                    alert('Error in in runing  report data');
+                    return false;
+                }
+            });
+        }
+       
+
+    }
+    function getCalculatedOSHAEmpOrHours(elementId,calcType) {
+        var dataObj = getReportSelectedFilterData();
+        dataObj.StatusSelectionIds = calcType;
+
+        $.ajax({
+            type: "POST",
+            url: "/Reports/CalcOSHA300AValues",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    $(elementId).val(data.dataValue)
+                }
+
+            },
+            error: function (request, status, error) {
+                alert('Error in in runing  calc OSHA data');
+                return false;
+            }
+        });
+
+    }
+    function getReportTemplateList(keepDafultSelected) {
+
+        debugger;
+        var reportId = $('#ReportId').val();
+        $.ajax({
+            type: "get",
+            url: '/ReportCriteriaTemplate/GetReportTemplateList',
+            data: { "id": reportId },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (d) {
+                debugger;
+                //console.log(data);
+                // $("#divEmployeeAppraisalIndex").html(data);
+                var templateList = d.data;
+                var selectedOption = "";
+                if (keepDafultSelected == true) {
+                    selectedOption = $('#ReportCriteriaTemplate').val();
+                }
+                $('#ReportCriteriaTemplate option').remove();
+                var defaultOption = '<option value> Please Select </option >';
+                $('#ReportCriteriaTemplate').append(defaultOption);
+                $(templateList).each(function () {
+                    debugger;
+                    var option = '<option value=' + this.Value + '>' + this.Text + '</option>';
+                    $('#ReportCriteriaTemplate').append(option);
+                });
+                $('#ReportCriteriaTemplate').val(selectedOption);
+            },
+            error: function () {
+                alert("Error Loading ajax getReportTemplateList");
+            }
+        });
+    }
+    function getReportTemplateDetail() {
+        $('#divRefreshingFilter').show();
+        debugger;
+        var templateId = $('#ReportCriteriaTemplate').val();
+        templateId = templateId == "" ? 0 : templateId;
+        $.ajax({
+            type: "get",
+            url: '/ReportCriteriaTemplate/GetReportTemplateDetail',
+            data: { "id": templateId },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (d) {
+                debugger;
+                //console.log(data);
+                // $("#divEmployeeAppraisalIndex").html(data);
+                var templateFilterData = d.data;
+                setReportFilterData(templateFilterData);
+                $('#divRefreshingFilter').hide();
+            },
+            error: function () {
+                alert("Error Loading ajax getReportTemplateList");
+            }
+        });
+    }
+    function setReportFilterData(templateFilterData) {
+        debugger;
+        var selectedEmployeeIdList = [];
+        var selectedDepartmentIdList = [];
+        var selectedSubDepartmentIdList = [];
+        var selectedEmployeeTypeIdList = [];
+        var selectedEmploymentTypeIdList = [];
+        var selectedPositionIdList = [];
+        var selectedStatusIdList = [];
+        var selectedDepartmentIdList = [];
+        var selectedDegreeIdList = [];
+        var selectedTrainingIdList = [];
+        var selectedCredentialIdList = [];
+        var selectedCustomFieldIdList = [];
+        var selectedBenefitIdList = [];
+        var selectedActionTypeIdList = [];
+        var superviorId = null;
+        var locationId = null;
+
+        if (templateFilterData.FromDate != null && templateFilterData.ToDate != null) {
+            var fromDate = new Date(templateFilterData.FromDate.match(/\d+/)[0] * 1); //convert json date data
+            var toDate = new Date(templateFilterData.ToDate.match(/\d+/)[0] * 1);
+            $('#StartDate').val(fromDate);
+            $('#EndDate').val(toDate);
+            var drp = $('#reportrange').data('daterangepicker');
+            drp.setStartDate(fromDate);
+            drp.setEndDate(toDate);
+            $('#reportrange span').html(moment(fromDate).format('MMM D, YYYY') + ' - ' + moment(toDate).format('MMM D, YYYY'));
+        }
+
+        templateFilterData.DepartmentSelectionIds = templateFilterData.DepartmentSelectionIds == null ? "" : templateFilterData.DepartmentSelectionIds;
+        selectedDepartmentIdList = templateFilterData.DepartmentSelectionIds.trim().split(',');
+        $('#DepartmentIds').val(selectedDepartmentIdList);
+
+        templateFilterData.SubDepartmentSelectionIds = templateFilterData.SubDepartmentSelectionIds == null ? "" : templateFilterData.SubDepartmentSelectionIds;
+        selectedSubDepartmentIdList = templateFilterData.SubDepartmentSelectionIds.trim().split(',');
+        $('#SubDepartmentIds').val(selectedSubDepartmentIdList);
+
+        templateFilterData.EmployeeTypeSelectionIds = templateFilterData.EmployeeTypeSelectionIds == null ? "" : templateFilterData.EmployeeTypeSelectionIds;
+        selectedEmployeeTypeIdList = templateFilterData.EmployeeTypeSelectionIds.trim().split(',');
+        $('#EmployeeTypeIds').val(selectedEmployeeTypeIdList);
+
+        templateFilterData.EmploymentTypeSelectionIds = templateFilterData.EmploymentTypeSelectionIds == null ? "" : templateFilterData.EmploymentTypeSelectionIds;
+        selectedEmploymentTypeIdList = templateFilterData.EmploymentTypeSelectionIds.trim().split(',');
+        $('#EmploymentTypeIds').val(selectedEmploymentTypeIdList);
+
+        templateFilterData.PositionSelectionIds = templateFilterData.PositionSelectionIds == null ? "" : templateFilterData.PositionSelectionIds;
+        selectedPositionIdList = templateFilterData.PositionSelectionIds.trim().split(',');
+        $('#PositionIds').val(selectedPositionIdList);
+
+        templateFilterData.StatusSelectionIds = templateFilterData.StatusSelectionIds == null ? "" : templateFilterData.StatusSelectionIds;
+        selectedStatusIdList = templateFilterData.StatusSelectionIds.trim().split(',');
+        $('#EmployeeStatusIds').val(selectedStatusIdList);
+
+        templateFilterData.DegreeSelectionIds = templateFilterData.DegreeSelectionIds == null ? "" : templateFilterData.DegreeSelectionIds;
+        selectedDegreeIdList = templateFilterData.DegreeSelectionIds.trim().split(',');
+        $('#DegreeIds').val(selectedDegreeIdList);
+
+        templateFilterData.TrainingSelectionIds = templateFilterData.TrainingSelectionIds == null ? "" : templateFilterData.TrainingSelectionIds;
+        selectedTrainingIdList = templateFilterData.TrainingSelectionIds.trim().split(',');
+        $('#TrainingIds').val(selectedTrainingIdList);
+
+        templateFilterData.CredentialSelectionIds = templateFilterData.CredentialSelectionIds == null ? "" : templateFilterData.CredentialSelectionIds;
+        selectedCredentialIdList = templateFilterData.CredentialSelectionIds.trim().split(',');
+        $('#CredentialIds').val(selectedCredentialIdList);
+
+        templateFilterData.CustomFieldSelectionIds = templateFilterData.CustomFieldSelectionIds == null ? "" : templateFilterData.CustomFieldSelectionIds;
+        selectedCustomFieldIdList = templateFilterData.CustomFieldSelectionIds.trim().split(',');
+        $('#CustomFieldIds').val(selectedCustomFieldIdList);
+
+        templateFilterData.BenefitSelectionIds = templateFilterData.BenefitSelectionIds == null ? "" : templateFilterData.BenefitSelectionIds;
+        selectedBenefitIdList = templateFilterData.BenefitSelectionIds.trim().split(',');
+        $('#BenefitIds').val(selectedBenefitIdList);
+
+        templateFilterData.ActionTypeSelectionIds = templateFilterData.ActionTypeSelectionIds == null ? "" : templateFilterData.ActionTypeSelectionIds;
+        selectedActionTypeIdList = templateFilterData.ActionTypeSelectionIds.trim().split(',');
+        $('#ActionTypeIds').val(selectedActionTypeIdList);
+
+        $("#SuperviorId").val(templateFilterData.SuperviorId);
+
+        $('select[id $=Ids]').each(function () {
+            debugger;
+            $(this).select2({
+                placeholder: "All",
+                allowClear: true
+            });
+
+        });
+        $(".select2-container").css("width", "100%");
+        //Employee Setting
+        templateFilterData.EmployeeSelectionIds = templateFilterData.EmployeeSelectionIds == null ? "" : templateFilterData.EmployeeSelectionIds;
+        selectedEmployeeIdList = templateFilterData.EmployeeSelectionIds.trim().split(',');
+
+        $('#chkSelAllEmp').prop("checked", false);
+
+        getEmployeeList(templateFilterData.SuperviorId);
+
+        setTimeout(function () {
+            $("#EmployeeBySuperviorId").val(templateFilterData.SuperviorId);
+            $("input[name='chkSelEmp']").each(function () {
+                debugger;
+                id = $(this).val();
+                var result = $.grep(selectedEmployeeIdList, function (e) {
+                    return e == id;
+                });
+                if (result.length >= 1) {
+                    $(this).prop("checked", true);
+                }
+                else {
+                    $(this).prop("checked", false);
+                }
+            });
+
+        }, 4000);
+
+
+        //Set selection Criteria
+        $("input[name='selectionCriteria']").each(function () {
+            val = $(this).val();
+            if (templateFilterData.CriteriaType == val) {
+                $(this).prop("checked", true);
+                $(this).trigger("change");
+            }
+        });
+    }
+
+
+
+    function createEditReportTemplate(reportTemplateId) {
+        debugger;
+
+        var id = reportTemplateId == "" ? 0 : reportTemplateId;
+        var ActionMethod = id == 0 ? "Create" : "Edit";
+
+        $.ajax({
+            type: "get",
+            url: '/ReportCriteriaTemplate/' + ActionMethod,
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditDeleteTemplate").html(data);
+                $("#ReportTemplateCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveReportTemplateData() {
+        debugger;
+        var alertID = "#reportTemplateCreateEditAlert";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        //Fields value setting in object
+        // var dataObj = new Object();
+        var dataObj = getReportSelectedFilterData();
+        dataObj.id = $('#ReportCriteriaTemplateId').val();
+        dataObj.ReportId = $('#ReportId').val();
+        dataObj.ReportCriteriaTemplateName = $('#ReportCriteriaTemplateName').val();
+        //dataObj.CriteriaType
+        //dataObj.EmployeeSelectionIds
+        //dataObj.DepartmentSelectionIds
+        //dataObj.SubDepartmentSelectionIds
+        //dataObj.EmployeeTypeSelectionIds
+        //dataObj.EmploymentTypeSelectionIds
+        //dataObj.PositionSelectionIds
+        //dataObj.StatusSelectionIds
+        //Required fields validations
+        if (dataObj != null) {
+            isNameValidated = dataObj.ReportCriteriaTemplateName.trim().length > 0 ? 1 : 0;
+            isEmployeeValidated = dataObj.EmployeeSelectionIds.trim().length > 0 ? 1 : 0;
+
+
+
+            if (isNameValidated != 1) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+            else if (dataObj.CriteriaType == 1 && isEmployeeValidated != 1) {
+                isValidated = false;
+                message = " Please Select the Employee(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/ReportCriteriaTemplate/CreateEdit",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#ReportTemplateCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#reportIndexPageAlert", data.status, data.message);
+                        //location.reload(true);
+                        //Refresh Template dropdown list
+                        getReportTemplateList(true);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in in saving parent data');
+                    return false;
+                }
+            });
+        }
+
+    }
+    function getReportSelectedFilterData() {
+        //Get the selected filter(s) values;
+        var selectedEmployeeIdList = [];
+        var selectedLocationIdList = [];
+        var selectedDepartmentIdList = [];
+        var selectedSubDepartmentIdList = [];
+        var selectedEmployeeTypeIdList = [];
+        var selectedEmploymentTypeIdList = [];
+        var selectedEmploymentStatusIdList = [];
+        var selectedPositionIdList = [];
+        var selectedStatusIdList = [];
+        var selectedDegreeIdList = [];
+        var selectedTrainingIdList = [];
+        var selectedTrainingTypeIdList = [];
+        var selectedCredentialIdList = [];
+        var selectedCustomFieldIdList = [];
+        var selectedCustomFieldTypeIdList = [];
+        var selectedBenefitIdList = [];
+        var selectedActionTypeIdList = [];
+        var superviorId = null;
+        var locationId = null;
+        var criteriaType = $("input[name='selectionCriteria']:checked").val();
+        if (criteriaType == 0) // By Selection
+        {
+            $('#LocationIds option:selected').each(function () {
+                selectedLocationIdList.push($(this).val());
+            });
+            $('#DepartmentIds option:selected').each(function () {
+                selectedDepartmentIdList.push($(this).val());
+            });
+            $('#SubDepartmentIds option:selected').each(function () {
+                selectedSubDepartmentIdList.push($(this).val());
+            });
+            $('#EmployeeTypeIds option:selected').each(function () {
+                selectedEmployeeTypeIdList.push($(this).val());
+            });
+            $('#EmploymentTypeIds option:selected').each(function () {
+                selectedEmploymentTypeIdList.push($(this).val());
+            });
+            $('#EmploymentStatusIds option:selected').each(function () {
+                selectedEmploymentStatusIdList.push($(this).val());
+            });
+            $('#PositionIds option:selected').each(function () {
+                selectedPositionIdList.push($(this).val());
+            });
+            $('#EmployeeStatusIds option:selected').each(function () {
+                selectedStatusIdList.push($(this).val());
+            });
+
+            $('#DegreeIds option:selected').each(function () {
+                selectedDegreeIdList.push($(this).val());
+            });
+
+            $('#TrainingIds option:selected').each(function () {
+                selectedTrainingIdList.push($(this).val());
+            });
+            $('#TrainingTypeIds option:selected').each(function () {
+                selectedTrainingTypeIdList.push($(this).val());
+            });
+
+            $('#CredentialIds option:selected').each(function () {
+                selectedCredentialIdList.push($(this).val());
+            });
+
+            $('#CustomFieldIds option:selected').each(function () {
+                selectedCustomFieldIdList.push($(this).val());
+            });
+
+            $('#CustomFieldTypeIds option:selected').each(function () {
+                selectedCustomFieldTypeIdList.push($(this).val());
+            });
+
+            $('#BenefitIds option:selected').each(function () {
+                selectedBenefitIdList.push($(this).val());
+            });
+            $('#ActionTypeIds option:selected').each(function () {
+                selectedActionTypeIdList.push($(this).val());
+            });
+
+            superviorId = $("#SuperviorId").val();
+
+            locationId = $("#LocationId").val();
+        }
+        else if (criteriaType == 1) // By Employee
+        {
+            $("input[name='chkSelEmp']").each(function () {
+                debugger;
+                superviorId = $("#EmployeeBySuperviorId").val();
+                var isSelected = $(this).is(":Checked");
+                if (isSelected) {
+                    selectedEmployeeIdList.push($(this).val());
+                }
+
+            });
+        }
+        var fromdate = moment(document.getElementById("StartDate").value);
+        var todate = moment(document.getElementById("EndDate").value);
+        var dataObj = new Object();
+        dataObj.CriteriaType = criteriaType;
+        dataObj.EmployeeSelectionIds = selectedEmployeeIdList.length > 0 ? selectedEmployeeIdList.join(",") : "";
+        dataObj.FromDate = fromdate.format("MM/DD/YYYY");
+        dataObj.ToDate = todate.format("MM/DD/YYYY");
+        dataObj.CompanyId = $("#CompanyId").val();
+        dataObj.SuperviorId = superviorId;
+        dataObj.LocationId = locationId;
+        dataObj.ReportYear = $("#ReportYear").val();
+        dataObj.AverageNoOfEmployees = $("#AverageNoOfEmployees").val();
+        dataObj.TotalHoursByEmployees = $("#TotalHoursByEmployees").val();
+        dataObj.LocationSelectionIds = selectedLocationIdList.length > 0 ? selectedLocationIdList.join(",") : "";
+        dataObj.DepartmentSelectionIds = selectedDepartmentIdList.length > 0 ? selectedDepartmentIdList.join(",") : "";
+        dataObj.SubDepartmentSelectionIds = selectedSubDepartmentIdList.length > 0 ? selectedSubDepartmentIdList.join(",") : "";
+        dataObj.EmployeeTypeSelectionIds = selectedEmployeeTypeIdList.length > 0 ? selectedEmployeeTypeIdList.join(",") : "";
+        dataObj.EmploymentTypeSelectionIds = selectedEmploymentTypeIdList.length > 0 ? selectedEmploymentTypeIdList.join(",") : "";
+        dataObj.EmploymentStatusSelectionIds = selectedEmploymentStatusIdList.length > 0 ? selectedEmploymentStatusIdList.join(",") : "";
+        dataObj.PositionSelectionIds = selectedPositionIdList.length > 0 ? selectedPositionIdList.join(",") : "";
+        dataObj.StatusSelectionIds = selectedStatusIdList.length > 0 ? selectedStatusIdList.join(",") : "";
+        dataObj.DegreeSelectionIds = selectedDegreeIdList.length > 0 ? selectedDegreeIdList.join(",") : "";
+        dataObj.TrainingSelectionIds = selectedTrainingIdList.length > 0 ? selectedTrainingIdList.join(",") : "";
+        dataObj.TrainingTypeSelectionIds = selectedTrainingTypeIdList.length > 0 ? selectedTrainingTypeIdList.join(",") : "";
+
+        dataObj.CredentialSelectionIds = selectedCredentialIdList.length > 0 ? selectedCredentialIdList.join(",") : "";
+        dataObj.CustomFieldSelectionIds = selectedCustomFieldIdList.length > 0 ? selectedCustomFieldIdList.join(",") : "";
+        dataObj.CustomFieldTypeSelectionIds = selectedCustomFieldTypeIdList.length > 0 ? selectedCustomFieldTypeIdList.join(",") : "";
+        dataObj.BenefitSelectionIds = selectedBenefitIdList.length > 0 ? selectedBenefitIdList.join(",") : "";
+        dataObj.ActionTypeSelectionIds = selectedActionTypeIdList.length > 0 ? selectedActionTypeIdList.join(",") : "";
+
+        return dataObj;
+    }
+    function getSelectedDeptsSubDeptDDL(departmentIds) {
+        debugger;
+        var targetElement = '#SubDepartmentIds';
+        $(targetElement).select2("enable", false);
+        $.ajax({
+            type: "get",
+            url: '/Reports/GetCompanySubDeptByDept',
+            data: {
+                "departmentIds": departmentIds               
+            },
+
+            success: function (data) {
+                debugger;               
+                $(targetElement + ' option').remove();
+                //var option = '<option value=""> Please Select </option>';
+                //$(targetElement).append(option);
+                $(data).each(function () {
+                    var option = '<option value=' + this.Value + '>' + this.Text + '</option>';
+                    $(targetElement).append(option);
+                });
+                $(targetElement).val("");
+                $(targetElement).select2('destroy');
+                $(targetElement).select2({
+                    placeholder: "All",
+                    allowClear: true
+                });
+                $(targetElement).select2("enable");
+            },
+            error: function () {
+                alert("Error Loading ajax");
+            }
+        });
+    }
+    function getDeleteReportTemplate(templateId) {
+        $.ajax({
+            type: "get",
+            url: '/ReportCriteriaTemplate/Delete',
+            data: { "id": templateId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divCreateEditDeleteTemplate").html(data);
+                $("#ReportTemplateDelete_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function deleteReportTemplate(id) {
+        $.ajax({
+            type: "POST",
+            url: '/ReportCriteriaTemplate/ConfirmDelete',
+            data: { "id": id },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                if (data.status == "Success")
+                    showAlertAutoHide("#reportIndexPageAlert", data.status, data.message);
+                //location.reload(true);
+                //Refresh Template dropdown list
+                getReportTemplateList(false);
+                setTimeout(function () {
+                    getReportTemplateDetail();
+                }, 2000);
+                $("#ReportTemplateDelete_modal").modal("hide");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+</script>

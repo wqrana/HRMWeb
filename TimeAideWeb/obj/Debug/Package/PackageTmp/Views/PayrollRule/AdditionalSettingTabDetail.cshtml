@@ -1,0 +1,231 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.PayrollRule
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-12 p-1">
+                <div class="panel panel-default" style="margin-left:0px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Additional Setting
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <div class="col-md-5">
+                                <div class="form-group row mb-0">
+                                    <label class="col-md-6 col-form-label">
+                                        Paid Meal
+                                    </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        Paid Meal?:
+                                    </label>
+                                    <div class="col-md-2 pt-2">
+                                        @Html.DisplayFor(m=>m.IsPaidMeal)                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        Meal Hours:
+                                    </label>
+                                    <div class="col-md-3 text-muted">
+                                        @Html.DisplayFor(m => m.PaidMealHour)                                        
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        After How Many Hours?:
+                                    </label>
+                                    <div class="col-md-3 text-muted">
+                                        @Html.DisplayFor(m => m.PaidMealMinimumHour)
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <label class="col-md-6 col-form-label">
+                                        Deduct Meal
+                                    </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        Deduct Meal?:
+                                    </label>
+                                    <div class="col-md-2 pt-2 text-muted">
+                                        @Html.DisplayFor(m => m.IsDeductMeal)                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        Meal Hours:
+                                    </label>
+                                    <div class="col-md-3 text-muted">
+                                        @Html.DisplayFor(m => m.DeductMealHour)                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        After How Many Hours?:
+                                    </label>
+                                    <div class="col-md-3 text-muted">
+                                        @Html.DisplayFor(m => m.DeductMinimumHour)                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <label class="col-md-6 col-form-label">
+                                        Deduct Secondary Meal
+                                    </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        Deduct Secondary Meal?:
+                                    </label>
+                                    <div class="col-md-2 pt-2">
+                                        @Html.DisplayFor(m => m.IsDeductSecondaryMeal)
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        Meal Hours:
+                                    </label>
+                                    <div class="col-md-3 text-muted">
+                                        @Html.DisplayFor(m => m.DeductSecondaryMealHour)                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-7 col-form-label" style="margin-left:10px">
+                                        After How Many Hours?:
+                                    </label>
+                                    <div class="col-md-3 text-muted">
+                                        @Html.DisplayFor(m => m.DeductSecondaryMealMinimumHour)                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-default" style="margin-left:0px">
+                                            <div class="panel-heading" style="padding-left:10px">
+                                                Overtime Days
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                        Sunday:
+                                                    </label>
+                                                    <div class="col-md-9 pt-2 text-muted">
+                                                        @{
+                                                            var SundayOTValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.SundayOTField, Model.SundayOTVal ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => SundayOTValText)                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                        Monday:
+                                                    </label>
+                                                    <div class="col-md-9 pt-2 text-muted">
+                                                        @{
+                                                            var MondayOTValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.MondayOTField, Model.MondayOTVal ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => MondayOTValText)                                                       
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                        Tuesday:
+                                                    </label>
+                                                    <div class="col-md-9 pt-2 text-muted">
+                                                        @{
+                                                            var TuesdayOTValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.TuesdayOTField, Model.TuesdayOTVal ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => TuesdayOTValText)
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                        Wednesday:
+                                                    </label>
+                                                    <div class="col-md-9 pt-2 text-muted">
+                                                        @{
+                                                            var WednesdayOTValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.WednesdayOTField, Model.WednesdayOTVal ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => WednesdayOTValText)
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                        Thursday:
+                                                    </label>
+                                                    <div class="col-md-9 pt-2 text-muted">
+                                                        @{
+                                                            var ThursdayOTValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.ThursdayOTField, Model.ThursdayOTVal ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => ThursdayOTValText)
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                        Friday:
+                                                    </label>
+                                                    <div class="col-md-9 pt-2 text-muted">
+                                                        @{
+                                                            var FridayOTValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.FridayOTField, Model.FridayOTVal ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => FridayOTValText)
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label pr-0" style="margin-left:10px">
+                                                        Saturday:
+                                                    </label>
+                                                    <div class="col-md-9 pt-2 text-muted">
+                                                        @{
+                                                            var SaturdayOTValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.SaturdayOTField, Model.SaturdayOTVal ?? 0);
+                                                        }
+                                                        @Html.DisplayFor(m => SaturdayOTValText)
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <label class="col-md-6 col-form-label">
+                                        Daily Hours Rounding
+                                    </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        Round to Schedule?:
+                                    </label>
+                                    <div class="col-md-2 pt-2">
+                                        @Html.DisplayFor(m =>m.IsRoundToSchedule)
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" style="margin-left:10px">
+                                        After how many hours?:
+                                    </label>
+                                    <div class="col-md-2 text-muted">
+                                        @Html.DisplayFor(m => m.RoundAfterHour)
+                                        
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

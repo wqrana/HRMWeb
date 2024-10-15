@@ -1,0 +1,401 @@
+﻿@model TimeAide.Web.Models.EmployeeAttendenceSchDetail
+<style>
+    .showDate {
+        display: block;
+    }
+
+    .hideDate {
+        display: none;
+    }
+    .child-modal-sch {
+        z-index: 1200;
+    }
+</style>
+
+<div id="editScheduleDetail_modal" class="modal custom-modal child-modal-sch">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border:1px solid">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit- Schedule Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id)
+                        @Html.HiddenFor(m => m.nScheduleId)
+                        @Html.HiddenFor(m => m.dPunchDate)
+                        @Html.HiddenFor(m => m.nSchedModPeriodSummId)
+                        @Html.HiddenFor(m => m.sWeekID)
+                        @Html.HiddenFor(m => m.nUserID)
+                        @Html.Hidden("openType",(string)ViewBag.openType)
+                        @{ 
+                            var minAllowPunchDate = (Model.dPunchDate ?? DateTime.Today).AddDays(-1);
+                            var maxAllowPunchDate = (Model.dPunchDate ?? DateTime.Today).AddDays(2).AddMinutes(-1);
+
+                        }
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Employee ID: <span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.nUserID, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Punch Date: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @* @Html.EditorFor(model => model.dPunchDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })*@
+                                @{ var dPunchDate = (@Model.dPunchDate ?? DateTime.Today).ToString("ddd, dd MMMM yyyy");
+
+                                }
+                                @Html.TextBox("dPunchDate", @dPunchDate, new { @class = "form-control text-box single-line", disabled = "disabled" })
+                            </div>
+                            <label class="col-md-2 col-form-label">Day Hours(s): <span class="text-danger"></span></label>
+                            <div class="col-md-1 pl-0 pr-0">
+                                @Html.EditorFor(model => model.dblDayHours, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Day Type: <span class="text-danger">*</span></label>
+                            <div class="col-md-4 pr-0">
+                                @Html.DropDownList("nWorkDayType", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Punch Num: <span class="text-danger">*</span></label>
+                            <div class="col-md-4 pr-0">
+                                @Html.DropDownList("nPunchNum", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @*@{ var showField = Model.nPunchNum > 0 ? "showDate" : "hideDate";}*@
+
+                            <label class="col-md-2 col-form-label">Punch-In 1: <span class="text-danger"></span></label>
+
+                            <div class="col-md-4 pr-0">
+                                <div id="dPunchIn1Div" class="showDate">
+                                    @* @Html.EditorFor(model => model.dPunchIn1, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @{ var dPunchIn1 = (Model.dPunchIn1 ?? DateTime.Now).ToString("yyyy-MM-ddTHH:mm"); }
+                                    <input type="datetime-local" id="dPunchIn1" min="@minAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")" max="@maxAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")"
+                                           value="@dPunchIn1" class="form-control" />
+                                    <span class="validity"></span>
+                                </div>
+                            </div>
+                            @*@{ showField = Model.nPunchNum > 1 ? "showDate" : "hideDate";}*@
+
+                            <label class="col-md-2 col-form-label">Punch-Out 1: <span class="text-danger"></span></label>
+
+                            <div class="col-md-4 pr-0">
+                                <div id="dPunchOut1Div" class="showDate">
+                                    @*  @Html.EditorFor(model => model.dPunchOut1, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @{ var dPunchOut1 = (Model.dPunchOut1 ?? DateTime.Now).ToString("yyyy-MM-ddTHH:mm"); }
+                                    <input type="datetime-local" id="dPunchOut1" min="@minAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")" max="@maxAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")"
+                                           value="@dPunchOut1" class="form-control" />
+                                    <span class="validity"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @* @{ showField = Model.nPunchNum > 2 ? "showDate" : "hideDate";}*@
+
+                            <label class="col-md-2 col-form-label">Punch-In 2: <span class="text-danger"></span></label>
+
+                            <div class="col-md-4 pr-0">
+                                <div id="dPunchIn2Div" class="showDate">
+                                    @* @Html.EditorFor(model => model.dPunchIn2, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @{ var dPunchIn2 = (Model.dPunchIn2 ?? DateTime.Now).ToString("yyyy-MM-ddTHH:mm"); }
+                                    <input type="datetime-local" id="dPunchIn2" min="@minAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")" max="@maxAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")"
+                                           value="@dPunchIn2" class="form-control" />
+                                    <span class="validity"></span>
+                                </div>
+                            </div>
+                            @* @{ showField = Model.nPunchNum > 2 ? "showDate" : "hideDate";}*@
+
+                            <label class="col-md-2 col-form-label">Punch-Out 2: <span class="text-danger"></span></label>
+
+                            <div class="col-md-4 pr-0">
+                                <div id="dPunchOut2Div" class="showDate">
+                                    @* @Html.EditorFor(model => model.dPunchOut2, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @{ var dPunchOut2 = (Model.dPunchOut2 ?? DateTime.Now).ToString("yyyy-MM-ddTHH:mm"); }
+                                    <input type="datetime-local" id="dPunchOut2" min="@minAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")" max="@maxAllowPunchDate.ToString("yyyy-MM-ddTHH:mm")"
+                                           value="@dPunchOut2" class="form-control" />
+                                    <span class="validity"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Note: <span class="text-danger"></span></label>
+                            <div class="col-md-10 pr-0">
+                                @* @Html.TextAreaFor(model => model.sNote, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.TextAreaFor(m => m.sNote, new {
+                               rows = "2", style = "resize:none;max-width:600px;", @class = "form-control",
+                               @maxlength = "50"
+                           })
+                               
+                            </div>
+                        </div>
+                     </div>
+                    </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveScheduleDetail" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        
+        enableDisablePunchInOutFields($('#nPunchNum').val());
+        
+        //$("#dPunchIn1").datetimepicker();
+        //$("#dPunchOut1").datetimepicker();
+
+        //$("#dPunchIn2").datetimepicker();
+        //$("#dPunchOut2").datetimepicker();
+
+      
+        $("#nPunchNum").change(function () {
+            getSchedulePunchDetail();
+        });
+        
+        $("#btnSaveScheduleDetail").click(function () {
+             saveScheduleDetail();
+        });
+    });
+    function enableDisablePunchInOutFields(punchNum) {
+        debugger;
+        //$("#dPunchIn1").removeAttr("disabled");
+        //$("#dPunchOut1").removeAttr("disabled");
+        //$("#dPunchIn2").removeAttr("disabled");
+        //$("#dPunchOut2").removeAttr("disabled");
+        //$("#dPunchIn1").attr("disabled", "disabled");
+        //$("#dPunchOut1").attr("disabled", "disabled");
+        //$("#dPunchIn2").attr("disabled", "disabled");
+        //$("#dPunchOut2").attr("disabled", "disabled");
+        $("#dPunchIn1Div").removeClass("showDate").addClass("hideDate");
+        $("#dPunchOut1Div").removeClass("showDate").addClass("hideDate");
+        $("#dPunchIn2Div").removeClass("showDate").addClass("hideDate");
+        $("#dPunchOut2Div").removeClass("showDate").addClass("hideDate");
+
+        if (punchNum > 0) {
+           // $("#dPunchIn1").attr("disabled", "disabled");
+            //$("#dPunchIn1").removeAttr("disabled");
+            $("#dPunchIn1Div").removeClass("hideDate").addClass("showDate");
+        }
+        if (punchNum > 1) {
+          //  $("#dPunchOut1").removeAttr("disabled");
+            //$("#dPunchOut1").attr("disabled", "disabled");
+            $("#dPunchOut1Div").removeClass("hideDate").addClass("showDate");
+        }
+        if (punchNum > 2) {
+            //$("#dPunchIn2").attr("disabled", "disabled");
+            //$("#dPunchOut2").attr("disabled", "disabled");
+            // $("#dPunchIn2").removeAttr("disabled");
+            //$("#dPunchOut2").removeAttr("disabled");
+            $("#dPunchIn2Div").removeClass("hideDate").addClass("showDate");
+            $("#dPunchOut2Div").removeClass("hideDate").addClass("showDate");
+        }
+    }
+    function getSchedulePunchDetail() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.Id = $('#Id').val();
+        dataObject.dPunchDate = $('#dPunchDate').val();
+        dataObject.nScheduleId = $('#nScheduleId').val();
+        dataObject.nSchedModPeriodSummId = $('#nSchedModPeriodSummId').val();
+        dataObject.nWorkDayType = $('#nWorkDayType').val();
+        dataObject.nPunchNum = $('#nPunchNum').val();
+       
+       
+        if (dataObject.nPunchNum == "" || dataObject.nWorkDayType == "") {
+            return;
+        }
+
+        $.ajax({
+            url: "/EmployeeAttendanceSchedule/AjaxGetPunchScheduleDates",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data.punchData);
+                    $("#dPunchIn1").val(covertToDateTime(data.punchData.dPunchIn1,"24"));                   
+                    $("#dPunchOut1").val(covertToDateTime(data.punchData.dPunchOut1, "24"));                   
+                    $("#dPunchIn2").val(covertToDateTime(data.punchData.dPunchIn2, "24"));                  
+                    $("#dPunchOut2").val(covertToDateTime(data.punchData.dPunchOut2, "24"));
+                    $("#dblDayHours").val(data.punchData.dblDayHours);
+
+                    enableDisablePunchInOutFields(dataObject.nPunchNum);
+
+                    //showAlertAutoHide("", data.status, data.message);
+                    //window.location.href = "/ApplicantInformation/Details/" + data.id;
+                    //window.location.reload();
+
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+    }
+    function saveScheduleDetail() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.Id = $('#Id').val();
+        dataObject.nSchedModPeriodSummId = $('#nSchedModPeriodSummId').val();
+        dataObject.dPunchDate = $('#dPunchDate').val();
+        dataObject.nScheduleId = $('#nScheduleId').val();        
+        dataObject.nWorkDayType = $('#nWorkDayType').val();
+        dataObject.nPunchNum = $('#nPunchNum').val();
+
+        dataObject.sWeekID = $('#sWeekID').val();
+        dataObject.nUserID = $('#nUserID').val();
+
+        dataObject.dPunchIn1 = $("#dPunchIn1").val();
+        dataObject.dPunchOut1 = $("#dPunchOut1").val();
+        dataObject.dPunchIn2 = $("#dPunchIn2").val();
+        dataObject.dPunchOut2 = $("#dPunchOut2").val();
+
+        dataObject.sNote = $("#sNote").val();
+        if (dataObject.nPunchNum == "" || dataObject.nWorkDayType == "") {
+            showAlertAutoHide("", "Error", "Please select the required field");
+            return;
+        }
+
+        $.ajax({
+            url: "/EmployeeAttendanceSchedule/EditAttendenceScheduleDetail",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    console.log(data.retData);
+                    if ($("#openType").val() != 'EPDate') {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                    $("#editScheduleDetail_modal").modal("hide");
+                    switch ($("#openType").val()) {
+                        
+                        case "Calendar":
+
+                            refreshCalendarView(data.retData);
+                            break;
+
+                        case "Overview":
+                            refreshScheduleOverview(data.retData);
+                            break;
+                        case "EPDate":
+                            reprocesssTimesheetEditorPunchDate();
+                            break;
+                        default:
+                            refreshScheduleData(data.retData);
+                            refreshScheduleDetailData(data.retData);
+                    }
+                    //if ($("#openType").val() != "Calendar") {
+                    //    refreshScheduleData(data.retData);
+                    //    refreshScheduleDetailData(data.retData);
+                    //}
+                    //else {
+
+                    //    refreshCalendarView(data.retData);
+                    //}
+                   
+                    //window.location.reload();
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+
+    }
+    function covertToDateTime(sourceDteStr,formatType) {
+        debugger;
+        var retStr = "";
+        var pattern = /Date\(([^)]+)\)/;
+        var results = pattern.exec(sourceDteStr);
+        var dt = new Date(parseFloat(results[1]));
+        if (formatType == "AP") {
+            retStr = moment(dt).format("MM/DD hh:mm A");
+        }
+        else if (formatType == "24") {
+            var retStr = moment(dt).format("YYYY-MM-DDTHH:mm");
+        }
+        return retStr;
+    }
+
+    function refreshScheduleData(dataObj) {
+        debugger;
+        var table = $('#tblSchedule').DataTable();
+        var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+            return table.cell(rowIdx, 0).data() == dataObj.nSchedModPeriodSummId ? true : false;
+        });      
+        
+        table.cell(selectedRow[0], 8).data(dataObj.dblTotalPeriodHours);
+        
+    }
+    function refreshScheduleDetailData(dataObj) {
+        debugger;
+        var table = $('#tblScheduleDetail').DataTable();
+        var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+            $(table.rows(rowIdx).nodes()).removeClass("bg-success");
+            return table.cell(rowIdx, 0).data() == dataObj.Id ? true : false;
+           
+        });
+        $(table.rows(selectedRow[0]).nodes()).addClass("bg-success");
+        table.cell(selectedRow[0], 5).data(dataObj.sWorkDayTypeName);
+        table.cell(selectedRow[0], 6).data(dataObj.nPunchNum);
+
+        table.cell(selectedRow[0], 7).data("");
+        table.cell(selectedRow[0], 8).data("");
+        table.cell(selectedRow[0], 9).data("");
+        table.cell(selectedRow[0], 10).data("");
+
+        if (dataObj.nPunchNum > 0) {
+            table.cell(selectedRow[0], 7).data(covertToDateTime(dataObj.dPunchIn1,"AP"));
+        }
+        if (dataObj.nPunchNum > 1) {
+            table.cell(selectedRow[0], 8).data(covertToDateTime(dataObj.dPunchOut1, "AP"));
+        }
+        if (dataObj.nPunchNum > 2) {
+            table.cell(selectedRow[0], 9).data(covertToDateTime(dataObj.dPunchIn2, "AP"));
+            table.cell(selectedRow[0], 10).data(covertToDateTime(dataObj.dPunchOut2, "AP"));
+        }
+        table.cell(selectedRow[0], 11).data(dataObj.dblDayHours);
+        table.cell(selectedRow[0], 12).data(dataObj.sNote);
+    }
+</script>
+
+

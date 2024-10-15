@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.PayScale
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayScaleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayScaleName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RateFrequency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RateFrequency.RateFrequencyName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelCount)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

@@ -1,0 +1,102 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Role>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.Label("Role")
+        </th>
+        <th>
+            @Html.Label("Description")
+        </th>
+        <th>
+            @Html.Label("Role Type")
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleType.RoleTypeName)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")
+<div id='myModalNew' class='modal'>
+    <div class="modal-dialog" style="width:100% !important; min-width:100% !important;">
+        <div class="modal-content">
+            <div id='myModalContentNew'></div>
+        </div>
+    </div>
+</div>
+<div id='userRegisterModal' class='modal'>
+    <div class="modal-dialog"  style="width:50% !important; min-width:50% !important;">
+        <div class="modal-content">
+            <div id='userRegisterModalContent'></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function fnAddRoleMembers(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/Role/AddRemoveMembers',
+            contentType: "application/json; charset=utf-8",
+            data: { "roleId": id },
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#myModalContentNew').html(data);
+                $("#myModalNew").css('z-index', '2020 !important');
+                $('#myModalNew').modal(options);
+                $('#myModalNew').modal('show');
+
+
+            },
+            error: function (xhr, status, error) {
+                debugger
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+    function ShowRoleMembersHistory(recordId) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '/Role/RoleMembersHistory',
+            contentType: "application/json; charset=utf-8",
+            data: { "refrenceId": recordId },
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                //$('#myModal').modal(options);
+                //$('#myModal').css({ 'width': '70%' });
+                //$('#myModal').css({ 'max-width': '70%' });
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,118 @@
+﻿@model TimeAide.Web.Models.CompensationItem
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+    <div class="form-group row">
+        @Html.LabelFor(model => model.CompensationName, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompensationName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompensationName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group row">
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.CompensationTypeId, "Compensation Type", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationType>("CompensationTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.CompensationTypeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.ComputationTypeId, "Computation Type", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationComputationType>("ComputationTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.ComputationTypeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.IsEnabled, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsEnabled)
+                @Html.ValidationMessageFor(model => model.IsEnabled, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.ImportTypeId, "Import Type", htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="col-md-8">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationComputationType>("ImportTypeId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.ImportTypeId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.GLAccount, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.GLAccount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.GLAccount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.IsCovidCompensation, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsCovidCompensation)
+                @Html.ValidationMessageFor(model => model.IsCovidCompensation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.IsFICASSCCExempt, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsFICASSCCExempt)
+                @Html.ValidationMessageFor(model => model.IsFICASSCCExempt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.ReportOrder, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ReportOrder, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ReportOrder, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.GLLookupField, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.GLLookupField, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.GLLookupField, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.Partial("_CreatePageFooterView")
+</div>
+}
+

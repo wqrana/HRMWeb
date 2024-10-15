@@ -1,0 +1,168 @@
+﻿@model TimeAide.Web.Models.EmployeeCustomField
+@*@using (Html.BeginForm())
+{*@
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @*@Html.AntiForgeryToken()*@
+        @Html.HiddenFor(model => model.Id)
+        <input id="EmployeeCustomFieldId" name="EmployeeCustomFieldId" type="hidden" value="@Model.Id">
+        @Html.HiddenFor(model => model.UserInformationId)
+        @foreach (TimeAide.Web.Models.CustomField field in ViewBag.CustomFieldList)
+        {
+            if ((field.IsExpirable))
+            {
+                <input type="hidden" id="hdnCustomFieldId_@field.Id" name="custId" value="true">
+            }
+            else
+            {
+                <input type="hidden" id="hdnCustomFieldId_@field.Id" name="custId" value="false">
+            }
+            if ((field.CustomFieldTypeId.HasValue && field.CustomFieldTypeId.Value == (int)TimeAide.Web.Models.CustomFieldTypes.Equipment))
+            {
+                <input type="hidden" id="hdnCustomFieldTypeId_@field.Id" name="customFieldTypeId" value="true">
+            }
+            else
+            {
+                <input type="hidden" id="hdnCustomFieldTypeId_@field.Id" name="customFieldTypeId" value="false">
+            }
+        }
+
+        <div class="col-md-12">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CustomFieldId, "Custom Field", htmlAttributes: new { @class = "control-label" })
+                @(Html.CustomDropDownList<TimeAide.Web.Models.CustomField>("CustomFieldId", null, Model.CustomFieldId,false,null, htmlAttributes: new { @class = "form-control", onchange = "CustomFieldChange()", disabled = "true" }))
+                @Html.ValidationMessageFor(model => model.CustomFieldId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CustomFieldValue, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.CustomFieldValue, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CustomFieldValue, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CustomFieldNote, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.CustomFieldNote, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CustomFieldNote, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12" id="divCustomFieldIssuanceDate" style="display:none">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.IssuanceDate, "Issuance Date:", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.IssuanceDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IssuanceDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12" id="divCustomFieldReturnDate" style="display:none">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.ReturnDate, "Return Date:", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ReturnDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReturnDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12" id="divCustomFieldExpirationDate" style="display:none">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.ExpirationDate, "Expiration Date:", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ExpirationDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ExpirationDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="submit-section">
+            <input type="hidden" id="popupTargetDdl" />
+            <button type="button" id="editcustomfieldbtn" onclick="fnEditEmployeeCustomField('@ViewBag.FormName');" class="btn btn-primary submit-btn">Save</button>
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+            @*<button onclick="$(this).closest('.modal').modal('hide'); return false;">Cancel</button>*@
+        </div>
+        @Scripts.Render("~/bundles/jqueryval")
+    </div>
+@*}*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+
+        CustomFieldChange();
+    });
+
+</script>
+<script type="text/javascript">
+    function CustomFieldChange() {
+        debugger
+        var selectedId = $('#CustomFieldId  :selected').val();
+        //if ($('#hdnCustomFieldId_' + selectedId)) {
+        if ($('#hdnCustomFieldId_' + selectedId).val() == 'true') {
+            $('#divCustomFieldExpirationDate').show();
+        }
+        else {
+            $('#divCustomFieldExpirationDate').hide();
+        }
+
+        if ($('#hdnCustomFieldTypeId_' + selectedId).val() == 'true') {
+            $('#divCustomFieldIssuanceDate').show();
+            $('#divCustomFieldReturnDate').show();
+        }
+        else {
+            $('#divCustomFieldIssuanceDate').hide();
+            $('#divCustomFieldReturnDate').hide();
+        }
+
+    }
+    function fnEditEmployeeCustomField(id) {
+        debugger;
+        $(".loading").show();
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+
+        $("#editcustomfieldbtn").attr("disabled", "disabled");
+        var options = { "backdrop": "static", keyboard: true };
+
+        var model = {
+            UserInformationId: $('#UserInformationId').val(),
+            Id: $('#EmployeeCustomFieldId').val(),
+            CustomFieldNote: $('#CustomFieldNote').val(),
+            CustomFieldValue: $('#CustomFieldValue').val(),
+            ExpirationDate: $('#ExpirationDate').val(),
+            CustomFieldId: $('#CustomFieldId  :selected').val(),
+            IssuanceDate: $('#IssuanceDate').val(),
+            ReturnDate: $('#ReturnDate').val(),
+
+        }
+        $.ajax({
+            type: 'post',
+            url: '/EmployeeCustomField/Edit',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                $(".loading").hide();
+                $("#editcustomfieldbtn").removeAttr("disabled");
+                $('#divEmployeeCustomField').html(html);
+                //fnMostRecentEmploymentHistory(id);
+                $('#myModal').modal('hide');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                $("#editcustomfieldbtn").removeAttr("disabled");
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                //errorObject[0].OriginalHireDate
+                //"The Hire Date field is required."
+                //var $ul = $('div.validation-summary-valid.text-danger > ul');
+                //$ul.empty();
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    //$ul.append('<li>' + errorMessage + '</li>');
+                    //alert(idx);
+                    //alert(errorMessage);
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+</script>

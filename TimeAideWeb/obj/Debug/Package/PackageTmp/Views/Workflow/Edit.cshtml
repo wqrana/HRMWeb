@@ -1,0 +1,132 @@
+﻿@model TimeAide.Web.Models.Workflow
+<div id="WorkflowCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Workflow - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="WorkflowCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "WorkflowId" })
+                        @Html.HiddenFor(m => m.CreatedDate)
+                        @Html.HiddenFor(m => m.CreatedBy)
+                        @Html.HiddenFor(m => m.DataEntryStatus)
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.WorkflowName, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.WorkflowName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.WorkflowName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.WorkflowDescription, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.WorkflowDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.WorkflowDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ClosingNotificationId, "Closing Notification", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.DropDownList("ClosingNotificationId", null, "- Please select -", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClosingNotificationId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ClosingNotificationMessageId, "Closing Notification Message", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.NotificationMessage>("ClosingNotificationMessageId", null, Model.ClosingNotificationMessageId, htmlAttributes: new { @class = "form-control" }))
+                                @Html.ValidationMessageFor(model => model.ClosingNotificationMessageId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ReminderNotificationMessageId, "Reminder Notification Message", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.NotificationMessage>("ReminderNotificationMessageId", null,Model.ReminderNotificationMessageId ,htmlAttributes: new { @class = "form-control" }))
+                                @Html.ValidationMessageFor(model => model.ClosingNotificationMessageId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.CancelNotificationMessageId, "Cancel Notification Message", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @(Html.CustomDropDownList<TimeAide.Web.Models.NotificationMessage>("CancelNotificationMessageId", null,Model.CancelNotificationMessageId ,htmlAttributes: new { @class = "form-control" }))
+                                @Html.ValidationMessageFor(model => model.ClosingNotificationMessageId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.IsZeroLevel, "Is Zero Level ", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-8">
+                                @if (Model.NumberOfLevels == 0)
+                                {
+                                    <div class="checkbox">
+                                        @Html.CheckBoxFor(model => model.IsZeroLevel, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.IsZeroLevel, "", new { @class = "text-danger" })
+                                }
+                                else
+                                {
+                                    <div class="alert alert-danger" style="text-align:center;padding:10px;font-weight:bold">
+                                        Workflow has levels defined, it cannot be configured as Zero Level.
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <span>All Companies</span>
+                    <input type="hidden" id="hdnSelectedCompanyId" value="@TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId" />
+                    @if (ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+                    {
+                        <input type="checkbox" id="chkAllCompanies" checked="checked" />
+                    }
+                    else if (!ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+                    {
+                        <input type="checkbox" id="chkAllCompanies" checked="checked" disabled="disabled" />
+                    }
+                    else if (!ViewBag.IsAllCompanies)
+                    {
+                        <input type="checkbox" id="chkAllCompanies" value="@ViewBag.IsAllCompanies" />
+                    }
+                </div>
+                <div class="submit-section">
+                    <button id="btnSaveWorkflow" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnSaveWorkflow").click(function () {
+            saveWorkflowData();
+        });
+    });
+</script>

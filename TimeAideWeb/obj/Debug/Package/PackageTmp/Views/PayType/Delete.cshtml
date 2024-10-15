@@ -1,0 +1,23 @@
+﻿@model TimeAide.Web.Models.PayType
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayTypeName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PayTypeDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayTypeDescription)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.UserDailyBalanceViewModel>
+    @{ 
+        var renderMsg = "";
+        if (ViewBag.RenderStatus == "Error") {
+            renderMsg = ViewBag.RenderMessage;
+        }
+    }
+@Html.Hidden("RenderStatus", renderMsg)
+<div id="" style="max-height:250px; overflow-y:auto">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0">
+            <thead>
+                <tr>
+                    <th>Date </th>
+                    <th>Bal.</th>
+                    <th>Rem.</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => item.BalanceDate)</td>
+                        @{ 
+                            var openingBal = item.AccrualType == "NO" ? "-" : Math.Round(item.OpeningBalance,2).ToString();
+                            var availBal = item.AccrualType == "NO" ? "-" : Math.Round(item.Available,2).ToString();
+                            var opBalCSS = item.OpeningBalance < 0 ? "text-danger" : "";
+                            var avBalCSS = item.Available < 0 ? "text-danger" : "";
+                        }
+                        <td class="@opBalCSS">@Html.DisplayFor(m => openingBal)</td>
+                        <td class="@avBalCSS">@Html.DisplayFor(m => availBal)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        if ($("#RenderStatus").val() != "") {
+            $("#divTransactionAlert").text($("#RenderStatus").val());
+            $("#divTransactionAlert").show();
+            $("#btnSaveTransaction").prop("disabled", true);
+        }
+        else {
+            $("#divTransactionAlert").hide();
+            $("#btnSaveTransaction").prop("disabled", false);
+        }
+    });
+</script>

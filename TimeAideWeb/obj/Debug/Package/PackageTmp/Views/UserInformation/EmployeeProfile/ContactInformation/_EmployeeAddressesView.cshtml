@@ -1,0 +1,95 @@
+﻿@using TimeAide.Common.Helpers;
+@using TimeAide.Services.Helpers;
+@model TimeAide.Web.Models.UserInformation
+<div class="card-body">
+    <h3 class="card-title">Employee Addresses</h3>
+    <div class="table-responsive">
+        <table class="table table-nowrap">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Address1</th>
+                    <th>Address2</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>ZipCode</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ActiveUserContactInformation != null)
+                {
+                    //if (Model.ActiveUserContactInformation.HasHomeAddress)
+                    //{
+                    <tr>
+
+                        <td>Home</td>
+                        <td>@Model.ActiveUserContactInformation.HomeAddress1</td>
+                        <td>@Model.ActiveUserContactInformation.HomeAddress2</td>
+                        <td>
+                            @if (Model.ActiveUserContactInformation.HomeCity != null)
+                            {
+                                @Model.ActiveUserContactInformation.HomeCity.CityName
+                            }
+                        </td>
+                        <td>
+                            @if (Model.ActiveUserContactInformation.HomeState != null)
+                            {
+                                @Model.ActiveUserContactInformation.HomeState.StateName
+                            }
+
+                        </td>
+                        <td>
+                           
+                                @Model.ActiveUserContactInformation.HomeZipCode
+                          
+
+                        </td>
+                        <td class="text-right">
+                            @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.AddressPrivilege.AllowView)
+                            {
+                                <a href="#" class="edit-icon" data-toggle="modal" data-target="#employee_home_addresse_modal"><i class="fa fa-pencil"></i></a>
+                            }
+                        </td>
+                    </tr>
+                    @*}
+                        if (Model.ActiveUserContactInformation.HasMailingAddress)
+                        {*@
+            <tr>
+                <td>Mailing</td>
+                <td>@Model.UserContactInformations.FirstOrDefault().MailingAddress1</td>
+                <td>@Model.UserContactInformations.FirstOrDefault().MailingAddress2</td>
+                <td>
+                    @if (Model.UserContactInformations.FirstOrDefault().MailingCity != null)
+                    {
+                        <span> @Model.UserContactInformations.FirstOrDefault().MailingCity.CityName</span>
+                    }
+                </td>
+                <td>
+                    @if (Model.UserContactInformations.FirstOrDefault().MailingState != null)
+                    {
+                        <span>
+                            @Model.UserContactInformations.FirstOrDefault().MailingState.StateName
+                        </span>
+                    }
+                </td>
+                <td>
+                  
+                        <span>
+                            @Model.UserContactInformations.FirstOrDefault().MailingZipCode
+                        </span>
+                 
+                </td>
+                <td class="text-right">
+                    @if (!SecurityHelper.IsSuperAdmin && SessionHelper.LoginId == Model.Id && ViewBag.AddressPrivilege.AllowView)
+                    {
+                        <a href="#" class="edit-icon" data-toggle="modal" data-target="#employee_mailing_addresse_modal"><i class="fa fa-pencil"></i></a>
+                    }
+                </td>
+            </tr>
+                    //}
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

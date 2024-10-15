@@ -1,0 +1,130 @@
+﻿@model TimeAide.Web.Models.ApplicantAction
+
+<div style="padding:0px"> 
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-6 p-0">
+                <!-- <div class="panel panel-default" style="width:49%;margin-left:10px">-->
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">General Information</div>
+                    <div class="panel-body">
+                        @Html.Hidden("ApplicantActionDetailId", Model == null ? 0 : Model.Id)
+
+                        <div class="form-group row">
+
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Action Type:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.ActionType.ActionTypeName)
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Action Date:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.ActionDate)
+                                @*@if (Model != null)
+                            {
+                                @String.Format("{0:MM/dd/yyyy}", Model.ActionDate);
+                            }*@
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Expiry Date:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(m => m.ActionExpiryDate)                               
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Name:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.ActionName)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Description:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.ActionDescription)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Notes:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id="">   @Html.DisplayFor(model => model.ActionNotes)</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                  </div>
+                </div>
+            <div class="col-md-6 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <!--<div class="panel panel-default" style="width:49%;margin-left:10px">-->
+                    <div class="panel-heading" style="padding-left:10px">Closing Information</div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                End Date:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(model => model.ActionEndDate)                               
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Approved Date:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(model => model.ActionApprovedDate)                                
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Approved By:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                @Html.DisplayFor(model => model.ApprovedBy.FullName)
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Closing Info:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.ActionClosingInfo)</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Action Document:
+                            </label>
+                            <div class="col-md-7 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.DocName)</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group row mb-4">
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+</div>

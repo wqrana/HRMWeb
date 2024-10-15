@@ -1,0 +1,26 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_LayoutError.cshtml";
+}
+
+@*<h1 class="text-danger" style="text-align:center">Error</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+@if (Model.Exception != null)
+{
+    <h2 class="text-danger">@Html.Raw(Model.Exception.Message)</h2>
+}*@
+@*<div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+    <h4 style="display: inline;">Error</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>*@
+<div class="error-box">
+    @*<h1>Error</h1>*@
+    <h3 class="text-danger"><i class="fa fa-warning"></i>Error processing request. Please contact your system administrator!</h3>
+    <!--  <a href="index.html" class="btn btn-custom">Back to Home</a>-->
+    @Html.ActionLink("Back to Home", "Login", "Account", null, new { @class = "btn btn-custom" })
+    <button type="button" class="btn btn-custom" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+</div>

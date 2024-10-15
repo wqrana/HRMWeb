@@ -1,0 +1,156 @@
+﻿@model TimeAide.Models.ViewModel.TimesheetEditorPunchDateViewModel
+@{
+   
+}
+<style>
+    .child-modal{
+        z-index:1100;
+    }
+</style>
+<div id="timesheetPunchDateEditor_modal" class="modal custom-modal child-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Punch Date Editor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="welcome-box mb-2">
+                                <div class="welcome-det">
+                                    @Html.Hidden("weekId",Model.nWeekID)
+                                    <h4>@Html.DisplayFor(m => m.e_name)</h4>
+                                    <p><span class="">EmployeeId:</span>@Html.DisplayFor(m => m.e_id)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divLoadingEditPunchDetail" class="align-content-md-center">
+                        <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                    </div>
+                    <div id="divEditPunchDetail">
+
+                    </div>
+                    <div id="divEditDataPopup">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var isRefreshed = false;
+    $(document).ready(function () {
+        $("#divLoadingEditPunchDetail").hide();
+        getEditPunchDateDetail('@Model.tpdID');
+
+        //$(document)
+        //    .on('hidden.bs.modal', '.modal', function () {
+        //        debugger;
+        //        var modalId = $(this).attr("id");
+        //        if (modalId == 'timesheetPunchDateEditor_modal' && isRefreshed == false) {
+        //            isRefreshed = true;
+        //            refreshTimesheet($("#weekId").val());
+        //        }
+        //    });
+    });
+    $('#timesheetPunchDateEditor_modal').on('hide.bs.modal', function (e) {
+        debugger;
+        //Refresh timesheet data on closing of date editor.
+        refreshTimesheet($("#weekId").val());
+        
+    });
+    function EditPunchData(punchId) {
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/EditPunchData',
+            data: { "timesheetDetailIds": '@Model.tpdID', "punchId": punchId },
+            success: function (data) {
+                debugger;
+                $("#divAddTransction").html(data);
+                $("#timesheetEditPunch_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+
+    }
+    function EditTransaction(transId) {
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeTimeSheetEditor/EditTransaction',
+            data: { "timesheetDetailIds": '@Model.tpdID', "transId": transId },
+            success: function (data) {
+                debugger;
+                $("#divAddTransction").html(data);
+                $("#timesheetEditTransaction_modal").modal("show");
+
+            },
+            error: function () {
+            }
+        });
+
+    }
+    function getScheduleDetailEditData() {
+        debugger;
+        var schId = '@Model.schId';
+        var schDetailId = '@Model.schDetailId';
+        var companyId = '@Model.e_companyId';
+
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeAttendanceSchedule/EditAttendenceScheduleDetail',
+            data: { "schId": schId, "schDetailId": schDetailId, "companyId": companyId,"openType":"EPDate" },
+            success: function (data) {
+                debugger;
+                $("#divAddTransction").html(data);
+                $("#editScheduleDetail_modal").modal("show");
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function reprocesssTimesheetEditorPunchDate() {
+        debugger;
+        disabledSubmitAction(true);
+        var dataObj = new Object();
+        dataObj.timesheetDetailId = '@Model.tpdID';
+        $.ajax({
+            type: "POST",
+            url: "/EmployeeTimeSheetEditor/AjaxRecomputeEditPunchDate",
+            data: JSON.stringify(dataObj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                console.log(data);
+                if (data.status == "Success") {
+                    disabledSubmitAction(false);
+                    //$("#editScheduleDetail_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    getEditPunchDateDetail('@Model.tpdID');
+                }
+                else {
+                    disabledSubmitAction(false);
+                    showAlertAutoHide("", data.status, data.message);
+                }
+
+            }
+        });
+    }
+</script>
+
+
+
+
+

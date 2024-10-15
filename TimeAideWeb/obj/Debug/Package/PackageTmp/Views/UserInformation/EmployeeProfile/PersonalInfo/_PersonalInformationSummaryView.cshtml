@@ -1,0 +1,118 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<div class="card mb-0">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-view">
+                    <div class="profile-img-wrap">
+                        <div class="profile-img">
+                            <a href="#"><img alt="" src="@Model.PictureFilePath"></a>
+                        </div>
+                    </div>
+                    <div class="profile-basic">
+                        <div class="row">
+                            <div class="col-md-5" style="border-right: 2px dashed #ccc;">
+                                <div class="profile-info-left" style="margin-right: 30px;border-right: 0px">
+                                    <h3 class="user-name m-t-0 mb-0">@Html.DisplayFor(model => model.ShortFullName)</h3>
+                                    @if (ViewBag.ActiveEmploymentHistory != null && ViewBag.ActiveEmploymentHistory.Department != null)
+                                    {
+                                        <h6 class="text-muted">@ViewBag.ActiveEmploymentHistory.Department.DepartmentName</h6>
+                                    }
+                                    @if (ViewBag.ActiveEmploymentHistory != null && ViewBag.ActiveEmploymentHistory.Position != null)
+                                    {
+                                        <h6 class="text-muted">@ViewBag.ActiveEmploymentHistory.Position.PositionName</h6>
+                                    }
+                                    <div class="staff-id">Employee ID : @Html.DisplayFor(model => model.EmployeeId)</div>
+                                    @if (ViewBag.ActiveEmployment != null && ViewBag.ActiveEmployment.OriginalHireDate != null)
+                                    {
+                                        <div class="small doj text-muted">Date of Join : @String.Format("{0:MM/dd/yyyy}", ViewBag.ActiveEmployment.OriginalHireDate)</div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="row">
+                                            <div style="width:17%;margin-left: 5px;">Phone:</div>
+                                            @if (Model.ActiveUserContactInformation != null && !String.IsNullOrEmpty(Model.ActiveUserContactInformation.PhoneNumbers))
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">@Model.ActiveUserContactInformation.PhoneNumbers</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">N/A</div>
+                                            }
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div style="width:17%;margin-left: 5px;">Work Email:</div>
+                                            @if (Model.ActiveUserContactInformation != null && !String.IsNullOrEmpty(Model.ActiveUserContactInformation.WorkEmail))
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;"><a href="mailto:@Model.ActiveUserContactInformation.WorkEmail">@Model.ActiveUserContactInformation.WorkEmail</a></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">N/A</div>
+                                            }
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div style="width:17%;margin-left: 5px;">Birthday:</div>
+                                            @if (Model.BirthDate.HasValue)
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">@String.Format("{0:MM/dd/yyyy}", Model.BirthDate)</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">N/A</div>
+                                            }
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div style="width:17%;margin-left: 5px;">Home Address:</div>
+                                            @if (Model.ActiveUserContactInformation != null && !String.IsNullOrEmpty(Model.ActiveUserContactInformation.HomeAddress))
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">@Model.ActiveUserContactInformation.HomeAddress</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">N/A</div>
+                                            }
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div style="width:17%;margin-left: 5px;">Gender:</div>
+                                            @if (Model.Gender != null)
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">@Model.Gender.GenderName</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-8" style="color: #8e8e8e;">N/A</div>
+                                            }
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div style="width:17%;margin-left: 5px;">Supervisors:</div>
+                                            <div class="col-8" style="color: #8e8e8e;">
+                                                @ViewBag.EmployeeUserSupervisors
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pro-edit"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*class="col-8" style="color: #8e8e8e; display: block; overflow: hidden;"*@

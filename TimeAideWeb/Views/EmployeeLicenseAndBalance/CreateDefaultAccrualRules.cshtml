@@ -1,0 +1,167 @@
+﻿@using TimeAide.Web.Models;
+@{
+    List<AccrualType> accrualTypeList = (List<AccrualType>)ViewBag.AccrualTypeList;
+}
+<div id="employeeDefaultAccrualRuleCreate_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Employee Default Accrual Rules</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                @foreach (var item in accrualTypeList)
+                {
+                    <div class="form-group row">
+                        <div class="col-md-1 mt-2">
+                            <input id="accrualTypeId_@item.Id" name="accrualTypeDefault" type="checkbox" />
+                        </div>
+                        <label class="col-md-4 col-form-label pl-0" id="lblAccrualTypeName_@item.Id">@item.AccrualTypeName - @item.AccrualTypeDescription </label>
+                    </div>
+                    <div id="divAccrualDetail_@item.Id" style="display:none;">
+                        <div class="panel panel-default" style="margin-left:5px">
+                            <div class="panel-heading" style="padding-left:0px">@item.AccrualTypeName</div>
+                            <div class="panel-body">
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label mt-2 pr-0"> Accrual Rule:<span class="text-danger">*</span></label>
+                                    <div class="col-md-4 mt-2">
+                                        <select id="AccrualRuleId_@item.Id" class="form-control">
+                                            <option>Please Select</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2 pr-0">Start Date:<span class="text-danger">*</span></label>
+                                    <div class="col-md-4 mt-2">
+                                        <input type="datetime" id="StartOfRuleDate_@item.Id" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label mt-2 pr-0" style="margin-left:0px">Daily Hrs.:<span class="text-danger">*</span></label>
+                                    <div class="col-md-4 mt-2">
+                                        <input type="text" id="AccrualDailyHours_@item.Id" class="form-control" />
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label mt-2 pr-0"> Accrued Hours:</label>
+                                    <div class="col-md-4 mt-2">
+                                        <input type="text" id="AccruedHours_@item.Id" class="form-control" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                <div class="submit-section mt-1">
+                    <button id="btnsaveEmployeeDefaultAccrualRules" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   // var selectedTypes = [];
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $("input[name=accrualTypeDefault]").change(function () {
+            debugger;
+            //var id = $(this).attr("id");
+            //var accrTypeId = id.substring(id.indexOf("_") + 1, id.length);
+            var accrTypeId = getElementTypeId(this);
+            var state = $(this).is(":checked");
+            if (state) {
+                $("#divAccrualDetail_" + accrTypeId).show();
+                //LoadDropDownListData('', parentId, targetElement, selectedValue)
+                LoadDropDownListData('AjaxGetAccrualTypeRules', accrTypeId, '#AccrualRuleId_' + accrTypeId, null);
+            }
+            else {
+                $("#divAccrualDetail_" + accrTypeId).hide();
+            }
+        });
+        $("#btnsaveEmployeeDefaultAccrualRules").click(function () {
+            debugger;
+            var isValidated = true;
+            var selectedAccrualRecordList = [];
+            var selectedTypes = getSelectedAccrualTypes();
+            if (selectedTypes.length == 0) {
+                showAlertAutoHide("", "Error", "Please select the default accrual type(s).");
+                isValidated = false;
+                return;
+            }
+            selectedTypes.forEach(function (typeId) {
+                debugger;
+                var validatedRecord = validateAccrualType(typeId);
+                if (validatedRecord == false) {
+                    var typeName = $("#lblAccrualTypeName_" + typeId).text();
+                    var message = "Missing required field(s) for the selected accrual type(" + typeName + ")";
+                    showAlertAutoHide("", "Error", message);
+                    isValidated = false;
+                    return;
+                }
+                else {
+                    selectedAccrualRecordList.push(validatedRecord);
+                }
+            });
+            if (isValidated) {
+                saveEmployeeDefaultAccrualRulesData(selectedAccrualRecordList);
+            }
+        });
+    });
+    function getElementTypeId(element) {
+        var id = $(element).attr("id");
+        var accrTypeId = id.substring(id.indexOf("_") + 1, id.length);
+        return accrTypeId;
+    }
+    function getSelectedAccrualTypes() {
+        debugger;
+        var selectedTypes = [];
+        $("input[name='accrualTypeDefault']").each(function () {
+            debugger;
+            if ($(this).is(":checked")) {
+                var accrTypeId = getElementTypeId(this);
+                selectedTypes.push(accrTypeId);
+            }
+        });
+        return selectedTypes;
+    }
+    function validateAccrualType(id) {
+        var isRequiredValidated = 0;
+        var isValidated = true;       
+        var dataObj = new Object();
+        dataObj.UserInformationId = $("#userID").val();       
+        dataObj.AccrualTypeId = id;
+        dataObj.AccrualRuleId = $('#AccrualRuleId_' + id).val();
+        dataObj.StartOfRuleDate = $('#StartOfRuleDate_' + id).val();
+        dataObj.AccrualDailyHours = $('#AccrualDailyHours_' + id).val();
+        dataObj.AccruedHours = $('#AccruedHours_' + id).val();
+        
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.AccrualTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccrualRuleId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.StartOfRuleDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccrualDailyHours.trim().length > 0 ? 1 : 0;
+
+
+            if (isRequiredValidated != 4) {
+                isValidated = false;
+                return isValidated;
+            }
+        }
+        return dataObj;
+    }
+</script>
+
+
+

@@ -1,0 +1,65 @@
+﻿@model TimeAide.Web.Models.ApplicantStatus
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:10px">
+    @Html.Partial("_CreatePageTitleView")
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicantStatusName, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.ApplicantStatusName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ApplicantStatusName, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.UseAsApply, htmlAttributes: new { @class = "control-label col-md-2 pl-0 pr-0" })
+
+            @Html.CheckBoxFor(model=>model.UserAsApplyNP, new { htmlAttributes = new { @class = "form-control col-md-2"} })
+            @Html.ValidationMessageFor(model => model.UseAsApply, "", new { @class = "text-danger" })
+
+            @Html.LabelFor(model => model.UseAsHire, htmlAttributes: new { @class = "control-label col-md-2 pl-2 pr-0" })
+
+            @Html.CheckBoxFor(model => model.UseAsHire, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.UseAsHire, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+   
+    @Html.Partial("_CreatePageFooterView")
+</div>
+ }
+<script>
+    $(document).ready(function () {
+        $("#UseAsHire").change(function () {
+            debugger;
+            var sts = $(this).is(":checked");
+            if (sts) {
+                alert("This will override the existing status, if uses as hire");
+            }
+        });
+        $("#UserAsApplyNP").change(function () {
+            debugger;
+            var sts = $(this).is(":checked");
+            if (sts) {
+                alert("This will override the existing status, if uses as apply");
+            }
+            
+        });
+    });
+</script>

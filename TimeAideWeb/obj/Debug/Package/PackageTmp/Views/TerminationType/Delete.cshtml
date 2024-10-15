@@ -1,0 +1,23 @@
+﻿@model TimeAide.Web.Models.TerminationType
+<div style="padding:10px">
+    @Html.Partial("_DeleteViewHeaderMaster")
+    <dl class="dl-horizontal">
+        <dt>
+            Termination Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TerminationTypeName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TerminationTypeDescription)
+        </dd>
+    </dl>
+</div>
+@Html.Partial("_DeleteViewFooter")

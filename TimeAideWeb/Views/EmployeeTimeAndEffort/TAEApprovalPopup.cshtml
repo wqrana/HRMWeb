@@ -1,0 +1,128 @@
+﻿@model TimeAide.Models.ViewModel.TimeAndEffortApprovalViewModel
+
+<div id="TAEApproval_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">TAE Approval</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        @if (Model.ActionType == "I")
+                        {
+                            <div class="form-group row">
+                                <label class="col-md-1 pr-0 col-form-label">ID: <span class="text-danger"></span></label>
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                                </div>
+                                <label class="col-md-1 pr-0 col-form-label">Name: <span class="text-danger"></span></label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.EmployeeName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Status: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.DropDownList("EditApprovalTypeId", null, null, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        }
+                        @if (Model.ActionType == "A")
+                        {
+
+                            var apprTypeTxt = Model.ApprovalTypeId == 1 ? "approve" : "unapprove";
+                            var txtCss = Model.ApprovalTypeId == 1 ? "text-success" : "text-danger";
+
+                            <h4 class="@txtCss text-center">
+                                Do you want to @apprTypeTxt all the TAE records?
+                            </h4>
+                        }
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnUpdateTAEStatus" class="btn btn-primary submit-btn">Update</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        
+        $("#btnUpdateTAEStatus").click(function () {
+            updateTAEApprovalStatus();
+        });
+    });
+
+
+    function updateTAEApprovalStatus() {
+        debugger;
+        var dataObject = new Object();
+        dataObject.TAEIds = '@Model.TAEIds';
+        dataObject.ActionType = '@Model.ActionType'
+        if ('@Model.ActionType' == "I") {
+            dataObject.ApprovalTypeId = $("#EditApprovalTypeId").val();
+            if (dataObject.ApprovalTypeId == '@Model.ApprovalTypeId') {
+                showAlertAutoHide("", "Error", "Please change the status.");
+                return;
+            }
+        }
+        else {
+            dataObject.ApprovalTypeId = '@Model.ApprovalTypeId';
+        }
+        $.ajax({
+            url: "/EmployeeTimeAndEffort/TAEffortApproval",
+            type: "POST",
+            data: JSON.stringify(dataObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+
+                    showAlertAutoHide("", data.status, data.message);
+                    $("#TAEApproval_modal").modal("hide");
+                    getTimeAndEffort();
+
+
+                }
+                else if (data.status == "Error") {
+
+                    showAlertAutoHide("", "Error", data.message);
+                }
+
+            }
+            ,
+            error: function (data) {
+                showAlertAutoHide("", "Error", data.message);
+
+            }
+        });
+
+    }
+
+
+
+
+</script>
+
+
+
+

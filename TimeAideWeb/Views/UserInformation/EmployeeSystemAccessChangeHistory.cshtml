@@ -1,0 +1,230 @@
+﻿@model IEnumerable<TimeAide.Web.Models.AuditLogDetail>
+<div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+    <h4 style="display: inline;">@ViewBag.Title</h4>
+    <button class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div>
+    <div class="row" style="margin-bottom: 1rem;">
+        <div class="col-md-2">
+            <a href="javascript:filterHisroty();" id="btnFilterAccessRestrictions" class="btn btn-success btn-block">Access Restrictions</a>
+        </div>
+        <div class="col-md-2">
+            <a href="javascript:filterHisroty();" id="btnFilterAccessLevel" class="btn btn-success btn-block">Access Level</a>
+        </div>
+        <div class="col-md-2">
+            <a href="javascript:filterHisroty();" id="btnFilterAccount" class="btn btn-success btn-block">Account</a>
+        </div>
+        <div class="col-md-2">
+            <a href="javascript:filterHisroty();" id="btnFilterMemberOf" class="btn btn-success btn-block">Member Of</a>
+        </div>
+
+        <div class="col-md-2">
+            <a href="javascript:filterHisroty();" id="btnFilterAll" class="btn btn-success btn-block">All</a>
+        </div>
+        <input id="hdnFilterType" type="hidden" value="FilterAll">
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblIndexList">
+            <thead>
+                <tr>
+                    <th>
+                        Refrence Type
+                    </th>
+                    <th>
+                        Assigned
+                    </th>
+                    <th>
+                        Action
+                    </th>
+
+                    <th>
+                        By
+                    </th>
+                    <th>
+                        Activity Date/Time
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NewValue)
+                        </td>
+                        <td>
+                            <span>@Html.DisplayFor(modelItem => item.ColumnName)</span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AuditLog.ActionType)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AuditLog.UserInformation.FullName)
+                        </td>
+                        <td>
+                            @item.CreatedDate
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!--<div class="submit-section">
+        <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>-->
+    @*<button onclick="$(this).closest('.modal').modal('hide'); return false;">Cancel</button>*@
+    <!--</div>-->
+</div>
+<hr />
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+<style>
+    .modal-dialog {
+        /*width: 1000px;
+        max-width: 1000px !important;*/
+        max-width: 80% !important;
+        width: 80% !important;
+    }
+</style>
+<script>
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            //if (settings.nTable.id !== 'searchTable') {
+            //    return true;
+            //}
+            if ($("#hdnFilterType").val() == 'FilterAll') {
+                return true;
+            }
+            else if ($("#hdnFilterType").val() == 'Account Registration') {
+                if (data[0] == 'UserContactInformation' || data[0] == 'Account Registration' || data[0] == 'Change Password')
+                    return true;
+                else
+                    return false;
+            }
+            else if ($("#hdnFilterType").val() == 'AccessLevel') {
+                if (data[0] == 'UserInformationRole')
+                    return true;
+                else
+                    return false;
+            }
+            else if ($("#hdnFilterType").val() == 'MemberOf') {
+                if (data[0] == 'UserEmployeeGroup')
+                    return true;
+                else
+                    return false;
+            }
+            else if ($("#hdnFilterType").val() == 'AccessRestrictions') {
+                if (data[0] == 'SupervisorCompany' || data[0] == 'SupervisorDepartment' || data[0] == 'SupervisorEmployeeType' || data[0] == 'SupervisorSubDepartment')
+                    return true;
+                else
+                    return false;
+            }
+
+            
+            return false;
+        }
+    );
+
+    $(document).ready(function () {
+        var indexColumns = $("#tblIndexList > thead > tr:first > th").length;
+        var exportColumns = "[";
+        for (let i = 0; i < indexColumns; i++) {
+            exportColumns += i + ","
+        }
+        if (indexColumns > 0) {
+            exportColumns = exportColumns.slice(0, -1)
+        }
+        exportColumns += "]";
+        var dtable = $('#tblIndexList').DataTable({
+            searching: true,
+            ordering: false,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Copy',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<i class="fa fa-file-text-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'CSV',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    className: 'btn-primary',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: jQuery.parseJSON(exportColumns)
+                    }
+                },
+                {
+                    extend: 'pageLength',
+                    className: 'btn-primary',
+                },
+            ],
+        });
+        $("#btnFilterAccessRestrictions").click(function () {
+            $("#hdnFilterType").val("AccessRestrictions");
+            dtable.draw();
+        });
+        $("#btnFilterAll").click(function () {
+            $("#hdnFilterType").val("FilterAll");
+            dtable.draw();
+        });
+        $("#btnFilterAccount").click(function () {
+            $("#hdnFilterType").val("Account Registration");
+            dtable.draw();
+        });
+        $("#btnFilterAccessLevel").click(function () {
+            $("#hdnFilterType").val("AccessLevel");
+            dtable.draw();
+        });
+        $("#btnFilterMemberOf").click(function () {
+            $("#hdnFilterType").val("MemberOf");
+            dtable.draw();
+        });
+    });
+    function filterHisroty() {
+
+    }
+</script>
+

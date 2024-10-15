@@ -1,0 +1,79 @@
+﻿@model TimeAide.Web.Models.EmployeeIncident
+
+@{
+    ViewBag.Label = "Employee Incident";
+}
+<div id="employeeIncidentDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+            
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="employeeIncidentDeleteAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                @Html.HiddenFor(model => model.Id, new { id = "EmployeeIncidentDeleteId" })
+               
+                <div class="form-group row">
+                    <div class="panel panel-default" style="width:100%;margin-left:10px">
+                        <div class="panel-heading" style="padding-left:10px">Information</div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">OSHA Recordable:</label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    @Html.CheckBoxFor(model => model.IsOSHARecordable, new { @disabled = "disabled" })
+                                </div>
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">Case Classification:</label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.OSHACaseClassification.OSHACaseClassificationName)
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">Incident Type:</label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.IncidentType.IncidentTypeName)
+                                </div>
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">Establishment:</label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.Location.LocationName)
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">Incident Area:</label>
+                                <div class="col-md-3 text-muted mt-2 ">
+                                    @Html.DisplayFor(m => m.IncidentArea.IncidentAreaName)
+                                </div>
+                                <label class="col-md-3 col-form-label" style="margin-left:0px">Incident Date:</label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    @Html.DisplayFor(m => m.IncidentDate)
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                                       
+                </div>
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteEmployeeIncident" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteEmployeeIncident").click(function () {
+            var id = $("#EmployeeIncidentDeleteId").val();
+            deleteEmployeeIncident(id);
+        })
+
+    } );
+</script>
+

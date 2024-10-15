@@ -1,0 +1,123 @@
+﻿@model TimeAide.Web.Models.PayInformationHistory
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeader")
+    <br />
+    @Html.HiddenFor(model => model.Id, new { id = "PayInformationHistoryId" })
+    @Html.HiddenFor(model => model.UserInformationId)
+
+    <div style="font-size: 90%;">
+        <div class="form-group row" style="margin:0px;padding-top:10px">
+            <div class="panel panel-default" style="width:95%;margin-left:10px">
+                <div class="panel-heading" style="padding-left:10px">Genral</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" style="margin-left:10px">
+                            Start Date:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblOriginalHire"> @Html.DisplayFor(model => model.StartDate)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" style="margin-left:10px">
+                            Rate:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblProbationStart"> @Html.DisplayFor(model => model.RateAmount)</span>
+                            <span id="lblProbationStart" style="font-size:11px"> @Html.DisplayFor(model => model.RateFrequency.RateFrequencyName)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" style="margin-left:10px">
+                            Pay Type:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblProbationEnd">@Html.DisplayFor(model => model.PayType.PayTypeName)</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" style="margin-left:10px">
+                            Pay Frequency:
+                        </label>
+                        <div class="col-md-6 text-muted mt-2">
+                            <span id="lblEmploymentStatus">  @Html.DisplayFor(model => model.PayFrequency.PayFrequencyName)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" style="margin-left:10px">
+                            EEO Category
+                        </label>
+                        <div class="col-lg text-muted mt-2">
+                            <span id="lblTerminationType">  @Html.DisplayFor(model => model.EEOCategory.EEOCategoryName)</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" style="margin-left:10px">
+                            WC Class Code
+                        </label>
+                        <div class="col-lg text-muted mt-2">
+                            <span id="lblTerminationType">  @Html.DisplayFor(model => model.WCClassCode.ClassName)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" style="margin-left:10px">
+                            Pay Scale
+                        </label>
+                        <div class="col-lg text-muted mt-2">
+                            <span id="lblTerminationType">  @Html.DisplayFor(model => model.PayScale.PayScaleName)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="panel panel-default" style="width:49%;margin-left:10px">
+                    <div class="panel-heading" style="padding-left:10px">Closing Information</div>
+                    <div class="panel-body">
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                End Date
+                            </label>
+                            <div class="col-lg text-muted mt-2">
+                                <span id="lblTerminationReason">@Html.DisplayFor(model => model.EndDate)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Approved Date
+                            </label>
+                            <div class="col-lg text-muted mt-2">
+                                <span id="lblTerminationEligibility"> @Html.DisplayFor(model => model.ApprovedDate)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Approved By
+                            </label>
+                            <div class="col-lg text-muted mt-2">
+                                <span id="lblApprovedBy"> @Html.DisplayFor(model => model.SelectedAuthorizByName)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Change Reason
+                            </label>
+                            <div class="col-lg text-muted mt-2">
+                                <span id="lblTerminationNotes"> @Html.DisplayFor(model => model.ChangeReason)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+
+    </div>
+</div>
+
+
+<div class="submit-section" style="text-align:center">
+    <button class="btn btn-danger submit-btn m-r-10" id="btnDeletePayInformationHistory">Delete</button>
+    <button type="submit" class="btn btn-danger submit-btn m-r-10" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+</div>
+<br />
+

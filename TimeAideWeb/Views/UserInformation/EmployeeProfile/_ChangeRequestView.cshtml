@@ -1,0 +1,34 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+    <div class="table-responsive">
+        <table class="table table-nowrap">
+            <thead>
+                <tr>
+                    <th>Request Category</th>
+                    <th>Requested Information</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Action</th>
+                    <th>Request Date</th>
+                    <th>Action Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.ChangeRequestAddress)
+                {
+                    <tr>
+                        <td>Home Address</td>
+                        <td>Address1</td>
+                        <td>@item.Address1</td>
+                        <td>@item.NewAddress1</td>
+                        <td>Approved</td>
+                        <td>@DateTime.Now</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

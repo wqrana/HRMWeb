@@ -1,0 +1,32 @@
+﻿@model TimeAide.Web.Models.EmployeeCredential
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.AntiForgeryToken()
+        <div id="divCreateRecordEmployeeCredential">
+            @{Html.RenderAction("CreateRecord", "EmployeeCredential", new { id = Model.Id, userInformationId=Model.UserInformationId, credentialId=Model.CredentialId, IsRequired=Model.IsRequired });}
+        </div>
+        @Scripts.Render("~/bundles/jqueryval")
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+   
+    
+</script>
+<style>
+    .modal-dialog {
+        width: 1000px;
+        max-width: 1000px !important;
+    }
+</style>

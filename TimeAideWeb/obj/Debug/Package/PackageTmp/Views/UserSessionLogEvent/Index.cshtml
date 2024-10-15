@@ -1,0 +1,93 @@
+﻿@model IEnumerable<TimeAide.Web.Models.UserSessionLogEvent>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Client
+        </th>
+        <th>
+            Company
+        </th>
+        <th>
+            Log Listing
+        </th>
+        <th>
+            Log View
+        </th>
+        <th>
+            Log Add Open
+        </th>
+        <th>
+            Log Add Save
+        </th>
+        <th>
+            Log Edit Open
+        </th>
+        <th>
+            Log Edit Save
+        </th>
+        <th>
+            Log Delete Open
+        </th>
+        <th>
+            Log Delete Save
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.ClientId.HasValue && item.ClientId > 0)
+                {
+                    <span>@TimeAide.Services.ClientService.GetClientName(item.ClientId ?? 0)</span>
+                }
+                else
+                {
+                    <span>All Clients</span>
+                }
+            </td>
+            <td>
+                @if (item.CompanyId.HasValue && item.CompanyId > 0)
+                {
+                    <span>@TimeAide.Services.CompanyService.GetCompanyName(item.CompanyId ?? 0)</span>
+                }
+                else
+                {
+                    <span>All Companies</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogListing)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogView)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogAddOpen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogAddSave)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogEditOpen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogEditSave)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogDeleteOpen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogDeleteSave)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

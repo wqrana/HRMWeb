@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1034BEBB-392C-43B7-9202-26CD020F6371}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TimeAide.Models</RootNamespace>
+    <AssemblyName>TimeAide.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CompanyConfigurableLink.cs" />
+    <Compile Include="Models\ApplicantAction.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantApplication.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantContactInformation.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantCustomField.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantDocument.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantEducation.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantEmployment.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantEmploymentType.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantInformation.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantInterview.cs" />
+    <Compile Include="Models\ApplicantInformation\ApplicantInterviewQAnswer.cs" />
+    <Compile Include="Models\AttendanceWeb\BaseSchedule.cs" />
+    <Compile Include="Models\AttendanceWeb\EmployeeWebScheduledPeriod.cs" />
+    <Compile Include="Models\AttendanceWeb\EmployeeWebTimeSheet.cs" />
+    <Compile Include="Models\Attendence\CompanyContribution.cs" />
+    <Compile Include="Models\Attendence\CompanyContribution401K.cs" />
+    <Compile Include="Models\Attendence\CompanyContributionCompensationExclusion.cs" />
+    <Compile Include="Models\Attendence\CompanyWithholdingLoan.cs" />
+    <Compile Include="Models\Attendence\CompanyContributionPRPayExport.cs" />
+    <Compile Include="Models\Attendence\EmployeeCompensation.cs" />
+    <Compile Include="Models\Attendence\EmployeeCompensationPreviousHistory.cs" />
+    <Compile Include="Models\Attendence\EmployeeTimeOffRequestDocument.cs" />
+    <Compile Include="Models\Attendence\PeriodEntry.cs" />
+    <Compile Include="Models\Attendence\TAWinTimeOffDocument.cs" />
+    <Compile Include="Models\Attendence\Withholding401KType.cs" />
+    <Compile Include="Models\Attendence\CompanyWithholding.cs" />
+    <Compile Include="Models\Attendence\CompanyWithholdingCompensationExclusion.cs" />
+    <Compile Include="Models\Attendence\CompanyWithholdingPRPayExport.cs" />
+    <Compile Include="Models\Attendence\GLAccountType.cs" />
+    <Compile Include="Models\Attendence\CompanyCompensationPRPayExport.cs" />
+    <Compile Include="Models\Attendence\CompensationAccrualType.cs" />
+    <Compile Include="Models\Attendence\CompensationComputationType.cs" />
+    <Compile Include="Models\Attendence\CompensationImportType.cs" />
+    <Compile Include="Models\Attendence\CompanyCompensation.cs" />
+    <Compile Include="Models\Attendence\CompensationPeriodEntry.cs" />
+    <Compile Include="Models\Attendence\CompensationTransaction.cs" />
+    <Compile Include="Models\Attendence\CompensationType.cs" />
+    <Compile Include="Models\Attendence\GLAccount.cs" />
+    <Compile Include="Models\Attendence\SickAccrualType.cs" />
+    <Compile Include="Models\Attendence\VacationAccrualType.cs" />
+    <Compile Include="Models\Attendence\PayRateMultiplier.cs" />
+    <Compile Include="Models\Attendence\AccrualType.cs" />
+    <Compile Include="Models\Attendence\EmployeeAttendenceSchDetail.cs" />
+    <Compile Include="Models\Attendence\EmployeeAttendenceSchedule.cs" />
+    <Compile Include="Models\Attendence\EmployeeTimeOffRequest.cs" />
+    <Compile Include="Models\Attendence\ProcessCode.cs" />
+    <Compile Include="Models\Attendence\TimeOffRequestStatus.cs" />
+    <Compile Include="Models\Attendence\PrimaryTransaction.cs" />
+    <Compile Include="Models\Attendence\CompanyWithholding401K.cs" />
+    <Compile Include="Models\Attendence\WithholdingTaxType.cs" />
+    <Compile Include="Models\Attendence\WitholdingComputationType.cs" />
+    <Compile Include="Models\Attendence\WitholdingPrePostType.cs" />
+    <Compile Include="Models\BaseClasses\BaseCompanyObjects.cs" />
+    <Compile Include="Models\BaseClasses\BaseApplicantObjects.cs" />
+    <Compile Include="Models\BaseClasses\BaseUserObjects.cs" />
+    <Compile Include="Models\BaseClasses\BaseGlobalEntity.cs" />
+    <Compile Include="Models\BaseClasses\BaseEntity.cs" />
+    <Compile Include="Models\BaseClasses\INotifiable.cs" />
+    <Compile Include="Models\BaseClasses\IBaseEntity.cs" />
+    <Compile Include="Models\ChatConversation\ChatConversation.cs" />
+    <Compile Include="Models\ChatConversation\ChatConversationParticipant.cs" />
+    <Compile Include="Models\ChatConversation\ChatUsers.cs" />
+    <Compile Include="Models\ChatConversation\ChatMessage.cs" />
+    <Compile Include="Models\CompanyAnnouncement.cs" />
+    <Compile Include="Models\CompanyConfigurableLink.cs" />
+    <Compile Include="Models\CompanyDocument.cs" />
+    <Compile Include="Models\CompanyMedia.cs" />
+    <Compile Include="Models\DataMigrationLogDetail.cs" />
+    <Compile Include="Models\DataMigrationLog.cs" />
+    <Compile Include="Models\DeviceMetaData.cs" />
+    <Compile Include="Models\EmailTemplate.cs" />
+    <Compile Include="Models\EmployeeInformation\DentalInsuranceCobraHistory.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeAccrualBalance.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeAccrualRule.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeAction.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeAppraisal.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeAppraisalDocument.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeAppraisalGoal.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeAppraisalSkill.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeBenefitEnlisted.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeBenefitHistory.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeCompanyTransfer.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeCustomField.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeDentalInsurance.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeDocument.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeDependent.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeFutureSchedule.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeGroup.cs" />
+    <Compile Include="Models\EmployeeInformation\DocumentRequiredBy.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeHealthInsurance.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeIncident.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeGroupType.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeTimeAndAttendanceSetting.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeRotatingSchedule.cs" />
+    <Compile Include="Models\EmployeeInformation\HealthInsuranceCobraHistory.cs" />
+    <Compile Include="Models\EmployeeInformation\SupervisorEmployeeType.cs" />
+    <Compile Include="Models\LicensesAndAccrualWeb\AccrualRule.cs" />
+    <Compile Include="Models\LicensesAndAccrualWeb\AccrualRuleTier.cs" />
+    <Compile Include="Models\LicensesAndAccrualWeb\AccrualRuleWorkedHoursTier.cs" />
+    <Compile Include="Models\Licenses\CompensationBalance.cs" />
+    <Compile Include="Models\MasterData\ApplicantCompany.cs" />
+    <Compile Include="Models\MasterData\ApplicantExitType.cs" />
+    <Compile Include="Models\MasterData\ApplicantInterviewAnswer.cs" />
+    <Compile Include="Models\MasterData\ApplicantInterviewQuestion.cs" />
+    <Compile Include="Models\MasterData\ApplicantPosition.cs" />
+    <Compile Include="Models\MasterData\ApplicantQAnswerOption.cs" />
+    <Compile Include="Models\MasterData\ApplicantReferenceSource.cs" />
+    <Compile Include="Models\MasterData\ApplicantReferenceType.cs" />
+    <Compile Include="Models\MasterData\ApplicantStatus.cs" />
+    <Compile Include="Models\MasterData\ApplicationConfiguration.cs" />
+    <Compile Include="Models\MasterData\ActionType.cs" />
+    <Compile Include="Models\MasterData\AppraisalGoal.cs" />
+    <Compile Include="Models\MasterData\AppraisalRatingScale.cs" />
+    <Compile Include="Models\MasterData\AppraisalRatingScaleDetail.cs" />
+    <Compile Include="Models\MasterData\AppraisalResult.cs" />
+    <Compile Include="Models\MasterData\AppraisalSkill.cs" />
+    <Compile Include="Models\MasterData\AppraisalTemplate.cs" />
+    <Compile Include="Models\MasterData\AppraisalTemplateGoal.cs" />
+    <Compile Include="Models\MasterData\AppraisalTemplateSkill.cs" />
+    <Compile Include="Models\MasterData\Benefit.cs" />
+    <Compile Include="Models\MasterData\CredentialType.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\MasterData\JobPostingLocation.cs" />
+    <Compile Include="Models\MasterData\TrainingType.cs" />
+    <Compile Include="Models\MasterData\CustomFieldType.cs" />
+    <Compile Include="Models\MasterData\EmploymentHistoryAuthorizer.cs" />
+    <Compile Include="Models\MasterData\CobraPaymentStatus.cs" />
+    <Compile Include="Models\MasterData\CobraStatus.cs" />
+    <Compile Include="Models\MasterData\EmailType.cs" />
+    <Compile Include="Models\MasterData\Credential.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeCredential.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeEducation.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeePerformance.cs" />
+    <Compile Include="Models\EmployeeInformation\EmployeeTraining.cs" />
+    <Compile Include="Models\Employment.cs" />
+    <Compile Include="Models\MasterData\ActionTaken.cs" />
+    <Compile Include="Models\MasterData\CFSECode.cs" />
+    <Compile Include="Models\MasterData\City.cs" />
+    <Compile Include="Models\MasterData\Degree.cs" />
+    <Compile Include="Models\MasterData\DependentStatus.cs" />
+    <Compile Include="Models\MasterData\CustomField.cs" />
+    <Compile Include="Models\MasterData\Document.cs" />
+    <Compile Include="Models\MasterData\EEOCategory.cs" />
+    <Compile Include="Models\MasterData\EmergencyContact.cs" />
+    <Compile Include="Models\MasterData\Country.cs" />
+    <Compile Include="Models\MasterData\Department.cs" />
+    <Compile Include="Models\MasterData\Disability.cs" />
+    <Compile Include="Models\MasterData\EmployeeStatus.cs" />
+    <Compile Include="Models\MasterData\EmployeeSupervisor.cs" />
+    <Compile Include="Models\MasterData\EmployeeSupervisorViewModel.cs" />
+    <Compile Include="Models\MasterData\EmploymentType.cs" />
+    <Compile Include="Models\MasterData\EmployeeType.cs" />
+    <Compile Include="Models\MasterData\Ethnicity.cs" />
+    <Compile Include="Models\MasterData\IncidentArea.cs" />
+    <Compile Include="Models\MasterData\IncidentBodyPart.cs" />
+    <Compile Include="Models\MasterData\IncidentInjuryDescription.cs" />
+    <Compile Include="Models\MasterData\IncidentInjurySource.cs" />
+    <Compile Include="Models\MasterData\IncidentTreatmentFacility.cs" />
+    <Compile Include="Models\MasterData\IncidentType.cs" />
+    <Compile Include="Models\MasterData\InsuranceCoverage.cs" />
+    <Compile Include="Models\MasterData\InsuranceStatus.cs" />
+    <Compile Include="Models\MasterData\InsuranceType.cs" />
+    <Compile Include="Models\MasterData\JobCertificationSignee.cs" />
+    <Compile Include="Models\MasterData\JobCertificationTemplate.cs" />
+    <Compile Include="Models\MasterData\JobPostingDetail.cs" />
+    <Compile Include="Models\MasterData\JobPostingStatus.cs" />
+    <Compile Include="Models\MasterData\Location.cs" />
+    <Compile Include="Models\MasterData\OSHACaseClassification.cs" />
+    <Compile Include="Models\MasterData\OSHAInjuryClassification.cs" />
+    <Compile Include="Models\MasterData\PayFrequency.cs" />
+    <Compile Include="Models\MasterData\PayScale.cs" />
+    <Compile Include="Models\MasterData\PayScaleLevel.cs" />
+    <Compile Include="Models\MasterData\PayType.cs" />
+    <Compile Include="Models\MasterData\PerformanceDescription.cs" />
+    <Compile Include="Models\MasterData\PerformanceResult.cs" />
+    <Compile Include="Models\MasterData\PositionAppraisalTemplate.cs" />
+    <Compile Include="Models\MasterData\PositionCredential.cs" />
+    <Compile Include="Models\MasterData\PositionQuestion.cs" />
+    <Compile Include="Models\MasterData\PositionTraining.cs" />
+    <Compile Include="Models\MasterData\RateFrequency.cs" />
+    <Compile Include="Models\MasterData\RatingLevel.cs" />
+    <Compile Include="Models\MasterData\ReportCriteriaTemplate.cs" />
+    <Compile Include="Models\MasterData\Training.cs" />
+    <Compile Include="Models\EmployeeInformation\UserEmployeeGroup.cs" />
+    <Compile Include="Models\MasterData\WCClassCode.cs" />
+    <Compile Include="Models\Notification\EmailBlastDetail.cs" />
+    <Compile Include="Models\Notification\EmployeeNotification.cs" />
+    <Compile Include="Models\Notification\EmployeeNotificationType.cs" />
+    <Compile Include="Models\Notification\NotificationLogMessageReadBy.cs" />
+    <Compile Include="Models\Notification\NotificationScheduleEmployeeGroup.cs" />
+    <Compile Include="Models\Notification\NotificationScheduleDetail.cs" />
+    <Compile Include="Models\Notification\NotificationLogEmail.cs" />
+    <Compile Include="Models\Notification\NotificationServiceEvent.cs" />
+    <Compile Include="Models\Notification\NotificationLog.cs" />
+    <Compile Include="Models\Notification\EmployeeNotificationRole.cs" />
+    <Compile Include="Models\Notification\NotificationSchedule.cs" />
+    <Compile Include="Models\Notification\NotificationRole.cs" />
+    <Compile Include="Models\Notification\NotificationType.cs" />
+    <Compile Include="Models\Attendence\TransactionConfiguration.cs" />
+    <Compile Include="Models\Payroll\EmployeeContribution.cs" />
+    <Compile Include="Models\Payroll\EmployeeWithholding.cs" />
+    <Compile Include="Models\PayStub\EmployeePayStubBatch.cs" />
+    <Compile Include="Models\PayStub\EmployeePayStubCompensation.cs" />
+    <Compile Include="Models\PayStub\EmployeePayStubWithholding.cs" />
+    <Compile Include="Models\SecurityCode.cs" />
+    <Compile Include="Models\SelfService\ChangeRequestBase.cs" />
+    <Compile Include="Models\SelfService\ChangeRequestEmailNumbers.cs" />
+    <Compile Include="Models\SelfService\ChangeRequestAddress.cs" />
+    <Compile Include="Models\SelfService\ChangeRequestEmployeeDependent.cs" />
+    <Compile Include="Models\SelfService\ChangeRequestEmergencyContact.cs" />
+    <Compile Include="Models\SelfService\ChangeRequestStatus.cs" />
+    <Compile Include="Models\SelfService\SelfServiceEmployeeCredential.cs" />
+    <Compile Include="Models\SelfService\SelfServiceEmployeeDocument.cs" />
+    <Compile Include="Models\SenderEmailConfiguration.cs" />
+    <Compile Include="Models\TimeSheet\EmployeeTimeAndEffort.cs" />
+    <Compile Include="Models\TimeSheet\EmployeeTimesheet.cs" />
+    <Compile Include="Models\UserManagment\ChangePasswordByAdminReason.cs" />
+    <Compile Include="Models\Notification\EmailBlast.cs" />
+    <Compile Include="Models\UserManagment\CountryIPAddress.cs" />
+    <Compile Include="Models\UserManagment\UserSessionLogEvent.cs" />
+    <Compile Include="Models\UserManagment\UserSessionLog.cs" />
+    <Compile Include="Models\UserManagment\AuditLogDetail.cs" />
+    <Compile Include="Models\UserManagment\UserSessionLogDetail.cs" />
+    <Compile Include="Models\UserManagment\AuditLog.cs" />
+    <Compile Include="Models\UserManagment\EmployeeVeteranStatus.cs" />
+    <Compile Include="Models\MasterData\EmploymentHistory.cs" />
+    <Compile Include="Models\MasterData\EmploymentStatus.cs" />
+    <Compile Include="Models\MasterData\MaritalStatus.cs" />
+    <Compile Include="Models\MasterData\Gender.cs" />
+    <Compile Include="Models\MasterData\JobCode.cs" />
+    <Compile Include="Models\MasterData\Position.cs" />
+    <Compile Include="Models\MasterData\Relationship.cs" />
+    <Compile Include="Models\MasterData\State.cs" />
+    <Compile Include="Models\MasterData\SubDepartment.cs" />
+    <Compile Include="Models\MasterData\TerminationEligibility.cs" />
+    <Compile Include="Models\MasterData\TerminationReason.cs" />
+    <Compile Include="Models\MasterData\TerminationType.cs" />
+    <Compile Include="Models\MasterData\VeteranStatus.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\UserContactInformation.cs" />
+    <Compile Include="Models\UserInformation.cs" />
+    <Compile Include="Models\UserManagment\PayInformationHistoryAuthorizer.cs" />
+    <Compile Include="Models\UserManagment\Form.cs" />
+    <Compile Include="Models\UserManagment\InterfaceControl.cs" />
+    <Compile Include="Models\UserManagment\InterfaceControlForm.cs" />
+    <Compile Include="Models\UserManagment\Module.cs" />
+    <Compile Include="Models\UserManagment\PayInformationHistory.cs" />
+    <Compile Include="Models\UserManagment\Privilege.cs" />
+    <Compile Include="Models\UserManagment\Role.cs" />
+    <Compile Include="Models\UserManagment\CompanyEmployeeTab.cs" />
+    <Compile Include="Models\UserManagment\RoleTypeFormPrivilege.cs" />
+    <Compile Include="Models\UserManagment\RoleFormPrivilege.cs" />
+    <Compile Include="Models\UserManagment\RoleInterfaceControlPrivilege.cs" />
+    <Compile Include="Models\UserManagment\RoleType.cs" />
+    <Compile Include="Models\UserManagment\SupervisorCompany.cs" />
+    <Compile Include="Models\UserManagment\SupervisorDepartment.cs" />
+    <Compile Include="Models\UserManagment\SupervisorSubDepartment.cs" />
+    <Compile Include="Models\UserManagment\UserInformationRole.cs" />
+    <Compile Include="Models\UserManagment\UserMenu.cs" />
+    <Compile Include="Models\Notification\NotificationMessage.cs" />
+    <Compile Include="Models\WebPunch\WebPunchConfiguration.cs" />
+    <Compile Include="Models\Workflow\ClosingNotificationType.cs" />
+    <Compile Include="Models\Workflow\WorkflowTriggerRequestDetailEmail.cs" />
+    <Compile Include="Models\Workflow\WorkflowTriggerRequestDetail.cs" />
+    <Compile Include="Models\Workflow\WorkflowTriggerRequest.cs" />
+    <Compile Include="Models\Workflow\WorkflowTrigger.cs" />
+    <Compile Include="Models\Workflow\WorkflowActionType.cs" />
+    <Compile Include="Models\Workflow\WorkflowTriggerType.cs" />
+    <Compile Include="Models\Workflow\WorkflowLevelTypeEmployeeGroup.cs" />
+    <Compile Include="Models\Workflow\Workflow.cs" />
+    <Compile Include="Models\Workflow\WorkflowLevel.cs" />
+    <Compile Include="Models\Workflow\WorkflowLevelType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\ApplicantApplyJobViewModel.cs" />
+    <Compile Include="ViewModel\ApplicantFilterViewModel.cs" />
+    <Compile Include="ViewModel\ApplicantHireViewModel.cs" />
+    <Compile Include="ViewModel\ApplicantInformationViewModel.cs" />
+    <Compile Include="ViewModel\BaseScheduleViewModel.cs" />
+    <Compile Include="ViewModel\BellIconNotificationViewModel.cs" />
+    <Compile Include="ViewModel\EmployeeAttSchCalendarViewModel.cs" />
+    <Compile Include="ViewModel\EmployeeUserInformationView.cs" />
+    <Compile Include="ViewModel\NotificationFilterViewModel.cs" />
+    <Compile Include="ViewModel\EmployeeLicensesViewModel.cs" />
+    <Compile Include="ViewModel\EmployeePayStubViewModel.cs" />
+    <Compile Include="ViewModel\EmployeeTimeOffRequestViewModel.cs" />
+    <Compile Include="ViewModel\LocalReportDataViewModel.cs" />
+    <Compile Include="ViewModel\RoleFormPrivilegeViewModel.cs" />
+    <Compile Include="ViewModel\RoleTypeFormPrivilegeViewModel.cs" />
+    <Compile Include="ViewModel\TimesheetEditorViewModel.cs" />
+    <Compile Include="ViewModel\TimeAndEffortViewModel.cs" />
+    <Compile Include="ViewModel\UserActivationViewModel.cs" />
+    <Compile Include="ViewModel\UserFilterViewModel.cs" />
+    <Compile Include="ViewModel\UserInformationViewModel.cs" />
+    <Compile Include="ViewModel\WebScheduleViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeAide.Common\TimeAide.Common.csproj">
+      <Project>{06ffcf32-d708-4f53-b904-cfceda4a0476}</Project>
+      <Name>TimeAide.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

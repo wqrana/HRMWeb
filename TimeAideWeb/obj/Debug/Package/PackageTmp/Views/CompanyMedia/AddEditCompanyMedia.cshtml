@@ -1,0 +1,293 @@
+﻿@model TimeAide.Web.Models.CompanyMedia
+<style>
+    .files input {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        padding: 80px 0px 70px 5%;
+        text-align: center !important;
+        margin: 0;
+        width: 100% !important;
+    }
+
+        .files input:focus {
+            outline: 2px dashed #92b0b3;
+            outline-offset: -10px;
+            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            border: 1px solid #92b0b3;
+        }
+
+    .files {
+        position: relative
+    }
+
+        .files:after {
+            pointer-events: none;
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 50px;
+            right: 0;
+            height: 56px;
+            content: "";
+            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+            display: block;
+            margin: 0 auto;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .color input {
+        background-color: #f1f1f1;
+    }
+
+    .files:before {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        right: 0;
+        height: 57px;
+        content: " or drag it here. ";
+        display: block;
+        margin: 0 auto;
+        color: #2ea591;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+    }
+
+    .hideSection {
+        display: none;
+    }
+
+    .showSection {
+        display: block;
+    }
+</style>
+
+<div id="addEditCompanyMedia_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Add/Edit Media</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                @Html.Hidden("CompanyMediaId", Model.Id)
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 pr-0 col-form-label"> Title:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 pr-0 col-form-label"> Media Type:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                @Html.DropDownList("MediaType", null, "Please select", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Default Media: <span class="text-danger"></span></label>
+                            <div class="col-md-2 pt-2">
+                                @Html.CheckBoxFor(m => m.IsDefaultMedia, new { htmlAttributes = new { @class = "" } })
+                            </div>
+                            <label class="col-md-3 col-form-label">All Companies: <span class="text-danger"></span></label>
+                            @{
+//  var IsAllCompanies = Model.CompanyId==null?true:false;
+                            }
+                            <div class="col-md-2 pt-2">
+                                @Html.CheckBoxFor(m => m.IsAllCompanies)
+
+                            </div>
+                        </div>
+                        @{ 
+                            var showAHideLinkMedia=Model.MediaType=="L"?"showSection":"hideSection";
+                            var showAHideFileMedia = Model.MediaType == "F" ? "showSection" : "hideSection";
+                            
+                        } 
+                        <div id="divLMedia" class="@showAHideLinkMedia">
+                            <div class="form-group row">
+                                <label class="col-md-3 pr-0 col-form-label"> Media Link:<span class="text-danger">*</span></label>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(m => m.MediaFilePath, new { htmlAttributes = new { @class = "form-control",@id="MediaLink" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divFMedia" class="@showAHideFileMedia">
+                            @{
+                                var hideAShowCurr = (Model.Id == 0 || Model.MediaFilePath == null) ? "hideSection" : "showSection";
+                                var hideAShowNewMedia = (Model.Id == 0 || Model.MediaFilePath == null) ? "showSection" : "hideSection";
+                                var actionType = (Model.Id == 0 || Model.MediaFilePath == null) ? "Upload" : "None";
+                                if (Model.MediaType == "L")// incase of link media
+                                {
+                                    hideAShowCurr = "hideSection";
+                                    hideAShowNewMedia = "hideSection";
+                                    actionType = "None";
+                                }
+                            }
+                            @Html.Hidden("ActionType", actionType)
+                            <div class="form-group row">
+                                <label class="col-md-3 pr-0 col-form-label">Media Poster:<span class="text-danger"></span></label>
+                                <div class="col-md-9">
+                                    <div class="form-group files">
+                                        <input type="file" class="form-control" id="MediaPoster" accept=".jpg">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divUploadedMedia" class="@hideAShowCurr">
+                                <div class="form-group row">
+                                    <label class="col-md-3 pr-0 col-form-label">Uploaded Media:<span class="text-danger"></span></label>
+                                    <div class="col-md-9">
+
+                                        <video poster="@Model.PosterFilePath" controls >
+                                            <source src="@Model.MediaFilePath" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <a class="fa fa-trash text-danger pull-right" href="javascript:deleteCompanyMediaFile(@Model.Id)" title="Delete Media File"></a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="divNewMedia" class="@hideAShowNewMedia">
+                                <div id="divUploadingMedia" class="align-content-md-center">
+                                    <span class="fa fa-upload">Media Uploading...</span><img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-3 pr-0 col-form-label">Media File:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group files">
+                                            <input type="file" class="form-control" id="MediaFile" accept=".mp4">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="submit-section pb-2 mt-0">
+                <button id="btnSaveCompanyMedia" class="btn btn-primary submit-btn">Save</button>
+                <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#divUploadingMedia").hide();
+        var compMediaId = $("#CompanyMediaId").val();
+        if (compMediaId > 0) {
+            $("#MediaType").prop("disabled", true);
+        }
+        $("#MediaType").change(function () {
+            debugger;
+            var val = $(this).val();
+            switch (val) {
+                case "F":
+                    $("#divFMedia").show();
+                    $("#divLMedia").hide();
+                    break;
+                case "L":
+                    $("#divFMedia").hide();
+                    $("#divLMedia").show();
+            }
+        })
+        $("#btnSaveCompanyMedia").click(function () {
+            debugger;
+            var dataObj = new Object();
+            dataObj.Id = $("#CompanyMediaId").val();
+            dataObj.Name = $("#Name").val();
+            dataObj.MediaType = $("#MediaType").val();
+            dataObj.IsDefaultMedia = $("#IsDefaultMedia").is(":checked");
+            dataObj.IsAllCompanies = $("#IsAllCompanies").is(":checked");
+            dataObj.MediaLink = $("#MediaLink").val();
+            dataObj.MediaFile = null;
+            dataObj.MediaPoster = null;
+            dataObj.ActionType = $("#ActionType").val();
+
+            if (dataObj.MediaType == "F") {
+                var totalMediaFiles = document.getElementById("MediaFile").files.length;
+                var totalPosterFiles = document.getElementById("MediaPoster").files.length;
+                if (totalMediaFiles > 0) {
+                    dataObj.MediaFile = document.getElementById("MediaFile").files[0];
+                }
+                if (totalPosterFiles > 0) {
+                    dataObj.MediaPoster = document.getElementById("MediaPoster").files[0];
+                }
+                if (dataObj.Name == "" || (dataObj.MediaFile == null && dataObj.ActionType == "Upload")) {
+                    showAlertAutoHide("", "Error", "Missing Required field(s)");
+                    return;
+                }
+                if (dataObj.MediaFile == null && dataObj.MediaPoster != null) {
+                    dataObj.ActionType = "Poster";
+                }
+                if (dataObj.ActionType == "Upload") {
+                    var mediaType = dataObj.MediaFile.name.split('.')[1];
+                    if (mediaType.toLowerCase() != 'mp4') {
+                        showAlertAutoHide("", "Error", "mp4 media file is supported only.");
+                        return;
+                    }
+                }
+            }
+            else if (dataObj.MediaType == "L") {
+                if (dataObj.Name == "" || dataObj.MediaLink == "") {
+                    showAlertAutoHide("", "Error", "Missing Required field(s)");
+                    return;
+                }
+                else {
+                    if (!isValidUrl(dataObj.MediaLink)) {
+                        showAlertAutoHide("", "Error", "Please enter the valid media link.");
+                        return;
+                    }
+                }
+            }
+            else {
+                showAlertAutoHide("", "Error", "Missing Required field(s)");
+                return;
+            }
+            saveCompanyMediaData(dataObj);
+        });
+    });
+    function deleteCompanyMediaFile(id) {
+        $.ajax({
+            type: "Post",
+            url: "/CompanyMedia/AjaxDeleteMediaFile",
+            data: { "id": id },
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+
+                    showAlertAutoHide("#", data.status, data.message);
+                    $("#divUploadedMedia").hide();
+                    $("#divNewMedia").show();
+                    $("#ActionType").val("Upload");
+                    getMediaList();
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                showAlertAutoHide(alertID, "Error", error);
+                return false;
+            }
+        });
+    }
+</script>
+

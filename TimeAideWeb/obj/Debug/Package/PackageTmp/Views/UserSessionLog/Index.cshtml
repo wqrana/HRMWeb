@@ -1,0 +1,109 @@
+﻿@model TimeAide.Web.ViewModel.UserSessionLogViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutMasterData.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">@ViewBag.LabelPlural</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Settings / Application Access </li>
+                <li class="breadcrumb-item active">@ViewBag.Label</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row filter-row">
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeId" type="number" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2">
+        <a href="javascript:filterUserSessionLog();" class="btn btn-success btn-block"> Apply Filter </a>
+    </div>
+</div>
+<div class="row" id="divLayoutView">
+    @{
+        Html.RenderPartial("_UserSessionList");
+    }
+</div>
+<hr />
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+
+<div id="browser_information_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" id='browser_information_modal_content' style="padding:10px">
+            <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                <h4 style="display: inline;">Browser Information</h4>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <table class="table table-striped custom-table table-nowrap mb-0" id="tblBrowserInformation">
+                <thead>
+
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function filterUserSessionLog() {
+        $("#divLoadingUsers").show();
+        debugger;
+        var filterObject = new Object();
+        filterObject.EmployeeId = $('#EmployeeId').val();
+        filterObject.FullName = $('#EmployeeName').val();
+        $.ajax({
+            type: "POST",
+            url: '/UserSessionLog/FilterUserSessionLog',
+            data: JSON.stringify(filterObject),
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                $("#divLayoutView").html("");
+                $("#divLayoutView").html(data);
+                $("#divLoadingUsers").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+</script>
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+
+
+
+

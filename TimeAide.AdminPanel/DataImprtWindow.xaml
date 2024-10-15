@@ -1,0 +1,134 @@
+﻿<Window x:Class="TimeAide.AdminPanel.DataImprtWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TimeAide.AdminPanel"
+        mc:Ignorable="d"
+        Background="{StaticResource Brush_WindowBackground}" 
+        Loaded="Window_Loaded"
+        Title="TimeAide Admin Panel: Import Data" Width="1100" Height="785" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="0,0,0,0">
+        <Border Style="{StaticResource UserControl_Form_Inner_Border}">
+            <StackPanel>
+                <Border Width="Auto" Height="33" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                                               
+                       
+                        <TextBlock Text="Client Name" Margin="10,0,0,0" VerticalAlignment="Center"  Width="80" FontWeight="Bold"/>
+                        <TextBox x:Name="txtSourceClient" Margin="10,0,0,0" VerticalAlignment="Center" Width="120" />
+
+                        <TextBlock Text="TA7 Database" Margin="15,0,0,0" VerticalAlignment="Center" Width="90" FontWeight="Bold"/>
+                        <TextBox x:Name="txtTA7Database" Width="180" />
+
+                        <!--<TextBlock Text="Target Database" Margin="15,0,0,0" VerticalAlignment="Center"  Width="100" FontWeight="Bold"/>
+                        <TextBox x:Name="txtTargetDatabase" Margin="10,0,0,0" VerticalAlignment="Center" Width="150"  />-->
+                        <TextBlock Text="Import File Template" Margin="10,0,0,0" VerticalAlignment="Center" FontWeight="Bold" Width="120"/>
+                        <ComboBox Name="cboExecutionType" Margin="10,0,0,0" VerticalAlignment="Center" Width="300"  SelectionChanged="cboExecutionType_SelectionChanged">
+                        </ComboBox>
+                        <Button Margin="5,0,0,0" Background="LightGray" Width="60" FontWeight="Bold" Content="Load" Click="btnLoadTemplates_Click"></Button>
+
+                    </StackPanel>
+                </Border>                
+                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,1,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+
+                        <TextBlock Text="Import file Path" Margin="15,0,0,0" VerticalAlignment="Center"  Width="100" FontWeight="Bold"/>
+                        <TextBox Name="txtImportFilePath" Margin="10,0,0,0" VerticalAlignment="Center" Width="800" IsReadOnly="True" />
+                        <Button Margin="5,0,0,0" Background="LightGray" Width="80" FontWeight="Bold" Content="Browse" Click="btnBrowseFilePath_Click" ></Button>
+                        <!--<TextBlock Name="lblExecutionMessage"  Margin="10,0,0,0" VerticalAlignment="Center"  Width="350" Style="{StaticResource FaderStyle}" Foreground="Red" FontWeight="Bold"/>-->
+                    </StackPanel>
+                </Border>
+               
+                <Border Margin="0,1,0,0" Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                    <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center" Background="{x:Null}">
+                        <Button Name="btnShowFieldsMapping" Width="150" Content="Show Fields Mapping" Click="btnShowFieldsMapping_Click" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" />
+                        <Button Name="btnCloseApplication" Width="150" Content="Close Window" Margin="5,0,0,0" VerticalAlignment="Center" FontWeight="Bold" Click="btnCloseApplication_Click"  />
+                        
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+        <TabControl  x:Name="importTab" SelectedIndex="0" TabStripPlacement="Bottom" Style="{DynamicResource TabControlStyle_Application}" >
+            <TabItem Style="{DynamicResource TabItemStyle_Application}" Header="Fields Mapping">
+                <Border Style="{StaticResource UserControl_Form_Outer_Border}">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Border Style="{StaticResource UserControl_Form_Inner_Border}">
+                            <StackPanel>
+                                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="5,5,5,5" BorderThickness="1,1,1,1" Margin="0,5,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+
+                                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                                    <TextBlock Text="Import File Template" Margin="10,0,0,0" VerticalAlignment="Center"  Width="120" FontWeight="Bold"/>
+                                    <TextBox x:Name="txtImportFileTemplateName" Margin="10,0,0,0" VerticalAlignment="Center" Width="300" IsEnabled="False"/>
+                                    <TextBox x:Name="txtImportFileTemplateId" Margin="10,0,0,0" VerticalAlignment="Center" Width="10" Visibility="Hidden"/>
+
+
+                                        <Button Name="btnSaveMappingData" Width="150" Content="Save Mapping" Click="btnSaveMappingData_Click" Margin="40,0,0,0"  VerticalAlignment="Center" FontWeight="Bold" IsEnabled="False"/>
+                                        <Button Name="btnProcessImportData" Width="150" Content="Process Import" Click="btnProcessImportData_Click" Margin="5,0,0,0"  VerticalAlignment="Center" FontWeight="Bold" IsEnabled="False"  />
+                                    </StackPanel>
+                                    
+                                </Border>
+                                <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                                    <TextBlock x:Name="txtNotify" Text="" Padding="5,5,0,0" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="900" FontSize="16" Foreground="Black"/>
+                                </StackPanel>
+
+                                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,10,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}" >
+                                    
+                                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                                        
+                                        <DataGrid Name="dgImportFile" Margin="5"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="1050" Height="430" VerticalScrollBarVisibility="Auto" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="#FFE0DFDF" HorizontalGridLinesBrush="#FFE0DFDF" >
+                                            <DataGrid.Columns>
+                                                <DataGridTemplateColumn Width="40">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Click="btnShowFieldMapping_Click">Edit</Button>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTextColumn Header="Index" Binding="{Binding FieldIndex}" Width="40" IsReadOnly="True"/>
+                                                <DataGridTextColumn Header="Field Name" Binding="{Binding FieldName}" Width="150" IsReadOnly="True"/>
+                                                <DataGridTextColumn Header="Item Name" Binding="{Binding FieldNameAsValue}" Width="150" IsReadOnly="True"/>
+                                                <DataGridTextColumn Header="Field Mapping" Binding="{Binding FieldMapping}" Width="100" IsReadOnly="True"/>
+                                                
+                                                <DataGridTextColumn Header="Mapping Table" Binding="{Binding MappingTable}" Width="150" IsReadOnly="True"/>
+                                                <DataGridTextColumn Header="Mapping Column" Binding="{Binding MappingColumn}" Width="150" IsReadOnly="True"/>
+                                                <DataGridTextColumn Header="Data Type" Binding="{Binding ColumnDataType}" Width="100" IsReadOnly="True"/>
+                                                <DataGridTextColumn Header="Mapping Status" Binding="{Binding MappingStatus}" Width="auto" IsReadOnly="True"/>
+                                            </DataGrid.Columns>
+
+
+                                        </DataGrid>
+
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+            <TabItem Style="{DynamicResource TabItemStyle_Application}" Header="Import Log">
+                <Border Style="{StaticResource UserControl_Form_Outer_Border}">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Border Style="{StaticResource UserControl_Form_Inner_Border}">
+                            <StackPanel>
+                                <TextBlock Name="ProgressHeading" Text="Import file Status" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="300" FontWeight="Bold"/>
+                                <ProgressBar Name="DocMigProgress" Minimum="0" Maximum="100" Value="0" Height="20" Width="600" Margin="0,5,0,0"/>
+                                <Border Width="Auto" Height="Auto" VerticalAlignment="Top" Padding="5,5,5,5" CornerRadius="10,10,10,10" BorderThickness="2,2,2,2" Margin="0,15,0,0" BorderBrush="{DynamicResource Brush_TabItemBackgroundBorder}" Background="{DynamicResource Brush_BrightBackground}">
+                                    
+                                    <StackPanel Orientation="Horizontal" Width="Auto" Background="{x:Null}">
+                                       
+                                        <TextBox IsReadOnly="True" Name="txtLogStatus" Margin="5" Grid.Column="1"  Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1015" Height="430" FontSize="14" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+                                       
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+            
+
+        </TabControl>
+    </StackPanel>
+</Window>

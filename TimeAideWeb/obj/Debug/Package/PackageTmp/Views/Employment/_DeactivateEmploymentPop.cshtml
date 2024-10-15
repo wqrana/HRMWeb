@@ -1,0 +1,312 @@
+﻿@model TimeAide.Web.Models.Employment
+<style>
+    .files input {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        padding: 20px 10px 40px 5%;
+        text-align: center !important;
+        margin: 0;
+        width: 100% !important;
+    }
+
+        .files input:focus {
+            outline: 2px dashed #92b0b3;
+            outline-offset: -10px;
+            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            border: 1px solid #92b0b3;
+        }
+
+    .files {
+        position: relative
+    }
+
+        .files:after {
+            pointer-events: none;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 50px;
+            right: 0;
+            height: 50px;
+            content: "";
+            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+            display: block;
+            margin: 0 auto;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .color input {
+        background-color: #f1f1f1;
+    }
+
+    .files:before {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        right: 0;
+        height: 50px;
+        content: " or drag it here. ";
+        display: block;
+        margin: 0 auto;
+        color: #2ea591;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+    }
+</style>
+<div id="DeactivateEmployment_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Deactivate Employee Wizard</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr class="m-0">
+                <div class="alert alert-info mb-0" id="deactivateWizardStepTitle">
+                    <span class="fa fa-user-times"></span><span class="ml-1 text-md-left">Welcome to Deactive Employee Wizard</span>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="deactivateEmploymentAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <!--Inline form layout -->
+                <div id="deactiveWizardS1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <span>The Deactive Wizard will guide through the process of deactivating an active employee.</span>
+
+                            </div>
+                            <div class="form-group row">
+                                <span>You will need the following information in order to deactivate an active employee.</span>
+                            </div>
+                            @*<div class="form-group row">
+                                    <label class="col-md-1 col-form-label">Hiring</label>
+                                </div>*@
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Termination Date</label>
+                                <label class="col-md-4 col-form-label">-Approved Date</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Termination Type</label>
+                                <label class="col-md-4 col-form-label">-Termination Reason</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Termination Eligibility</label>
+                                <label class="col-md-4 col-form-label">-Approved By</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-offset-1 col-md-5 col-form-label">-Termination Notes</label>
+
+                            </div>
+
+                            <div class="form-group row">
+                            </div>
+                            <div class="form-group row">
+                            </div>
+                            <div class="form-group row">
+                            </div>
+                            <div class="form-group row">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnDeactivateS1Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnDeactivateS1Back" class="btn btn-dark" disabled>Back</button>
+                        <button id="btnDeactivateS1Next" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <div id="deactiveWizardS2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="card-title">Employee Information</h6>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.UserInformationId, "EmployeeID:", htmlAttributes: new { @class = "col-md-2 control-label" })
+                                <div class="col-md-2 text-muted" id="DeactivateEmpID">
+                                    @Html.DisplayFor(m => m.UserInformation.EmployeeId)
+                                </div>
+                                @Html.LabelFor(model => model.UserInformation.FullName, "Employee Name:", htmlAttributes: new { @class = "col-md-3 control-label" })
+                                <div class="col-md-4 text-muted" id="DeactivateEmpName">
+                                    @Html.DisplayFor(m => m.UserInformation.ShortFullName)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">
+                                    Lock Account
+                                </label>
+                                <div class="col-md-2 pt-2">
+                                    @Html.CheckBoxFor(model => model.LockAccount, new { @id = "LockAccountDA" })
+                                </div>
+                                <label class="col-md-3 col-form-label">
+                                    Status  <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("EmployeeStatusIdDA", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <hr class="m-0">
+                            <h6 class="card-title">Termination Information</h6>
+
+                            <div class="form-group row">
+                                @*@Html.LabelFor(model => model.TerminationDate, "Date", htmlAttributes: new { @class = "col-md-2 control-label" })*@
+                                <label class="col-md-2 col-form-label">Date <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.TerminationDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                @Html.LabelFor(model => model.ApprovedDate, "Approved Date", htmlAttributes: new { @class = "col-md-2 control-label" })
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.ApprovedDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @* @Html.LabelFor(model => model.TerminationTypeId, "Type", htmlAttributes: new { @class = "col-md-2 control-label" })*@
+                                <label class="col-md-2 col-form-label">Type <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("TerminationTypeId", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                @*@Html.LabelFor(model => model.TerminationReasonId, "Reason", htmlAttributes: new { @class = "col-md-2 control-label" })*@
+                                <label class="col-md-2 col-form-label">Reason <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("TerminationReasonId", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                @*@Html.LabelFor(model => model.TerminationEligibilityId, "Eligibility", htmlAttributes: new { @class = "col-md-2 control-label" })*@
+                                <label class="col-md-2 col-form-label">Eligibility <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("TerminationEligibilityId", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                @Html.LabelFor(model => model.ApprovedById, "Approved By", htmlAttributes: new { @class = "col-md-2 control-label" })
+                                <div class="col-md-4">
+                                    @Html.DropDownList("ApprovedById", null, "Please Select", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                @Html.Hidden("IsExitInterviewDocMarkDeleted", "0")
+                                <label class="col-md-2 col-form-label pr-0">Exit Interview <span class="text-danger"></span></label>
+                                <div class="col-md-1 pt-2">
+                                    @{ var IsExitInterview = Model.IsExitInterview ?? false; }
+                                    @Html.CheckBoxFor(model => IsExitInterview, new { @id = "IsExitInterviewAE" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">
+                                    Exit Interview Doc.
+
+                                    @if (!string.IsNullOrEmpty(Model.ExitInterviewDocPath))
+                                    {
+                                        <a class="fa fa-download text-info" name="exitInterviewDocAction" href="/Employment/DownloadExitInterviewDocument/@Model.Id" title="Download File">Download</a>
+
+
+                                    }
+                                </label>
+                                <div class="col-md-7">
+                                    @if (!string.IsNullOrEmpty(Model.ExitInterviewDocPath))
+                                    {
+                                        <div id="divExitInterviewDocFile">
+                                            @*@Html.DisplayFor(m => m.ExitInterviewDocName)*@
+                                            <span class="text-muted">Exit_Interview_DocFile</span>
+                                            <a class="fa fa-trash text-danger pl-2" name="exitInterviewDocAction" href="javascript:deleteExitInterviewDoc(@Model.Id);" title="Delete File"></a>
+                                        </div>
+                                    }
+                                    <div class="form-group files">
+                                        <input type="file" class="form-control" id="uploadExitInterview" accept=".doc,.docx,.pdf">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @*@Html.LabelFor(model => model.TerminationNotes, "Notes", htmlAttributes: new { @class = "col-md-2 control-label" })*@
+                                <label class="col-md-2 col-form-label">Notes <span class="text-danger">*</span></label>
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.TerminationNotes, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="submit-section mt-1">
+                        <button id="btnDeactivateS2Cancel" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button id="btnDeactivateS2Back" class="btn btn-primary">Back</button>
+                        <button id="btnSaveDeactivateEmployment" class="btn btn-primary">Finish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+
+        $("#btnDeactivateS1Next").click(function () {
+            showDeactivateUserWizardStep("Step2");
+        });
+        $("#btnDeactivateS2Back").click(function () {
+            showDeactivateUserWizardStep("Step1");
+        });
+
+        //Save Employee
+        $('#btnSaveDeactivateEmployment').click(function () {
+            debugger;
+            alertID = "#deactivateEmploymentAlert";
+            var datafieldsObject = getDeactivateEmployeeFieldsData();
+            var isValidated = validateDeactivateEmployeeFields(datafieldsObject);
+            if (isValidated) {
+                // ajax call for saving data
+                saveDeactivateEmployeeData(datafieldsObject);
+            }
+
+        });
+    });
+
+    function deleteExitInterviewDoc(id) {
+        debugger;
+        $("#IsExitInterviewDocMarkDeleted").val("1");
+        $("a[name='exitInterviewDocAction']").hide();
+        $("#divExitInterviewDocFile").hide();
+        //$.ajax({
+        //    url: "/Employment/AjaxDeleteExitInterviewDocument",
+        //    type: "POST",
+        //    data: {
+        //        "id": id
+        //    },
+        //    dataType: "json",
+        //    success: function (data) {
+        //        debugger;
+        //        if (data.status == "Success") {
+
+        //            $("a[name='exitInterviewDocAction']").hide();
+        //            showAlertAutoHide('#', data.status, data.message);
+        //        }
+        //        else {
+        //            showAlertAutoHide('#', data.status, data.message);
+        //        }
+        //    }
+        //    ,
+        //    error: function (data) {
+        //        showAlertDismissable("#", "Error", data);
+
+        //    }
+        //});
+
+    }
+
+</script>

@@ -1,0 +1,422 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmploymentHistory>
+<h4 class="pull-left">Employment History</h4>
+<div class="table-responsive">
+    <table class="table  table-striped custom-table table-nowrap mb-0" id="tblEmploymentHistory">
+        <thead>
+            <tr>
+                <th>
+                    Employment Period
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Company.CompanyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location.LocationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Department.DepartmentName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubDepartment.SubDepartmentName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApprovedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ChangeReason)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employment.EmploymentRange)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.LocationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubDepartment.SubDepartmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChangeReason)
+                </td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                            <a a href="javascript:;" data-toggle="modal" onclick="fnDetailEmploymentHistory(@item.Id);" id="anchorDetailEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-eye m-r-5"></i> Details</a>
+                            @if ((bool)(ViewBag.AllowChangeHistory ?? false))
+                            {
+                                <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'@ViewBag.FormName')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                            }
+                            @*@if (!item.CanEdit)
+        {
+            <a a href="javascript:;" data-toggle="modal" onclick="fnDeleteEmploymentHistory(@item.Id);" id="anchorDeleteEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-trash m-r-5"></i> Close</a>
+            <a a href="javascript:;" data-toggle="modal" onclick="fnEditEmploymentHistory(@item.Id);" id="anchorEditEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+            <a a href="javascript:;" data-toggle="modal" onclick="fnDeleteEmploymentHistory(@item.Id);" id="anchorDeleteEmployment" class="dropdown-item" data-id="@item.Id"><i class="fa fa-trash m-r-5"></i> Delete</a>
+
+        }*@
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+  </div>
+
+    <script>
+
+        function fnAddEmploymentHistory(id) {
+            debugger;
+            //var $buttonClicked = $(this);
+            //var id = $buttonClicked.attr('data-id');
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/EmploymentHistory/AddEmploymentHistory',
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "json",
+                success: function (data) {
+                    debugger;
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+                    $("#btnAddEmploymentHistory").click(function (e) {
+                        $(".loading").show();
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            Id: $('#EmploymentHistoryId').val(),
+                            StartDate: $('#StartDate').val(),
+                            CompanyId: $('#CompanyId  :selected').val(),
+                            LocationId: $('#LocationId  :selected').val(),
+                            DepartmentId: $('#DepartmentId  :selected').val(),
+                            SubDepartmentId: $('#SubDepartmentId  :selected').val(),
+                            PositionId: $('#PositionId  :selected').val(),
+                            SupervisorId: $('#SupervisorId  :selected').val(),
+                            EmployeeTypeId: $('#EmployeeTypeId  :selected').val(),
+                            EmploymentTypeId: $('#EmploymentTypeId  :selected').val(),
+                            EndDate: $('#EndDate').val(),
+                            ApprovedDate: $('#ApprovedDate').val(),
+                            AuthorizeById: $('#SelectedAuthorizById').val(),
+                            ChangeReason: $('#ChangeReason').val(),
+                        }
+
+
+                        //e.preventDefault();
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmploymentHistory/AddEmploymentHistory',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "html",
+                            success: function (html) {
+                                debugger
+                                $('#divEmploymentHistoryIndex').html(html);
+                                fnMostRecentEmploymentHistory(id);
+                                $('#myModal').modal('hide');
+                                $(".loading").hide();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                debugger
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                                //errorObject[0].OriginalHireDate
+                                //"The Hire Date field is required."
+                                //var $ul = $('div.validation-summary-valid.text-danger > ul');
+                                //$ul.empty();
+
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    //$ul.append('<li>' + errorMessage + '</li>');
+                                    //alert(idx);
+                                    //alert(errorMessage);
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                                $(".loading").hide();
+                            }
+                        });
+                    });
+                },
+                error: function (xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    alert(err.Message);
+                    alert("Dynamic content load failed.");
+                }
+            });
+        }
+        function fnDeleteEmploymentHistory(id) {
+
+            //var $buttonClicked = $(this);
+            // var id = $buttonClicked.attr('data-id');
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/EmploymentHistory/Delete',
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                //data: id,
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+                    $("#btnDeleteEmploymentHistory").click(function (e) {
+                        var model = {
+                            Id: $('#EmploymentHistoryId').val(),
+                        }
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmploymentHistory/Delete',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "html",
+                            success: function (html) {
+                                debugger
+                                //$('#divEmploymentHistoryIndex').html(html);
+                                //fnMostRecentEmploymentHistory($('#UserInformationId').val());
+                               // employmentInfoTabClicked();
+                                $('#myModal').modal('hide');
+                                location.reload(true);
+                            },
+                            error: function (xhr, exception) {
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorText = jQuery.parseJSON(responseText).Data.errors;
+                                // $('#divDeleteAlert').html(errorObject);
+                                // alert("Error - Dynamic content load failed.");
+                                showAlertAutoHide("", "Error", errorText);
+                            //alert('Uncaught Error.\n' + jqXHR.responseText);
+                            }
+                        });
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert("Dynamic content load failed.");
+                }
+            });
+
+        }
+        function fnEditEmploymentHistory(id) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/EmploymentHistory/Edit',
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                //data: id,
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    $('#employmentHistoryModalContent').html(data);
+                    $('#employmentHistoryModal').modal(options);
+                    $('#employmentHistoryModal').modal('show');
+
+                    $("#btnUpdateEmploymentHistory").click(function (e) {
+
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            Id: $('#EmploymentHistoryId').val(),
+                            StartDate: $('#StartDate').val(),
+                            CompanyId: $('#CompanyId  :selected').val(),
+                            LocationId: $('#LocationId  :selected').val(),
+                            DepartmentId: $('#DepartmentId  :selected').val(),
+                            SubDepartmentId: $('#SubDepartmentId  :selected').val(),
+                            PositionId: $('#PositionId  :selected').val(),
+                            EmployeeTypeId: $('#EmployeeTypeId  :selected').val(),
+                            EmploymentTypeId: $('#EmploymentTypeId  :selected').val(),
+                        }
+
+                        var selectedSupervisorIdList = [];
+                        var selectedSupervisorIdStr = "";
+                        $('#SupervisorId option:selected').each(function () {
+                            selectedSupervisorIdList.push($(this).val());
+                        });
+                        if (selectedSupervisorIdList.length > 0) {
+                            selectedSupervisorIdStr = selectedSupervisorIdList.join(",");
+                        }
+                        model.SelectedSupervisorId = selectedSupervisorIdStr;
+
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmploymentHistory/Edit',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "html",
+                            success: function (html) {
+                                debugger
+                                $('#divEmploymentHistoryIndex').html(html);
+                                fnMostRecentEmploymentHistory($('#UserInformationId').val());
+                                $('#employmentHistoryModal').modal('hide');
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                debugger
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert("Dynamic content load failed.");
+                }
+            });
+        }
+        function fnCloseEmploymentHistory(id) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/EmploymentHistory/Close',
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                //data: id,
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+                    $("#btnCloseEmploymentHistory").click(function (e) {
+                        debugger
+                        var model = {
+                            UserInformationId: $('#UserInformationId').val(),
+                            Id: $('#EmploymentHistoryId').val(),
+                            EndDate: $('#EndDate').val(),
+                            ApprovedDate: $('#EmploymentHistory_ApprovedDate').val(),
+                            ChangeReason: $('#ChangeReason').val(),
+                        }
+
+                        var selectedAuthorizByIdList = [];
+                        var selectedAuthorizByIdStr = "";
+                        $('#SelectedAuthorizById option:selected').each(function () {
+                            selectedAuthorizByIdList.push($(this).val());
+                        });
+                        if (selectedAuthorizByIdList.length > 0) {
+                            selectedAuthorizByIdStr = selectedAuthorizByIdList.join(",");
+                        }
+                        model.SelectedAuthorizById = selectedAuthorizByIdStr;
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/EmploymentHistory/Close',
+                            data: JSON.stringify(model),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "html",
+                            success: function (html) {
+                                debugger
+                                $('#divEmploymentHistoryIndex').html(html);
+                                fnMostRecentEmploymentHistory($('#UserInformationId').val());
+                                $('#myModal').modal('hide');
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                debugger
+                                var responseText = jQuery.parseJSON(xhr.responseText)
+                                var errorObject = jQuery.parseJSON(responseText.errors)
+                                $.each(errorObject, function (idx, errorMessage) {
+                                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                                });
+                            }
+                        });
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert("Dynamic content load failed.");
+                }
+            });
+        }
+        function fnDetailEmploymentHistory(id) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/EmploymentHistory/ViewSelected',
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "html",
+                success: function (html) {
+                    debugger;
+                    $('#divEmploymentHistoryDetail').html(html);
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger;
+                    alert("Dynamic content load failed.");
+                }
+            });
+        }
+        function fnMostRecentEmploymentHistory(id) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/EmploymentHistory/MostRecentRecord',
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "html",
+                success: function (html) {
+                    //debugger;
+                    $('#divEmploymentHistoryDetail').html(html);
+
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+        }
+        function fnIndexByUser(id) {
+
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: '/EmploymentHistory/IndexByUser',
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "html",
+                success: function (html) {
+                    //debugger;
+                    $('#divEmploymentHistoryIndex').html(html);
+
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+        }
+    </script>

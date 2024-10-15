@@ -1,0 +1,70 @@
+﻿@{ 
+    var initDate = (DateTime)TempData["InitDate"];
+}
+<div class="row filter-row">
+    <div class="col-sm-2 col-md-2 pr-0">
+        <div class="form-group form-focus mb-1">
+            <input id="EffortDte" type="text" class="form-control floating" value="@initDate.ToString("MM/dd/yyyy")">
+            <label class="focus-label">From/To Date</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pr-0 pl-0">
+        <div class="form-group form-focus mb-1">
+            <input id="EmployeeId" type="text" class="form-control floating">
+            <label class="focus-label">Employee ID</label>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus mb-1">
+            <input id="EmployeeName" type="text" class="form-control floating">
+            <label class="focus-label">Employee Name</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("DepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Department</label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("SubDepartmentId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">SubDepartment</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("EmployeeTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Employee Type</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("SupApprovalTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Supervisor Status</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 pl-0 pr-0">
+        <div class="form-group form-focus select-focus mb-1">
+            @Html.DropDownList("EmpApprovalTypeId", null, "All", new { @class = "select floating" })
+            <label class="focus-label">Employee Status</label>
+        </div>
+    </div>
+    <div class="col-sm-1 col-md-1 pl-0 pr-0">
+        <a href="javascript: getTimeAndEffort();" class="btn btn-success btn-block"> Search </a>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var endVal = $("#TAESEndDays").val();
+        console.log(endVal);
+        $('#EffortDte').datepicker({
+            autoclose: true,
+            format: 'mm/dd/yyyy'           
+           
+
+        });
+    });
+</script>

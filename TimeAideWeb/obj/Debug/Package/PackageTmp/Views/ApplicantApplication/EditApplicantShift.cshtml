@@ -1,0 +1,324 @@
+﻿@model TimeAide.Web.Models.ApplicantApplication
+
+
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+
+    .ui-timepicker-container {
+        z-index: 3500 !important;
+    }
+    
+
+    .default-width {
+        min-width: 140px;
+    }
+</style>
+<div id="applicantApplicationShiftEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Availibilty - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        @Html.Hidden("ApplicantApplicationId", Model.Id)
+
+                        <div class="form-group row">
+                            <div class="card-group">
+                                <div class="card default-width">
+                                    <div class="card-header">
+                                        @Html.CheckBox("IsMondayShift", Model.IsMondayShift ?? false)
+                                        Monday
+                                    </div>
+                                    <div class="card-body  pl-0 pr-0">
+                                        @{ 
+                                            var isShiftDay = Model.IsMondayShift ?? false;
+                                            var hideAndShow = isShiftDay == true ? "showField" : "hideField";
+                                        }
+                                        <div class="time-range-monday @hideAndShow">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">From</span>
+                                                </div>
+                                               @* @Html.EditorFor(m => m.MondayStartShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("MondayStartShift", (Model.MondayStartShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.MondayEndShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("MondayEndShift", (Model.MondayEndShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <a href="javascript:copyAllShift('MondayStartShift','MondayEndShift');" class="btn btn-light mt-1" style="width:100%;">Copy All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header default-width">
+                                        @Html.CheckBox("IsTuesdayShift", Model.IsTuesdayShift ?? false)
+                                        Tuesday
+                                    </div>
+                                    @{
+                                      isShiftDay = Model.IsTuesdayShift ?? false;
+                                      hideAndShow = isShiftDay == true ? "showField" : "hideField";
+                                    }
+                                    <div class="card-body pl-0 pr-0">
+                                        <div class="time-range-tuesday @hideAndShow">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">From</span>
+                                                </div>
+                                                @* @Html.EditorFor(m => m.TuesdayStartShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("TuesdayStartShift", (Model.TuesdayStartShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.TuesdayEndShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("TuesdayEndShift", (Model.TuesdayEndShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <a href="javascript:copyAllShift('TuesdayStartShift','TuesdayStartShift');" class="btn btn-light mt-1" style="width:100%;">Copy All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card default-width">
+                                    <div class="card-header">
+                                        @Html.CheckBox("IsWednesdayShift", Model.IsWednesdayShift ?? false)
+                                        Wednesday
+                                    </div>
+                                    @{
+                                        isShiftDay = Model.IsWednesdayShift ?? false;
+                                        hideAndShow = isShiftDay == true ? "showField" : "hideField";
+                                    }
+                                    <div class="card-body pl-0 pr-0">
+                                        <div class="time-range-wednesday @hideAndShow">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">From</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.WednesdayStartShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("WednesdayStartShift", (Model.WednesdayStartShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.WednesdayEndShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("WednesdayEndShift", (Model.WednesdayEndShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <a href="javascript:copyAllShift('WednesdayStartShift','WednesdayEndShift');" class="btn btn-light mt-1" style="width:100%;">Copy All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card default-width">
+                                    <div class="card-header">
+                                        @Html.CheckBox("IsThursdayShift", Model.IsThursdayShift ?? false)
+                                        Thursday
+                                    </div>
+                                    @{
+                                        isShiftDay = Model.IsThursdayShift ?? false;
+                                        hideAndShow = isShiftDay == true ? "showField" : "hideField";
+                                    }
+                                    <div class="card-body pl-0 pr-0">
+                                        <div class="time-range-thursday @hideAndShow">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">From</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.ThursdayStartShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("ThursdayStartShift", (Model.ThursdayStartShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </div>
+                                                @* @Html.EditorFor(m => m.ThursdayEndShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("ThursdayEndShift", (Model.ThursdayEndShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <a href="javascript:copyAllShift('ThursdayStartShift','ThursdayEndShift');" class="btn btn-light mt-1" style="width:100%;">Copy All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card default-width">
+                                    <div class="card-header">
+                                        @Html.CheckBox("IsFridayShift", Model.IsFridayShift ?? false)
+                                        Friday
+                                    </div>
+                                    @{
+                                        isShiftDay = Model.IsFridayShift ?? false;
+                                        hideAndShow = isShiftDay == true ? "showField" : "hideField";
+                                    }
+                                    <div class="card-body pl-0 pr-0">
+                                        <div class="time-range-friday @hideAndShow">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">From</span>
+                                                </div>
+                                                @* @Html.EditorFor(m => m.FridayStartShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("FridayStartShift", (Model.FridayStartShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.FridayEndShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("FridayEndShift", (Model.FridayEndShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <a href="javascript:copyAllShift('FridayStartShift','FridayEndShift');" class="btn btn-light mt-1" style="width:100%;">Copy All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card default-width">
+                                    <div class="card-header">
+                                        @Html.CheckBox("IsSaturdayShift", Model.IsSaturdayShift ?? false)
+                                        Saturday
+                                    </div>
+                                    @{
+                                        isShiftDay = Model.IsSaturdayShift ?? false;
+                                        hideAndShow = isShiftDay == true ? "showField" : "hideField";
+                                    }
+                                    <div class="card-body pl-0 pr-0">
+                                        <div class="time-range-saturday @hideAndShow">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">From</span>
+                                                </div>
+                                                @* @Html.EditorFor(m => m.SaturdayStartShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("SaturdayStartShift", (Model.SaturdayStartShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.SaturdayEndShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("SaturdayEndShift", (Model.SaturdayEndShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <a href="javascript:copyAllShift('SaturdayStartShift','SaturdayEndShift');" class="btn btn-light mt-1" style="width:100%;">Copy All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card default-width">
+                                    <div class="card-header">
+                                        @Html.CheckBox("IsSundayShift", Model.IsSundayShift ?? false)
+                                        Sunday
+                                    </div>
+                                    @{
+                                        isShiftDay = Model.IsSundayShift ?? false;
+                                        hideAndShow = isShiftDay == true ? "showField" : "hideField";
+                                    }
+                                    <div class="card-body pl-0 pr-0">
+                                        <div class="time-range-sunday @hideAndShow">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">From</span>
+                                                </div>
+                                                @*@Html.EditorFor(m => m.SundayStartShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("SundayStartShift", (Model.SundayStartShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </div>
+                                                @* @Html.EditorFor(m => m.SundayEndShift, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.TextBox("SundayEndShift", (Model.SundayEndShift ?? new DateTime()).ToString("h:mm tt"), new { @class = "form-control text-box single-line" })
+                                            </div>
+                                            <a href="javascript:copyAllShift('SundayStartShift','SundayEndShift');" class="btn btn-light mt-1" style="width:100%;">Copy All</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnSaveApplicantShift" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#IsSundayShift,#IsMondayShift,#IsTuesdayShift,#IsWednesdayShift,#IsThursdayShift,#IsFridayShift,#IsSaturdayShift').change(function () {
+            debugger;
+            var id = $(this).attr("id");
+            var shiftDay = id.substring(2, id.length - 5).toLowerCase();
+            var state = $(this).is(":checked");
+            if (state) {
+                $(".time-range-" + shiftDay).removeClass("hideField").addClass("showField");
+            }
+            else {
+                $(".time-range-" + shiftDay).removeClass("showField").addClass("hideField");
+            }
+
+        });
+
+        $('input[id*=StartShift],input[id*=EndShift]').each(function () {
+            debugger;
+            $(this).timepicker({
+                timeFormat: 'h:mm p',
+                interval: 30,
+                //minTime: '10',
+                //maxTime: '6:00pm',
+                //defaultTime: '11',
+                //startTime: '10:00',
+                dynamic: false,
+                //dropdown: true,
+                //scrollbar: true
+            });
+
+        });
+
+
+        $("#btnSaveApplicantShift").click(function () {
+            saveApplicantApplicationShiftData();
+        });
+        //popup master data
+
+    });
+    function copyAllShift(startShiftEle, endShiftEle) {
+        debugger;
+        var startShiftTime = $("#" + startShiftEle).val();
+        var endShiftTime = $("#" + endShiftEle).val();
+        $('input[id*=StartShift]').each(function () {
+            $(this).val(startShiftTime);
+        });
+        $('input[id*=EndShift]').each(function () {
+            $(this).val(endShiftTime);
+        });
+    }
+</script>
+
+
+

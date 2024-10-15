@@ -1,0 +1,112 @@
+﻿@model TimeAide.Web.ViewModel.DashboardGenderStatWidgetViewModel
+
+<link href="~/Content/Themes/assets/plugins/morris/morris.css" rel="stylesheet" />
+<script src="~/Content/Themes/assets/plugins/morris/morris.js"></script>
+<script src="~/Content/Themes/assets/plugins/raphael/raphael.min.js"></script>
+<style>
+    .pie-chart {
+        min-height: 200px;
+        width: 100%;
+    }
+    .color-0 {
+        color: #f39c12;
+    }
+    .color-1 {
+        color: #b200ff;
+    }
+    .color-2 {
+        color: #2874a6;
+    }
+    .color-3 {
+        color: #28b463;
+    }
+    .color-4 {
+        color: #17202a;
+    }
+    .color-5 {
+        color: #b03a2e;
+    }
+    .color-6 {
+        color: #DAF7A6;
+    }
+    .color-7 {
+        color: #808080;
+    }
+    .color-8 {
+        color: #c16db7;
+    }
+</style>
+<input id="hdnElement" class="hdnElement" type="hidden" value='@Html.Raw(Json.Encode(Model.GenderStatistics))'>
+<div class="statistics">
+    <div class="row">
+        <div id="gender-chart" class="pie-chart">
+
+        </div>
+    </div>
+</div>
+
+<div>
+    <p class="mb-1"><i class="fa fa-user-o text-primary mr-2"></i>Total Employees <span class="float-right">@Model.TotalEmployee</span></p>
+    @{
+        var colorCount = 0;
+    }
+    <div id="" style="max-height:150px; overflow-y:auto">
+        <table class="table table-condensed table-sm  table-nowrap mb-0" id="">
+            <tbody>
+                @foreach (var gender in Model.GenderStatistics)
+                {
+                   var colorCss = $"color-{colorCount}";
+                    <tr>
+                        <td width="80%"><i class="fa fa-user @colorCss mr-2"></i>@gender.Name</td>
+                        <td>@gender.GenderCount</td>
+                        <td>@gender.GenderRatio%</td>
+                    </tr>
+
+                    colorCount++;
+                }
+                </tbody>
+        </table>
+    </div>
+    @*@foreach (var gender in Model.GenderStatistics)
+    {
+        var colorCss = $"color-{colorCount}";
+
+        <p><i class="fa fa-user @colorCss mr-2"></i>@gender.Name<span class="float-right"><i class="pr-2 ">@gender.GenderCount</i><i>@gender.GenderRatio%</i></span> </p>
+
+        colorCount++;
+    }*@
+    <script>
+        $(document).ready(function () {
+            initGenderChart();
+        });
+        function initGenderChart() {
+            debugger;
+            var tempData = JSON.parse($("#hdnElement").val());
+            var dataList = [];
+            var colorCount = 0
+            tempData.forEach(function (item, index) {
+                debugger;
+                var colorCss = ".color-" + colorCount;
+                var dataObj = new Object();
+                dataObj.label = item.Name;
+                dataObj.value = parseInt(item.GenderCount);
+                dataObj.color = $(colorCss).css("color");
+                dataList.push(dataObj);
+                colorCount++;
+            });
+
+            Morris.Donut({
+                element: 'gender-chart',
+                data: dataList,
+                //data: [
+                //    { label: "Male", value: 50 },
+                //    { label: "Female", value: 40 },
+                //    { label: "Other", value: 10 },
+
+                //],
+                resize: true
+            });
+        }
+    </script>
+
+</div>

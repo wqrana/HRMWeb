@@ -1,0 +1,103 @@
+﻿@model TimeAide.Web.Models.EmployeeDocument
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal" style="padding:10px">
+        @Html.Partial("_CreatePageTitleView")
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.UserInformationId)
+        @foreach (TimeAide.Web.Models.Document document in ViewBag.DocumentList)
+        {
+            if ((document.IsExpirable))
+            {
+                <input type="hidden" id="hdnDocumentId_@document.Id" name="custId" value="true">
+            }
+            else
+            {
+                <input type="hidden" id="hdnDocumentId_@document.Id" name="custId" value="false">
+            }
+        }
+
+        <div class="col-md-12">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.DocumentId, "Document", htmlAttributes: new { @class = "control-label" })
+                @(Html.CustomDropDownList<TimeAide.Web.Models.Document>("DocumentId", null, htmlAttributes: new { @class = "form-control", onchange = "EmployeeDocumentChange()" }))
+                @Html.ValidationMessageFor(model => model.DocumentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.DocumentNote, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.DocumentNote, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DocumentNote, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12" id="divDocExpirationDate" style="display:none">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.ExpirationDate, "Expiration Date:", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ExpirationDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ExpirationDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="submit-section">
+            <input type="hidden" id="popupTargetDdl" />
+            <button type="button" onclick="fnAddEmployeeDocument('@ViewBag.FormName');" class="btn btn-primary submit-btn">Save</button>
+            <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+        @Scripts.Render("~/bundles/jqueryval")
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+    });
+
+</script>
+<script type="text/javascript">
+    function EmployeeDocumentChange() {
+        debugger
+        var selectedId = $('#DocumentId  :selected').val();
+        if ($('#hdnDocumentId_' + selectedId).val() == 'true') {
+            $('#divDocExpirationDate').show();
+        }
+        else {
+            $('#divDocExpirationDate').hide();
+        }
+
+    }
+    function fnAddEmployeeDocument(id) {
+        debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        var model = {
+            UserInformationId: $('#UserInformationId').val(),
+            DocumentNote: $('#DocumentNote').val(),
+            ExpirationDate: $('#ExpirationDate').val(),
+            DocumentId: $('#DocumentId  :selected').val(),
+
+        }
+        $.ajax({
+            type: 'post',
+            url: '/EmployeeDocument/Create',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                $('#divEmployeeDocument').html(html);
+                $('#myModal').modal('hide');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+</script>

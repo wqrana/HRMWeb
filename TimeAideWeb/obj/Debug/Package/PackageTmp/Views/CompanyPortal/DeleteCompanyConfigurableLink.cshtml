@@ -1,0 +1,56 @@
+﻿@model TimeAide.Web.Models.CompanyConfigurableLink
+@{
+    ViewBag.Label = "Configurable Link";
+}
+<div id="CmpConfigurableLinkDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+
+
+            @Html.HiddenFor(model => model.Id, new { id = "ConfigurableLinkDeleteId" })
+
+            <div class="form-group row" style="margin-left:0px; margin-right:0px;">
+                <div class="panel panel-default" style="width:100%;margin-left:0px">
+                    <div class="panel-heading" style="padding-left:10px">Configurable Link</div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                Name:
+                            </label>
+                            <div class="col-md-8 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.LinkName)</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" style="margin-left:10px">
+                                URL:
+                            </label>
+                            <div class="col-md-8 text-muted mt-2">
+                                <span id=""> @Html.DisplayFor(model => model.LinkURL)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-section mt-1">
+
+                <button id="btnDeleteConfigurableLink" class="btn btn-danger submit-btn">Delete</button>
+                <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteConfigurableLink").click(function () {
+            var id = $("#ConfigurableLinkDeleteId").val();
+            deleteConfigurableLink(id);
+        })
+
+    } );
+</script>
+
+
+

@@ -1,0 +1,295 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.PayrollRule
+<style>
+    .showSection {
+        display: block;
+    }
+
+    .hideSection {
+        display: none;
+    }
+</style>
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row">
+            <div class="col-md-8 p-0">
+                <div class="panel panel-default" style="margin-left:0px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Punches
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 pr-1">
+                                <div class="form-group row pt-2">
+                                    <label class="col-md-5 col-form-label pr-0" style="margin-left:5px">
+                                        Round Methods:
+                                    </label>
+                                    <div class="col-md-6 pr-0 mt-2 text-muted">
+                                        @{
+                                            var RoundingMethodTypeValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.RoundingMethodTypeField, Model.RoundingMethodTypeVal ?? 0);
+                                        }
+                                        @Html.DisplayFor(m => RoundingMethodTypeValText)
+
+                                    </div>
+                                </div>
+                                @{ 
+                                    var showAHidePR=(Model.RoundingMethodTypeVal ?? 0)== 2 ? "showSection" : "hideSection";
+                                    var showAHideSBR = (Model.RoundingMethodTypeVal ?? 0) == 1 ? "showSection" : "hideSection";
+                                }
+                                <div class="panel panel-default @showAHidePR" style="margin-left:0px">
+                                    <div class="panel-heading" style="padding-left:5px">
+                                        Punch Rounding
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            <label class="col-md-11 col-form-label" style="margin-left:5px">
+                                                Punch Rounding Time Period
+                                            </label>
+                                            <div class="col-md-11 pr-0 ml-1 text-muted">
+                                                @{
+                                                    var PunchRoundingPeriodValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.PunchRoundingPeriodField, Model.PunchRoundingPeriodVal ?? 0);
+                                                }
+                                                @Html.DisplayFor(m => PunchRoundingPeriodValText)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default @showAHideSBR" style="margin-left:0px">
+                                    <div class="panel-heading" style="padding-left:5px">
+                                        Schedule-based Rounding
+
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Round in Punches:
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @Html.DisplayFor(m => m.IsRoundIn)                                               
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                If early, max. no. of mins. to round:
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">                                               
+                                                @Html.DisplayFor(m => m.RoundInEarlyMinute)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                If late, Max. No. of Min. to round:
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">                                                
+                                                @Html.DisplayFor(m => m.RoundInLateMinute)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Round out Punches:
+                                            </label>
+                                            <div class="col-md-3 pt-2">                                              
+                                                @Html.DisplayFor(m => m.IsRoundOut)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                If early, max. no. of mins. to round:
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">                                              
+                                                @Html.DisplayFor(m => m.RoundOutEarlyMinute)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label pr-0" style="margin-left:5px">
+                                                If late, Max. No. of Min. to round:
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">
+                                                @Html.DisplayFor(m => m.RoundOutLateMinute)                                              
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-0">
+                                <div class="panel panel-default pt-2" style="margin-left:2px">
+                                    <div class="panel-heading" style="padding-left:5px">
+                                        In Exceptions
+
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Early In Exception?
+                                            </label>
+                                            <div class="col-md-3 pt-2">                                               
+                                                @Html.DisplayFor(m => m.IsEarlyInException)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Early In Minutes:>
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">
+                                                @Html.DisplayFor(m => m.EarlyInExceptionMinute)
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Late In Exception?
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                @Html.DisplayFor(m => m.IsLateInException)                                                
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label " style="margin-left:5px">
+                                                Late In Minutes:>
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">
+                                                @Html.DisplayFor(m => m.LateInExceptionMinute)                                                
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default" style="margin-left:2px">
+                                    <div class="panel-heading" style="padding-left:5px">
+                                        Out Exceptions
+
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Early Out Exception?
+                                            </label>
+                                            <div class="col-md-3 pt-2">                                                
+                                                @Html.DisplayFor(m => m.IsEarlyOutException)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Early Out Minutes:>
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">
+                                                
+                                                @Html.DisplayFor(m => m.EarlyOutExceptionMinute)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Late Out Exception?
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                               
+                                                @Html.DisplayFor(m => m.IsLateOutException)
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                                Late Out Minutes:>
+                                            </label>
+                                            <div class="col-md-3 pt-2 pr-0 text-muted">
+                                                @Html.DisplayFor(m => m.LateOutExceptionMinute)
+                                               
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Overtime
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                Daily Scheduled Hrs.:
+                            </label>
+                            <div class="col-md-3 pt-2 text-muted">
+                                @Html.DisplayFor(m => m.DailyScheduledHour)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                Weekly Scheduled Hrs.:
+                            </label>
+                            <div class="col-md-3 pt-2 text-muted">
+                                @Html.DisplayFor(m => m.WeeklyScheduledHour)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">Overtime: <span class="text-danger"></span></label>
+                            
+                            <div class="col-md-3 pt-2 text-muted">
+                                @{
+                                    var overtimeType = Model.IsNoOvertime ? "No" : "PR Law";
+                                }
+                                @Html.DisplayFor(m => overtimeType)                                
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                Computation Parameters
+                            </label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                Law-Day OT Hrs.:
+                            </label>
+                            <div class="col-md-3 pt-2 text-muted">
+                                @Html.DisplayFor(m => m.LawDailyRegularHour)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-5 col-form-label" style="margin-left:5px">
+                                24-Hrs Law Type:
+                            </label>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-9 pt-2 ml-5 text-muted" style="margin-left:5px">
+                               
+                                @{
+                                    var T24HourLawTypeValText = DataHelper.GetPayrollRuleFieldValText((int)PayrollRuleListTypeFieldsEnum.T24HourLawTypeField, Model.T24HourLawTypeVal ?? 0);
+                                }
+                                @Html.DisplayFor(m => T24HourLawTypeValText)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                Use 40-Hrs Law?:
+                            </label>
+                            <div class="col-md-3 pt-2">
+                                @Html.DisplayFor(m => m.IsUseLawWeeklyHour)
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                Law Weekly OT:
+                            </label>
+                            <div class="col-md-3 pt-2 text-muted">
+                                @Html.DisplayFor(m => m.LawWeeklyRegularHour)
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <label class="col-md-8 col-form-label" style="margin-left:5px">
+                                Use Seveenth Day Law?:
+                            </label>
+                            <div class="col-md-3 pt-2">
+                                @Html.DisplayFor(m => m.IsUseSeventhDayLaw)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

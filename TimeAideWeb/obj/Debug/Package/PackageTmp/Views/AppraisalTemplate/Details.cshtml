@@ -1,0 +1,118 @@
+﻿@model TimeAide.Web.Models.AppraisalTemplate
+<div style="padding:0px">
+    <div style="font-size: 90%;">
+        <div class="form-group row mb-0">
+            <div class="col-md-12 p-0">
+                <div class="panel panel-default" style="margin-left:5px">
+                    <div class="panel-heading" style="padding-left:10px">
+                        Template Information
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label" style="margin-left:5px">Template Name:</label>
+                            <div class="col-md-6 text-muted mt-2">
+                                @*  @Html.HiddenFor(m=>m.Id, new { @id="SelectedTemplateId"})*@
+                                @Html.Hidden("SelectedTemplateId", Model.Id)
+                                @Html.DisplayFor(m => m.TemplateName)
+                            </div>
+                            <label class="col-md-2 col-form-label" style="margin-left:0px">All-Companies:</label>
+                            <div class="col-md-1 text-muted mt-2">
+                                @{
+                                    Model.IsAllCompanies = !Model.CompanyId.HasValue;
+                                }
+                                @Html.DisplayFor(m => m.IsAllCompanies)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6 p-0">
+                    <div class="panel panel-default" style="margin-left:5px">
+                        <div class="panel-heading" style="padding-left:10px">
+                           Template Goal(s) List
+                            <div class="pull-right dropdown-action" style="height:20px;">
+                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:createEditAppraisalTemplateGoal(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add/Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="divTemplateGoals" style="max-height:200px; overflow-y:auto">
+                                <div class="table-responsive">
+                                    <table class="table table-striped custom-table table-nowrap mb-0">
+                                        <tr>
+                                            <th>
+                                                Goal Name
+                                            </th>
+
+                                        </tr>
+                                        @if (Model.AppraisalTemplateGoals != null)
+                                        {
+                                            foreach (var item in Model.AppraisalTemplateGoals)
+                                            {
+                                                <tr>
+
+                                                    <td>@item.AppraisalGoal.GoalName</td>
+
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6 p-0">
+                    <div class="panel panel-default" style="margin-left:5px">
+
+                        <div class="panel-heading" style="padding-left:10px">
+                            Template Skill(s) List
+                            <div class="pull-right dropdown-action" style="height:20px;">
+
+                                <a href="#" title="Action Menu" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    <a href="javascript:createEditAppraisalTemplateSkill(0);" class="dropdown-item"><i class="fa fa-plus m-r-5"></i> Add/Edit</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="divTemplateSkills" style="max-height:200px; overflow-y:auto">
+                                <div class="table-responsive">
+                                    <table class="table table-striped custom-table table-nowrap mb-0">
+                                        <tr>
+                                            <th>
+                                                Skill Name
+                                            </th>
+
+                                        </tr>
+                                        @if (Model.AppraisalTemplateSkills != null)
+                                        {
+                                            foreach (var item in Model.AppraisalTemplateSkills)
+                                            {
+                                                <tr>
+
+                                                    <td>@item.AppraisalSkill.SkillName</td>
+
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                             </div>
+
+                            </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+ </div>
+
+

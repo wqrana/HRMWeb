@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    var retURL = (string)ViewBag.ReturnURL;
+    if (!string.IsNullOrEmpty(retURL))
+    {
+        retURL = Url.IsLocalUrl(retURL) ? retURL : "";
+    }
+    //Html.Hidden("ReturnURL", retURL);
+}
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title"></h3>
+
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="divLoadingPage" class="align-content-md-center">
+            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="36" height="36" />
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //$("#divLoadingPage").show();
+        redirectToDefault();
+    });
+    function redirectToDefault() {
+        debugger;
+        window.location.href = '@Url.Action("Index", "CompanyPortal")';
+
+
+        }
+
+</script>
+

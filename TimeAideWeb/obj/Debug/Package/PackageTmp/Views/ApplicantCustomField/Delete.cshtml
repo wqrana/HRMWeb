@@ -1,0 +1,69 @@
+﻿@model TimeAide.Web.Models.ApplicantCustomField
+@{
+    ViewBag.Label = "CustomField";
+}
+<div id="applicantCustomFieldDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")           
+            <div class="modal-body pt-0">
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                @Html.HiddenFor(model => model.Id, new { id = "ApplicantCustomFieldDeleteId" })
+              
+                <div class="form-group row">
+                    <div class="panel panel-default" style="width:100%;margin-left:10px">
+                        <div class="panel-heading" style="padding-left:10px">CustomField Information</div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    CustomField:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.CustomField.CustomFieldName)</span>
+                                </div>
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Value:
+                                </label>
+                                <div class="col-md-3 text-muted mt-2">
+                                    @Html.DisplayFor(model => model.CustomFieldValue)
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label" style="margin-left:10px">
+                                    Note:
+                                </label>
+                                <div class="col-md-9 text-muted mt-2">
+                                    <span id=""> @Html.DisplayFor(model => model.CustomFieldNote)</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                    <div class="submit-section mt-1">
+                        <button id="btnDeleteApplicantCustomField" class="btn btn-danger submit-btn">Delete</button>
+                        <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                
+    </div>
+</div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteApplicantCustomField").click(function () {
+            var id = $("#ApplicantCustomFieldDeleteId").val();
+            deleteApplicantCustomField(id);
+        })
+
+    } );
+</script>
+

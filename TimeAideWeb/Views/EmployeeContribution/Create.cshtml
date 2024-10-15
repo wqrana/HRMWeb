@@ -1,0 +1,87 @@
+﻿@model TimeAide.Web.Models.EmployeeContribution
+@Html.Partial("_CreatePageTitleView")
+@Html.HiddenFor(model => model.UserInformationId)
+
+<div class="form-horizontal" style="padding:10px">
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label">
+            Contribution:<span class='text-danger'>*</span>
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.CompanyContribution>("CompanyContributionId", null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.CompanyContributionId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "col-md-4 col-form-label" })
+        <div class="col-md-6">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.Enabled)
+                @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label">
+            Start Date:<span class='text-danger'>*</span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label">
+            End Date:
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.MoneyAmount, htmlAttributes: new { @class = "col-md-4 col-form-label" })
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.MoneyAmount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MoneyAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label">
+            Period Entry:<span class='text-danger'>*</span>
+        </label>
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.CompensationPeriodEntry>("PeriodEntryId", null, null, false, null, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.PeriodEntryId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.GLContributionAccountId, "CC GL Expense/Debit", htmlAttributes: new { @class = "col-md-4 col-form-label" })
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.GLAccount>("GLContributionAccountId", null, null, false, 0, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.GLContributionAccountId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.GLContributionPayableAccountId, "CC GL Payable/Credit", htmlAttributes: new { @class = "col-md-4 col-form-label" })
+        <div class="col-md-6">
+            @(Html.CustomDropDownList<TimeAide.Web.Models.GLAccount>("GLContributionPayableAccountId", null, null, false, 0, htmlAttributes: new { @class = "form-control" }))
+            @Html.ValidationMessageFor(model => model.GLContributionPayableAccountId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="submit-section">
+        <button type="button" class="btn btn-primary submit-btn" id="btnAddEmployeeContribution">Save</button>
+        <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+        });
+    });
+
+</script>
+@Scripts.Render("~/bundles/jqueryval")

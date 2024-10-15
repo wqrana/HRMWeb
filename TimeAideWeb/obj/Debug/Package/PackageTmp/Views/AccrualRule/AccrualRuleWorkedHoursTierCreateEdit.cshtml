@@ -1,0 +1,122 @@
+﻿@model TimeAide.Web.Models.AccrualRuleWorkedHoursTier
+<div id="acrualRuleWorkHrTierCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="border:thin; border-style:solid">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Work Hour Tier - Add/Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0 pl-1 pr-1" >
+               
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                @Html.HiddenFor(m => m.Id, new { id = "AccrualRuleWorkHourTierId" })
+
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label pr-0">TierNo: <span class="text-danger"></span></label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.TierNo, new { htmlAttributes = new { @class = "form-control", @disabled = "disable", @id = "WorkHourTierNo" } })
+                                    </div>
+                                    <label class="col-md-3 col-form-label">Tier Desc.: <span class="text-danger">*</span></label>
+                                    <div class="col-md-5">
+                                        @Html.EditorFor(model => model.TierDescription, new { htmlAttributes = new { @class = "form-control", @id = "WorkHourTierDescription" } })
+                                    </div>
+
+                                </div>
+                                <hr />
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label pr-0">Work Hrs: <span class="text-danger"></span></label>
+                                    <label class="col-md-1 col-form-label pl-0 pr-0">Min: <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.TierWorkedHoursMin, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+                                    <label class="col-md-2 col-form-label pr-0">Max: <span class="text-danger">*</span></label>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.TierWorkedHoursMax, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label pr-0">Accrual Hrs: <span class="text-danger"></span></label>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.AccrualHours, new { htmlAttributes = new { @class = "form-control", @id = "WorkHourTierAccrualHours" } })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+               
+                <div class="submit-section mt-1">
+                    <button id="btnSaveAccrualRuleWorkHourTier" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#btnSaveAccrualRuleWorkHourTier").click(function () {
+            debugger;
+            var isRequiredValidated = 0;
+            var isValidated = true;
+            var message = "";
+            var dataObj = new Object();
+            dataObj.Id = $("#AccrualRuleWorkHourTierId").val();
+            dataObj.TierNo = $("#WorkHourTierNo").val();
+            dataObj.TierDescription = $("#WorkHourTierDescription").val();
+            dataObj.TierWorkedHoursMin = $("#TierWorkedHoursMin").val();
+            dataObj.TierWorkedHoursMax = $("#TierWorkedHoursMax").val();
+            dataObj.AccrualHours = $("#WorkHourTierAccrualHours").val();
+
+
+            if (dataObj != null) {
+                isRequiredValidated += dataObj.TierDescription.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.TierWorkedHoursMin.trim().length > 0 ? 1 : 0;
+                isRequiredValidated += dataObj.TierWorkedHoursMax.trim().length > 0 ? 1 : 0;
+
+                if (isRequiredValidated != 3) {
+                    isValidated = false;
+                    message = " Missing Required field(s)";
+                }
+            }
+
+            if (!isValidated) showAlertAutoHide("", 'Error', message);
+
+            if (isValidated)
+            {
+                var overlappedIndex = workedHoursTierListData.findIndex(function (record) {
+                    return ((Number(record.TierNo) !== Number(dataObj.TierNo)) && ((Number(dataObj.TierWorkedHoursMin) >= Number(record.TierWorkedHoursMin) && Number(dataObj.TierWorkedHoursMin) <= Number(record.TierWorkedHoursMax))
+                        || (Number(dataObj.TierWorkedHoursMax) >= Number(record.TierWorkedHoursMin) && Number(dataObj.TierWorkedHoursMax) <= Number(record.TierWorkedHoursMax))));
+                })
+                debugger;
+                if (overlappedIndex !== -1) {
+                    showAlertAutoHide("", 'Error', "Min & Max hrs. are overlapped with exising tier");
+                    return;
+                }
+
+                var index = workedHoursTierListData.findIndex(function (record) {
+                    return record.TierNo === dataObj.TierNo;
+                })
+                if (index !== -1) workedHoursTierListData.splice(index, 1);
+
+                workedHoursTierListData.push(dataObj);
+                refreshWorkedHoursTierData("AE");
+            }
+
+        });
+    });
+   
+</script>

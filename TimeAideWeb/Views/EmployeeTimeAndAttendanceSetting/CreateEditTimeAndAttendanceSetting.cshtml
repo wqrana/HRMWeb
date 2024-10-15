@@ -1,0 +1,104 @@
+﻿@model TimeAide.Web.Models.EmployeeTimeAndAttendanceSetting
+
+<div style="padding:10px;padding-bottom:0px">
+    <div class="form-group row">
+        <label class="col-md-4 col-form-label" style="margin-left:10px">
+            Enable Web Punch
+            @*<input type="checkbox" id="chkEnableWebPunch" value="@Model.EnableWebPunch"  style="margin-left:10px;"/>*@
+            @Html.DisplayFor(m => m.EnableWebPunch)
+        </label>
+    </div>
+</div>
+<div id="confirmTAndASetting_modal1" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00c5fb; border: 1px solid #00c5fb;">
+                <h5 class="modal-title">T&Aacute setting confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="divconfirmTAndASetting" style="display: inline;">Are you sure to change T&A setting?</p>.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="UpdateTandSetting(@Model.UserInformationId);">Yes</button>
+                @*<button type="button" class="btn btn-primary punch-btn" style="font-size:80%" onclick="webPunch();">Yes</button>*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //function UpdateTandSetting(userInformationId) {
+    //    debugger;
+    //    $.ajax({
+    //        type: "POST",
+    //        url: '/EmployeeTimeAndAttendanceSetting/CreateEditTimeAndAttendanceSetting',
+    //        data: { "userInformationId": userInformationId, "EnableWebPunch": $('#chkEnableWebPunch').is(":checked") },
+    //        dataType: "json",
+    //        success: function (data) {
+    //            debugger;
+    //            if (data.status == "Success") {
+    //                $('#confirmTAndASetting_modal1').modal('hide');
+    //                toastr.success("Successly updated", "Successly updated!");
+    //            }
+    //            else {
+    //                toastr.error(data.message, "Error!");
+    //            }
+    //        },
+    //        error: function () {
+    //            toastr.error("Error!", "Error!");
+    //        }
+    //    });
+    //}
+    //$('#chkEnableWebPunch').click(function (event) {
+    //    $('#confirmTAndASetting_modal1').modal('show');
+    //});
+
+    function UpdateTandSetting(userInformationId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/EmployeeTimeAndAttendanceSetting/CreateEdit',
+            data: { "id": userInformationId },
+
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+
+                $("#btnUpdateTandASetting").click(function (e) {
+                    var model = {
+                        UserInformationId: $('#UserInformationId').val(),
+                        "EnableWebPunch": $('#chkEnableWebPunch').is(":checked")
+
+                    }
+
+                    //e.preventDefault();
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmployeeTimeAndAttendanceSetting/CreateEdit',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "json",
+                        success: function (html) {
+                            debugger
+                            $('#myModal').modal('hide');
+                            retrieveTimeAndAttendanceSetting();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            var responseText = jQuery.parseJSON(xhr.responseText)
+                            var errorObject = jQuery.parseJSON(responseText.errors)
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+</script>

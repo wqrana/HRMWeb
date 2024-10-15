@@ -1,0 +1,193 @@
+﻿@using TimeAide.Services;
+@model TimeAide.Web.Models.UserInformation
+<div class="form-horizontal" style="padding:10px">
+    <div class="form-group row">
+        <div class="table-responsive">
+            <table class="table table-nowrap" id="tblChangeRequestHistory">
+                <thead>
+                    <tr>
+                        <th>
+                            Change Request Type
+                        </th>
+                        <th>
+                            Requested Date
+                        </th>
+                        <th>
+                            Request Status
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ChangeRequestAddress)
+                    {
+                        <tr>
+                            <td>
+                                Address
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            @if (item != null && item.ChangeRequestStatus != null)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChangeRequestStatus.ChangeRequestStatusName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>
+                                <a href="javascript:@WorkflowService.BuildChangeRequestViewFunction(item.WorkflowTriggerRequest.FirstOrDefault())">View Request</a>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model.ChangeRequestEmailNumbers)
+                    {
+                        <tr>
+                            <td>
+                                Email & Numbers
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            @if (item != null && item.ChangeRequestStatus != null)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChangeRequestStatus.ChangeRequestStatusName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>
+                                <a href="javascript:@WorkflowService.BuildChangeRequestViewFunction(item.WorkflowTriggerRequest.FirstOrDefault())">View Request</a>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model.ChangeRequestEmergencyContact)
+                    {
+                        <tr>
+                            <td>
+                                Emergency Contact
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            @if (item != null && item.ChangeRequestStatus != null)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChangeRequestStatus.ChangeRequestStatusName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>
+                                <a href="javascript:@WorkflowService.BuildChangeRequestViewFunction(item.WorkflowTriggerRequest.FirstOrDefault())">View Request</a>
+                            </td>
+                        </tr>
+
+                    }
+                    @foreach (var item in Model.ChangeRequestEmployeeDependent)
+                    {
+                        <tr>
+                            <td>
+                                Employee Dependent
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            @if (item != null && item.ChangeRequestStatus != null)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChangeRequestStatus.ChangeRequestStatusName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>
+                                <a href="javascript:@WorkflowService.BuildChangeRequestViewFunction(item.WorkflowTriggerRequest.FirstOrDefault())">View Request</a>
+                            </td>
+                        </tr>
+                    }
+                    @*New added*@
+                    @foreach (var item in Model.SelfServiceEmployeeCredential)
+                    {
+                        <tr>
+                            <td>
+                                Credential
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            @if (item != null && item.ChangeRequestStatus != null)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChangeRequestStatus.ChangeRequestStatusName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>
+                                <a href="javascript:@WorkflowService.BuildChangeRequestViewFunction(item.WorkflowTriggerRequest.FirstOrDefault())">View Request</a>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model.SelfServiceEmployeeDocument)
+                    {
+                        <tr>
+                            <td>
+                                Document
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            @if (item != null && item.ChangeRequestStatus != null)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChangeRequestStatus.ChangeRequestStatusName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>
+                                <a href="javascript:@WorkflowService.BuildChangeRequestViewFunction(item.WorkflowTriggerRequest.FirstOrDefault())">View Request</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<hr />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var tblChangeRequestHistory = $('#tblChangeRequestHistory').dataTable({
+            "searching": false,
+            "paging": true,
+            "pageLength": 5,
+            "createdRow": function (row, data, dataIndex) {
+                debugger
+                if (data[4] == 'Yes') {
+                    debugger
+                    $(row).css("background-color", "red");
+                }
+            }
+        });
+    });
+</script>
+

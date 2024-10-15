@@ -1,0 +1,49 @@
+﻿@model TimeAide.Web.Models.JobPostingDetail
+
+@{
+    ViewBag.Label = "Job Posting";
+}
+<div id="JobPostingDelete_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            @Html.Partial("_DeleteViewHeader")
+            @Html.HiddenFor(m => m.Id, new { id = "JobPostingDetailId" })
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="job-info job-widget mb-0 p-2">
+                            <h3 class="job-title">@Html.DisplayFor(m => m.Position.PositionName)</h3>
+                            <span class="job-dept">@Html.DisplayFor(m => m.Department.DepartmentName)</span>
+                            <ul class="job-post-det">
+                                <li><i class=""></i> Location: <span class="text-primary">@Html.DisplayFor(m => m.Location.LocationName)</span></li>
+                                <li><i class=""></i> Employment Type: <span class="text-primary">@Html.DisplayFor(m => m.EmploymentType.EmploymentTypeName)</span></li>
+                                <li><i class=""></i> Experience: <span class="text-primary">@Html.DisplayFor(m => m.Experience)</span></li>
+                                <li><i class=""></i> Salary Range: <span class="text-primary">@Html.DisplayFor(m => m.SalaryFrom)-@Html.DisplayFor(m => m.SalaryTo)</span></li>
+                                <li><i class=""></i> Post Date: <span class="text-primary">@Html.DisplayFor(m => m.JobPostingStartDate)</span></li>
+                                <li><i class=""></i> Last Date: <span class="text-primary">@Html.DisplayFor(m => m.JobPostingExpiringDate)</span></li>
+                                <li><i class=""></i> No Of Vacancies: <span class="text-primary">@Html.DisplayFor(m => m.NoOfVacancies)</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnDeleteJobPosting" class="btn btn-danger submit-btn">Delete</button>
+                    <button id="btnCancel" class="btn btn-danger submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnDeleteJobPosting").click(function () {
+            var id = $("#JobPostingDetailId").val();
+            deleteJobPosting(id);
+        })
+
+    } );
+</script>
+
+

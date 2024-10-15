@@ -1,0 +1,152 @@
+﻿@model IEnumerable<TimeAide.Models.ViewModel.TimesheetEditorPunchDetailViewModel>
+@{
+    var firstItem = Model.FirstOrDefault();
+
+}
+<div id="timesheetDeletePunches_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Punch(es)</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="welcome-box mb-2">
+                                <div class="welcome-det">
+                                    <h4>@Html.DisplayFor(m => firstItem.e_name)</h4>
+                                    <p><span class="">EmployeeId:</span>@Html.DisplayFor(m => firstItem.e_id)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pt-2">
+                        <div class="col-md-12 p-0">
+                            <div class="panel panel-default" style="margin-left:5px">
+                                <div class="panel-heading" style="padding-left:10px">
+                                    Punch(es) Detail
+                                    
+                                </div>
+                                <div class="panel-body">
+                                    <div id="divTransactionAlert" class="alert alert-danger mb-1" role="alert">
+
+                                    </div>
+                                    <div id="divPunchDetail">
+                                        <div id="" @*style="max-height:250px; overflow-y:auto"*@>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-condensed custom-table table-nowrap table-sm mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Punch Date</th>
+                                                            <th>Punches Detail</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>@Html.DisplayFor(m => item.PunchDate)</td>
+                                                                <td>
+                                                                    @if (item.PunchData.Count() > 0)
+                                                                    {
+                                                                        foreach (var punchItem in item.PunchData)
+                                                                        {
+                                                                            <span class="pl-4"><input class="" type="checkbox" id="@punchItem.tpdID" name="selectedPunch" /><span class="pl-1" id="span_@punchItem.tpdID">@punchItem.DTPunchDateTime.ToString("hh:mm tt")</span></span>
+
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="pl-4">N/A</span>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @*<tr>
+                                        <td>01/18/2024</td>
+                                        <td>
+                                            <span class="pl-4"><input class="" type="checkbox" id="12" name="selectedPunch" /><span class="pl-1">8:00 AM</span></span>
+                                            <span class="pl-4"><input class="" type="checkbox" id="12" name="selectedPunch" /><span class="pl-1">12:00 PM</span></span>
+                                            <span class="pl-4"><input class="" type="checkbox" id="12" name="selectedPunch" /><span class="pl-1">1:00 PM</span></span>
+                                            <span class="pl-4"><input class="" type="checkbox" id="12" name="selectedPunch" /><span class="pl-1">5:00 PM</span></span>
+                                        </td>
+                                    </tr>*@
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Note: <span class="text-danger">*</span></label>
+                                <div class="col-md-10">
+                                    <textarea rows="2" class="form-control" id="DeletePunchNote"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section mt-2">
+                        <div id="" class="align-content-md-start submit-in-processing" style="display:none;">
+                            <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+                        </div>
+                        <button id="btnDeletePunches" class="btn btn-danger submit-btn btn-sm">Delete</button>
+                        <button id="btnCancel" class="btn btn-primary  submit-btn btn-sm" data-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#divTransactionAlert").hide();
+        $('input[name="selectedPunch"]').change(function () {
+            debugger;
+            var isSelectetPunch = $(this).is(":checked");
+            var val = $(this).attr("id");
+            if (isSelectetPunch) {                
+                $("#span_" + val).addClass("text-danger");
+            }
+            else {
+                $("#span_" + val).removeClass("text-danger");
+            }
+
+        });
+
+        $("#btnDeletePunches").click(function () {
+            var selectedPunches = [];
+            $('input[name="selectedPunch"]').each(function () {
+                debugger;
+                var isSelectetPunch = $(this).is(":checked");
+                if (isSelectetPunch) {
+                    var val = $(this).attr("id");
+                    selectedPunches.push(val);
+                }
+            });
+            debugger;
+            var punchIds = selectedPunches.join(",");
+            var note = $("#DeletePunchNote").val();            
+            confirmDeletePunches(punchIds, '@firstItem.nWeekID', note);
+        });
+
+    });
+
+
+
+</script>
+
+
+
+
+
+

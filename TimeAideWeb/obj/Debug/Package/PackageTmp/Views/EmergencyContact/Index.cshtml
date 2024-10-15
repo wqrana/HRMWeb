@@ -1,0 +1,299 @@
+﻿@model TimeAide.Web.Models.UserInformation
+@using TimeAide.Services.Helpers;
+<div style="font-size: 90%;">
+    <h3 class="card-title pull-left"></h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="pull-left">
+                Emergency Contacts
+            </h4>
+        </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="col-md-6">
+            @if (!SecurityHelper.IsUser)
+            {
+                if (ViewBag.AllowAdd || ViewBag.AllowEdit)
+                {
+                    <div class="pull-right dropdown-action">
+
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a a href="javascript:;" data-toggle="modal" onclick="fnAddEmergencyContacts(@Model.Id);" id="anchorEmergencyContacts" class="dropdown-item" data-id="@Model.Id"><i class="fa fa-plus m-r-5"></i> Add</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table  table-striped custom-table table-nowrap mb-0" id="tblEmergencyContact">
+            <thead>
+                <tr>
+                    <th>
+                        Contact Person Name
+                    </th>
+                    <th>
+                        Relationship
+                    </th>
+                    <th>
+                        Primary Contact
+                    </th>
+                    <th>
+                        Main Number
+                    </th>
+                    <th>
+                        Alternate Number
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.EmergencyContact.Where(e => e.DataEntryStatus != 0))
+            {
+                <tr>
+                    <td width="18%">
+                        @Html.DisplayFor(modelItem => item.ContactPersonName)
+                    </td>
+                    <td width="18%">
+                        @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
+                    </td>
+                    <td width="18%">
+                        @if (item.IsDefault)
+                        {
+                            <span>Yes</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
+                    </td>
+                    <td width="18%">
+                        @if (!String.IsNullOrEmpty(item.MainNumber) && item.MainNumber.Trim().Length == 10)
+                        {
+                            @String.Format("({0}) {1}-{2}", item.MainNumber.Substring(0, 3), item.MainNumber.Substring(3, 3), item.MainNumber.Substring(6, 4))
+                        }
+                        else
+                        {
+                            @item.MainNumber
+                        }
+                    </td>
+                    <td width="18%">
+                        @if (!String.IsNullOrEmpty(item.AlternateNumber) && item.AlternateNumber.Trim().Length == 10)
+                        {
+                            @String.Format("({0}) {1}-{2}", item.AlternateNumber.Substring(0, 3), item.AlternateNumber.Substring(3, 3), item.AlternateNumber.Substring(6, 4))
+                        }
+                        else
+                        {
+                            @item.AlternateNumber
+                        }
+                    </td>
+                    <td width="10%">
+                        @if (!SecurityHelper.IsUser)
+                        {
+                            <div class="pull-right dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                                    @if ((bool)(ViewBag.AllowEdit ?? false))
+                                    {
+                                        <a a href="javascript:;" data-toggle="modal" onclick="fnEditEmergencyContacts(@item.Id);" id="anchorEditEmergencyContacts" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    }
+                                    @if ((bool)(ViewBag.AllowDelete ?? false))
+                                    {
+                                        <a a href="javascript:;" data-toggle="modal" onclick="fnDeleteEmergencyContacts(@item.Id);" id="anchorDeleteEmergencyContacts" class="dropdown-item" data-id="@item.Id"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                                    }
+                                    @if (SecurityHelper.AllowChangeHistory("EmergencyContact"))
+                                    {
+                                        <a href="javascript:void(0);" id="anchorChangeHistory" onclick="ShowChangeHistory(@item.Id,'EmergencyContact')" class="dropdown-item" data-id="@item.Id"><i class="fa fa-pencil m-r-5"></i> Change History</a>
+                                        @*<a href="javascript:void(0);" class="anchorEdit" data-id="@Model.Id">Edit</a>*@
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <style type="text/css">
+        td, th {
+            padding: 0 !important;
+        }
+    </style>
+}
+
+<script>
+    function fnDeleteEmergencyContacts(id) {
+
+        //var $buttonClicked = $(this);
+        // var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmergencyContact/Delete',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            //data: id,
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnDeleteEmergencyContact").click(function (e) {
+
+                    var model = {
+                        Id: $('#EmergencyContactId').val(),
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmergencyContact/Delete',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divEmergencyContact').html(html);
+                            $('#myModal').modal('hide');
+                            toastr.success('Record saved successfully.', "Success!");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText);
+                            var errorObject = jQuery.parseJSON(responseText.errors);
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+
+    function fnEditEmergencyContacts(id) {
+        //debugger;
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmergencyContact/Edit',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            //data: id,
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnAddEmergencyContact").click(function (e) {
+                    debugger
+                    var model = {
+                        Id: $('#EmergencyContactId').val(),
+                        UserInformationId: $('#ECUserInformationId').val(),
+                        ContactPersonName: $('#ContactPersonName').val(),
+                        RelationshipId: $('#RelationshipId').val(),
+                        RelationshipName: $('#RelationshipId  :selected').text(),
+                        IsDefault: $('#IsDefault').is(":checked"),
+                        MainNumber: $('#MainNumber').mask(),
+                        AlternateNumber: $('#AlternateNumber').mask()
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmergencyContact/Edit',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divEmergencyContact').html(html);
+                            $('#myModal').modal('hide');
+                            toastr.success('Record saved successfully.', "Success!");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText);
+                            var errorObject = jQuery.parseJSON(responseText.errors);
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    function fnAddEmergencyContacts(id) {
+        //debugger;
+        //var $buttonClicked = $(this);
+        //var id = $buttonClicked.attr('data-id');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: '/EmergencyContact/Create',
+            contentType: "application/json; charset=utf-8",
+            data: { "Id": id },
+            //data: id,
+            datatype: "json",
+            success: function (data) {
+                //debugger;
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+                $("#btnAddEmergencyContact").click(function (e) {
+                    var model = {
+                        ContactPersonName: $('#ContactPersonName').val(),
+                        UserInformationId: $('#ECUserInformationId').val(),
+                        RelationshipId: $('#RelationshipId').val(),
+                        RelationshipName: $('#RelationshipId  :selected').text(),
+                        IsDefault: $('#IsDefault').is(":checked"),
+                        MainNumber: $('#MainNumber').mask(),
+                        AlternateNumber: $('#AlternateNumber').mask()
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '/EmergencyContact/Create',
+                        data: JSON.stringify(model),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "html",
+                        success: function (html) {
+                            debugger
+                            $('#divEmergencyContact').html(html);
+                            $('#myModal').modal('hide');
+                            toastr.success('Record saved successfully.', "Success!");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            debugger
+                            var responseText = jQuery.parseJSON(xhr.responseText);
+                            var errorObject = jQuery.parseJSON(responseText.errors);
+                            $.each(errorObject, function (idx, errorMessage) {
+                                $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                            });
+                        }
+                    });
+                });
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+</script>

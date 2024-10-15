@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PayScale>
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PayScaleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RateFrequencyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LevelCount)
+        </th>
+
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayScaleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RateFrequency.RateFrequencyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LevelCount)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

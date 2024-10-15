@@ -1,0 +1,454 @@
+﻿
+<style>
+    .rowZeroMargin {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+</style>
+
+<div style="font-size: 90%;">
+    <div class="form-group row mb-1">
+        <div class="panel panel-default" style="width:100%; margin-left:5px">
+            <div class="panel-heading" style="padding-left:10px">
+                Employee Payroll Overview
+            </div>
+            <div class="panel-body">
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text">
+                                    <h3>
+                                        <span id="ShortFullNameSpan"> Tapia Taveras, Humberto</span>
+                                    </h3>
+                                    <div>
+                                        Age:<span id="mainEmployeeIdSpan" class="text-muted ml-1">37 years</span>
+                                    </div>
+                                    <div>
+                                        Hire Date: <span class="text-muted ml-1" id="userStatus">12/01/2012</span>
+                                    </div>
+                                    <div>
+                                        Employee Status: <span class="badge bg-inverse-success" id="userStatus">Active</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text">
+                                    <div>
+                                        Department:<span id="" class="text-muted ml-1">FINANCE AND ACCOUNTING</span>
+                                    </div>
+                                    <div>
+                                        Position:<span id="" class="text-muted ml-1">VP Finance</span>
+                                    </div>
+                                    <div>
+                                        Employee Type: <span class="text-muted ml-1" id="userStatus">Full Time</span>
+                                    </div>
+                                    <div>
+                                        Pay Rate:<span id="" class="text-muted ml-1">50.00 </span>
+                                        <span style="font-size:9px">Hourly</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-group">
+                            <div class="card pr-2">
+
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h4 class="text-muted">YTD Wages</h4>
+                                        <a href="javascript:getEmployeeYTDDetail(1,'a');"><h4 class="font-weight-bolder">$903.14</h4></a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h4 class="text-muted">YTD Refund</h4>
+                                        <a href=""><h4 class="font-weight-bolder">$100.00</h4></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h4 class="text-muted">YTD Withholdings</h4>
+                                        <a href=""><h4 class="font-weight-bolder">$(100.00)</h4></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h4 class="text-muted">YTD Contributions</h4>
+                                        <a href=""><h4 class="font-weight-bolder">$(100.00)</h4></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h4 class="pull-left"> Employee Payroll List</h4>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblEmployeePayroll">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Payroll</th>
+                <th>Pay Date</th>
+                <th>Start Date</th>
+                <th>End Date </th>
+                <th>Pay Week </th>
+                <th>Payroll Status</th>
+                <th>Compensations</th>
+                <th>Withholdings</th>
+                <th>Contributions</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>PAYROLL 11/18/2022</td>
+                <td>11/18/2022</td>
+                <td>10/30/2022</td>
+                <td>11/12/2022</td>
+                <td>120224546</td>
+                <td>Closed</td>
+                <td>1003.14</td>
+                <td>-197.96</td>
+                <td>-50.45</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>PAYROLL 11/4/2022</td>
+                <td>11/04/2022</td>
+                <td>10/16/2022</td>
+                <td>10/29/2022</td>
+                <td>120224532</td>
+                <td>Closed</td>
+                <td>1103.14</td>
+                <td>-199.96</td>
+                <td>-40.45</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>PAYROLL 10/21/2022</td>
+                <td>10/21/2022</td>
+                <td>10/2/2022</td>
+                <td>10/15/2022</td>
+                <td>120224344</td>
+                <td>Closed</td>
+                <td>1101.14</td>
+                <td>-195.96</td>
+                <td>-30.45</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:void();" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> <a href="javascript:getEmployeePayrollDetail(1);"><span class="fa fa-eye"></span></a></td>
+                <td>PAYROLL 10/7/2022</td>
+                <td>10/7/2022</td>
+                <td>9/18/2022</td>
+                <td>10/1/2022</td>
+                <td>120224333</td>
+                <td>Closed</td>
+                <td>1001.14</td>
+                <td>-191.96</td>
+                <td>-34.45</td>
+                <td width="10%">
+                    <div class="pull-right dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+                            <a href="javascript:getEmployeePayrollDetail(1);" class="dropdown-item"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="divEmployeePayrollDetail">
+
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#tblEmployeePayroll').dataTable({
+            "searching": true,
+            "paging": false,
+            "dom": 'rt<"bottom"flpi><"clear">'
+        });
+    });
+
+    function getEmployeePayrollDetail(id) {
+        debugger;
+        // $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayroll/EmployeePayrollDetail',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeePayrollDetail").html(data);
+                $("#employeePayrollDetail_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function getEmployeeYTDDetail(id) {
+        // $("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayroll/EmployeeYTDDetail',
+            data: { "id": id, "YTDType":"A" },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divEmployeePayrollDetail").html(data);
+                $("#employeeYTDDetail_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function addEditEmployeeDepositPctAccountList() {
+
+        var userId = $("#userID").val();
+
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayMethod/CreateEditDepositPctAccountList',
+            data: { "userId": userId },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayAccountCreateEdit").html(data);
+                $("#employeeDepositPctAccList_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+
+    function ajaxGetBankRoutingNumber(bankId) {
+        $.ajax({
+            type: "Get",
+            url: "/EmployeePayMethod/AjaxGetBankRoutingNumber",
+            data: { "bankId": bankId },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                $("#BankRoutingNumber").val(data);
+            }
+            ,
+            error: function (request, status, error) {
+                alert('Error in ajax call');
+                return false;
+            }
+        });
+    }
+
+    function addEditEmployeeCashAmountAccount(id) {
+        // divEmployeeLicensesCreateEdit
+        var userId = $("#userID").val();
+
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayMethod/CreateEditCashAmountAccount',
+            data: { "id": id, "userId": userId },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayAccountCreateEdit").html(data);
+                $("#employeeCashAmountAccCreateEdit_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function saveEmployeeCashAmountAccountData() {
+        debugger;
+        var alertID = "#";
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.UserInformationId = $("#userID").val();
+        dataObj.Id = $('#EmployeePayAccountId').val();
+        dataObj.Name = $('#AccountName').val();
+        dataObj.BankAccountTypeId = $('#BankAccountTypeId').val();
+        dataObj.AccountNumber = $('#AccountNumber').val();
+        dataObj.PayBankId = $('#PayBankId').val();
+        dataObj.DepositAmt = $('#DepositAmt').val();
+        dataObj.IsPrimary = $('#IsPrimaryAE').is(":checked");
+        dataObj.EndDate = $('#EndDate').val();
+        dataObj.PayType = $('#PayType').val();
+
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.Name.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.BankAccountTypeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.AccountNumber.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.PayBankId.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 4) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+
+        if (!isValidated) showAlertAutoHide(alertID, 'Error', message);
+
+        if (dataObj.EndDate != "") {
+            var todayDate = new Date();
+            if (moment(dataObj.EndDate) > moment(todayDate)) {
+                showAlertAutoHide("", 'Error', "End Date shouldn't be in future.");
+                return;
+            }
+            dataObj.DepositAmt = "0.00";
+        }
+        if (isValidated) {
+            // ajax call for saving data
+            $.ajax({
+                type: "POST",
+                url: "/EmployeePayMethod/CreateEditCashAmountAccount",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#employeeCashAmountAccCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("#", data.status, data.message);
+                        retrieveEmployeeAccountByCashDeposit(dataObj.UserInformationId);
+                        retrieveEmployeeAccountByDepositPct(dataObj.UserInformationId);
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    alert('Error in  action call');
+                    return false;
+                }
+            });
+        }
+    }
+
+    function getEmployeeCashAccountDeleteData(id) {
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayMethod/DeleteCashAccount',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayAccountCreateEdit").html(data);
+                $("#employeeCashAccountDelete_modal").modal("show");
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function deleteEmployeeCashAccount(id) {
+        $.ajax({
+            type: "Post",
+            url: "/EmployeePayMethod/ConfirmDelete",
+            data: { "id": id },
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+                    $("#employeeCashAccountDelete_modal").modal("hide");
+                    showAlertAutoHide("#userDetailAlert", data.status, data.message);
+                    var userId = $("#userID").val();
+                    retrieveEmployeeAccountByCashDeposit(userId);
+                    // location.reload(true);
+                }
+                else {
+                    showAlertAutoHide(alertID, data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                showAlertAutoHide(alertID, "Error", error);
+                return false;
+            }
+        });
+    }
+    function retrieveEmployeeAccountByDepositPct(userId) {
+        //$("#divLoadingLicensesTab").show();
+        $.ajax({
+            type: "get",
+            url: '/EmployeePayMethod/AccountByDepositPctDetail',
+            data: { "id": userId },
+
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divEmpDepositPctAccount").html(data);
+                //$("#divLoadingLicensesTab").hide();
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+
+
+
+
+
+</script>

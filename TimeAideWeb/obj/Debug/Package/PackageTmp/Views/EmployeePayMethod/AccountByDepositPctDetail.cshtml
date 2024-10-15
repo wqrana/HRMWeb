@@ -1,0 +1,137 @@
+﻿@using TimeAide.Services.Helpers;
+@model IEnumerable<TimeAide.Web.Models.EmployeePayAccount>
+    @{ 
+        var currentPctAccounts = Model.Where(w => w.EndDate ==null);
+        var historyPctAccounts = Model.Where(w => w.EndDate != null);
+
+    }
+<div class="form-group row rowZeroMargin">
+    <h4 class="pull-left mb-0"> Current</h4>
+    <div style="min-height:150px; max-height:150px; width:100%; overflow-y:auto">
+        <div class="table-responsive">
+            <table class="table table-striped table-condensed table-sm table-nowrap mb-0" id="">
+                <thead>
+                    <tr>
+                        @*<th>
+                        </th>*@
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Account Type
+                        </th>
+                        <th>
+                            Account Number
+                        </th>
+                        <th>
+                            Bank
+                        </th>
+                        <th>
+                            Routing Number
+                        </th>
+                        <th>
+                            Deposit %
+                        </th>
+                        <th>
+                            Primary
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var currentAccount in currentPctAccounts)
+                    {
+                        <tr>
+                            @*<td width="10%">
+                                <div class="pull-right dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                        <a href="javascript:addEditEmployeeDepositPctAccount(@currentAccount.Id);" class="dropdown-item" data-id=""><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                                        <a href="javascript:getEmployeePayAccountDeleteData(@currentAccount.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+
+                                    </div>
+                                </div>
+                            </td>*@
+                            <td>@Html.DisplayFor(m => currentAccount.Name)</td>
+                            <td>@Html.DisplayFor(m => currentAccount.BankAccountType.Name)</td>
+                            <td>@Html.DisplayFor(m => currentAccount.AccountNumber)</td>
+                            <td>@Html.DisplayFor(m => currentAccount.PayBank.Name)</td>
+                            <td>@Html.DisplayFor(m => currentAccount.PayBank.RoutingNumber)</td>
+                            <td>@Html.DisplayFor(m => currentAccount.DepositPct)</td>
+                            <td>@Html.DisplayFor(m => currentAccount.IsPrimary)</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    <div class="form-group row rowZeroMargin">
+        <h5 class="pull-left mb-0"> History</h5>
+        <div style="min-height:150px; max-height:300px; width:100%; overflow-y:auto">
+            <div class="table-responsive">
+                <table class="table table-striped table-condensed table-sm table-nowrap mb-0" id="">
+                    <thead>
+                        <tr>
+                            @*<th>
+                            </th>*@
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Account Type
+                            </th>
+                            <th>
+                                Account Number
+                            </th>
+                            <th>
+                                Bank
+                            </th>
+                            <th>
+                                Routing Number
+                            </th>
+                            <th>
+                                Deposit %
+                            </th>
+                            <th>
+                                Primary
+                            </th>
+                            <th>
+                                End-Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var historyAccount in historyPctAccounts)
+                        {
+                            <tr>
+                                @*<td width="10%">
+                                    <div class="pull-right dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                                            <a href="javascript:addEditEmployeeDepositPctAccount(@historyAccount.Id);" class="dropdown-item" data-id=""><i class="fa fa-pencil m-r-5"></i> Edit</a>
+
+                                            <a href="javascript:getEmployeePayAccountDeleteData(@historyAccount.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+
+                                        </div>
+                                    </div>
+                                </td>*@
+                                <td>@Html.DisplayFor(m => historyAccount.Name)</td>
+                                <td>@Html.DisplayFor(m => historyAccount.BankAccountType.Name)</td>
+                                <td>@Html.DisplayFor(m => historyAccount.AccountNumber)</td>
+                                <td>@Html.DisplayFor(m => historyAccount.PayBank.Name)</td>
+                                <td>@Html.DisplayFor(m => historyAccount.PayBank.RoutingNumber)</td>
+                                <td>@Html.DisplayFor(m => historyAccount.DepositPct)</td>
+                                <td>@Html.DisplayFor(m => historyAccount.IsPrimary)</td>
+                                <td>@Html.DisplayFor(m => historyAccount.EndDate)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

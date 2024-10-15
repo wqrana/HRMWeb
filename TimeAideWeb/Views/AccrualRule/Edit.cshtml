@@ -1,0 +1,162 @@
+﻿@using TimeAide.Data;
+@model TimeAide.Web.Models.AccrualRule
+
+<div id="acrualRuleCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Accrual Rule - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="positionCreateEditAlert">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "AccrualRuleId" })
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Name: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.AccrualRuleName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Description: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.AccrualRuleDescription, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Ref. Type: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @{
+                                    var referenceType = DataHelper.AccuralReferenceType.
+                                                    Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+                                
+                                    }
+                                
+                                @Html.DropDownList("ReferenceTypeId", referenceType, "Please select", new { @class = "form-control" })
+                            </div>
+
+                            <label class="col-md-2 col-form-label pr-0">Beginning Of: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.BeginningOfYearDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Accrual Period: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @{
+                                    var accuralPeriodType = DataHelper.AccuralPeriodType.
+                                                    Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+                                }
+                                @Html.DropDownList("AccrualPeriodTypeId", accuralPeriodType, "Please select", new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Accrual Type: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("AccrualTypeId", null, "Please select", new { @class = "form-control" })
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Unavail. Code: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.AccrualTypeUnavailable, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Accumulation Type: <span class="text-danger">*</span></label>
+                            <div class="col-md-4">
+                                @{
+                                    var accumulationType = DataHelper.AccuralAccumulationType.
+                                                    Select(w => new SelectListItem() { Text = w.Value, Value = w.Key.ToString() }).ToList();
+                                }
+                                @Html.DropDownList("AccumulationTypeId", accumulationType, "Please select", new { @class = "form-control" })
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Multiplier: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.AccumulationMultiplier, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">Use Years Work: <span class="text-danger"></span></label>
+                            <div class="col-md-2 pt-2">
+                                @Html.CheckBoxFor(model => model.UseYearsWorked, new { id = "UseYearsWorkedAE" })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">All Companies: <span class="text-danger"></span></label>
+                           
+                            <div class="col-md-1 pt-2">
+                                @if (ViewBag.CanBeAssignedToCurrentCompany)
+                                {
+                                    @Html.CheckBoxFor(model => model.IsAllCompanies, new { id = "IsAllCompaniesAE" })
+                                }
+                                else
+                                {
+                                    @Html.CheckBoxFor(model => model.IsAllCompanies, new { id = "IsAllCompaniesAE", @disabled = "disabled" })
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveAccrualRule" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#BeginningOfYearDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        // $("#AccumulationMultiplier").attr("disabled", "disabled");
+        setMultiplierField($("#AccumulationTypeId").val());
+        //popup master data
+        $("#AccrualTypeId").change(function () {
+            var val = $(this).val();
+            if (val != "") {
+                var unav = "UNAV_" + $(this).find(":selected").text();
+                $("#AccrualTypeUnavailable").val(unav);
+            }
+            else {
+                $("#AccrualTypeUnavailable").val(null);
+            }
+
+        });
+        $("#AccumulationTypeId").change(function () {
+            var val = $(this).val();
+            setMultiplierField(val);
+        });
+        $("#btnSaveAccrualRule").click(function () {
+            saveAccrualRuleData();
+        });
+
+
+    });
+    function setMultiplierField(val) {
+        if (val == 1) {
+            $("#AccumulationMultiplier").removeAttr("disabled");
+        }
+        else {
+            $("#AccumulationMultiplier").val(null);
+            $("#AccumulationMultiplier").attr("disabled", "disabled");
+        }
+    }
+</script>
+
+

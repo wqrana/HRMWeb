@@ -1,0 +1,58 @@
+﻿@model TimeAide.Web.Models.EmergencyContact
+<div style="padding:10px;padding-bottom:0px">
+    @Html.Partial("_DeleteViewHeader")
+    <div class="submit-section" style="text-align:center">
+        <button class="btn btn-danger submit-btn m-r-10" id="btnDeleteEmergencyContact">Delete</button>
+        <button type="submit" class="btn btn-danger submit-btn m-r-10" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    </div>
+    <br />
+    @Html.HiddenFor(model => model.Id, new { id = "EmergencyContactId" })
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Relationship.RelationshipName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Relationship.RelationshipName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactPersonName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactPersonName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDefault)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDefault)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MainNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MainNumber)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AlternateNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlternateNumber)
+        </dd>
+
+    </dl>
+
+</div>
+

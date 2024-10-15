@@ -1,0 +1,281 @@
+﻿@model TimeAide.Models.ViewModel.EmployeeAttSchCalendarViewModel
+@using TimeAide.Web.Models;
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+
+    .table-avatar {
+        align-items: center;
+        display: inline-flex;
+        font-size: inherit;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .div-punch-info {
+        background-color: aliceblue;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .div-emp-info {
+        /*width: 200px;
+        height: 60px;*/
+    }
+
+    .div-responsive {
+        width: 100%;
+        height: 600px;
+        overflow: scroll;
+        border: 1px solid #777777;
+    }
+
+        .div-responsive table {
+            border-spacing: 0;
+        }
+
+        .div-responsive th {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 200px;
+            min-width: 200px;
+            position: sticky;
+            top: 0;
+            background: #727272;
+            color: #e0e0e0;
+            font-weight: bolder;
+            font-size: large;
+        }
+
+        .div-responsive td {
+            border-left: none;
+            border-right: 1px solid #bbbbbb;
+            border-bottom: 1px solid #bbbbbb;
+            padding: 5px;
+            width: 200px;
+            min-width: 200px;
+            height: 85px;
+        }
+
+            .div-responsive th:nth-child(1),
+            .div-responsive td:nth-child(1) {
+                position: sticky;
+                left: 0;
+                width: 250px;
+                min-width: 250px;
+            }
+
+
+
+            .div-responsive td:nth-child(1) {
+                background: #dee2e6;
+            }
+
+        .div-responsive th:nth-child(1) {
+            z-index: 2;
+        }
+</style>
+<div class="div-responsive">
+    <table class="" id="tblScheduleCalendar">
+        <thead>
+            <tr class="">
+                <th></th>
+                @foreach (var calDate in Model.CalendarDateRange)
+                {
+                    <th>@calDate.ToString("ddd MM/dd")</th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var calDetail in Model.CalendarDetail.OrderBy(o => o.EmployeeSchedule.sUserName))
+            {
+                <tr>
+                    <td>
+                        <div class="div-emp-info">
+                            <h2 class="table-avatar">
+                                <a class="avatar avatar-xs" href="javascript:getUserScheduleDetail(@calDetail.EmployeeSchedule.Id,@calDetail.EmployeeSchedule.OldCompanyId)"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a>
+                                <a href="javascript:getUserScheduleDetail(@calDetail.EmployeeSchedule.Id,@calDetail.EmployeeSchedule.OldCompanyId)">@Html.DisplayFor(m => calDetail.EmployeeSchedule.sUserName)</a>
+                            </h2>
+                            <p class="mb-1 pl-5 font-weight-normal font-italic">@Html.DisplayFor(m => calDetail.EmployeeSchedule.dblPeriodHours) Hrs</p>
+                        </div>
+                    </td>
+                    @foreach (var calDate in Model.CalendarDateRange)
+                    {
+
+                        var scheduleDateData = calDetail.EmployeeScheduleDetail.Where(w => w.dPunchDate == calDate).FirstOrDefault();
+
+                        <td>
+                            @if (scheduleDateData != null)
+                            {
+                                var PunchIn1 = (scheduleDateData.dPunchIn1 == null) ? "" : scheduleDateData.dPunchIn1.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 1) { PunchIn1 = ""; }
+
+                                var PunchOut1 = (scheduleDateData.dPunchOut1 == null) ? "" : scheduleDateData.dPunchOut1.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 2) { PunchOut1 = ""; }
+
+                                var PunchIn2 = (scheduleDateData.dPunchIn2 == null) ? "" : scheduleDateData.dPunchIn2.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 4) { PunchIn2 = ""; }
+
+                                var PunchOut2 = (scheduleDateData.dPunchOut2 == null) ? "" : scheduleDateData.dPunchOut2.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 4) { PunchOut2 = ""; }
+
+                                var dayPunchInOut1 = "";
+                                var dayPunchInOut2 = "";
+                                if (PunchIn1 != "") { dayPunchInOut1 += PunchIn1; }
+                                if (PunchOut1 != "") { dayPunchInOut1 += " - " + PunchOut1; }
+                                if (PunchIn2 != "") { dayPunchInOut2 += PunchIn2; }
+                                if (PunchOut2 != "") { dayPunchInOut2 += " - " + PunchOut2; }
+
+                                if (scheduleDateData.nWorkDayType == 0) { dayPunchInOut1 =  scheduleDateData.sWorkDayTypeName; dayPunchInOut2 ="" ; scheduleDateData.dblDayHours = 0; }
+                                
+                                var worktypeColorCss = "text-success";
+                                if (scheduleDateData.nWorkDayType == 0)
+                                {
+                                    worktypeColorCss = "text-danger";
+                                }
+                                else if (scheduleDateData.nWorkDayType == 2)
+                                {
+                                    worktypeColorCss = "text-warning";
+                                }
+
+                                <div class="div-punch-info">
+                                    <span class="pull-right"><a href="javascript:getScheduleDetailEditData(@calDetail.EmployeeSchedule.Id,@scheduleDateData.Id,@scheduleDateData.OldCompanyId);" class="fa fa-pencil" style="font-size:xx-small;"></a></span>
+                                    <p class="mb-1 font-weight-bold small @worktypeColorCss">@Html.DisplayFor(m => scheduleDateData.sWorkDayTypeName)</p>
+                                    <p class="mb-1 font-weight-normal small"><span>Punch#:(@Html.DisplayFor(m => scheduleDateData.nPunchNum))</span><span class="pl-2">Day Hrs:(@Html.DisplayFor(m => scheduleDateData.dblDayHours))</span></p>
+                                    <p class="mb-1 small">@Html.DisplayFor(m => dayPunchInOut1)</p>
+                                    <p class="mb-1 small">@Html.DisplayFor(m => dayPunchInOut2)</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="div-punch-info">
+                                </div>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<div class="div-responsive" style="display:none;">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblScheduleCalendarPrint">
+        <thead>
+            <tr class="">
+                <th></th>
+                @foreach (var calDate in Model.CalendarDateRange)
+                {
+                    <th>@calDate.ToString("ddd MM/dd ")</th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var calDetail in Model.CalendarDetail.OrderBy(o => o.EmployeeSchedule.sUserName))
+            {
+                <tr>
+                    <td>
+                        <div class="">
+                            <h2 class="">
+                                @Html.DisplayFor(m => calDetail.EmployeeSchedule.sUserName)
+                            </h2>
+                            <div class="mb-1 pl-5 font-weight-normal font-italic">Period Hrs: @Html.DisplayFor(m => calDetail.EmployeeSchedule.dblPeriodHours)</div>
+                        </div>
+                    </td>
+                    @foreach (var calDate in Model.CalendarDateRange)
+                    {
+
+                        var scheduleDateData = calDetail.EmployeeScheduleDetail.Where(w => w.dPunchDate == calDate).FirstOrDefault();
+
+                        <td>
+                            @if (scheduleDateData != null)
+                            {
+                                var PunchIn1 = (scheduleDateData.dPunchIn1 == null) ? "" : scheduleDateData.dPunchIn1.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 1) { PunchIn1 = ""; }
+
+                                var PunchOut1 = (scheduleDateData.dPunchOut1 == null) ? "" : scheduleDateData.dPunchOut1.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 2) { PunchOut1 = ""; }
+
+                                var PunchIn2 = (scheduleDateData.dPunchIn2 == null) ? "" : scheduleDateData.dPunchIn2.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 4) { PunchIn2 = ""; }
+
+                                var PunchOut2 = (scheduleDateData.dPunchOut2 == null) ? "" : scheduleDateData.dPunchOut2.Value.ToString("hh:mm tt");
+                                if (scheduleDateData.nPunchNum < 4) { PunchOut2 = ""; }
+
+                                var dayPunchInOut1 = "";
+                                var dayPunchInOut2 = "";
+                                if (PunchIn1 != "") { dayPunchInOut1 += PunchIn1; }
+                                if (PunchOut1 != "") { dayPunchInOut1 += " - " + PunchOut1; }
+                                if (PunchIn2 != "") { dayPunchInOut2 += PunchIn2; }
+                                if (PunchOut2 != "") { dayPunchInOut2 += " - " + PunchOut2; }
+                                var shortWorkTyeName = AttendenceScheduleMasterDDV.WorkDayTypes.Where(w => w.Id == (scheduleDateData.nWorkDayType ?? 0)).FirstOrDefault().ShortName;
+
+                                if (scheduleDateData.nWorkDayType == 0) { dayPunchInOut1 = shortWorkTyeName; dayPunchInOut2 = ""; scheduleDateData.dblDayHours = 0; }
+
+                               
+                                <div class="">
+                                    
+                                    <div class="mb-1 font-weight-bold small">@Html.DisplayFor(m => shortWorkTyeName)</div>
+                                    <div class="mb-1 font-weight-normal small">P#:(@Html.DisplayFor(m => scheduleDateData.nPunchNum))</div>
+                                    <div class="mb-1 font-weight-normal small">Hrs:(@Html.DisplayFor(m => scheduleDateData.dblDayHours))</div>
+                                    <div class="mb-1 small">@Html.DisplayFor(m => dayPunchInOut1)</div>
+                                    <div class="mb-1 small">@Html.DisplayFor(m => dayPunchInOut2)</div>
+                                    </div>
+                            }
+                            else
+                            {
+                                <div class="">
+
+                                </div>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#spanTotalRec").text(@Model.CalendarDetail.Count());
+        var fileNameAndTitle = "Schedule Calendar";
+        $('#tblScheduleCalendarPrint').DataTable({
+            "paging": false,
+            "info": false,
+            "sorting": false,
+            buttons: [
+                {
+                    extend: 'excel'
+                },
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    filename: function () {
+                        return fileNameAndTitle;
+                    },
+                    title: fileNameAndTitle,
+                    customize: function (doc) {
+                        //pageMargins [left, top, right, bottom] 
+                       // doc.pageMargins = [15, 20, 15, 20];
+                    }
+                },
+            ]
+        });
+
+    });
+</script>

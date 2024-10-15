@@ -1,0 +1,166 @@
+﻿@model IEnumerable<TimeAide.Web.Models.EmployeeAttendenceSchedule>
+@Html.Hidden("OldCompanyId", Model.Select(w => w.OldCompanyId).FirstOrDefault())
+@Html.Hidden("SelectedScheduleIds",(string)ViewBag.SelectedScheduleIds)
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblSchedule">
+
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Action</th>
+                <th>Show</th>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Pay Period</th>
+                <th>Start Date </th>
+                <th>End Date</th>
+                <th>Total Hour(s)</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td style="display:none">@item.Id</td>
+                    <td class="text-left">
+
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                                <a class="dropdown-item" href="javascript:getWebAttendanceScheduleDetail(@item.Id,@item.OldCompanyId);"><i class="fa fa-eye m-r-5"></i> Show Schedule</a>
+                                <a class="dropdown-item" href="javascript:getWebScheduleEditData(@item.Id,@item.OldCompanyId);"><i class="fa fa-pencil m-r-5"></i> Edit Note</a>
+                                <a class="dropdown-item" href="javascript:runLocalReport(@item.Id);"><i class="fa fa-print m-r-5"></i> Print</a>
+                                
+                            </div>
+                        </div>
+
+                    </td>
+
+                    <td>
+                        @* <a href="javascript:getScheduleDetail(@item.Id,@item.OldCompanyId">View Detail</a>*@
+                        <input type="radio" id="@item.Id" name="viewSchedule" value="" onchange="getSelectedWebScheduleDetail(@item.Id);">
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sUserName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nPayWeekNum)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dStartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dEndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblPeriodHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sNote)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        
+        $('#tblSchedule').dataTable({
+            "searching": true,
+            "paging": true,
+            "pageLength": 5
+        });
+
+        $('input[name="viewSchedule"]:radio').change(function () {
+            debugger;
+            //var selectedSch = $("input[name='viewSchedule']:checked");
+            //var id = ($(selectedSch).attr("id"));
+
+            //var table = $('#tblSchedule').DataTable();
+            //var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+            //    return table.cell(rowIdx, 0).data() === id ? true : false;
+            //});
+            //var rowData = table.row(selectedRow[0]).data();
+            //table.cell(selectedRow[0], 3).data("0").draw();
+           // getAttendanceScheduleDetail(id, $("#OldCompanyId").val());
+        });
+               
+
+        //$('#tblSchedule tbody').on('click', 'tr', function () {
+        //    debugger;
+        //    var table = $('#tblSchedule').DataTable();
+        //    //var row = table.row(this);
+        //    var rowData = table.row(this).data();
+        //    table.cell(this, 3).data("0").draw();
+        //    //// ... do something with `rowData`
+        //    ////row.cell(3).data("0");
+        //    //var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+        //    //    return table.cell(rowIdx, 0).data() === 'Yes' ? true : false;
+        //    //});
+        //});
+        $('#tblSchedule').on('search.dt', function () {
+            debugger;
+            resetSchedule();
+        });
+        $('#tblSchedule').on('page.dt', function () {
+            debugger;
+            resetSchedule();
+
+            //$("input[name='viewSchedule']:checked").each(function () {
+            //    debugger;              
+            //    this.checked = false;
+            //    $("#divScheduleDetail").text("No Schedule Selected");
+            //});     
+
+           
+        });
+    });
+    function resetSchedule() {
+        $("input[name='viewSchedule']:checked").each(function () {
+            debugger;
+            this.checked = false;           
+        });
+        $("#divScheduleDetail").text("No Schedule Selected");
+        resetSelectedScheduleRow(0);
+    }
+    function resetSelectedScheduleRow(id) {
+        debugger;
+        var table = $('#tblSchedule').DataTable();
+        var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+            $(table.rows(rowIdx).nodes()).removeClass("bg-success");
+            return table.cell(rowIdx, 0).data() == id ? true : false;
+
+        });
+        if (id > 0) {
+            $(table.rows(selectedRow[0]).nodes()).addClass("bg-success");
+        }
+    }
+    function getSelectedWebScheduleDetail(schId) {
+        debugger;
+        resetSelectedScheduleRow(schId);
+        getWebAttendanceScheduleDetail(schId, $("#OldCompanyId").val());
+        //later use code
+        //var table = $('#tblSchedule').DataTable();
+        //var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+        //    return table.cell(rowIdx, 0).data() == schId ? true : false;
+        //});        
+        ////table.draw(false);
+        //table.cell(selectedRow[0], 3).data("0");//.draw();
+        //var rowData = table.row(selectedRow[0]).data();
+      
+    }
+
+</script>
+

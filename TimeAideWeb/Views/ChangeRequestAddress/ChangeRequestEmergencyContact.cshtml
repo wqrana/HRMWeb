@@ -1,0 +1,201 @@
+﻿@model TimeAide.Web.Models.ChangeRequestEmergencyContact
+
+<div class="form-horizontal">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;margin-bottom: .5rem;">
+        <h4 style="display: inline;">Change Request - Emergency Contact</h4>
+        <button class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id, new { id = "ChangeRequestEmergencyContactId" })
+    @Html.HiddenFor(model => model.UserInformationId, new { id = "ChangeRequestEmergencyContactUserInformationId" })
+
+    <div class="form-group row" style="margin-left: 0px !important; margin-right: 0px !important;">
+        <div class="panel panel-default" style="width:49.25%;margin-bottom:0px">
+            <div class="panel-heading" style="padding-left:10px">Old Emergency Contact</div>
+            <div class="panel-body" style="padding-left:10px;">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Relationship
+                    </div>
+                    <div class="col-md-7">
+                        @Html.DisplayFor(model => model.EmergencyContact.Relationship.RelationshipName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Contact Name
+                    </div>
+                    <div class="col-md-7">
+                        @Html.DisplayFor(model => model.EmergencyContact.ContactPersonName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Is Default
+                    </div>
+                    <div class="col-md-7">
+                        @Html.DisplayFor(model => model.EmergencyContact.IsDefault)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Main Number
+                    </div>
+                    <div class="col-md-7">
+                        @Html.DisplayFor(model => model.EmergencyContact.MainNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Alternate Number
+                    </div>
+                    <div class="col-md-7">
+                        @Html.DisplayFor(model => model.EmergencyContact.AlternateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="width:49.25%;margin-left:10px;margin-bottom:0px">
+            <div class="panel-heading" style="padding-left:10px">New Emergency Contact</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Relationship
+                    </div>
+                    <div class="col-md-7">
+                        @if (!Model.NewRelationshipId.HasValue)
+                        {
+                            <span>
+                                @Model.EmergencyContact.Relationship.RelationshipName
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewRelationship.RelationshipName
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Contact Name
+                    </div>
+                    <div class="col-md-7">
+                        @if (String.IsNullOrEmpty(Model.NewContactPersonName))
+                        {
+                            <span>
+                                @Model.EmergencyContact.ContactPersonName
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewContactPersonName
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Is Default
+                    </div>
+                    <div class="col-md-7">
+                        @if (!Model.NewIsDefault)
+                        {
+                            <span>
+                                @Model.EmergencyContact.IsDefault
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewIsDefault
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4">
+                        Main Number
+                    </label>
+                    <div class="col-md-7">
+                        @if (String.IsNullOrEmpty(Model.NewMainNumber))
+                        {
+                            <span>
+                                @Model.EmergencyContact.MainNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewMainNumber
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4">
+                        Alternate Number
+                    </label>
+                    <div class="col-md-7">
+                        @if (String.IsNullOrEmpty(Model.NewAlternateNumber))
+                        {
+                            <span>
+                                @Model.AlternateNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:red !important">
+                                @Model.NewAlternateNumber
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function CancelChangeRequestAction() {
+        window.location.href = '/UserInformation/Index';
+    }
+    function ChangeRequestAction(statusId) {
+
+        var model = {
+            Id: $('#ChangeRequestEmergencyContactId').val(),
+            ChangeRequestRemarks: $('#ChangeRequestRemarks').val(),
+            ChangeRequestStatusId: statusId,
+            UserInformationId: $('#ChangeRequestEmergencyContactUserInformationId').val(),
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/ChangeRequestAddress/ApproveChangeRequestEmergencyContact',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "html",
+            success: function (html) {
+                debugger
+                window.location.href = '/UserInformation/Index';
+                //location.reload(true);
+                //$('#myModal').modal('hide');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger
+                var responseText = jQuery.parseJSON(xhr.responseText)
+                var errorObject = jQuery.parseJSON(responseText.errors)
+
+                window.location.href = '/UserInformation/Index';
+
+                $.each(errorObject, function (idx, errorMessage) {
+                    $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                });
+            }
+        });
+    }
+</script>

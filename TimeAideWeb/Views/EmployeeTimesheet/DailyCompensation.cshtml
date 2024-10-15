@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TimeAide.Data.viewUserCompensationDaily>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblCompensationDaily">
+
+        <thead>
+            <tr>
+                <th>Eff. Date</th>
+                <th>Accrual Type</th>
+                <th>Avail. Balance</th>
+                <th>Accrued Hrs</th>
+                <th>Accrual Days</th>
+
+                <th>Daily Hours</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dEffectiveDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sAccrualType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblAvailableBalance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblAccruedHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sAccrualDays)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dblAccrualDailyHours)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

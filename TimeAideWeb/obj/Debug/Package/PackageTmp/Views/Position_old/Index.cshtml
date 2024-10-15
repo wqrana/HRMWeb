@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Position>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Position
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Position Code
+        </th>
+        <th>
+            Default Pay Scale
+        </th>
+        <th>
+            Default EEO Category
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositionDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositionCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DefaultPayScale.PayScaleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DefaultEEOCategory.EEOCategoryName)
+            </td>
+            <td>
+                @Html.Partial("_IndexPageButtonsView", item)
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_IndexPageFooterView")

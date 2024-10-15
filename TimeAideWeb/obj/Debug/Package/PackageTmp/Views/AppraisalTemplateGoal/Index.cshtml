@@ -1,0 +1,22 @@
+﻿@model IEnumerable<TimeAide.Web.Models.AppraisalTemplateGoal>
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0">
+        <tr>
+            <th>
+                Goal Name
+            </th>
+
+        </tr>
+        @if (Model!= null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.AppraisalGoal.GoalName</td>
+
+                </tr>
+            }
+        }
+    </table>
+</div>

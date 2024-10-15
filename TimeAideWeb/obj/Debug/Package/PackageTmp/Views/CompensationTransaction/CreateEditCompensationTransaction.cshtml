@@ -1,0 +1,389 @@
+﻿<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" rel="stylesheet" />
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+</style>
+<div class="form-horizontal" style="padding:10px;">
+    <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+        <h4 style="display: inline;">Compensation Transaction - Add/Edit</h4>
+        <button type="button" class="close" aria-label="Close" onclick="closeCompensationTransactionModal()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <input type="hidden" id="SelectedCompensationTransactionId" , value="@ViewBag.CompanyCompensationId" />
+    <div class="alert" style="display:none;" id="compensationTransactionCreateEditAlert">
+        <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+        <strong>Alert!</strong><span class="ml-1"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="custom-header">Available Compensation Transaction</div>
+        </div>
+        <div class="col-md-6">
+            <div class="custom-header">Selected Compensation Transaction</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <table id="searchTable" class="display compact" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="display: none">
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Code
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Primary Transaction
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TimeAide.Web.Models.Transaction each in ViewBag.CompensationTransactions)
+                    {
+                    <tr>
+                        <td style="display: none">
+                            @Html.HiddenFor(modelItem => each.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.PrimaryTransaction.PrimaryTransactionName)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table id="selectedPropsTable" class="display compact" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="display: none">
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Code
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Primary Transaction
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TimeAide.Web.Models.CompensationTransaction each in ViewBag.SelectedCompensationTransactions)
+                    {
+                    <tr>
+                        <td style="display: none">
+                            @Html.HiddenFor(modelItem => each.TransactionId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.Transaction.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.Transaction.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.Transaction.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => each.Transaction.PrimaryTransaction.PrimaryTransactionName)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="submit-section">
+        <button id="btnSaveCompanyCompensation" class="btn btn-primary submit-btn" type="button">Save</button>
+        <button id="btnCancel" class="btn btn-primary  submit-btn" onclick="closeCompensationTransactionModal()" aria-label="Close" type="button">Cancel</button>
+    </div>
+</div>
+<style>
+    table.dataTable tbody tr.selected {
+        background-color: #b0bed9
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 8px 10px
+    }
+
+    table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {
+        border-top: 1px solid #ddd
+    }
+
+    table.dataTable.row-border tbody tr:first-child th, table.dataTable.row-border tbody tr:first-child td, table.dataTable.display tbody tr:first-child th, table.dataTable.display tbody tr:first-child td {
+        border-top: none
+    }
+
+    table.dataTable.cell-border tbody th, table.dataTable.cell-border tbody td {
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd
+    }
+
+    table.dataTable.cell-border tbody tr th:first-child, table.dataTable.cell-border tbody tr td:first-child {
+        border-left: 1px solid #ddd
+    }
+
+    table.dataTable.cell-border tbody tr:first-child th, table.dataTable.cell-border tbody tr:first-child td {
+        border-top: none
+    }
+
+    table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+        background-color: #f9f9f9
+    }
+
+        table.dataTable.stripe tbody tr.odd.selected, table.dataTable.display tbody tr.odd.selected {
+            background-color: #acbad4
+        }
+
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+        background-color: #f6f6f6
+    }
+
+        table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:hover.selected {
+            background-color: #aab7d1
+        }
+
+    table.dataTable.order-column tbody tr > .sorting_1, table.dataTable.order-column tbody tr > .sorting_2, table.dataTable.order-column tbody tr > .sorting_3, table.dataTable.display tbody tr > .sorting_1, table.dataTable.display tbody tr > .sorting_2, table.dataTable.display tbody tr > .sorting_3 {
+        background-color: #fafafa
+    }
+
+    table.dataTable.order-column tbody tr.selected > .sorting_1, table.dataTable.order-column tbody tr.selected > .sorting_2, table.dataTable.order-column tbody tr.selected > .sorting_3, table.dataTable.display tbody tr.selected > .sorting_1, table.dataTable.display tbody tr.selected > .sorting_2, table.dataTable.display tbody tr.selected > .sorting_3 {
+        background-color: #acbad5
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
+        background-color: #f1f1f1
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd > .sorting_2 {
+        background-color: #f3f3f3
+    }
+
+    table.dataTable.display tbody tr.odd > .sorting_3, table.dataTable.order-column.stripe tbody tr.odd > .sorting_3 {
+        background-color: whitesmoke
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_1 {
+        background-color: #a6b4cd
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_2 {
+        background-color: #a8b5cf
+    }
+
+    table.dataTable.display tbody tr.odd.selected > .sorting_3, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_3 {
+        background-color: #a9b7d1
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column.stripe tbody tr.even > .sorting_1 {
+        background-color: #fafafa
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_2, table.dataTable.order-column.stripe tbody tr.even > .sorting_2 {
+        background-color: #fcfcfc
+    }
+
+    table.dataTable.display tbody tr.even > .sorting_3, table.dataTable.order-column.stripe tbody tr.even > .sorting_3 {
+        background-color: #fefefe
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_1 {
+        background-color: #acbad5
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_2 {
+        background-color: #aebcd6
+    }
+
+    table.dataTable.display tbody tr.even.selected > .sorting_3, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_3 {
+        background-color: #afbdd8
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_1, table.dataTable.order-column.hover tbody tr:hover > .sorting_1 {
+        background-color: #eaeaea
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_2, table.dataTable.order-column.hover tbody tr:hover > .sorting_2 {
+        background-color: #ececec
+    }
+
+    table.dataTable.display tbody tr:hover > .sorting_3, table.dataTable.order-column.hover tbody tr:hover > .sorting_3 {
+        background-color: #efefef
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_1, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_1 {
+        background-color: #a2aec7
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_2, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_2 {
+        background-color: #a3b0c9
+    }
+
+    table.dataTable.display tbody tr:hover.selected > .sorting_3, table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_3 {
+        background-color: #a5b2cb
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #111
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var table1 = $('#searchTable').DataTable(
+            {
+                "pageLength": 25,
+                "columnDefs": [
+                    { "width": 0, "targets": 0, "bSortable": false }
+
+                ],
+                "fixedColumns": true
+            }
+        );
+        var table2 = $('#selectedPropsTable').DataTable(
+            {
+                "pageLength": 25,
+                "columnDefs": [
+                    { "width": 0, "targets": [0] },
+                    { "bSortable": false, targets: [0] }
+
+                ],
+                "fixedColumns": true
+            }
+        );
+        $("#searchTable").on('dblclick', "tr", function () {
+            debugger
+            var row = table1.row(this);
+            var rowNode = row.node();
+            row.remove().draw();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table1.$('tr.selected').removeClass('selected');
+                table2.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            table2.row.add(rowNode).draw();
+        });
+        $("#searchTable").on('click', "tr", function () {
+            debugger
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table1.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        $("#selectedPropsTable").on('click', "tr", function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table2.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+        $("#selectedPropsTable").on('dblclick', "tr", function () {
+            debugger
+            var col = $(this).parent().children().index($(this));
+            if (col == 5)
+                return;
+            //alert('Hi');
+            var rowTr = $(this).parents('tr')[0];
+            var row = table2.row(rowTr);
+            var rowNode = row.node();
+            row.remove().draw();
+            //if ($(this).hasClass('selected')) {
+            //    $(this).removeClass('selected');
+            //}
+            //else {
+            //    table1.$('tr.selected').removeClass('selected');
+            //    table2.$('tr.selected').removeClass('selected');
+            //    $(this).addClass('selected');
+            //}
+            table1.row.add(rowNode).draw();
+        });
+
+        $("#btnSaveCompanyCompensation").click(function () {
+            var selectedCredentialsStr = '';
+            $('#selectedPropsTable tr').each(function () {
+                var customerId = $(this).find("td:first").find("input").each(function () {
+                    //alert(this.value);
+                    selectedCredentialsStr += this.value + ',';
+                });
+            });
+            saveCompanyCompensationData(selectedCredentialsStr);
+        })
+    });
+    function saveCompanyCompensationData(selectedTransactionStr) {
+        debugger;
+        alertID = "#compensationTransactionCreateEditAlert"
+        var companyCompensationId = $("#SelectedCompensationTransactionId").val();
+        if (companyCompensationId != 0) {
+            $.ajax({
+                type: "post",
+                url: '/CompensationTransaction/CreateEditCompensationTransaction',
+                data: {
+                    "id": companyCompensationId,
+                    "selectedTransactionIds": selectedTransactionStr
+                },
+
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $("#compensationTransactionModal").modal("hide");
+                        LoadCompanyCompensation(companyCompensationId);
+                        toastr.success('Changes updated successfully.', "Success!");
+                    }
+                },
+                error: function () {
+                    //alert("error in saveCompanyCompensationData");
+                    toastr.error("There was an error in uploading information", "Error!");
+                }
+            });
+        }
+    }
+    function closeCompensationTransactionModal() {
+        $("#compensationTransactionModal").modal("hide");
+    }
+</script>
+<style>
+    .modal-md {
+        min-width: 20% !important;
+        margin: 0 auto;
+    }
+</style>
+<style>
+    .modal-dialog {
+        width: 80%;
+        max-width: 80% !important;
+    }
+</style>

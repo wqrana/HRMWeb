@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TimeAide.Web.Models.AccrualType>
+
+@Html.Partial("_IndexPageHeaderView")
+<thead>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccrualTypeName)
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+           Is Used By System
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAllCompanies)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccrualTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccrualTypeDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsUsedBySystem)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAllCompanies)
+        </td>
+        <td>
+            @Html.Partial("_IndexPageButtonsView", item)
+        </td>
+    </tr>
+    }
+
+</tbody>
+@Html.Partial("_IndexPageFooterView")

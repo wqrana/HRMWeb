@@ -1,0 +1,196 @@
+﻿@model TimeAide.Web.Models.ApplicantApplication
+
+<style>
+    .showField {
+        display: block;
+    }
+
+    .hideField {
+        display: none;
+    }
+    ul.ui-front {
+        z-index: 1100;
+    }
+    
+</style>
+<div id="applicantApplicationCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Application - Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="alert" style="display:none;" id="">
+                    <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                    <strong>Alert!</strong><span class="ml-1"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.Hidden("ApplicantApplicationId",Model.Id)
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"> Application Date: <span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.DateApplied, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Position: <span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                @Html.DropDownList("PositionId", null, "Please select", new { @class = "form-control" })                                   
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"> Reference Type: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                              
+                                <div class="input-group">
+                                    @Html.DropDownList("ApplicantReferenceTypeId", null, "Please select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-2 col-form-label"> Reference Source: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    @Html.DropDownList("ApplicantReferenceSourceId", null, "Please select", new { @class = "form-control" })
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary btn-master-data" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Employment Type: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.ListBox("EmploymentTypeIds", (IEnumerable<SelectListItem>)ViewBag.EmployeeTypeId, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                            <label class="col-md-2 col-form-label"> Location(s): <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.ListBox("JobLocationIds", (IEnumerable<SelectListItem>)ViewBag.JobLocationId, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"> Expected Income: </label>
+                            <div class="col-md-2 pr-0">
+                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-2 pl-0">
+                                @Html.DropDownList("RateFrequencyId", null, "Please select", new { @class = "form-control" })
+                            </div>
+                            <label class="col-md-2 col-form-label"> Available to Start: </label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.DateAvailable, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label"> Willing to work overtime? <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsOvertime", Model.IsOvertime ?? false)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">  Applied for a job with us before? <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsWorkedBefore", Model.IsWorkedBefore ?? false)
+                                @{ 
+                                    var showHideCls = (Model.IsWorkedBefore ?? false) ? "showField" : "hideField";
+                                }
+                            </div>
+                            <label class="col-md-1 col-form-label @showHideCls" id="lblWorkedBeforeDate">When:</label>
+                            <div class="col-md-2  @showHideCls" id="divWorkedBeforeDate">
+                                @Html.EditorFor(model => model.WorkedBeforeDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">  Any Relatives employed with us?  <span class="text-danger"></span></label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("IsRelativeInCompany", Model.IsRelativeInCompany ?? false)
+                                @{
+                                    showHideCls = (Model.IsRelativeInCompany ?? false) ? "showField" : "hideField";
+                                }
+                            </div>
+                            <label class="col-md-1 col-form-label @showHideCls" id="lblRelativeName">Name:</label>
+                            <div class="col-md-3 @showHideCls" id="divRelativeName">
+                                @Html.EditorFor(model => model.RelativeName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnSaveApplicantApplication" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        
+        $("#DateApplied").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#DateAvailable").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#WorkedBeforeDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#EmploymentTypeIds").select2();
+        $("#JobLocationIds").select2();
+        
+        $(".select2-container").css("width", "100%");
+        $("#IsWorkedBefore").change(function () {
+            debugger;
+            var sts = $(this).is(":checked");
+            if (sts) {
+                $('#lblWorkedBeforeDate').removeClass("hideField").addClass("showField");
+                $('#divWorkedBeforeDate').removeClass("hideField").addClass("showField");
+            }
+            else {
+                $('#lblWorkedBeforeDate').removeClass("showField").addClass("hideField");
+                $('#divWorkedBeforeDate').removeClass("showField").addClass("hideField");
+                $('#WorkedBeforeDate').val(null);
+            }
+
+        });
+        $("#IsRelativeInCompany").change(function () {
+            debugger;
+            var sts = $(this).is(":checked");
+            if (sts) {
+                $('#lblRelativeName').removeClass("hideField").addClass("showField");
+                $('#divRelativeName').removeClass("hideField").addClass("showField");
+            }
+            else {
+                $('#lblRelativeName').removeClass("showField").addClass("hideField");
+                $('#divRelativeName').removeClass("showField").addClass("hideField");
+                $('#RelativeName').val(null);
+            }
+
+        });
+
+        $("#btnSaveApplicantApplication").click(function () {
+            saveApplicantApplicationData();
+        })
+        //popup master data
+        $(".btn-master-data").click(function () {
+            debugger;
+            var masterDataDdl = $(this).parents("div.input-group")
+                .find("select")
+                .first();
+            openMasterDataPopUp(masterDataDdl);
+        });      
+      
+    });
+
+</script>
+
+
